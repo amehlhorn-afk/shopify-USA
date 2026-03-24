@@ -1,0 +1,179 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "offer_label": "{{ product.metafields.custom.offer_label.value }}"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "short_description": ""
+          }
+        },
+        "features_6PLB3K": {
+          "type": "features",
+          "settings": {
+            "Heading": "Advantages",
+            "block_color": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "box_outside_space": "",
+            "box_outside_space_mobile": ""
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "block_color": "#f5f5f5",
+            "show_variant_price": false,
+            "color_swatch": true,
+            "size_chart": true,
+            "picker_type": "dropdown",
+            "swatch_shape": "circle",
+            "enable_addtocart_quantity_button": true,
+            "box_outside_space": "30px 30px 30px 30px",
+            "box_outside_space_mobile": "20px 20px 20px 20px",
+            "variant_first_row": 3,
+            "variant_first_row_Mobile": 3,
+            "variant_all_row": 4,
+            "vvariant_all_row_Mobile": 2,
+            "first_rowsmall_variant_all_row_Mobile": 2,
+            "small_variant_all_row_Mobile": 2
+          }
+        },
+        "offer_label_BYtqAg": {
+          "type": "offer_label",
+          "settings": {
+            "block_color": "#000000",
+            "text_color": "#ffffff",
+            "text": "Receive a free Knee Pillow with purchase of 2 Pillows $99+.",
+            "button_text": "See Details",
+            "button_url": "#",
+            "box_outside_space": "15px 20px 15px 20px",
+            "box_outside_space_mobile": "6px 18px 6px 18px"
+          }
+        },
+        "icon_and_text_MVaxVL": {
+          "type": "icon_and_text",
+          "settings": {}
+        },
+        "you_may_also_like_Y6hUaV": {
+          "type": "you-may-also-like",
+          "settings": {
+            "Heading": "Goes well with",
+            "image_ratio": "adapt",
+            "show_secondary_image": true,
+            "quick_add": "standard",
+            "products_to_show": 10,
+            "columns_desktop": 3,
+            "columns_mobile": "2"
+          }
+        },
+        "product_accordions_Um47KB": {
+          "type": "product_accordions",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "description",
+        "features_6PLB3K",
+        "variant_picker",
+        "offer_label_BYtqAg",
+        "icon_and_text_MVaxVL",
+        "you_may_also_like_Y6hUaV",
+        "product_accordions_Um47KB"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "padding_for_image": "100%",
+        "padding_for_image_mobile": "92.11%",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "mobile_thumbnails": "hide",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "desktop_padding_top": 40,
+        "desktop_padding_bottom": 80,
+        "mobile_padding_top": 20,
+        "mobile_padding_bottom": 20
+      }
+    },
+    "image_with_text_sec_3Q97CP": {
+      "type": "image-with-text-sec",
+      "settings": {
+        "bg_color": "#f5f5f5",
+        "title": "",
+        "text": "",
+        "desktop_padding_top": 80,
+        "desktop_padding_bottom": 80,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40
+      }
+    },
+    "pdp_faq_sec_4pkezG": {
+      "type": "pdp-faq-sec",
+      "settings": {
+        "bg_color": "#f5f5f5",
+        "title": "Frequently Asked Questions",
+        "text": "Quick Answers to questions you may have.",
+        "content_text": "Can't Find what you're looking for?",
+        "btn_text": "Contact Us",
+        "btn_url": "shopify:\/\/pages\/contact",
+        "desktop_padding_top": 80,
+        "desktop_padding_bottom": 80,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You may also like",
+        "products_to_show": 10,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "quick_add": "standard",
+        "desktop_padding_top": 80,
+        "desktop_padding_bottom": 80,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_with_text_sec_3Q97CP",
+    "pdp_faq_sec_4pkezG",
+    "related-products"
+  ]
+}
