@@ -1,0 +1,315 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+<div class="block__main-login section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="block__wrapper quaternary-border-radius" {% if section.settings.bg_image != blank %} style="background-image: url('{{ section.settings.bg_image | img_url: 'master' }}');" {% endif %}>
+      <div class="customer register quaternary-border-radius" {% if section.settings.bg_color != blank %} style="background-color:{{ section.settings.bg_color }}"{% endif %}>
+      
+        <div class="block__heading">
+          <h1 tabindex="-1" class="primary_h2 font-weight-700">
+            {% if section.settings.title != blank %}
+            {{- section.settings.title -}}
+            {% else %}
+            {{ 'customer.register.title' | t }}
+            {% endif %}
+          </h1>
+          <p class="medium_body">
+            {% if section.settings.text != blank %}
+            {{- section.settings.text -}}
+            {% endif %}
+          </p>
+        </div>
+        {%- form 'create_customer', validate: 'validate' -%}
+           {% comment %} <input type="hidden" name="return_to" value="/account">  {% endcomment %}
+          {%- if form.errors -%}
+            <h2 class="form__message hiddden" tabindex="-1" autofocus>
+              <span class="svg-wrapper">
+                {{- 'icon-error.svg' | inline_asset_content -}}
+              </span>
+              {{ 'templates.contact.form.error_heading' | t }}
+            </h2>
+            <ul>
+              {%- for field in form.errors -%}
+                <li>
+                  {{'customer.register.register_error_html'| t: link: routes.account_login_url }}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          <div class="flex gap-20 block__form-row">
+            <div class="field">
+              <input
+                type="text"
+                name="customer[first_name]"
+                id="RegisterForm-FirstName"
+                {% if form.first_name %}
+                  value="{{ form.first_name }}"
+                {% endif %}
+                autocomplete="given-name"
+                placeholder="{{ 'customer.register.first_name' | t }}"
+                pattern="^[A-Za-z\s]+$"
+                onkeypress="return /^[A-Za-z\s]+$/.test(event.key);"
+                required
+              >
+              <label for="RegisterForm-FirstName" class="relative inline-block">
+                {{ 'customer.register.first_name' | t }}
+                <sup class="absolute">*</sup>
+              </label>
+            </div>
+            <div class="field">
+              <input
+                type="text"
+                name="customer[last_name]"
+                id="RegisterForm-LastName"
+                {% if form.last_name %}
+                  value="{{ form.last_name }}"
+                {% endif %}
+                autocomplete="family-name"
+                placeholder="{{ 'customer.register.last_name' | t }}"
+                pattern="^[A-Za-z\s]+$"
+                onkeypress="return /^[A-Za-z\s]+$/.test(event.key);"
+                required
+              >
+              <label for="RegisterForm-LastName" class="relative inline-block">
+                {{ 'customer.register.last_name' | t }}
+                <sup class="absolute">*</sup>
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <input
+              type="email"
+              name="customer[email]"
+              id="RegisterForm-email"
+              {% if form.email %}
+                value="{{ form.email }}"
+              {% endif %}
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="email"
+              aria-required="true"
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+                aria-describedby="RegisterForm-email-error"
+              {% endif %}
+              placeholder="{{ 'customer.register.email_placeholder' | t }}"
+              required
+            >
+            <label for="RegisterForm-email" class="relative inline-block">
+              {{ 'customer.register.email' | t }}
+              <sup class="absolute">*</sup>
+            </label>
+          </div>
+          {%- if form.errors contains 'email' -%}
+            <span id="RegisterForm-email-error" class="form__message">
+              <span class="svg-wrapper">
+                {{- 'icon-error.svg' | inline_asset_content -}}
+              </span>
+              {{ form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email }}.
+            </span>
+          {%- endif -%}
+          <div class="field">
+            <div class="relative w-full">
+              <input
+                type="password"
+                name="customer[password]"
+                id="RegisterForm-password"
+                aria-required="true"
+                minlength="5"
+                oninput="validatePassword()"
+                {% if form.errors contains 'password' %}
+                  aria-invalid="true"
+                  aria-describedby="RegisterForm-password-error"
+                {% endif %}
+                placeholder="{{ 'customer.register.password' | t }}"
+                required
+              >
+              <span class="absolute toggle-password">{% render 'eye-open' %}</span>
+            </div>
+            <label for="RegisterForm-password" class="relative inline-block">
+              {{ 'customer.register.password' | t }}
+              <sup class="absolute">*</sup>
+            </label>
+          </div>
+          {%- if form.errors contains 'password' -%}
+            <span id="RegisterForm-password-error" class="form__message">
+              <span class="svg-wrapper">
+                {{- 'icon-error.svg' | inline_asset_content -}}
+              </span>
+              {{ form.errors.translated_fields.password | capitalize }}
+              {{ form.errors.messages.password }}
+            </span>
+          {%- endif -%}
+          <button>
+            {{ 'customer.register.submit' | t }}
+          </button>
+          <div class="flex items-center createtext_account justify-center">
+              {{ 'customer.register.createtext_account' | t }}
+              <a href="{{ routes.account_login_url }}" class="font-weight-600">
+                {{ 'customer.register.create_account' | t }}
+              </a>
+            </div> 
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>
+{% style %}  
+  @media (min-width:990px){
+    .section-{{ section.id }}-padding{
+        padding-top:{{ section.settings.desktop_padding_top }}px;
+        padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+    }
+    .block__main-login .block__wrapper{
+        padding-top:{{ section.settings.image_desktop_padding_top }}px;
+        padding-bottom:{{ section.settings.image_desktop_padding_bottom }}px;
+    }
+  }
+  @media (max-width:989px){
+    .section-{{ section.id }}-padding{
+        padding-top:{{ section.settings.mobile_padding_top }}px;
+        padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+    }
+    .block__main-login .block__wrapper{
+        padding-top:{{ section.settings.image_mobile_padding_top }}px;
+        padding-bottom:{{ section.settings.iamge_mobile_padding_bottom }}px;
+    }
+  }
+{% endstyle %}
+<script>
+  function validatePassword() {
+    let passwordInput = document.getElementById("RegisterForm-password");
+    let errorMessage = document.getElementById("RegisterForm-password-error");
+    if (passwordInput.value.length < 5) {
+      errorMessage.style.display = "block";
+      passwordInput.setCustomValidity("Password must be at least 5 characters long.");
+    } else {
+      errorMessage.style.display = "none";
+      passwordInput.setCustomValidity("");
+    }
+  }
+</script>
+{% schema %}
+{
+  "name": "t:sections.main-register.name",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background Color"
+    },
+    {
+        "type": "inline_richtext",
+        "id": "title",
+        "label": "Title"
+    },
+    {
+        "type": "inline_richtext",
+        "id": "text",
+        "label": "Text"
+    },
+    {
+        "type": "header",
+        "content": "Image Desktop Space"
+    },
+    {
+        "type": "range",
+        "id": "image_desktop_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Image Desktop Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "image_desktop_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Image Desktop Padding Bottom",
+        "default": 16
+    },
+    {
+        "type": "header",
+        "content": "Image Mobile Space"
+    },
+    {
+        "type": "range",
+        "id": "image_mobile_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Image Mobile Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "iamge_mobile_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Image Mobile Padding Bottom",
+        "default": 16
+    },
+    {
+        "type": "header",
+        "content": "Desktop Space"
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding Bottom",
+        "default": 16
+    },
+    {
+        "type": "header",
+        "content": "Mobile Space"
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding Bottom",
+        "default": 16
+    }
+  ]
+}
+{% endschema %}

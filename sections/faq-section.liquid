@@ -1,0 +1,188 @@
+{{ 'section-faqs.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'faq.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  .section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top_m  }}px;
+    padding-bottom: {{ section.settings.padding_bottom_m  }}px;
+    background-color: {{ section.settings.color }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="faq_list_section section-{{ section.id }}">
+  <div class="faq_list {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    {%- for block in section.blocks -%}
+      {%- assign faq_title = block.settings.categories_name | append: '|' -%}
+      {%- assign cattitle = cattitle | append: faq_title -%}
+    {% endfor %}
+    {%- assign faq_cat = cattitle | split: '|' | uniq -%}
+    <div class="page-width">
+      {% comment %}
+        <div class="mobile_faq_type">
+          <div class="faq_type_list">
+            <ul class="faq_type_list_inner">
+              {% for categoris in faq_cat %}
+                  <li class="faq_type js_faq_heading {% if forloop.first %}active{% endif %}" data_id="{{ categoris | handle }}">{{ categoris }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endcomment %}
+      <div class="faq_content_row">
+        <div class="block__faq-category">
+          <h2 class="block__faq-category-mobile h6">
+            {%- for categoris in faq_cat limit: 1 -%}
+              <span class="faq_type medium_body active">{{ categoris }}</span>
+              <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.46875 5.96875L6.46875 0.25C6.61458 0.104167 6.78125 0.03125 6.96875 0.03125C7.15625 0.03125 7.33333 0.104167 7.5 0.25L13.4688 5.96875C13.7604 6.30208 13.7708 6.65625 13.5 7.03125C13.1458 7.32292 12.7917 7.32292 12.4375 7.03125L6.9375 1.78125L1.53125 7.03125C1.15625 7.32292 0.802083 7.32292 0.46875 7.03125C0.177083 6.65625 0.177083 6.30208 0.46875 5.96875Z" fill="currentColor"/>
+              </svg>
+            {% endfor %}
+          </h2>
+          <ul class="block__faq-type-list-inner">
+            {%- for categoris in faq_cat -%}
+              <li
+                class="faq_type js_faq_heading h6 {% if forloop.first %}active{% endif %}"
+                data_id="{{ categoris | handle }}"
+              >
+                {{ categoris }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="block__faq-content">
+            <div class="block__faq-content-info">
+              {%- for categoris in faq_cat -%}
+                <div class="block__faq-list-wrapper faq_list_block" id="{{categoris | handle}}">
+                  <h4 class="block__faq-type-heading h5">{{ categoris }}</h4>
+                  {%- assign cattitle = categoris | handle -%}
+                  {% for block in section.blocks %}
+                    {%- assign blocktitle = block.settings.categories_name | handle -%}
+                    {%- if cattitle == blocktitle -%}
+                      {% if block.settings.answer != blank %}
+                        <div class="block__faq-slide {% if forloop.first %}change_icon{% endif %}">
+                            <div class="block__tabs_title h6">
+                              <span>{{ block.settings.question }}</span>
+                              <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 0.5V12.5" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M12 6.5L-5.36442e-07 6.5" stroke="currentColor" stroke-width="1.5"/>
+                              </svg>
+                            </div>
+                            <div
+                              class="block__faq-panel small_body"
+                              {% if forloop.first %}
+                                style="display:block;"
+                              {% endif %}
+                            >
+                              {{ block.settings.answer }}
+                            </div>
+                        </div>
+                      {% endif %}
+                    {% endif %}
+                  {%- endfor -%}
+                </div>
+              {% endfor %}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ list",
+  "tag": "section",
+  "class": "section-faqs",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "caption",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Background Color"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "GettingStarted",
+      "name": "Faqs",
+      "settings": [
+        {
+          "type": "text",
+          "id": "categories_name",
+          "label": "Categories Name"
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ list"
+    }
+  ]
+}
+{% endschema %}

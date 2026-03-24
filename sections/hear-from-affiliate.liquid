@@ -1,0 +1,145 @@
+{{ 'hear-from-affiliate.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      background-color: {{ section.settings.color }};
+  }
+  @media (max-width: 749px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top_m }}px;
+          padding-bottom: {{ section.settings.padding_bottom_m }}px;
+      }
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }} block__hear-from-affiliates">
+  <div class="page-width">
+    <div class="block__hear-from-affiliates-inner">
+      <div class="block__hear-from-affiliates-heading text-center">
+        {% if section.settings.title != blank %}
+          <h2 class="primary_h2">{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.caption != blank %}
+          <p class="block__hear-from-affiliates-caption body">{{ section.settings.caption }}</p>
+        {% endif %}
+      </div>
+      <div class="block__hear-from-affiliates-testimonials">
+        <div class="block__hear-from-affiliates-testimonials-inner">
+          {% for block in section.blocks %}
+            <div class="block__hear-from-affiliates-content">
+              <div class="block__hear-from-affiliates-description">
+                <p>{{ block.settings.description }}</p>
+              </div>
+              <div class="block__affiliates-user-info">
+                 <p class="font-weight-700">{{ block.settings.author_name }}</p>
+                 <p class="small_body">{{ block.settings.occupation }}</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Join Our Affiliate",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "caption",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Background Color"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hear_from_affiliate",
+      "name": "Hear From Affiliate",
+      "settings": [
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name"
+        },
+        {
+          "type": "text",
+          "id": "occupation",
+          "label": "Author Occupation"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hear From Affiliate"
+    }
+  ]
+}
+{% endschema %}

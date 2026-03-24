@@ -1,0 +1,737 @@
+{% comment %}
+Section: Image + Text LP
+Landing-page style image + text blocks with optional banner blocks
+{% endcomment %}
+
+<section id="LandingPageImageWithText-{{ section.id }}" class="lp-iwt">
+  <div class="lp-iwt__wrapper">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'image_with_text' %}
+          <div
+            class="lp-iwt__item{% if block.settings.image_position == 'right' %} lp-iwt__item--image-right{% endif %}"
+            style="
+              --iwt-heading-size-desktop: {{ block.settings.heading_size_desktop }}px;
+              --iwt-heading-size-mobile: {{ block.settings.heading_size_mobile }}px;
+              --iwt-body-size-desktop: {{ block.settings.body_size_desktop }}px;
+              --iwt-body-size-mobile: {{ block.settings.body_size_mobile }}px;
+            "
+            {{ block.shopify_attributes }}
+          >
+            <div class="lp-iwt__image">
+              {% if block.settings.image != blank or block.settings.mobile_image != blank %}
+                <picture>
+                  {% if block.settings.mobile_image != blank %}
+                    <source
+                      media="(max-width: 749px)"
+                      srcset="{{ block.settings.mobile_image | image_url: width: 900 }}"
+                    >
+                  {% endif %}
+                  <img
+                    src="{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 1200 }}{% else %}{{ block.settings.mobile_image | image_url: width: 900 }}{% endif %}"
+                    loading="lazy"
+                    class="lp-iwt__img"
+                    alt="{{ block.settings.heading | escape }}"
+                  >
+                </picture>
+              {% endif %}
+            </div>
+
+            <div class="lp-iwt__content">
+              {% if block.settings.eyebrow != blank %}
+                <p class="lp-iwt__eyebrow">{{ block.settings.eyebrow }}</p>
+              {% endif %}
+              {% if block.settings.heading != blank %}
+                <h3 class="lp-iwt__heading">{{ block.settings.heading }}</h3>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <div class="lp-iwt__text rte">
+                  {{ block.settings.text }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+        {% when 'banner' %}
+          <div
+            class="lp-iwt__banner"
+            style="
+              --banner-heading-size-desktop: {{ block.settings.banner_heading_size_desktop }}px;
+              --banner-heading-size-mobile: {{ block.settings.banner_heading_size_mobile }}px;
+              --banner-body-size-desktop: {{ block.settings.banner_body_size_desktop }}px;
+              --banner-body-size-mobile: {{ block.settings.banner_body_size_mobile }}px;
+              --banner-copy-color: {{ block.settings.copy_color }};
+              --banner-height-desktop: {{ block.settings.banner_height_desktop }}px;
+              --banner-height-mobile: {{ block.settings.banner_height_mobile }}px;
+              --banner-body-spacing-desktop: {{ block.settings.banner_body_spacing_desktop }}px;
+              --banner-body-spacing-mobile: {{ block.settings.banner_body_spacing_mobile }}px;
+              --banner-callout-gap-desktop: {{ block.settings.banner_callout_gap_desktop }}px;
+              --banner-callout-gap-mobile: {{ block.settings.banner_callout_gap_mobile }}px;
+
+              /* NEW: Body copy 1 max width + callouts top padding */
+              --banner-body-1-max-width-desktop: {{ block.settings.banner_body_1_max_width_desktop }}px;
+              --banner-body-1-max-width-mobile: {{ block.settings.banner_body_1_max_width_mobile }}px;
+              --banner-callouts-padding-top-desktop: {{ block.settings.banner_callouts_padding_top_desktop }}px;
+              --banner-callouts-padding-top-mobile: {{ block.settings.banner_callouts_padding_top_mobile }}px;
+            "
+            {{ block.shopify_attributes }}
+          >
+            <div class="lp-iwt__banner-media-wrapper lp-iwt__banner-media-wrapper--{{ block.settings.banner_style }}">
+              {% if block.settings.desktop_image != blank or block.settings.mobile_image != blank %}
+                <picture>
+                  {% if block.settings.mobile_image != blank %}
+                    <source
+                      media="(max-width: 749px)"
+                      srcset="{{ block.settings.mobile_image | image_url: width: 900 }}"
+                    >
+                  {% endif %}
+                  {% if block.settings.desktop_image != blank %}
+                    <img
+                      src="{{ block.settings.desktop_image | image_url: width: 1600 }}"
+                      loading="lazy"
+                      alt="{{ block.settings.banner_alt | escape }}"
+                      class="lp-iwt__banner-img"
+                    >
+                  {% endif %}
+                </picture>
+              {% endif %}
+
+              <div class="lp-iwt__banner-content">
+                <div class="lp-iwt__banner-content-inner{% unless block.settings.overlay_enabled %} lp-iwt__banner-content-inner--no-overlay{% endunless %}">
+                  {% if block.settings.banner_heading != blank %}
+                    <h3 class="lp-iwt__banner-heading">
+                      {{ block.settings.banner_heading }}
+                    </h3>
+                  {% endif %}
+
+                  {% if block.settings.banner_body_1 != blank %}
+                    <div class="lp-iwt__banner-body lp-iwt__banner-body--1 rte">
+                      {{ block.settings.banner_body_1 }}
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.banner_body_2 != blank %}
+                    <div class="lp-iwt__banner-body lp-iwt__banner-body--2 rte">
+                      {{ block.settings.banner_body_2 }}
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.banner_callout_1 != blank
+                    or block.settings.banner_callout_2 != blank
+                    or block.settings.banner_callout_3 != blank
+                  %}
+                    <div class="lp-iwt__banner-callouts">
+                      {% if block.settings.banner_callout_1 != blank %}
+                        <div class="lp-iwt__banner-callout rte">
+                          {{ block.settings.banner_callout_1 }}
+                        </div>
+                      {% endif %}
+
+                      {% if block.settings.banner_callout_2 != blank %}
+                        <div class="lp-iwt__banner-callout rte">
+                          {{ block.settings.banner_callout_2 }}
+                        </div>
+                      {% endif %}
+
+                      {% if block.settings.banner_callout_3 != blank %}
+                        <div class="lp-iwt__banner-callout rte">
+                          {{ block.settings.banner_callout_3 }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+  #LandingPageImageWithText-{{ section.id }} {
+    padding: 48px 16px;
+    background: {{ section.settings.background_color }};
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__wrapper {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  /* Image + text blocks (desktop) */
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__item {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    column-gap: 32px;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__item--image-right .lp-iwt__image {
+    order: 2;
+  }
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__item--image-right .lp-iwt__content {
+    order: 1;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__img {
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+    display: block;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__eyebrow {
+    margin: 0 0 6px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6c6c6c;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__heading {
+    margin: 0 0 10px;
+    font-size: var(--iwt-heading-size-desktop, 22px);
+    line-height: 1.25;
+    font-weight: 700;
+    color: #111111;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__text {
+    font-size: var(--iwt-body-size-desktop, 15px);
+    line-height: 1.6;
+    color: #555555;
+  }
+
+  /* Banner block */
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner {
+    margin: 8px 0;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-media-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    height: var(--banner-height-desktop, 450px);
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-media-wrapper--light {
+    background: #f3f3f3;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-media-wrapper--dark {
+    background: #111111;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 24px;
+    text-align: center;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-content-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px 20px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-media-wrapper--light .lp-iwt__banner-content-inner {
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-media-wrapper--dark .lp-iwt__banner-content-inner {
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  /* When overlay is disabled */
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-content-inner--no-overlay {
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-heading,
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-body {
+    color: var(--banner-copy-color, #ffffff);
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-heading {
+    margin: 0 0 6px;
+    font-weight: 700;
+    font-size: var(--banner-heading-size-desktop, 32px);
+    line-height: 1.2;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-body {
+    font-size: var(--banner-body-size-desktop, 15px);
+    line-height: 1.5;
+  }
+
+  /* NEW: Body 1 max-width control only */
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-body--1 {
+    margin-top: 4px;
+    max-width: var(--banner-body-1-max-width-desktop, 720px);
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-body--2 {
+    margin-top: var(--banner-body-spacing-desktop, 12px);
+  }
+
+  /* Banner callouts (under body 2) */
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-callouts {
+    margin-top: var(--banner-callouts-padding-top-desktop, 18px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: var(--banner-callout-gap-desktop, 28px);
+    row-gap: 8px;
+    font-size: var(--banner-body-size-desktop, 15px);
+    color: var(--banner-copy-color, #ffffff);
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-callout {
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-callout p {
+    margin: 0;
+  }
+
+  #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-callout::before {
+    content: "✓";
+    margin-right: 6px;
+    font-weight: 700;
+  }
+
+  /* Mobile layout */
+  @media screen and (max-width: 749px) {
+    #LandingPageImageWithText-{{ section.id }} {
+      padding: 32px 16px 40px;
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__wrapper {
+      gap: 32px;
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__item {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 16px;
+      align-items: flex-start;
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__heading {
+      font-size: var(--iwt-heading-size-mobile, 18px);
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__text {
+      font-size: var(--iwt-body-size-mobile, 14px);
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-media-wrapper {
+      height: var(--banner-height-mobile, 350px);
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-content {
+      padding: 16px;
+      align-items: center;
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-content-inner {
+      padding: 12px 14px;
+      border-radius: 16px;
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-heading {
+      font-size: var(--banner-heading-size-mobile, 24px);
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-body {
+      font-size: var(--banner-body-size-mobile, 14px);
+    }
+
+    /* NEW: Body 1 max width on mobile */
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-body--1 {
+      max-width: var(--banner-body-1-max-width-mobile, 100%);
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-body--2 {
+      margin-top: var(--banner-body-spacing-mobile, 10px);
+    }
+
+    #LandingPageImageWithText-{{ section.id }} .lp-iwt__banner-callouts {
+      margin-top: var(--banner-callouts-padding-top-mobile, 14px);
+      column-gap: var(--banner-callout-gap-mobile, 18px);
+      row-gap: 6px;
+      font-size: var(--banner-body-size-mobile, 14px);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Image + Text LP",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f5f5f5"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_with_text",
+      "name": "Image + Text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow / label",
+          "default": "Eyebrow"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Beauty Performance\u00ae Pillow"
+        },
+        {
+          "type": "range",
+          "id": "heading_size_desktop",
+          "label": "Heading size (desktop)",
+          "min": 16,
+          "max": 42,
+          "step": 1,
+          "unit": "px",
+          "default": 22
+        },
+        {
+          "type": "range",
+          "id": "heading_size_mobile",
+          "label": "Heading size (mobile)",
+          "min": 14,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "default": 18
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Body text",
+          "default": "<p>Ergonomically designed to cradle your face, minimizing friction and pressure to prevent sleep lines and puffiness.</p>"
+        },
+        {
+          "type": "range",
+          "id": "body_size_desktop",
+          "label": "Body size (desktop)",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "body_size_mobile",
+          "label": "Body size (mobile)",
+          "min": 12,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Image left, text right"
+            },
+            {
+              "value": "right",
+              "label": "Text left, image right"
+            }
+          ],
+          "default": "left"
+        }
+      ]
+    },
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image"
+        },
+        {
+          "type": "text",
+          "id": "banner_alt",
+          "label": "Image alt text",
+          "default": "Banner image"
+        },
+        {
+          "type": "text",
+          "id": "banner_heading",
+          "label": "Heading",
+          "default": "Limited time offer \u2013 Wake Ready\u00ae"
+        },
+        {
+          "type": "range",
+          "id": "banner_heading_size_desktop",
+          "label": "Heading size (desktop)",
+          "min": 18,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "default": 32
+        },
+        {
+          "type": "range",
+          "id": "banner_heading_size_mobile",
+          "label": "Heading size (mobile)",
+          "min": 16,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "default": 24
+        },
+        {
+          "type": "richtext",
+          "id": "banner_body_1",
+          "label": "Body copy 1",
+          "default": "<p>Shop our innovative sleep systems designed to help you Wake Ready\u00ae.</p>"
+        },
+
+        /* NEW: Body copy 1 max width */
+        {
+          "type": "range",
+          "id": "banner_body_1_max_width_desktop",
+          "label": "Body copy 1 max width (desktop)",
+          "min": 200,
+          "max": 900,
+          "step": 10,
+          "unit": "px",
+          "default": 720
+        },
+        {
+          "type": "range",
+          "id": "banner_body_1_max_width_mobile",
+          "label": "Body copy 1 max width (mobile)",
+          "min": 200,
+          "max": 700,
+          "step": 10,
+          "unit": "px",
+          "default": 320
+        },
+
+        {
+          "type": "richtext",
+          "id": "banner_body_2",
+          "label": "Body copy 2",
+          "default": "<p>Limited time savings on pillows, sheets, and mattress bundles.</p>"
+        },
+        {
+          "type": "range",
+          "id": "banner_body_spacing_desktop",
+          "label": "Spacing between body copy (desktop)",
+          "min": 0,
+          "max": 80,
+          "step": 2,
+          "unit": "px",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "banner_body_spacing_mobile",
+          "label": "Spacing between body copy (mobile)",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "banner_body_size_desktop",
+          "label": "Body size (desktop)",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "banner_body_size_mobile",
+          "label": "Body size (mobile)",
+          "min": 12,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "banner_height_desktop",
+          "label": "Banner height (desktop)",
+          "min": 200,
+          "max": 900,
+          "step": 10,
+          "unit": "px",
+          "default": 450
+        },
+        {
+          "type": "range",
+          "id": "banner_height_mobile",
+          "label": "Banner height (mobile)",
+          "min": 200,
+          "max": 700,
+          "step": 10,
+          "unit": "px",
+          "default": 350
+        },
+        {
+          "type": "color",
+          "id": "copy_color",
+          "label": "Copy color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "checkbox",
+          "id": "overlay_enabled",
+          "label": "Enable overlay behind text",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "banner_style",
+          "label": "Banner overlay style",
+          "options": [
+            { "value": "light", "label": "Light overlay" },
+            { "value": "dark", "label": "Dark overlay" }
+          ],
+          "default": "dark"
+        },
+
+        {
+          "type": "header",
+          "content": "Callouts"
+        },
+
+        /* NEW: top padding above callouts */
+        {
+          "type": "range",
+          "id": "banner_callouts_padding_top_desktop",
+          "label": "Top padding above callouts (desktop)",
+          "min": 0,
+          "max": 80,
+          "step": 2,
+          "unit": "px",
+          "default": 18
+        },
+        {
+          "type": "range",
+          "id": "banner_callouts_padding_top_mobile",
+          "label": "Top padding above callouts (mobile)",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "default": 14
+        },
+
+        {
+          "type": "richtext",
+          "id": "banner_callout_1",
+          "label": "Callout 1",
+          "default": "<p>Impossibly Cool</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "banner_callout_2",
+          "label": "Callout 2",
+          "default": "<p>Obsessively Soft</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "banner_callout_3",
+          "label": "Callout 3",
+          "default": "<p>Breathable Beyond Belief</p>"
+        },
+        {
+          "type": "range",
+          "id": "banner_callout_gap_desktop",
+          "label": "Spacing between callouts (desktop)",
+          "min": 0,
+          "max": 80,
+          "step": 2,
+          "unit": "px",
+          "default": 28
+        },
+        {
+          "type": "range",
+          "id": "banner_callout_gap_mobile",
+          "label": "Spacing between callouts (mobile)",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "default": 18
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image + Text LP",
+      "blocks": [
+        { "type": "image_with_text" },
+        { "type": "image_with_text" }
+      ]
+    }
+  ]
+}
+{% endschema %}

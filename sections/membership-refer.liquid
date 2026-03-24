@@ -1,0 +1,83 @@
+{{ 'membership-refer.css' |  asset_url |  stylesheet_tag }}
+{%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.50 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.50 | round: 0 }}px;
+    }
+  
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+<div class="section-{{ section.id }}-padding color-{{ section.settings.section_color_scheme }} block__membership-refer-section">
+    <div class="page-width">
+        <div class="block__membership-refer-main flex">
+          {%- if section.settings.img != blank -%} 
+            <div class="block__membership-refer-image">
+                <img src="{{ section.settings.img |  image_url: width: 699, height: 460 }}" alt="Memebrship" class="block__membership-refer-image-desktop">
+                <img src="{{ section.settings.img_mob |  image_url: width: 380, height: 320 }}" alt="Memebrship" class="block__membership-refer-image-mobile">
+            </div>
+          {%- endif -%}
+            {% comment %} <div class="yotpo-widget-instance" data-yotpo-instance-id="1054236"></div> {% endcomment %}
+            <div class="yotpo-widget-instance" data-yotpo-instance-id="1008742"></div>
+        </div>  
+    </div>
+</div>
+{{ "membership-refer.js"  |  asset_url |  script_tag}}
+{% schema %}
+  {
+    "name": "Membership refer",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "img_mob",
+          "label": "Image mobile"
+        },
+        {
+            "type": "color_scheme",
+            "id": "section_color_scheme",
+            "label": "Color scheme",
+            "default": "scheme-1"
+        },
+        {
+            "type": "header",
+            "content": "t:sections.all.padding.section_padding_heading"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "t:sections.all.padding.padding_top",
+            "default": 36
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "t:sections.all.padding.padding_bottom",
+            "default": 36
+        }
+    ],
+    "presets": [
+      {
+        "name": "Membership refer"
+      }
+    ]
+  }
+{% endschema %}

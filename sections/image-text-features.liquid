@@ -1,0 +1,283 @@
+{% schema %}
+{
+  "name": "Text + Image Feature Grid",
+  "tag": "section",
+  "class": "text-image-feature",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "ELEVATE YOUR GAME"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "SLEEP LIKE A PRO"
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_image",
+      "label": "Feature Image"
+    },
+    {
+      "type": "text",
+      "id": "feature1_title",
+      "label": "Feature 1 Title",
+      "default": "Personalized To Fit You"
+    },
+    {
+      "type": "textarea",
+      "id": "feature1_text",
+      "label": "Feature 1 Description",
+      "default": "Most bedding is made for the masses..."
+    },
+    {
+      "type": "text",
+      "id": "feature2_title",
+      "label": "Feature 2 Title",
+      "default": "Engineered For Cool Sleep & Recovery"
+    },
+    {
+      "type": "textarea",
+      "id": "feature2_text",
+      "label": "Feature 2 Description",
+      "default": "Cool sleep isn’t just more comfortable..."
+    },
+    {
+      "type": "text",
+      "id": "feature3_title",
+      "label": "Feature 3 Title",
+      "default": "Trusted By Pro Athletes"
+    },
+    {
+      "type": "textarea",
+      "id": "feature3_text",
+      "label": "Feature 3 Description",
+      "default": "The sleep gear of choice for professional athletes..."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text + Image Feature Grid"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+      .text-image-feature {
+        background-color: #0E182F;
+        color: #ffffff;
+        padding: 4rem 2rem;
+      }
+
+      .text-image-feature .wrapper {
+        max-width: 1520px;
+        margin: 0 auto;
+        background-color: #2b3145;
+        border-radius: 20px;
+        padding: 3rem;
+        padding-bottom: 5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        height: 720px;
+        box-sizing: border-box;
+      }
+
+      .text-image-feature .top-heading {
+        text-align: center;
+      }
+
+      .text-image-feature .top-heading .subheading {
+        color: #FFF;
+        font-family: Roboto;
+        font-size: 22px;
+        font-weight: 500;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+        margin-top: 10px;
+      }
+
+      .text-image-feature .top-heading .heading {
+        color: #FFF;
+        font-family: Roboto;
+        font-size: 52px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 42px;
+      }
+
+      .text-image-feature .content-row {
+        display: flex;
+        flex: 1;
+        align-items: stretch;
+        gap: 2rem;
+        height: 100%;
+      }
+
+      .text-image-feature .image {
+        flex: 1 1 50%;
+        display: flex;
+        padding-left: 50px;
+        padding-right: 35px;
+      }
+
+      .text-image-feature .image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 16px;
+      }
+
+      .text-image-feature .text-content {
+        flex: 1 1 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: rgba(255, 255, 255, 0.7);
+        font-family: Roboto;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+      }
+
+      .text-image-feature .feature h3 {
+        color: #FFF;
+        font-family: Roboto;
+        font-size: 24px;
+        font-weight: 500;
+        text-transform: capitalize;
+        margin-bottom: 0.3rem;
+      }
+
+      .text-image-feature .button {
+        display: inline-block;
+        background-color: #00c2ff;
+        color: #ffffff;
+        padding: 0.75rem 2rem;
+        border-radius: 9999px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-top: 1.5rem;
+        text-align: center;
+      transition: background 0.3s ease, color 0.3s ease;
+        display: flex;
+  }
+
+  .button:hover {
+    background: white;
+    color: #00b5e3;
+  }
+
+    @media (max-width: 768px) {
+          .text-image-feature {
+        background-color: #0E182F;
+        color: #ffffff;
+        padding: 1rem 1rem;
+      }
+      .text-image-feature .wrapper {
+        height: auto;
+        padding: 2.5rem 1.5rem;
+        border-radius: 16px;
+        gap: 1.75rem;
+      }
+
+      .text-image-feature .top-heading .heading {
+        font-size: 28px;
+        line-height: 1.3;
+        margin-bottom: 1rem;
+      }
+
+      .text-image-feature .top-heading .subheading {
+        font-size: 16px;
+        margin-bottom: 0.5rem;
+      }
+
+      .text-image-feature .content-row {
+        flex-direction: column;
+        gap: 2.5rem;
+        height: auto;
+      }
+
+      .text-image-feature .image {
+        padding: 0;
+      }
+
+      .text-image-feature .image img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 16px;
+      }
+
+      .text-image-feature .text-content {
+        gap: 1.5rem;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .text-image-feature .feature h3 {
+        font-size: 18px;
+        margin-bottom: 0.4rem;
+      }
+
+      .text-image-feature .button {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 16px;
+        text-align: center;
+        margin-top: 2rem;
+      }
+    }
+{% endstyle %}
+
+<div class="text-image-feature">
+  <div class="wrapper">
+    <div class="top-heading">
+      <div class="subheading">{{ section.settings.subheading }}</div>
+      <div class="heading">{{ section.settings.heading }}</div>
+    </div>
+
+    <div class="content-row">
+      <div class="image">
+        {% if section.settings.feature_image %}
+          <img src="{{ section.settings.feature_image | image_url: width: 730 }}" alt="Feature Image">
+        {% endif %}
+      </div>
+      <div class="text-content">
+        <div class="feature">
+          <h3>{{ section.settings.feature1_title }}</h3>
+          <p>{{ section.settings.feature1_text }}</p>
+        </div>
+        <div class="feature">
+          <h3>{{ section.settings.feature2_title }}</h3>
+          <p>{{ section.settings.feature2_text }}</p>
+        </div>
+        <div class="feature">
+          <h3>{{ section.settings.feature3_title }}</h3>
+          <p>{{ section.settings.feature3_text }}</p>
+        </div>
+
+        {% if section.settings.button_link %}
+          <a class="button" href="{{ section.settings.button_link }}">
+            {{ section.settings.button_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

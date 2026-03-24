@@ -1,0 +1,398 @@
+{{ 'section-faqs.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'geo-faq.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  .section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top_m  }}px;
+    padding-bottom: {{ section.settings.padding_bottom_m  }}px;
+    background-color: {{ section.settings.color }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* Fix z-index issues - only reset positioned elements, not sup/sub */
+  .block__faq-panel [style*="position"],
+  .block__faq-panel [style*="z-index"],
+  .geo-faq__section-title [style*="position"],
+  .geo-faq__section-title [style*="z-index"] {
+    z-index: 0 !important;
+  }
+  
+  /* Ensure FAQ icons don't overlap mobile dropdown */
+  .faq-toggle-icon {
+    z-index: 1;
+  }
+  
+  .geo-faq__section-icon {
+    z-index: 1;
+  }
+
+  /* Section-level accordion styles */
+  .geo-faq__section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 1.5rem 0;
+    cursor: pointer;
+    text-align: left;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+
+  .geo-faq__section-header:hover {
+    opacity: 0.7;
+  }
+
+  .geo-faq__section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    flex: 1;
+  }
+
+  .geo-faq__section-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+
+  .geo-faq__section-header[aria-expanded="true"] .geo-faq__section-icon {
+    transform: rotate(45deg);
+  }
+
+  .geo-faq__section-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .geo-faq__section-content.is-open {
+    max-height: 5000px; /* Arbitrary large number */
+  }
+
+  .block__faq-list-wrapper {
+    padding: 1rem 0;
+  }
+
+  .block__faq-type-heading {
+    display: none; /* Hide the duplicate heading inside */
+  }
+
+  /* Adjust spacing for FAQ items */
+  .block__faq-slide {
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .block__faq-slide:last-child {
+    border-bottom: none;
+  }
+
+  /* Hide left sidebar on desktop, center the content */
+  @media screen and (min-width: 750px) {
+    .block__faq-category {
+      display: none;
+    }
+    
+    .faq_content_row {
+      display: block;
+    }
+    
+    .block__faq-content {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+  }
+
+  /* Mobile anchor navigation */
+  @media screen and (max-width: 749px) {
+    .block__faq-category {
+      margin-bottom: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: white;
+      padding-top: 1rem;
+    }
+    
+    .block__faq-category-mobile {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background: #f5f5f5;
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 0;
+    }
+    
+    .block__faq-category-mobile .faq_type {
+      margin: 0;
+    }
+    
+    .block__faq-category-mobile svg {
+      transition: transform 0.3s ease;
+      transform: rotate(180deg);
+    }
+    
+    .block__faq-category.mobile-open .block__faq-category-mobile svg {
+      transform: rotate(0deg);
+    }
+    
+    .block__faq-type-list-inner {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background: #fff;
+      border-radius: 4px;
+    }
+    
+    .block__faq-category.mobile-open .block__faq-type-list-inner {
+      max-height: 1000px !important;
+      padding: 0.5rem 0;
+      margin-top: 0.5rem;
+      display: block !important;
+    }
+    
+    .block__faq-type-list-inner .faq_type {
+      display: block !important;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .block__faq-type-list-inner .faq_type:last-child {
+      border-bottom: none;
+    }
+    
+    .block__faq-type-list-inner .faq_type.active {
+      background: #f5f5f5;
+      font-weight: 600;
+    }
+  }
+
+  /* Make FAQ titles clickable */
+  .block__tabs_title {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .block__tabs_title:hover {
+    opacity: 0.7;
+  }
+
+  /* FAQ panel hidden by default */
+  .block__faq-panel {
+    display: none;
+  }
+
+  /* FAQ toggle icon using CSS content */
+  .faq-toggle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1;
+  }
+  
+  .faq-toggle-icon::before {
+    content: '+';
+  }
+  
+  .block__faq-slide.change_icon .faq-toggle-icon::before {
+    content: '−';
+  }
+{%- endstyle -%}
+
+<section class="faq_list_section section-{{ section.id }}">
+  <div class="faq_list {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    {%- for block in section.blocks -%}
+      {%- assign faq_title = block.settings.categories_name | append: '|' -%}
+      {%- assign cattitle = cattitle | append: faq_title -%}
+    {% endfor %}
+    {%- assign faq_cat = cattitle | split: '|' | uniq -%}
+    <div class="page-width">
+      <div class="faq_content_row">
+        <div class="block__faq-category">
+          <h2 class="block__faq-category-mobile h6">
+            {%- for categoris in faq_cat limit: 1 -%}
+              <span class="faq_type medium_body active">{{ categoris }}</span>
+              <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.46875 5.96875L6.46875 0.25C6.61458 0.104167 6.78125 0.03125 6.96875 0.03125C7.15625 0.03125 7.33333 0.104167 7.5 0.25L13.4688 5.96875C13.7604 6.30208 13.7708 6.65625 13.5 7.03125C13.1458 7.32292 12.7917 7.32292 12.4375 7.03125L6.9375 1.78125L1.53125 7.03125C1.15625 7.32292 0.802083 7.32292 0.46875 7.03125C0.177083 6.65625 0.177083 6.30208 0.46875 5.96875Z" fill="currentColor"/>
+              </svg>
+            {% endfor %}
+          </h2>
+          <ul class="block__faq-type-list-inner">
+            {%- for categoris in faq_cat -%}
+              <li
+                class="faq_type js_faq_heading h6 {% if forloop.first %}active{% endif %}"
+                data_id="{{ categoris | handle }}"
+              >
+                {{ categoris }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="block__faq-content">
+            <div class="block__faq-content-info">
+              {%- for categoris in faq_cat -%}
+                <div class="geo-faq__section" id="{{categoris | handle}}" data-section-id="{{ categoris | handle }}">
+                  {%- comment -%} Section-level accordion button {%- endcomment -%}
+                  <button 
+                    class="geo-faq__section-header" 
+                    aria-expanded="false"
+                    aria-controls="content-{{ categoris | handle }}"
+                    type="button"
+                  >
+                    <h4 class="geo-faq__section-title h5">{{ categoris }}</h4>
+                    <svg class="geo-faq__section-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </button>
+
+                  {%- comment -%} Section content wrapper {%- endcomment -%}
+                  <div class="geo-faq__section-content" id="content-{{ categoris | handle }}">
+                    <div class="block__faq-list-wrapper faq_list_block">
+                      {%- assign cattitle = categoris | handle -%}
+                      {% for block in section.blocks %}
+                        {%- assign blocktitle = block.settings.categories_name | handle -%}
+                        {%- if cattitle == blocktitle -%}
+                          {% if block.settings.answer != blank %}
+                            <div class="block__faq-slide">
+                                <div class="block__tabs_title h6">
+                                  <span>{{ block.settings.question }}</span>
+                                  <span class="faq-toggle-icon"></span>
+                                </div>
+                                <div class="block__faq-panel small_body">
+                                  {{ block.settings.answer }}
+                                </div>
+                            </div>
+                          {% endif %}
+                        {% endif %}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "GEO FAQ list",
+  "tag": "section",
+  "class": "section-faqs",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "caption",
+      "label": "Caption"
+    },
+    {
+      "type": "checkbox",
+      "id": "first_section_open",
+      "label": "Open first section by default",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Background Color"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "GettingStarted",
+      "name": "Faqs",
+      "settings": [
+        {
+          "type": "text",
+          "id": "categories_name",
+          "label": "Categories Name"
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GEO FAQ list"
+    }
+  ]
+}
+{% endschema %}

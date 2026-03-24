@@ -1,0 +1,217 @@
+{% comment %}
+  Section: BGX • FW Image Banner (v2)
+  - Full-bleed image banner with adjustable headline color
+  - Adjustable X/Y content positions (desktop + mobile)
+  - Adjustable max width (desktop + mobile)
+  - Independent font sizes, overlay, and color modes
+{% endcomment %}
+
+<section id="bgx-{{ section.id }}" class="bgx-banner" data-bgx="banner">
+  <div class="bgx-media">
+    {% if section.settings.bgx_mobile_image %}
+      <picture>
+        <source media="(max-width: 767px)" srcset="{{ section.settings.bgx_mobile_image | image_url }}">
+        <img class="bgx-img" src="{{ section.settings.bgx_desktop_image | image_url }}" alt="{{ section.settings.bgx_heading | escape }}">
+      </picture>
+    {% else %}
+      {% if section.settings.bgx_desktop_image %}
+        <img class="bgx-img" src="{{ section.settings.bgx_desktop_image | image_url }}" alt="{{ section.settings.bgx_heading | escape }}">
+      {% endif %}
+    {% endif %}
+    <div class="bgx-overlay"></div>
+  </div>
+
+  <div class="bgx-content">
+    {% if section.settings.bgx_eyebrow != blank %}
+      <div class="bgx-eyebrow">{{ section.settings.bgx_eyebrow }}</div>
+    {% endif %}
+    {% if section.settings.bgx_heading != blank %}
+      <h2 class="bgx-heading" style="color: {{ section.settings.bgx_heading_color }}">{{ section.settings.bgx_heading }}</h2>
+    {% endif %}
+    {% if section.settings.bgx_description != blank %}
+      <div class="bgx-desc">{{ section.settings.bgx_description }}</div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #bgx-{{ section.id }} {
+    position: relative;
+    isolation: isolate;
+    z-index: 0;
+    overflow: hidden;
+
+    /* Positions */
+    --bgx-x-d: {{ section.settings.bgx_position_x_desktop | default: 50 }}%;
+    --bgx-y-d: {{ section.settings.bgx_position_y_desktop | default: 50 }}%;
+    --bgx-x-m: {{ section.settings.bgx_position_x_mobile  | default: 50 }}%;
+    --bgx-y-m: {{ section.settings.bgx_position_y_mobile  | default: 50 }}%;
+
+    /* Typography sizes */
+    --bgx-h-d: {{ section.settings.bgx_heading_size_desktop | default: 64 }}px;
+    --bgx-h-m: {{ section.settings.bgx_heading_size_mobile  | default: 36 }}px;
+    --bgx-p-d: {{ section.settings.bgx_desc_size_desktop    | default: 18 }}px;
+    --bgx-p-m: {{ section.settings.bgx_desc_size_mobile     | default: 16 }}px;
+
+    /* Content width caps */
+    --bgx-max-d: {{ section.settings.bgx_content_max_desktop | default: 840 }}px;
+    --bgx-max-m: {{ section.settings.bgx_content_max_mobile  | default: 600 }}px;
+
+    /* Alignment + spacing */
+    --bgx-align: {{ section.settings.bgx_text_align | default: 'center' }};
+    --bgx-gap: {{ section.settings.bgx_content_gap | default: 12 }}px;
+
+    /* Safe gutter to avoid edge-to-edge on tiny screens */
+    --bgx-safe: 24px;
+
+    /* Overlay opacity (compute default first, then divide to 0–1) */
+    --bgx-overlay-alpha: {{ section.settings.bgx_overlay_opacity | default: 0 | divided_by: 100.0 }};
+
+    /* Content color mode */
+    {% case section.settings.bgx_text_color_mode %}
+      {% when 'light' %}
+        --bgx-color: #ffffff;
+      {% when 'dark' %}
+        --bgx-color: #000000;
+      {% else %}
+        --bgx-color: {{ section.settings.bgx_custom_text_color | default: '#111111' }};
+    {% endcase %}
+  }
+
+  /* Media layer */
+  #bgx-{{ section.id }} .bgx-media {
+    position: relative;
+    width: 100%;
+    height: {{ section.settings.bgx_banner_height_desktop }}vh;
+    overflow: hidden;
+    z-index: 0;
+  }
+  #bgx-{{ section.id }} .bgx-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* Overlay always above image */
+  #bgx-{{ section.id }} .bgx-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: {{ section.settings.bgx_overlay_color | default: '#000000' }};
+    opacity: var(--bgx-overlay-alpha);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  /* Content layer */
+  #bgx-{{ section.id }} .bgx-content {
+    position: absolute;
+    left: var(--bgx-x-d);
+    top: var(--bgx-y-d);
+    transform: translate(-50%, -50%);
+    color: var(--bgx-color);
+    text-align: var(--bgx-align);
+
+    /* Hard width clamp: respects slider & never exceeds viewport (minus safe gutter) */
+    width: clamp(0px, min(var(--bgx-max-d), calc(100vw - (var(--bgx-safe) * 2))), 100%);
+    box-sizing: border-box;
+
+    padding: {{ section.settings.bgx_content_padding_desktop }}px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--bgx-gap);
+    z-index: 4; /* above overlay */
+  }
+
+  #bgx-{{ section.id }} .bgx-eyebrow {
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    opacity: .9;
+  }
+  #bgx-{{ section.id }} .bgx-heading {
+    margin: 0;
+    font-weight: 800;
+    line-height: 1.05;
+    font-size: var(--bgx-h-d);
+  }
+  #bgx-{{ section.id }} .bgx-desc {
+    font-size: var(--bgx-p-d);
+    line-height: 1.5;
+    opacity: .95;
+  }
+
+  @media (max-width: 767px) {
+    #bgx-{{ section.id }} .bgx-media {
+      height: {{ section.settings.bgx_banner_height_mobile }}vh;
+    }
+    #bgx-{{ section.id }} .bgx-content {
+      left: var(--bgx-x-m);
+      top: var(--bgx-y-m);
+
+      /* Mobile clamp */
+      width: clamp(0px, min(var(--bgx-max-m), calc(100vw - (var(--bgx-safe) * 2))), 100%);
+      box-sizing: border-box;
+
+      padding: {{ section.settings.bgx_content_padding_mobile }}px;
+    }
+    #bgx-{{ section.id }} .bgx-heading { font-size: var(--bgx-h-m); }
+    #bgx-{{ section.id }} .bgx-desc    { font-size: var(--bgx-p-m); }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "BGX • FW Image Banner",
+  "tag": "section",
+  "class": "bgx-banner",
+  "enabled_on": { "templates": ["index", "collection", "product", "page"] },
+  "settings": [
+    { "type": "image_picker", "id": "bgx_desktop_image", "label": "Desktop Background Image" },
+    { "type": "image_picker", "id": "bgx_mobile_image",  "label": "Mobile Background Image" },
+
+    { "type": "range", "id": "bgx_banner_height_desktop", "label": "Banner Height (Desktop, vh)", "min": 40, "max": 100, "step": 5, "default": 100 },
+    { "type": "range", "id": "bgx_banner_height_mobile",  "label": "Banner Height (Mobile, vh)",  "min": 40, "max": 100, "step": 5, "default": 80 },
+
+    { "type": "text", "id": "bgx_eyebrow", "label": "Eyebrow / Kicker", "default": "SLEEP LIKE YOUR DAY DEPENDS ON IT" },
+    { "type": "text", "id": "bgx_heading", "label": "Headline", "default": "BECAUSE IT DOES" },
+    { "type": "color", "id": "bgx_heading_color", "label": "Headline Color", "default": "#ffffff" },
+    { "type": "richtext", "id": "bgx_description", "label": "Description", "default": "<p>Add an optional description here.</p>" },
+
+    { "type": "select", "id": "bgx_text_align", "label": "Text Align", "options": [
+      { "value": "left",   "label": "Left" },
+      { "value": "center", "label": "Center" },
+      { "value": "right",  "label": "Right" }
+    ], "default": "center" },
+
+    { "type": "range", "id": "bgx_position_x_desktop", "label": "Desktop Content X (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+    { "type": "range", "id": "bgx_position_y_desktop", "label": "Desktop Content Y (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+    { "type": "range", "id": "bgx_position_x_mobile",  "label": "Mobile Content X (%)",  "min": 0, "max": 100, "step": 1, "default": 50 },
+    { "type": "range", "id": "bgx_position_y_mobile",  "label": "Mobile Content Y (%)",  "min": 0, "max": 100, "step": 1, "default": 50 },
+
+    { "type": "range", "id": "bgx_content_max_desktop", "label": "Content Max Width (Desktop px)", "min": 320, "max": 1600, "step": 20, "default": 840 },
+    { "type": "range", "id": "bgx_content_max_mobile",  "label": "Content Max Width (Mobile px)",  "min": 280, "max": 900,  "step": 10, "default": 600 },
+
+    { "type": "select", "id": "bgx_text_color_mode", "label": "Content Color", "options": [
+      { "value": "light",  "label": "Light" },
+      { "value": "dark",   "label": "Dark" },
+      { "value": "custom", "label": "Custom" }
+    ], "default": "light" },
+    { "type": "color", "id": "bgx_custom_text_color", "label": "Custom Text Color", "default": "#ffffff" },
+
+    { "type": "range", "id": "bgx_heading_size_desktop", "label": "Heading Size (Desktop px)", "min": 24, "max": 160, "step": 2, "default": 96 },
+    { "type": "range", "id": "bgx_heading_size_mobile",  "label": "Heading Size (Mobile px)",  "min": 18, "max": 96,  "step": 1, "default": 40 },
+    { "type": "range", "id": "bgx_desc_size_desktop",    "label": "Description Size (Desktop px)", "min": 12, "max": 48, "step": 1, "default": 18 },
+    { "type": "range", "id": "bgx_desc_size_mobile",     "label": "Description Size (Mobile px)",  "min": 12, "max": 36, "step": 1, "default": 16 },
+
+    { "type": "range", "id": "bgx_content_gap", "label": "Content Vertical Gap (px)", "min": 0, "max": 48, "step": 1, "default": 12 },
+    { "type": "range", "id": "bgx_content_padding_desktop", "label": "Content Padding (Desktop px)", "min": 0, "max": 80, "step": 2, "default": 0 },
+    { "type": "range", "id": "bgx_content_padding_mobile",  "label": "Content Padding (Mobile px)",  "min": 0, "max": 80, "step": 2, "default": 16 },
+
+    { "type": "color", "id": "bgx_overlay_color", "label": "Overlay Color", "default": "#000000" },
+    { "type": "range", "id": "bgx_overlay_opacity", "label": "Overlay Opacity (%)", "min": 0, "max": 100, "step": 1, "default": 35 }
+  ],
+  "presets": [
+    { "name": "BGX • FW Image Banner" }
+  ]
+}
+{% endschema %}

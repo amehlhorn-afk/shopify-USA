@@ -1,0 +1,192 @@
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+              .section-{{ section.id }}-padding {
+                padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+                padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+              }
+            .rbu-bu-main__container {
+              max-width: 1500px !important;
+            }
+          }
+
+           /* --- Buttons --- */
+      .rb-bu-product__selector-button,
+  .rbu-bu-main__cart-info-body-actions-add-button {
+    background-color: #00B5E3 !important;
+    color: #FFFFFF !important;
+    font-weight: 500 !important;
+    border: none !important;
+    padding: 12px 16px !important;
+    border-radius: 4px !important;
+    width: 100% !important;
+  }
+
+          /* --- Variant dropdowns --- */
+          .rb-bu-product__variant-selector {
+            border: 2px solid #00B5E3 !important;
+            background-color: #FFFFFF !important;
+            color: #333333;
+            font-weight: 400;
+            padding: 8px;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 12px;
+          }
+
+          /* --- Product image cleanup --- */
+          .rb-bu-product__img {
+            border: none !important;
+            box-shadow: none !important;
+          }
+
+          /* --- Empty cart item thumb icon styling --- */
+          .rbu-bu-main__cart-info-item-body-noitem-thumb {
+            background-color: #00B5E3 !important;
+            border: none !important;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+          }
+
+          /* --- Force white fill on embedded SVG icons --- */
+          .rbu-bu-main__cart-info-item-body-noitem-thumb svg path {
+            fill: #FFFFFF !important;
+          }
+
+          /* --- Hide "Starter Pack" section --- */
+          .rbu-bu-main__title-container {
+            display: none !important;
+          }
+
+          /* Optional: If Mix and Match is in its own heading */
+          .main-page-title
+            {
+            display: none !important;
+          }
+    .rb-bu-item {
+      padding-bottom: 25px;
+    }
+
+  .rbu-bu-main__cart-info {
+    border: 0px !important;
+  }
+
+
+      @media (min-width: 600px) {
+      .rb-bu-item__body {
+        justify-content: center !important;
+      }
+    }
+    @media (max-width: 600px) {
+      /* --- Primary Add Buttons --- */
+      .rb-bu-product__selector-button,
+      .rbu-bu-main__cart-info-body-actions-add-button {
+        background-color: #00B5E3 !important;
+        color: #FFFFFF !important;
+        font-weight: 500 !important;
+        border: none !important;
+        padding: 12px 16px !important;
+        border-radius: 4px !important;
+        width: 100% !important;
+      }
+
+      /* --- Variant Dropdown Styling (if altered on mobile) --- */
+      .rb-bu-product__variant-selector {
+        border: 2px solid #00B5E3 !important;
+        background-color: #FFFFFF !important;
+        color: #333333 !important;
+        font-weight: 400 !important;
+        border-radius: 4px !important;
+        width: 100% !important;
+        margin-bottom: 12px !important;
+      }
+
+      /* --- No-item icon button (blue circle with white icon) --- */
+      .rbu-bu-main__cart-info-item-body-noitem-thumb {
+        background-color: #00B5E3 !important;
+        border: none !important;
+        border-radius: 50% !important;
+        padding: 8px !important;
+      }
+
+      .rbu-bu-main__cart-info-item-body-noitem-thumb svg path {
+        fill: #FFFFFF !important;
+      }
+    }
+
+  @media screen and (min-width: 990px) {
+  .rb-bu-product__action button {
+    background-color: #00B5E3 !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    font-weight: 500 !important;
+    font-size: 18px !important;
+    padding: 12px 16px !important;
+    border-radius: 4px !important;
+    width: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+    text-align: center !important;
+    background-image: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+  }
+}
+
+
+
+              @media screen and (min-width: 750px) {
+                .section-{{ section.id }}-padding {
+                  padding-top: {{ section.settings.padding_top }}px;
+                  padding-bottom: {{ section.settings.padding_bottom }}px;
+                }
+              }
+{%- endstyle -%}
+
+<div class="page-width page-width--narrow section-{{ section.id }}-padding">
+  <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    {{ page.title | escape }}
+  </h1>
+  <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    {{ page.content }}
+  </div>
+</div>
+
+
+
+{% schema %}
+{
+  "name": "t:sections.main-page.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

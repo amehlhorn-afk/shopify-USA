@@ -1,0 +1,347 @@
+{{ 'block__holiday-collection-banner.css' | asset_url | stylesheet_tag }}
+{%  style  %}
+  {% if section.settings.text_color != blank %}
+  .section-{{ section.id }} .holiday-banner-content h1,
+  .section-{{ section.id }} .holiday-banner-content h2,
+  .section-{{ section.id }} .holiday-banner-content h3,
+  .section-{{ section.id }} .holiday-banner-content p,
+  .section-{{ section.id }} .holiday-banner-content span{color:{{ section.settings.text_color }};}
+  {% endif %}
+{% endstyle %}
+<div
+  class="holiday-banner-wrapper relative section-{{ section.id }}-padding section-{{ section.id }}"
+  style="background-image: url({{ section.settings.image_desktop | image_url: width: 2400 }});"
+>
+  {% if section.settings.overlay != blank%}
+    <span class="w-full h-full block absolute block__overlay_opacity inset-0 "
+          style="background-color: {{ section.settings.color }}; opacity:{{ section.settings.overlay_opacity }}%;">
+    </span>
+  {% endif %}
+  <div class="holiday-banner-content z-index-1 {{ section.settings.desktop_content_position }} {{ section.settings.mobile_content_position }}">
+    <div class="text-container" style="background-color: #0e1a5f;">
+      {% if section.settings.sale_image != blank %}
+        <img class="sale-image" src="{{ section.settings.sale_image | image_url }}" alt="Promo Tag">
+      {% endif %}
+
+      {% if section.settings.title != blank %}
+        <h1 class="holiday-title">
+          {{ section.settings.title }}
+          <span class="highlight">{{ section.settings.highlight_text }}</span>
+        </h1>
+      {% endif %}
+
+      {% if section.settings.subtext != blank %}
+        <p class="holiday-subtext">{{ section.settings.subtext }}</p>
+      {% endif %}
+
+      {% if section.settings.offer_validity != blank %}
+        <p class="holiday-validity">{{ section.settings.offer_validity }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% if section.settings.image_desktop %}
+  <img
+    class="mobile-bg-img mobile-only"
+    src="{{ section.settings.image_desktop | image_url: width: 1200 }}"
+    alt="Promo Image"
+  >
+{% endif %}
+
+<style>
+  .holiday-banner-wrapper {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .holiday-banner-content {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+
+  }
+
+  .holiday-banner-content.left {
+    justify-content: flex-start;
+  }
+  .holiday-banner-content.center {
+    justify-content: flex-start;
+  }
+  .holiday-banner-content.right {
+    justify-content: flex-end;
+  }
+
+  .text-container {
+    margin-left:120px;
+    width: 619px;
+    padding: 30px;
+    border-radius: 0px;
+    color: white;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .sale-image {
+    max-width: 160px;
+    height: auto;
+    display: inline-block;
+    margin-bottom: 12px;
+    margin: 0 auto;
+  }
+
+  .holiday-title {
+    color: #FFF;
+    text-align: center;
+    leading-trim: both;
+    text-edge: cap;
+    max-width: 100% !important;
+    /* Desktop/Heading/Display Heading 1 */
+    font-family: Roboto;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 68px; /* 106.25% */
+    margin-top: 24px;
+  }
+
+  .holiday-title .highlight {
+    color: white;
+  }
+
+  .holiday-subtext {
+    color: var(--White, #FFF);
+    text-align: center;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24.374px; /* 121.868% */
+    margin-top:24px;
+  }
+
+  .holiday-validity {
+    color: #FFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top:24px;
+  }
+  .mobile-only {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .mobile-only {display: block;}
+  }
+  @media screen and (max-width: 768px) {
+    .holiday-banner-wrapper {
+      flex-direction: column;
+      align-items: stretch;
+      background-image: none !important;
+      padding: 0;
+      min-height: 100% !important;
+    }
+
+    .holiday-banner-content {
+      order: 1;
+      padding: 20px;
+      background-color: #0e1a5f;
+    }
+
+    .text-container {
+      margin-left: 0;
+      width: 100%;
+      height: auto;
+      padding: 24px;
+    }
+
+    .holiday-title {
+      font-size: 32px;
+      line-height: 38px;
+    }
+
+    .holiday-subtext,
+    .holiday-validity {
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .mobile-bg-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      order: 2;
+    }
+  }
+</style>
+
+{% style %}
+  @media (min-width: 990px){
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.desktop_padding_top }}px;
+      padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+    }
+  }
+  @media (max-width: 989px){
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Holiday Collection Banner",
+  "settings": [
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay",
+      "label": "Enable Overlay"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Overlay Background Color"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "unit": "%",
+      "step": 1,
+      "label": "Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Background Image",
+      "info": "Full width background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "sale_image",
+      "label": "Sale Tag Image",
+      "info": "Use an image like the 4th of July badge"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Declare Sleep"
+    },
+    {
+      "type": "text",
+      "id": "highlight_text",
+      "label": "Highlight Text",
+      "default": "Independence"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Buy One, Get One 50% Off Performance® Pillows • Save $300 on the M3 Mattress • 30% Off Performance® Sheets"
+    },
+    {
+      "type": "text",
+      "id": "offer_validity",
+      "label": "Offer Validity",
+      "default": "*Offer Valid From 06/20/25 – 7/11/25"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "label": "Desktop Content Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_position",
+      "label": "Mobile Content Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Padding (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Padding (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Holiday Collection Banner"
+    }
+  ]
+}
+{% endschema %}

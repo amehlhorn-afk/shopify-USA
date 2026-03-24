@@ -1,0 +1,931 @@
+{{ 'section-blog-post.css' | asset_url | stylesheet_tag }}
+{%- unless section.settings.quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+{%- if section.settings.quick_add == 'standard' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if section.settings.quick_add == 'bulk' -%}
+  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+<article class="article-template section-{{ section.id }}-padding">
+  <div class="page-width">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when '@app' -%}
+          <div class="page-width page-width--narrow">
+            {% render block %}
+          </div>
+        {%- when 'featured_image' -%}
+          {%- if article.image -%}
+            <div
+              class="article-template__hero-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              <div
+                class="article-template__hero-{{ block.settings.image_height }} media secondary-border-radius"
+                {% if block.settings.image_height == 'adapt' and article.image %}
+                  style="padding-bottom: {{ 1.52 | divided_by: article.image.aspect_ratio | times: 100 }}%;"
+                {% endif %}
+              >
+                <img
+                  srcset="
+                    {% if article.image.width >= 350 %}{{ article.image | image_url: width: 350 }} 350w,{% endif %}
+                    {% if article.image.width >= 750 %}{{ article.image | image_url: width: 750 }} 750w,{% endif %}
+                    {% if article.image.width >= 1100 %}{{ article.image | image_url: width: 1100 }} 1100w,{% endif %}
+                    {% if article.image.width >= 1500 %}{{ article.image | image_url: width: 1500 }} 1500w,{% endif %}
+                    {% if article.image.width >= 2200 %}{{ article.image | image_url: width: 2200 }} 2200w,{% endif %}
+                    {% if article.image.width >= 3000 %}{{ article.image | image_url: width: 3000 }} 3000w,{% endif %}
+                    {{ article.image | image_url }} {{ article.image.width }}w
+                  "
+                  sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw"
+                  src="{{ article.image | image_url: width: 1100 }}"
+                  loading="eager"
+                  class="secondary-border-radius"
+                  fetchpriority="high"
+                  width="{{ article.image.width }}"
+                  height="{{ article.image.height }}"
+                  alt="{{ article.image.alt | escape }}"
+                >
+              </div>
+            </div>
+          {%- endif -%}
+
+        {%- when 'title' -%}
+          <header
+            class="block__article_header {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.blog_show_date -%}
+              <span class="flex items-center gap-10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="19" viewBox="0 0 16 19" fill="none">
+                  <path d="M5.34375 2.5H10.4062V1.09375C10.4531 0.578125 10.7344 0.296875 11.25 0.25C11.7656 0.296875 12.0469 0.578125 12.0938 1.09375V2.5H13.5C14.1328 2.52344 14.6602 2.74609 15.082 3.16797C15.5039 3.58984 15.7266 4.11719 15.75 4.75V16C15.7266 16.6328 15.5039 17.1602 15.082 17.582C14.6602 18.0039 14.1328 18.2266 13.5 18.25H2.25C1.61719 18.2266 1.08984 18.0039 0.667969 17.582C0.246094 17.1602 0.0234375 16.6328 0 16V4.75C0.0234375 4.11719 0.246094 3.58984 0.667969 3.16797C1.08984 2.74609 1.61719 2.52344 2.25 2.5H3.65625V1.09375C3.70312 0.578125 3.98438 0.296875 4.5 0.25C5.01562 0.296875 5.29688 0.578125 5.34375 1.09375V2.5ZM1.6875 16C1.71094 16.3516 1.89844 16.5391 2.25 16.5625H13.5C13.8516 16.5391 14.0391 16.3516 14.0625 16V7H1.6875V16Z" fill="var(--selection-color)"/>
+                </svg>
+                {{ article.published_at | time_tag: format: 'date' }}
+              </span>
+            {%- endif -%}
+            <h1
+              class="article-template__title primary_h2"
+            >
+              {{ article.title | escape }}
+            </h1>
+            {%- if block.settings.blog_show_author -%}
+              <span class="caption-with-letter-spacing">
+                <span>{{ article.author }}</span>
+              </span>
+            {%- endif -%}
+          </header>
+
+        {%- when 'content' -%}
+          <div class="block__row  {% unless block.settings.enable_blog_search %}  block__article-template__content-wrap {% endunless %}">
+            <div
+              class="article-template__content block__left-blog-content {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.blog_show_date -%}
+                <span class="flex items-center gap-10">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="19" viewBox="0 0 16 19" fill="none">
+                    <path d="M5.34375 2.5H10.4062V1.09375C10.4531 0.578125 10.7344 0.296875 11.25 0.25C11.7656 0.296875 12.0469 0.578125 12.0938 1.09375V2.5H13.5C14.1328 2.52344 14.6602 2.74609 15.082 3.16797C15.5039 3.58984 15.7266 4.11719 15.75 4.75V16C15.7266 16.6328 15.5039 17.1602 15.082 17.582C14.6602 18.0039 14.1328 18.2266 13.5 18.25H2.25C1.61719 18.2266 1.08984 18.0039 0.667969 17.582C0.246094 17.1602 0.0234375 16.6328 0 16V4.75C0.0234375 4.11719 0.246094 3.58984 0.667969 3.16797C1.08984 2.74609 1.61719 2.52344 2.25 2.5H3.65625V1.09375C3.70312 0.578125 3.98438 0.296875 4.5 0.25C5.01562 0.296875 5.29688 0.578125 5.34375 1.09375V2.5ZM1.6875 16C1.71094 16.3516 1.89844 16.5391 2.25 16.5625H13.5C13.8516 16.5391 14.0391 16.3516 14.0625 16V7H1.6875V16Z" fill="var(--selection-color)"/>
+                  </svg>
+                  {{ article.published_at | time_tag: format: 'date' }}
+                </span>
+              {%- endif -%}
+              <h1
+                class="article-template__title primary_h2"
+              >
+                {{ article.title | escape }}
+              </h1>
+              {{ article.content }}
+              {% if section.settings.you_may__title != blank %}
+                <div class="block__you-also-like flex-wrap">
+                  <div class="block__header center">
+                    <h4>{{ section.settings.you_may__title }}</h4>
+                  </div>
+                  {% if article.metafields.custom.recommended_products %}
+                    <div class="block__wrapper-like">
+                      <ul class=" flex flex-wrap gap-30 justify-center">
+                        {% for product in article.metafields.custom.recommended_products.value
+                          limit: section.settings.products_to_show
+                        %}
+                          <li>
+                            {% render 'card-product',
+                              card_product: product,
+                              media_aspect_ratio: section.settings.image_ratio,
+                              show_secondary_image: section.settings.show_secondary_image,
+                              section_id: section.id,
+                              quick_add: section.settings.quick_add
+                            %}
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+              {% if section.settings.show_tag %}
+                <div class="block__tag_list">
+                  <ul class="flex flex-wrap items-center gap-8">
+                    {% for tag in article.tags %}
+                      <li>
+                        <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="extra_body inline-block">
+                          {{ tag | replace: '-', ' ' }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+            </div>
+            {% if block.settings.enable_blog_search %}
+            <div class="block__right-blog-content">
+              <div class="sticky block__recommended-search flex flex-direction-column gap-20">
+                <div class="block__blog-search-wrap">
+                  {% render 'blog_article_search', input_id: 'Search-In-article' %}
+                </div>
+                {% if section.settings.recommended__title != blank %}
+                  <div class="block__recommended-products primary-border-radius">
+                    <div class="block__recommended-heading flex items-center gap-10 justify-between">
+                      <label class="medium_body">{{ section.settings.recommended__title }}</label>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="12" viewBox="0 0 20 12" fill="none">
+                        <path d="M9.99991 7.65956L17.0121 0.647461L19.0156 2.65093L9.99991 11.6666L0.984375 2.65093L2.98784 0.647461L9.99991 7.65956Z" fill="#707070"/>
+                      </svg>
+                    </div>
+                    {% if article.metafields.custom.recommended_products %}
+                      <div class="block__wrapper-recommended">
+                        <ul class=" flex">
+                          {% for product in article.metafields.custom.recommended_products.value %}
+                            <li>
+                              {% render 'card-product',
+                                card_product: product,
+                                media_aspect_ratio: section.settings.image_ratio,
+                                show_secondary_image: section.settings.show_secondary_image,
+                                section_id: section.id,
+                                quick_add: section.settings.quick_add
+                              %}
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+                {% if section.settings.postedin__title != blank %}
+                  <div class="block__blog-meta primary-border-radius">
+                    <p class="medium_body">
+                      {{- section.settings.postedin__title -}}
+                      <a href="{{ blog.url }}" class="font-weight-600">
+                        {{ blog.title }}
+                      </a>
+                    </p>
+                    <div class="block__social-share">
+                      <ul class="flex items-center gap-15">
+                        {%- if settings.social_linkedin_link != blank -%}
+                          <li>
+                            <a href="{{ settings.social_linkedin_link }}" class="link" target="_blank">
+                              <span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="32"
+                                  height="32"
+                                  viewBox="0 0 32 32"
+                                  fill="none"
+                                >
+                                  <g clip-path="url(#clip0_0_1)">
+                                  <path d="M0 16C0 7.1632 7.1632 0 16 0C24.8368 0 32 7.1632 32 16C32 24.8368 24.8368 32 16 32C7.1632 32 0 24.8368 0 16Z" fill="#0077B5"/>
+                                  <path fill-rule="evenodd" clip-rule="evenodd" d="M11.546 9.8816C11.546 10.928 10.7588 11.7648 9.494 11.7648H9.4708C8.254 11.7648 7.4668 10.928 7.4668 9.8816C7.4668 8.8136 8.278 8 9.518 8C10.758 8 11.522 8.8136 11.546 9.8816ZM11.3068 13.252V24.1464H7.6812V13.252H11.3068ZM24.3836 24.1464V17.9C24.3836 14.5536 22.5948 12.996 20.2092 12.996C18.2836 12.996 17.422 14.0536 16.9404 14.796V13.252H13.314C13.362 14.2744 13.314 24.1464 13.314 24.1464H16.9404V18.0624C16.9404 17.7368 16.9644 17.412 17.0604 17.1792C17.322 16.528 17.9188 15.8552 18.9204 15.8552C20.2324 15.8552 20.758 16.8536 20.758 18.3176V24.1464H24.3836Z" fill="white"/>
+                                  </g>
+                                  <defs>
+                                  <clipPath id="clip0_0_1">
+                                  <rect width="32" height="32" fill="white"/>
+                                  </clipPath>
+                                  </defs>
+                                </svg>
+                              </span>
+                              <span class="visually-hidden">{{ 'general.social.links.linkedin' | t }}</span>
+                            </a>
+                          </li>
+                        {%- endif -%}
+                        {%- if settings.social_twitter_link != blank -%}
+                          <li>
+                            <a href="{{ settings.social_twitter_link }}" class="link" target="_blank">
+                              <span>
+                                {% comment %}
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                    <g clip-path="url(#clip0_0_1)">
+                                    <path d="M0 16C0 7.1632 7.1632 0 16 0C24.8368 0 32 7.1632 32 16C32 24.8368 24.8368 32 16 32C7.1632 32 0 24.8368 0 16Z" fill="#55ACEE"/>
+                                    <path d="M15.5208 13.0048L15.5544 13.5584L14.9944 13.4912C12.9576 13.2312 11.1784 12.3496 9.6672 10.8696L8.9288 10.1352L8.7384 10.6776C8.336 11.8864 8.5928 13.1632 9.4328 14.0216C9.8808 14.496 9.7792 14.564 9.0072 14.2816C8.7384 14.1912 8.5032 14.1232 8.4816 14.1576C8.4032 14.2368 8.6712 15.2648 8.884 15.6712C9.1752 16.2368 9.768 16.7904 10.4176 17.1176L10.9656 17.3776L10.3168 17.3888C9.6896 17.3888 9.6672 17.4 9.7344 17.6368C9.9584 18.372 10.8424 19.1512 11.8272 19.4904L12.5216 19.728L11.9168 20.0896C11.0027 20.6148 9.97153 20.9022 8.9176 20.9256C8.4136 20.9368 8 20.9816 8 21.016C8 21.1288 9.3656 21.7616 10.16 22.0104C12.544 22.7448 15.376 22.428 17.5016 21.1736C19.0128 20.2816 20.5232 18.5072 21.2288 16.7896C21.6088 15.8752 21.9896 14.2024 21.9896 13.4008C21.9896 12.8808 22.0232 12.8128 22.6496 12.1912C23.0192 11.8296 23.3664 11.4344 23.4336 11.3216C23.5456 11.1072 23.5336 11.1072 22.9632 11.2992C22.012 11.6376 21.8776 11.5928 22.3472 11.084C22.6944 10.7224 23.1088 10.068 23.1088 9.876C23.1088 9.8416 22.9408 9.8976 22.7504 9.9992C22.5488 10.1128 22.1016 10.2816 21.7664 10.3832L21.1616 10.5752L20.6128 10.2032C20.3112 9.9992 19.8848 9.7736 19.6616 9.7056C19.0912 9.548 18.2176 9.5696 17.7032 9.7512C16.304 10.2592 15.42 11.5704 15.5208 13.0048Z" fill="white"/>
+                                    </g>
+                                    <defs>
+                                    <clipPath id="clip0_0_1">
+                                    <rect width="32" height="32" fill="white"/>
+                                    </clipPath>
+                                    </defs>
+                                  </svg>
+                                {% endcomment %}
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="32"
+                                  height="32"
+                                  viewBox="0 0 32 32"
+                                  fill="none"
+                                >
+                                  <g clip-path="url(#clip0_22_3)">
+                                  <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="black"/>
+                                  <path d="M20.6009 9H23.0544L17.6943 14.9303L24 23H19.0627L15.1957 18.1057L10.7709 23H8.31595L14.049 16.6569L8 9H13.0626L16.5581 13.4735L20.6009 9ZM19.7399 21.5785H21.0993L12.3239 10.3469H10.8651L19.7399 21.5785Z" fill="white"/>
+                                  </g>
+                                  <defs>
+                                  <clipPath id="clip0_22_3">
+                                  <rect width="32" height="32" fill="white"/>
+                                  </clipPath>
+                                  </defs>
+                                </svg>
+                              </span>
+                              <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
+                            </a>
+                          </li>
+                        {%- endif -%}
+                        {%- if settings.social_facebook_link != blank -%}
+                          <li>
+                            <a href="{{ settings.social_facebook_link }}" class="link" target="_blank">
+                              <span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="32"
+                                  height="32"
+                                  viewBox="0 0 32 32"
+                                  fill="none"
+                                >
+                                  <g clip-path="url(#clip0_0_1)">
+                                  <path d="M32 16C32 7.1624 24.8376 0 16 0C7.1624 0 0 7.1624 0 16C0 23.9872 5.8504 30.6064 13.5 31.8064V20.624H9.4376V16H13.5V12.4752C13.5 8.4656 15.8872 6.2504 19.544 6.2504C21.2936 6.2504 23.1248 6.5624 23.1248 6.5624V10.5H21.1064C19.1184 10.5 18.5 11.7344 18.5 13V16H22.9376L22.228 20.6248H18.5V31.8064C26.1504 30.6064 32 23.9872 32 16Z" fill="#1877F2"/>
+                                  <path d="M22.228 20.6248L22.9376 16H18.5V13C18.5 11.7344 19.1184 10.5 21.1064 10.5H23.1248V6.5624C23.1248 6.5624 21.2936 6.2504 19.544 6.2504C15.888 6.2504 13.5 8.4656 13.5 12.4744V16H9.4376V20.6248H13.5V31.8064C14.316 31.9344 15.1504 32 16 32C16.8504 32 17.684 31.9344 18.5 31.8064V20.624L22.228 20.6248Z" fill="white"/>
+                                  </g>
+                                  <defs>
+                                  <clipPath id="clip0_0_1">
+                                  <rect width="32" height="32" fill="white"/>
+                                  </clipPath>
+                                  </defs>
+                                </svg>
+                              </span>
+                              <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+                            </a>
+                          </li>
+                        {%- endif -%}
+                        {%- if blog.url != blank -%}
+                          <li>
+                            <a href="javascript:void(0);" class="link" onclick="copyToblog()">
+                              <span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="32"
+                                  height="32"
+                                  viewBox="0 0 32 32"
+                                  fill="none"
+                                >
+                                  <circle cx="16" cy="16" r="16" fill="#707070"/>
+                                  <path d="M12.2498 11.5V9.24999C12.2498 8.83578 12.5856 8.49999 12.9998 8.49999H21.9998C22.414 8.49999 22.7498 8.83578 22.7498 9.24999V19.75C22.7498 20.1642 22.414 20.5 21.9998 20.5H19.7498V22.7493C19.7498 23.1639 19.4124 23.5 18.9947 23.5H10.005C9.58791 23.5 9.24997 23.1665 9.24997 22.7493L9.25192 12.2506C9.25199 11.8361 9.58945 11.5 10.007 11.5H12.2498ZM13.7498 11.5H19.7498V19H21.2498V9.99999H13.7498V11.5Z" fill="white"/>
+                                </svg>
+                              </span>
+                            </a>
+                          </li>
+                        {%- endif -%}
+                      </ul>
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+            {% comment %}  {% endcomment %}
+          </div>
+        {%- when 'share' -%}
+          {% comment %} <div
+            class="article-template__social-sharing page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            {% assign share_url = request.origin | append: article.url %}
+            {% render 'share-button', block: block, share_link: share_url %}
+          </div> {% endcomment %}
+                    <div class="block__article-social-share flex items-center justify-between">
+                      <p class="block__social-share-title"> {{'blogs.article.share' | t }} </p>
+                      <ul class="flex items-center gap-10">
+                        {%- if settings.social_linkedin_link != blank -%}
+                          <li>
+                            <a href="{{ settings.social_linkedin_link }}" class="link" target="_blank">
+                              <span class="block__article-share-icon-text">{{ 'general.social.links.linkedin' | t }}</span>
+                              <span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="32"
+                                  height="32"
+                                  viewBox="0 0 32 32"
+                                  fill="none"
+                                >
+                                  <g clip-path="url(#clip0_0_1)">
+                                  <path d="M0 16C0 7.1632 7.1632 0 16 0C24.8368 0 32 7.1632 32 16C32 24.8368 24.8368 32 16 32C7.1632 32 0 24.8368 0 16Z" fill="#0077B5"/>
+                                  <path fill-rule="evenodd" clip-rule="evenodd" d="M11.546 9.8816C11.546 10.928 10.7588 11.7648 9.494 11.7648H9.4708C8.254 11.7648 7.4668 10.928 7.4668 9.8816C7.4668 8.8136 8.278 8 9.518 8C10.758 8 11.522 8.8136 11.546 9.8816ZM11.3068 13.252V24.1464H7.6812V13.252H11.3068ZM24.3836 24.1464V17.9C24.3836 14.5536 22.5948 12.996 20.2092 12.996C18.2836 12.996 17.422 14.0536 16.9404 14.796V13.252H13.314C13.362 14.2744 13.314 24.1464 13.314 24.1464H16.9404V18.0624C16.9404 17.7368 16.9644 17.412 17.0604 17.1792C17.322 16.528 17.9188 15.8552 18.9204 15.8552C20.2324 15.8552 20.758 16.8536 20.758 18.3176V24.1464H24.3836Z" fill="white"/>
+                                  </g>
+                                  <defs>
+                                  <clipPath id="clip0_0_1">
+                                  <rect width="32" height="32" fill="white"/>
+                                  </clipPath>
+                                  </defs>
+                                </svg>
+                              </span>
+                              
+                            </a>
+                          </li>
+                        {%- endif -%}
+                        {%- if settings.social_twitter_link != blank -%}
+                          <li>
+                            <a href="{{ settings.social_twitter_link }}" class="link" target="_blank">
+                               <span class="block__article-share-icon-text">{{ 'general.social.links.twitter' | t }}</span>
+                              <span>
+                                {% comment %}
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                    <g clip-path="url(#clip0_0_1)">
+                                    <path d="M0 16C0 7.1632 7.1632 0 16 0C24.8368 0 32 7.1632 32 16C32 24.8368 24.8368 32 16 32C7.1632 32 0 24.8368 0 16Z" fill="#55ACEE"/>
+                                    <path d="M15.5208 13.0048L15.5544 13.5584L14.9944 13.4912C12.9576 13.2312 11.1784 12.3496 9.6672 10.8696L8.9288 10.1352L8.7384 10.6776C8.336 11.8864 8.5928 13.1632 9.4328 14.0216C9.8808 14.496 9.7792 14.564 9.0072 14.2816C8.7384 14.1912 8.5032 14.1232 8.4816 14.1576C8.4032 14.2368 8.6712 15.2648 8.884 15.6712C9.1752 16.2368 9.768 16.7904 10.4176 17.1176L10.9656 17.3776L10.3168 17.3888C9.6896 17.3888 9.6672 17.4 9.7344 17.6368C9.9584 18.372 10.8424 19.1512 11.8272 19.4904L12.5216 19.728L11.9168 20.0896C11.0027 20.6148 9.97153 20.9022 8.9176 20.9256C8.4136 20.9368 8 20.9816 8 21.016C8 21.1288 9.3656 21.7616 10.16 22.0104C12.544 22.7448 15.376 22.428 17.5016 21.1736C19.0128 20.2816 20.5232 18.5072 21.2288 16.7896C21.6088 15.8752 21.9896 14.2024 21.9896 13.4008C21.9896 12.8808 22.0232 12.8128 22.6496 12.1912C23.0192 11.8296 23.3664 11.4344 23.4336 11.3216C23.5456 11.1072 23.5336 11.1072 22.9632 11.2992C22.012 11.6376 21.8776 11.5928 22.3472 11.084C22.6944 10.7224 23.1088 10.068 23.1088 9.876C23.1088 9.8416 22.9408 9.8976 22.7504 9.9992C22.5488 10.1128 22.1016 10.2816 21.7664 10.3832L21.1616 10.5752L20.6128 10.2032C20.3112 9.9992 19.8848 9.7736 19.6616 9.7056C19.0912 9.548 18.2176 9.5696 17.7032 9.7512C16.304 10.2592 15.42 11.5704 15.5208 13.0048Z" fill="white"/>
+                                    </g>
+                                    <defs>
+                                    <clipPath id="clip0_0_1">
+                                    <rect width="32" height="32" fill="white"/>
+                                    </clipPath>
+                                    </defs>
+                                  </svg>
+                                {% endcomment %}
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="32"
+                                  height="32"
+                                  viewBox="0 0 32 32"
+                                  fill="none"
+                                >
+                                  <g clip-path="url(#clip0_22_3)">
+                                  <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="black"/>
+                                  <path d="M20.6009 9H23.0544L17.6943 14.9303L24 23H19.0627L15.1957 18.1057L10.7709 23H8.31595L14.049 16.6569L8 9H13.0626L16.5581 13.4735L20.6009 9ZM19.7399 21.5785H21.0993L12.3239 10.3469H10.8651L19.7399 21.5785Z" fill="white"/>
+                                  </g>
+                                  <defs>
+                                  <clipPath id="clip0_22_3">
+                                  <rect width="32" height="32" fill="white"/>
+                                  </clipPath>
+                                  </defs>
+                                </svg>
+                              </span>
+                             
+                            </a>
+                          </li>
+                        {%- endif -%}
+                        {%- if settings.social_facebook_link != blank -%}
+                          <li>
+                            <a href="{{ settings.social_facebook_link }}" class="link" target="_blank">
+                               <span class="block__article-share-icon-text">{{ 'general.social.links.facebook' | t }}</span>
+                              <span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="32"
+                                  height="32"
+                                  viewBox="0 0 32 32"
+                                  fill="none"
+                                >
+                                  <g clip-path="url(#clip0_0_1)">
+                                  <path d="M32 16C32 7.1624 24.8376 0 16 0C7.1624 0 0 7.1624 0 16C0 23.9872 5.8504 30.6064 13.5 31.8064V20.624H9.4376V16H13.5V12.4752C13.5 8.4656 15.8872 6.2504 19.544 6.2504C21.2936 6.2504 23.1248 6.5624 23.1248 6.5624V10.5H21.1064C19.1184 10.5 18.5 11.7344 18.5 13V16H22.9376L22.228 20.6248H18.5V31.8064C26.1504 30.6064 32 23.9872 32 16Z" fill="#1877F2"/>
+                                  <path d="M22.228 20.6248L22.9376 16H18.5V13C18.5 11.7344 19.1184 10.5 21.1064 10.5H23.1248V6.5624C23.1248 6.5624 21.2936 6.2504 19.544 6.2504C15.888 6.2504 13.5 8.4656 13.5 12.4744V16H9.4376V20.6248H13.5V31.8064C14.316 31.9344 15.1504 32 16 32C16.8504 32 17.684 31.9344 18.5 31.8064V20.624L22.228 20.6248Z" fill="white"/>
+                                  </g>
+                                  <defs>
+                                  <clipPath id="clip0_0_1">
+                                  <rect width="32" height="32" fill="white"/>
+                                  </clipPath>
+                                  </defs>
+                                </svg>
+                              </span>
+                             
+                            </a>
+                          </li>
+                        {%- endif -%}
+                        {%- if blog.url != blank -%}
+                          <li>
+                            <a href="javascript:void(0);" class="link" onclick="copyToblog()">
+                               <span class="block__article-share-icon-text">{{ 'blogs.article.copy_link' | t }}</span>
+                              <span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="32"
+                                  height="32"
+                                  viewBox="0 0 32 32"
+                                  fill="none"
+                                >
+                                  <circle cx="16" cy="16" r="16" fill="#707070"/>
+                                  <path d="M12.2498 11.5V9.24999C12.2498 8.83578 12.5856 8.49999 12.9998 8.49999H21.9998C22.414 8.49999 22.7498 8.83578 22.7498 9.24999V19.75C22.7498 20.1642 22.414 20.5 21.9998 20.5H19.7498V22.7493C19.7498 23.1639 19.4124 23.5 18.9947 23.5H10.005C9.58791 23.5 9.24997 23.1665 9.24997 22.7493L9.25192 12.2506C9.25199 11.8361 9.58945 11.5 10.007 11.5H12.2498ZM13.7498 11.5H19.7498V19H21.2498V9.99999H13.7498V11.5Z" fill="white"/>
+                                </svg>
+                              </span>
+                              
+                            </a>
+                          </li>
+                        {%- endif -%}
+                      </ul>
+                    </div>
+
+
+      {%- endcase -%}
+    {%- endfor -%}
+    {% comment %}
+      <div class="article-template__back element-margin-top center{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
+          <span class="icon-wrap">
+            <span class="svg-wrapper">
+              {{- 'icon-arrow.svg' | inline_asset_content -}}
+            </span>
+          </span>
+          {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
+        </a>
+      </div>
+      {%- if blog.comments_enabled? -%}
+        <div class="article-template__comment-wrapper background-secondary">
+          <div
+            id="comments"
+            class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          >
+            {%- if article.comments_count > 0 -%}
+              {%- assign anchorId = '#Comments-' | append: article.id -%}
+
+              <h2 id="Comments-{{ article.id }}" tabindex="-1">
+                {{ 'blogs.article.comments' | t: count: article.comments_count }}
+              </h2>
+              {% paginate article.comments by 5 %}
+                <div class="article-template__comments">
+                  {%- if comment.status == 'pending' and comment.content -%}
+                    <article id="{{ comment.id }}" class="article-template__comments-comment">
+                      {{ comment.content }}
+                      <footer class="right">
+                        <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span>
+                      </footer>
+                    </article>
+                  {%- endif -%}
+
+                  {%- for comment in article.comments -%}
+                    <article id="{{ comment.id }}" class="article-template__comments-comment">
+                      {{ comment.content }}
+                      <footer class="right">
+                        <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span
+                        ><span class="caption-with-letter-spacing">
+                          {{- comment.created_at | time_tag: format: 'date' -}}
+                        </span>
+                      </footer>
+                    </article>
+                  {%- endfor -%}
+                  {% render 'pagination', paginate: paginate, anchor: anchorId %}
+                </div>
+              {% endpaginate %}
+            {%- endif -%}
+            {% form 'new_comment', article %}
+              {%- liquid
+                assign post_message = 'blogs.article.success'
+                if blog.moderated? and comment.status == 'unapproved'
+                  assign post_message = 'blogs.article.success_moderated'
+                endif
+              -%}
+              <h2>{{ 'blogs.article.comment_form_title' | t }}</h2>
+              {%- if form.errors -%}
+                <div class="form__message" role="alert">
+                  <h3 class="form-status caption-large text-body" tabindex="-1" autofocus>
+                    <span class="svg-wrapper">
+                      {{- 'icon-error.svg' | inline_asset_content -}}
+                    </span>
+                    {{ 'templates.contact.form.error_heading' | t }}
+                  </h3>
+                </div>
+                <ul class="form-status-list caption-large">
+                  {%- for field in form.errors -%}
+                    <li>
+                      <a href="#CommentForm-{{ field }}" class="link">
+                        {%- if form.errors.translated_fields[field] contains 'author' -%}
+                          {{ 'blogs.article.name' | t }}
+                        {%- elsif form.errors.translated_fields[field] contains 'body' -%}
+                          {{ 'blogs.article.message' | t }}
+                        {%- else -%}
+                          {{ form.errors.translated_fields[field] }}
+                        {%- endif -%}
+                        {{ form.errors.messages[field] }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- elsif form.posted_successfully? -%}
+                <div class="form-status-list form__message" role="status">
+                  <h3 class="form-status" tabindex="-1" autofocus>
+                    <span class="svg-wrapper">
+                      {{- 'icon-success.svg' | inline_asset_content -}}
+                    </span>
+                    {{ post_message | t }}
+                  </h3>
+                </div>
+              {%- endif -%}
+
+              <div
+                {% if blog.moderated? == false %}
+                  class="article-template__comments-fields"
+                {% endif %}
+              >
+                <div class="article-template__comment-fields">
+                  <div class="field field--with-error">
+                    <input
+                      type="text"
+                      name="comment[author]"
+                      id="CommentForm-author"
+                      class="field__input"
+                      autocomplete="name"
+                      value="{{ form.author }}"
+                      aria-required="true"
+                      required
+                      {% if form.errors contains 'author' %}
+                        aria-invalid="true"
+                        aria-describedby="CommentForm-author-error"
+                      {% endif %}
+                      placeholder="{{ 'blogs.article.name' | t }}"
+                    >
+                    <label class="field__label" for="CommentForm-author">
+                      {{- 'blogs.article.name' | t }}
+                      <span aria-hidden="true">*</span></label
+                    >
+                    {%- if form.errors contains 'author' -%}
+                      <small id="CommentForm-author-error">
+                        <span class="form__message">
+                          <span class="svg-wrapper">
+                            {{- 'icon-error.svg' | inline_asset_content -}}
+                          </span>
+                          {{- 'blogs.article.name' | t }}
+                          {{ form.errors.messages.author }}.</span
+                        >
+                      </small>
+                    {%- endif -%}
+                  </div>
+                  <div class="field field--with-error">
+                    <input
+                      type="email"
+                      name="comment[email]"
+                      id="CommentForm-email"
+                      autocomplete="email"
+                      class="field__input"
+                      value="{{ form.email }}"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      aria-required="true"
+                      required
+                      {% if form.errors contains 'email' %}
+                        aria-invalid="true"
+                        aria-describedby="CommentForm-email-error"
+                      {% endif %}
+                      placeholder="{{ 'blogs.article.email' | t }}"
+                    >
+                    <label class="field__label" for="CommentForm-email">
+                      {{- 'blogs.article.email' | t }}
+                      <span aria-hidden="true">*</span></label
+                    >
+                    {%- if form.errors contains 'email' -%}
+                      <small id="CommentForm-email-error">
+                        <span class="form__message">
+                          <span class="svg-wrapper">
+                            {{- 'icon-error.svg' | inline_asset_content -}}
+                          </span>
+                          {{- 'blogs.article.email' | t }}
+                          {{ form.errors.messages.email }}.</span
+                        >
+                      </small>
+                    {%- endif -%}
+                  </div>
+                </div>
+                <div class="field field--with-error">
+                  <textarea
+                    rows="5"
+                    name="comment[body]"
+                    id="CommentForm-body"
+                    class="text-area field__input"
+                    aria-required="true"
+                    required
+                    {% if form.errors contains 'body' %}
+                      aria-invalid="true"
+                      aria-describedby="CommentForm-body-error"
+                    {% endif %}
+                    placeholder="{{ 'blogs.article.message' | t }}"
+                  >{{ form.body }}</textarea>
+                  <label class="form__label field__label" for="CommentForm-body">
+                    {{- 'blogs.article.message' | t }}
+                    <span aria-hidden="true">*</span></label
+                  >
+                </div>
+                {%- if form.errors contains 'body' -%}
+                  <small id="CommentForm-body-error">
+                    <span class="form__message">
+                      <span class="svg-wrapper">
+                        {{- 'icon-error.svg' | inline_asset_content -}}
+                      </span>
+                      {{- 'blogs.article.message' | t }}
+                      {{ form.errors.messages.body }}.</span
+                    >
+                  </small>
+                {%- endif -%}
+              </div>
+              {%- if blog.moderated? -%}
+                <p class="article-template__comment-warning caption">{{ 'blogs.article.moderated' | t }}</p>
+              {%- endif -%}
+              <input type="submit" class="button" value="{{ 'blogs.article.post' | t }}">
+            {% endform %}
+          </div>
+        </div>
+      {%- endif -%}
+    {% endcomment %}
+  </div>
+</article>
+{% style %}
+  @media (min-width:750px){
+      .section-{{ section.id }}-padding{
+          padding-top:{{ section.settings.desktop_padding_top }}px;
+          padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+      }
+  }
+  @media (max-width:749px){
+      .section-{{ section.id }}-padding{
+          padding-top:{{ section.settings.mobile_padding_top }}px;
+          padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+      }
+  }
+{% endstyle %}
+
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
+<script>
+    const toggleButton = document.querySelector(".block__recommended-heading");
+    const recommendedWrapper = document.querySelector(".block__wrapper-recommended");
+    if (toggleButton && recommendedWrapper) {
+        recommendedWrapper.style.display = "none";
+        toggleButton.addEventListener("click", function () {
+            if (recommendedWrapper.style.display === "none") {
+                recommendedWrapper.style.display = "block";
+                recommendedWrapper.style.maxHeight = recommendedWrapper.scrollHeight + "px";
+                toggleButton.classList.add("active");
+            } else {
+                recommendedWrapper.style.display = "none";
+                recommendedWrapper.style.maxHeight = "0px";
+                toggleButton.classList.remove("active");
+            }
+        });
+    }
+    function copyToblog() {
+      const blogUrl = "{{ blog.url }}";
+      const fullUrl = window.location.origin + blogUrl;
+
+      navigator.clipboard.writeText(fullUrl).then(() => {
+          alert("Blog link copied to clipboard: " + fullUrl);
+      }).catch(err => {
+          console.error("Failed to copy: ", err);
+      });
+  }
+</script>
+{% schema %}
+{
+  "name": "t:sections.main-article.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_tag",
+      "default": true,
+      "label": "Show Tag"
+    },
+    {
+      "type": "text",
+      "id": "search_input_title",
+      "label": "Search Input Placeholder Text"
+    },
+    {
+      "type": "text",
+      "id": "recommended__title",
+      "label": "Recommended Products Title"
+    },
+    {
+      "type": "text",
+      "id": "postedin__title",
+      "label": "Posted in Title"
+    },
+    {
+      "type": "text",
+      "id": "you_may__title",
+      "label": "You May Also Like"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "t:sections.featured-collection.settings.products_to_show.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.featured-collection.settings.header.content"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.featured-collection.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.featured-collection.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.featured-collection.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.featured-collection.settings.image_ratio.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.featured-collection.settings.show_secondary_image.label"
+    },
+    {
+      "type": "select",
+      "id": "quick_add",
+      "default": "none",
+      "label": "t:sections.main-collection-product-grid.settings.quick_add.label",
+      "info": "t:sections.main-collection-product-grid.settings.quick_add.info",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_1"
+        },
+        {
+          "value": "standard",
+          "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_2"
+        },
+        {
+          "value": "bulk",
+          "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3"
+        }
+      ]
+    },
+   
+    {
+        "type": "header",
+        "content": "Desktop Space"
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding Bottom",
+        "default": 16
+    },
+    {
+        "type": "header",
+        "content": "Mobile Space"
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding Bottom",
+        "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "featured_image",
+      "name": "t:sections.main-article.blocks.featured_image.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "image_height",
+          "options": [
+            {
+              "value": "adapt",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__1.label"
+            },
+            {
+              "value": "small",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__2.label"
+            },
+            {
+              "value": "medium",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__3.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__4.label"
+            }
+          ],
+          "default": "adapt",
+          "label": "t:sections.main-article.blocks.featured_image.settings.image_height.label",
+          "info": "t:sections.main-article.blocks.featured_image.settings.image_height.info"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "t:sections.main-article.blocks.title.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "blog_show_date",
+          "default": true,
+          "label": "t:sections.main-article.blocks.title.settings.blog_show_date.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_show_author",
+          "default": false,
+          "label": "t:sections.main-article.blocks.title.settings.blog_show_author.label"
+        }
+      ]
+    },
+    {
+      "type": "content",
+      "name": "t:sections.main-article.blocks.content.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "blog_show_date",
+          "default": true,
+          "label": "t:sections.main-article.blocks.title.settings.blog_show_date.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_blog_search",
+          "default": false,
+          "label": "Enable blog search container"
+        },
+      ]
+    },
+    {
+      "type": "share",
+      "name": "t:sections.main-article.blocks.share.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "share_label",
+          "label": "t:sections.main-article.blocks.share.settings.text.label",
+          "default": "t:sections.main-article.blocks.share.settings.text.default"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.main-article.blocks.share.settings.featured_image_info.content"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.main-article.blocks.share.settings.title_info.content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

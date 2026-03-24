@@ -1,0 +1,162 @@
+{{ 'image-with-text-section.css' | asset_url | stylesheet_tag }}
+
+{% if product.metafields.custom.pdp_image_with_text != blank %}
+    {% assign image_with_text = product.metafields.custom.pdp_image_with_text.value %}
+    <div class="block__image-with-text" {% if section.settings.bg_color != blank %} style="background-color:{{ section.settings.bg_color }}"{% endif %}>
+        <div class="page-width">
+            {% if section.settings.title != blank or image_with_text.section_heading_title != blank %}
+                <div class="block__heading center">
+                    {% if image_with_text.section_heading_title != blank %}
+                        <h2 class="primary_h2 center">{{- image_with_text.section_heading_title -}}</h2>
+                    {%  else %} 
+                        <h2 class="primary_h2 center">{{- section.settings.title -}}</h2>
+                    {% endif %}
+                    {% if image_with_text.section_heading_text != blank %}
+                        <p>{{- image_with_text.section_heading_text -}}</p>
+                    {%  else %} 
+                        <p>{{- section.settings.text -}}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+            <div class="block__image-with-text-wrapper"> 
+                {% for i in (1..4)%}
+                    {%- capture video_item -%}video_{{i}}{%- endcapture -%}
+                    {%- assign block_video = image_with_text[video_item] -%}
+
+                    {%- capture image_item -%}image_{{i}}{%- endcapture -%}
+                    {%- assign block_image = image_with_text[image_item] -%}
+
+                    {%- capture subheading_item -%}subheading_{{i}}{%- endcapture -%}
+                    {%- assign block_subheading = image_with_text[subheading_item] -%}
+
+                    {%- capture heading_item -%}heading_{{i}}{%- endcapture -%}
+                    {%- assign block_heading = image_with_text[heading_item] -%}
+                    
+                    {%- capture content_item -%}content_item_{{i}}{%- endcapture -%}
+                    {%- assign block_content_item = image_with_text[content_item] -%}
+                    {% if block_image != blank or block_subheading != blank or block_heading != blank or block_content_item != blank or block_video != blank %}
+                    <div class="block__row items-center">
+                        <div class="block__col">
+                            {% if block_video.value.media_type == "video" %}
+                                <div class="block__image line-height image_set_pd">
+                                    {% if block_video.value.media_type == "video" %}
+                                        {{ block_video.value | video_tag: autoplay: true, loop: true, controls: false, muted: true, playsinline: true, class: 'quaternary-border-radius image_custom_Video', preload: 'auto', poster: '',aria_label:shop.title  }} 
+                                    {% endif %}                                    
+                                </div>
+                             {% endif %}
+                            {% if block_image.value.media_type == "video" or block_image.value.media_type == "image" %}
+                                <div class="block__image line-height image_set_pd">
+                                {% if block_image.value.media_type == "video" %}
+                                    {{ block_image.value| video_tag: autoplay: true,loop: true,controls: false,muted: true,playsinline: true,class: 'quaternary-border-radius image_custom_Video',aria_label:shop.title }} 
+                                {% elsif block_image != blank %}
+                                    {% render 'custom-image', image: block_image, class: 'img-fluid quaternary-border-radius' %}
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="block__col">
+                            <div class="block__content">
+                                <span class="extra_body inline-block">{{ block_subheading  }}</span>
+                                <h4>{{ block_heading }}</h4>
+                                <p>{{ block_content_item }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% style %}  
+                        .block__image-with-text-wrapper .block__content ul li:after{ background-image: url('{{ 'true-icon.svg' | asset_url }}');}
+                        @media (min-width:990px){
+                            .block__image-with-text{
+                                padding-top:{{ section.settings.desktop_padding_top }}px;
+                                padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+                            }
+                        }
+                        @media (max-width:989px){
+                            .block__image-with-text{
+                                padding-top:{{ section.settings.mobile_padding_top }}px;
+                                padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+                            }
+                        }
+                    {% endstyle %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% schema %}
+{
+    "name": "Image With Text section",
+    "settings": [
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background Color"
+        },
+        {
+            "type": "inline_richtext",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "inline_richtext",
+            "id": "text",
+            "label": "Text"
+        },
+        {
+            "type": "header",
+            "content": "Desktop Space"
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Bottom",
+            "default": 16
+        },
+        {
+            "type": "header",
+            "content": "Mobile Space"
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Bottom",
+            "default": 16
+        }
+    ],
+    "presets": [
+        {
+            "name": "Image With Text section"
+        }
+    ]
+}
+{% endschema %}
+

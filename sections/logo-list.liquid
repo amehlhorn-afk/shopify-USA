@@ -1,0 +1,322 @@
+{{ 'logo-list.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  @media (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.desktop_padding_top }}px;
+      padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+    }
+  }
+  @media (max-width: 989px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+  }
+
+  /* Spacing between header and logos */
+  .{{ section.id }} .section-header {
+    margin-bottom: {{ section.settings.header_spacing }}px;
+  }
+
+  @media (max-width: 768px) {
+    .{{ section.id }} .section-header {
+      margin-bottom: {{ section.settings.header_spacing_mobile }}px;
+    }
+  }
+
+  /* Logo size controls */
+  .{{ section.id }} .block__logo-list-media {
+    width: 100%;
+    max-width: 180px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .{{ section.id }} .block__logo-list-media img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  @media (max-width: 768px) {
+    .{{ section.id }} .block__logo-list-media {
+      max-width: 120px;
+      height: 60px;
+    }
+  }
+
+  /* CTA button spacing */
+  .{{ section.id }} .logo-list-cta-wrapper {
+    margin-top: 40px;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .{{ section.id }} .logo-list-cta-wrapper {
+      margin-top: 24px;
+    }
+  }
+
+  /* BEDGEAR blue button styling */
+  .{{ section.id }} .logo-list-cta-wrapper .button {
+    background-color: #00B5E3;
+    border-color: #00B5E3;
+    color: #fff;
+  }
+
+  .{{ section.id }} .logo-list-cta-wrapper .button:hover {
+    background-color: #009ac4;
+    border-color: #009ac4;
+  }
+
+  /* INFINITE SCROLL CONTAINER */
+  .{{ section.id }} .logo-scroll-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .{{ section.id }} .logo-scroll-track {
+    display: flex;
+    width: max-content;
+    gap: {{ section.settings.logo_spacing }}px;
+  }
+
+  @media (max-width: 768px) {
+    .{{ section.id }} .logo-scroll-track {
+      gap: {{ section.settings.logo_spacing_mobile }}px;
+    }
+  }
+
+  /* Animate the track */
+  .{{ section.id }} .logo-scroll-track.animate {
+    animation: scroll-logos 20s linear infinite;
+  }
+
+  @keyframes scroll-logos {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Pause on hover */
+  .{{ section.id }} .logo-scroll-container:hover .logo-scroll-track.animate {
+    animation-play-state: paused;
+  }
+
+  /* Individual logo item */
+  .{{ section.id }} .logo-item {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+{% endstyle %}
+
+<div class="block__logo-list-main section-{{ section.id }}-padding {{ section.id }}">
+  <div class="page-width">
+
+    {% if section.settings.title != blank or section.settings.caption != blank %}
+      <div class="section-header">
+        {% if section.settings.title != blank %}
+          <h2 class="block__bundle-multicolumn-title primary_h2 text-center">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+        {% if section.settings.caption != blank %}
+          <p class="section-caption body text-center">{{ section.settings.caption }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="logo-scroll-container">
+      <div class="logo-scroll-track">
+        {% comment %} Original logos - JS will duplicate these {% endcomment %}
+        {% for block in section.blocks %}
+          <div class="logo-item" {{ block.shopify_attributes }}>
+            {% if block.settings.brand_logo != blank %}
+              <div class="block__logo-list-media">
+                {% render 'custom-image',
+                  image: block.settings.brand_logo,
+                  class: 'object-contain w-full h-full block'
+                %}
+              </div>
+            {% endif %}
+            {% if block.settings.brand_heading != blank %}
+              <div class="block__logo-list-content">
+                {{ block.settings.brand_heading }}
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+      <div class="logo-list-cta-wrapper">
+        <a class="button" href="{{ section.settings.button_link }}" {% if section.settings.button_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const container = document.querySelector('.{{ section.id }} .logo-scroll-container');
+    if (!container) return;
+
+    const track = container.querySelector('.logo-scroll-track');
+    if (!track) return;
+
+    // Get all original logo items
+    const originalLogos = Array.from(track.querySelectorAll('.logo-item'));
+    
+    // Clone and append for seamless infinite scroll
+    originalLogos.forEach(logo => {
+      const clone = logo.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      track.appendChild(clone);
+    });
+
+    // Start the animation
+    track.classList.add('animate');
+
+    // Optional: Pause on touch for mobile
+    let touchTimeout;
+    container.addEventListener('touchstart', function() {
+      track.style.animationPlayState = 'paused';
+      clearTimeout(touchTimeout);
+    });
+    
+    container.addEventListener('touchend', function() {
+      touchTimeout = setTimeout(() => {
+        track.style.animationPlayState = 'running';
+      }, 1000);
+    });
+
+    console.log('Logo carousel initialized with', originalLogos.length, 'logos (duplicated for infinite loop)');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Logo list",
+  "tag": "section",
+  "class": "shpoify-logo-list",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title" },
+    { "type": "textarea", "id": "caption", "label": "Caption" },
+
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between header and logos (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "header_spacing_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between header and logos (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "logo_spacing",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Space between logos (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "logo_spacing_mobile",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between logos (Mobile)",
+      "default": 30
+    },
+
+    { "type": "header", "content": "Optional CTA" },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "View All Certifications"
+    },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    {
+      "type": "checkbox",
+      "id": "button_new_tab",
+      "label": "Open in new tab",
+      "default": false
+    },
+
+    { "type": "header", "content": "Desktop padding" },
+    {
+      "type": "range", "id": "desktop_padding_top",
+      "min": 0, "max": 120, "step": 2, "unit": "px",
+      "label": "Desktop Padding Top", "default": 56
+    },
+    {
+      "type": "range", "id": "desktop_padding_bottom",
+      "min": 0, "max": 120, "step": 2, "unit": "px",
+      "label": "Desktop Padding Bottom", "default": 56
+    },
+
+    { "type": "header", "content": "Mobile padding" },
+    {
+      "type": "range", "id": "mobile_padding_top",
+      "min": 0, "max": 100, "step": 1, "unit": "px",
+      "label": "Mobile Padding Top", "default": 28
+    },
+    {
+      "type": "range", "id": "mobile_padding_bottom",
+      "min": 0, "max": 100, "step": 1, "unit": "px",
+      "label": "Mobile Padding Bottom", "default": 28
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        { "type": "image_picker", "id": "brand_logo", "label": "Logo" },
+        {
+          "type": "inline_richtext",
+          "id": "brand_heading",
+          "label": "Heading (optional small label under logo)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Logo list", "settings": {} }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,465 @@
+{% comment %}
+  Loyalty Hero Section
+  Block-based hero section for Wake Ready Rewards & Membership
+{% endcomment %}
+
+<style>
+  .loyalty-hero {
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    width: 100%;
+    min-height: 628px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loyalty-hero__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .loyalty-hero__bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .loyalty-hero__bg-image--mobile {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .loyalty-hero__bg-image--desktop {
+      display: none;
+    }
+
+    .loyalty-hero__bg-image--mobile {
+      display: block;
+    }
+  }
+
+  .loyalty-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(204.26deg, rgba(0, 0, 0, 0) 39%, rgba(16, 40, 81, 0.45) 59%, rgba(0, 0, 0, 0) 73%);
+    z-index: 2;
+  }
+
+  .loyalty-hero__content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    max-width: 860px;
+    padding: 60px 20px;
+    width: 100%;
+  }
+
+  .loyalty-hero__title-group {
+    margin-bottom: 16px;
+  }
+
+  .loyalty-hero__title {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 76.872px;
+    line-height: 1.15;
+    text-transform: uppercase;
+    margin: 0;
+    letter-spacing: 0.02em;
+    color: inherit;
+  }
+
+  .loyalty-hero__registered {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-size: 17.648px;
+    line-height: 1;
+    letter-spacing: 1.2354px;
+    text-transform: uppercase;
+    vertical-align: super;
+    margin-left: 4px;
+    color: inherit;
+  }
+
+  .loyalty-hero__subtitle {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-size: 36.152px;
+    line-height: 1;
+    letter-spacing: 2.5306px;
+    text-transform: uppercase;
+    margin: 0 0 16px 0;
+    color: inherit;
+  }
+
+  .loyalty-hero__description {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    margin: 0 0 27px 0;
+    color: inherit;
+  }
+
+  .loyalty-hero__buttons {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .loyalty-hero__button {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.13;
+    letter-spacing: 0.85px;
+    text-transform: uppercase;
+    padding: 13.42px 38.341px;
+    border-radius: 69.015px;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .loyalty-hero__button:hover {
+    background: white;
+    color: #102851;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 1200px) {
+    .loyalty-hero {
+      min-height: 500px;
+    }
+
+    .loyalty-hero__title {
+      font-size: 60px;
+    }
+
+    .loyalty-hero__subtitle {
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
+
+    .loyalty-hero__description {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .loyalty-hero {
+      min-height: 450px;
+    }
+
+    .loyalty-hero__content {
+      padding: 40px 20px;
+    }
+
+    .loyalty-hero__title {
+      font-size: 48px;
+    }
+
+    .loyalty-hero__registered {
+      font-size: 14px;
+    }
+
+    .loyalty-hero__subtitle {
+      font-size: 24px;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    .loyalty-hero__description {
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .loyalty-hero__buttons {
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .loyalty-hero__button {
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+      padding: 15px 30px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .loyalty-hero {
+      min-height: 400px;
+    }
+
+    .loyalty-hero__title {
+      font-size: 36px;
+    }
+
+    .loyalty-hero__registered {
+      font-size: 12px;
+    }
+
+    .loyalty-hero__subtitle {
+      font-size: 20px;
+      letter-spacing: 1.2px;
+    }
+
+    .loyalty-hero__description {
+      font-size: 14px;
+    }
+
+    .loyalty-hero__button {
+      font-size: 15px;
+      padding: 14px 28px;
+    }
+  }
+</style>
+
+<section class="loyalty-hero" style="{% if section.settings.hero_bg_color %}background-color: {{ section.settings.hero_bg_color }};{% endif %} {% if section.settings.text_color %}color: {{ section.settings.text_color }};{% endif %}">
+  <div class="loyalty-hero__bg">
+    {% if section.settings.hero_bg_image %}
+      <img 
+        class="loyalty-hero__bg-image loyalty-hero__bg-image--desktop"
+        src="{{ section.settings.hero_bg_image | img_url: '1920x' }}"
+        srcset="{{ section.settings.hero_bg_image | img_url: '800x' }} 800w,
+                {{ section.settings.hero_bg_image | img_url: '1200x' }} 1200w,
+                {{ section.settings.hero_bg_image | img_url: '1920x' }} 1920w"
+        sizes="100vw"
+        alt="{{ section.settings.hero_title }}"
+        loading="eager"
+      >
+    {% endif %}
+    {% if section.settings.hero_bg_image_mobile %}
+      <img 
+        class="loyalty-hero__bg-image loyalty-hero__bg-image--mobile"
+        src="{{ section.settings.hero_bg_image_mobile | img_url: '800x' }}"
+        srcset="{{ section.settings.hero_bg_image_mobile | img_url: '400x' }} 400w,
+                {{ section.settings.hero_bg_image_mobile | img_url: '800x' }} 800w"
+        sizes="100vw"
+        alt="{{ section.settings.hero_title }}"
+        loading="eager"
+      >
+    {% elsif section.settings.hero_bg_image %}
+      <img 
+        class="loyalty-hero__bg-image loyalty-hero__bg-image--mobile"
+        src="{{ section.settings.hero_bg_image | img_url: '800x' }}"
+        srcset="{{ section.settings.hero_bg_image | img_url: '400x' }} 400w,
+                {{ section.settings.hero_bg_image | img_url: '800x' }} 800w"
+        sizes="100vw"
+        alt="{{ section.settings.hero_title }}"
+        loading="eager"
+      >
+    {% endif %}
+    <div class="loyalty-hero__overlay"></div>
+  </div>
+
+  <div class="loyalty-hero__content">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        
+        {% when 'title' %}
+          <div class="loyalty-hero__title-group">
+            <h1 class="loyalty-hero__title">
+              {{ block.settings.title }}
+              {% if block.settings.show_registered_mark %}
+                <span class="loyalty-hero__registered">®</span>
+              {% endif %}
+            </h1>
+          </div>
+
+        {% when 'subtitle' %}
+          <p class="loyalty-hero__subtitle">{{ block.settings.subtitle }}</p>
+
+        {% when 'description' %}
+          <p class="loyalty-hero__description">{{ block.settings.description }}</p>
+
+        {% when 'buttons' %}
+          <div class="loyalty-hero__buttons">
+            {% if block.settings.button_1_text != blank %}
+              <a href="{{ block.settings.button_1_link }}" class="loyalty-hero__button">
+                {{ block.settings.button_1_text }}
+              </a>
+            {% endif %}
+
+            {% if block.settings.button_2_text != blank %}
+              <a href="{{ block.settings.button_2_link }}" class="loyalty-hero__button">
+                {{ block.settings.button_2_text }}
+              </a>
+            {% endif %}
+
+            {% if block.settings.button_3_text != blank %}
+              <a href="{{ block.settings.button_3_link }}" class="loyalty-hero__button">
+                {{ block.settings.button_3_text }}
+              </a>
+            {% endif %}
+          </div>
+
+      {% endcase %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Loyalty Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_bg_image",
+      "label": "Desktop Background Image",
+      "info": "Recommended: 1920x628px or larger"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_bg_image_mobile",
+      "label": "Mobile Background Image (Optional)",
+      "info": "If not set, desktop image will be used. Recommended: 800x800px or larger"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "hero_bg_color",
+      "label": "Background Color Fallback",
+      "default": "#102851"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Wake Ready"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_registered_mark",
+          "label": "Show ® Symbol",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "subtitle",
+      "name": "Subtitle",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "rewards & membership"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Enjoy exclusive member pricing, delivery discounts, PLUS earn & redeem points."
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "Button Group",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_1_text",
+          "label": "Button 1 Text",
+          "default": "JOIN FREE REWARDS"
+        },
+        {
+          "type": "url",
+          "id": "button_1_link",
+          "label": "Button 1 Link"
+        },
+        {
+          "type": "text",
+          "id": "button_2_text",
+          "label": "Button 2 Text",
+          "default": "BECOME A MEMBER ($99/YR)"
+        },
+        {
+          "type": "url",
+          "id": "button_2_link",
+          "label": "Button 2 Link"
+        },
+        {
+          "type": "text",
+          "id": "button_3_text",
+          "label": "Button 3 Text",
+          "default": "LOGIN"
+        },
+        {
+          "type": "url",
+          "id": "button_3_link",
+          "label": "Button 3 Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Loyalty Hero",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "subtitle"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "buttons"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,576 @@
+{% comment %}
+  Section: Collection Rich Article (with optional section-level collapse)
+  Purpose: Inline, reorderable content blocks for Collection pages: Headings, Text, Quotes, Callouts, Images, and FAQs. Optional Table of Contents.
+  Includes:
+  - FAQ Group: background + border color pickers and optional BEDGEAR Q&A brand header (icon + title).
+  - Callout: bordered + accent bar options.
+  - Image: consistent 1:1 aspect ratio on all breakpoints with 10px radius.
+  - Heading/Body color controls for hierarchy.
+  - Quote style toggle (bar+tint vs bar-only).
+  - Section top/bottom padding + section background.
+  - Two-column table (table_start / table_row / table_end) with responsive stacking.
+  - NEW: Optional section-level collapsible wrapper with animated height + no-JS fallback.
+{% endcomment %}
+
+<section
+  id="collection-rich-article-{{ section.id }}"
+  data-start-collapsed="{{ section.settings.faqs_start_collapsed }}"
+  data-accordion="{{ section.settings.faqs_accordion_mode }}"
+  data-section-collapsible="{{ section.settings.enable_section_collapse }}"
+  data-section-start-collapsed="{{ section.settings.section_start_collapsed }}"
+  class="crab section-outer quote-style-{{ section.settings.quote_style }}"
+  style="
+    --crab-accent: {{ section.settings.accent_color }};
+    --crab-heading-weight: {{ section.settings.heading_weight }};
+    --crab-body-size: {{ section.settings.body_size }}px;
+    --crab-maxw: {{ section.settings.max_width }}px;
+    --crab-heading-color: {{ section.settings.heading_color }};
+    --crab-body-color: {{ section.settings.body_color }};
+    --section-pt: {{ section.settings.padding_top }}px;
+    --section-pb: {{ section.settings.padding_bottom }}px;
+    --section-bg: {{ section.settings.section_bg }};
+
+    /* Collapsible wrapper vars */
+    --crab-collapsed-maxw: {{ section.settings.section_collapsed_max_width | default: 820 }}px;
+    --crab-summary-bg: {{ section.settings.section_summary_bg | default: 'transparent' }};
+    --crab-summary-bg-open: {{ section.settings.section_summary_bg_open | default: 'transparent' }};
+  "
+>
+  {% capture crab_inner %}
+    <div class="section-inner">
+      {% if section.settings.section_title != blank %}
+        <h2 class="section-title" style="text-align: {{ section.settings.global_align }}; max-width: var(--crab-maxw); margin-left: auto; margin-right: auto;">{{ section.settings.section_title }}</h2>
+      {% endif %}
+
+      {% if section.settings.enable_toc %}
+        {% assign heading_blocks = section.blocks | where: 'type', 'heading' %}
+        {% if heading_blocks.size > 0 %}
+          <nav class="crab-toc" aria-label="On this page" style="max-width: var(--crab-maxw); margin-left: auto; margin-right: auto;">
+            <div class="crab-toc-title">{{ section.settings.toc_title }}</div>
+            <ul class="crab-toc-list">
+              {% for b in section.blocks %}
+                {% if b.type == 'heading' %}
+                  <li class="crab-toc-item level-{{ b.settings.level }}"><a href="#{{ b.id }}">{{ b.settings.text }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </nav>
+        {% endif %}
+      {% endif %}
+
+      {%- assign faq_group_open = false -%}
+      {%- assign table_open = false -%}
+
+      <div class="crab-content" style="max-width: var(--crab-maxw); margin-left: auto; margin-right: auto;">
+        {% for block in section.blocks %}
+          {% assign align = block.settings.align | default: section.settings.global_align %}
+          {% case block.type %}
+
+            {% when 'faq_group_start' %}
+              {% if faq_group_open %}</div>{% assign faq_group_open = false %}{% endif %}
+              {%- assign bg = block.settings.bg_color -%}
+              {%- assign bc = block.settings.border_color -%}
+              <div id="{{ block.id }}" class="crab-faq-group variant-{{ block.settings.variant }}{% if block.settings.brand_header %} with-brand{% endif %}" style="--faqg-bg: {{ bg }}; --faqg-border: {{ bc }};">
+                {% if block.settings.brand_header %}
+                  <div class="faq-brand-header">
+                    <span class="faq-brand-icon" aria-hidden="true">
+                      {% case block.settings.brand_icon %}
+                        {% when 'chat' %}
+                          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a4 4 0 01-4 4H8l-5 3V7a4 4 0 014-4h10a4 4 0 014 4v8z"/></svg>
+                        {% when 'help' %}
+                          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 9a3 3 0 116 0c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>
+                        {% when 'shield' %}
+                          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 4v5a9 9 0 11-14 0V7l7-4z"/></svg>
+                        {% else %}
+                          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a4 4 0 01-4 4H8l-5 3V7a4 4 0 014-4h10a4 4 0 014 4v8z"/></svg>
+                      {% endcase %}
+                    </span>
+                    <div class="faq-brand-title">{{ block.settings.brand_title }}</div>
+                  </div>
+                {% elsif block.settings.title != blank %}
+                  <div class="faq-group-title">{{ block.settings.title }}</div>
+                {% endif %}
+              {% assign faq_group_open = true %}
+
+            {% when 'faq_group_end' %}
+              {% if faq_group_open %}</div>{% assign faq_group_open = false %}{% endif %}
+
+            {% when 'heading' %}
+              {% assign tag = block.settings.level %}
+              <{{ tag }} id="{{ block.id }}" class="crab-heading" style="text-align: {{ align }}; margin: {{ section.settings.block_gap }}px 0; font-weight: var(--crab-heading-weight);">
+                <span class="crab-heading-text">{{ block.settings.text | escape }}</span>
+                {% if section.settings.show_heading_anchors %}
+                  <a class="crab-anchor" href="#{{ block.id }}" aria-label="Link to this heading">#</a>
+                {% endif %}
+              </{{ tag }}>
+
+            {% when 'text' %}
+              <div id="{{ block.id }}" class="crab-richtext rte" style="text-align: {{ align }}; margin: {{ section.settings.block_gap }}px 0;">{{ block.settings.content }}</div>
+
+            {% when 'quote' %}
+              <blockquote id="{{ block.id }}" class="crab-quote align-{{ align }}" style="margin: {{ section.settings.block_gap }}px 0;">
+                <div class="quote-body" style="text-align: {{ align }};">{{ block.settings.quote }}</div>
+                {% if block.settings.cite != blank %}<cite class="quote-cite" style="text-align: {{ align }};">— {{ block.settings.cite }}</cite>{% endif %}
+              </blockquote>
+
+            {% when 'image' %}
+              {% if block.settings.image != blank %}
+                {% assign img = block.settings.image %}
+                <figure id="{{ block.id }}" class="crab-figure float-{{ block.settings.float }} align-{{ align }}" style="margin: {{ section.settings.block_gap }}px 0; max-width: {{ block.settings.width }}%;">
+                  <img src="{{ img | image_url: width: 1080 }}" alt="{{ block.settings.alt | escape }}" loading="lazy" class="crab-img">
+                  {% if block.settings.caption != blank %}<figcaption class="crab-caption" style="text-align: {{ align }};">{{ block.settings.caption }}</figcaption>{% endif %}
+                </figure>
+              {% endif %}
+
+            {% when 'callout' %}
+              {% assign callout_classes = 'crab-callout variant-' | append: block.settings.variant %}
+              {% if block.settings.bordered %}{% assign callout_classes = callout_classes | append: ' bordered' %}{% endif %}
+              {% if block.settings.accent_bar %}{% assign callout_classes = callout_classes | append: ' accent-bar' %}{% endif %}
+              <aside id="{{ block.id }}" class="{{ callout_classes }}" style="margin: {{ section.settings.block_gap }}px 0; text-align: {{ align }};">
+                <div class="callout-inner">
+                  {% if block.settings.title != blank %}<div class="callout-title">{{ block.settings.title }}</div>{% endif %}
+                  <div class="callout-body">{{ block.settings.content }}</div>
+                </div>
+              </aside>
+
+            {% when 'faq' %}
+              <details id="{{ block.id }}" class="crab-faq" {% if block.settings.open_by_default %}open{% endif %} style="margin: {{ section.settings.block_gap }}px 0;">
+                <summary class="faq-q" aria-expanded="{% if block.settings.open_by_default %}true{% else %}false{% endif %}">
+                  <span class="faq-q-text">{{ block.settings.question }}</span>
+                  <span class="faq-icon" aria-hidden="true">
+                    <svg class="icon-plus" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                    <svg class="icon-minus" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
+                  </span>
+                </summary>
+                <div class="faq-a-wrap"><div class="faq-a rte">{{ block.settings.answer }}</div></div>
+              </details>
+
+            {%- comment -%} -------- Two-column table blocks -------- {%- endcomment -%}
+            {% when 'table_start' %}
+              {% if table_open %}</div>{% assign table_open = false %}{% endif %}
+              <div
+                id="{{ block.id }}"
+                class="crab-table"
+                role="table"
+                aria-label="{{ block.settings.aria_label | escape }}"
+                style="--ct-border: {{ block.settings.border_color }};"
+              >
+                <div class="ct-row ct-header" role="row">
+                  <div class="ct-cell ct-c1" role="columnheader">{{ block.settings.col1_heading }}</div>
+                  <div class="ct-cell ct-c2" role="columnheader">{{ block.settings.col2_heading }}</div>
+                </div>
+              {% assign table_open = true %}
+
+            {% when 'table_row' %}
+              {% if table_open %}
+                <div class="ct-row" role="row" id="{{ block.id }}">
+                  <div class="ct-cell ct-c1" role="cell" style="text-align: {{ block.settings.align_left }}">{{ block.settings.left | escape }}</div>
+                  <div class="ct-cell ct-c2 rte" role="cell" style="text-align: {{ block.settings.align_right }}">{{ block.settings.right }}</div>
+                </div>
+              {% endif %}
+
+            {% when 'table_end' %}
+              {% if table_open %}</div>{% assign table_open = false %}{% endif %}
+
+          {% endcase %}
+        {% endfor %}
+
+        {% if faq_group_open %}</div>{% assign faq_group_open = false %}{% endif %}
+        {% if table_open %}</div>{% assign table_open = false %}{% endif %}
+      </div>
+    </div>
+  {% endcapture %}
+
+  {% if section.settings.enable_section_collapse %}
+    <details class="crab-section-collapsible" {% unless section.settings.section_start_collapsed %}open{% endunless %}>
+      <summary class="crab-section-summary">
+        <span class="summary-label">{{ section.settings.section_collapse_label }}</span>
+        <span class="summary-icon" aria-hidden="true">
+          <svg class="icon-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </span>
+      </summary>
+      <div class="crab-collapsible-body">{{ crab_inner }}</div>
+    </details>
+  {% else %}
+    {{ crab_inner }}
+  {% endif %}
+</section>
+
+<style>
+  /* Section padding + background (editor controlled) */
+  .crab.section-outer { padding-top: var(--section-pt, 24px); padding-bottom: var(--section-pb, 24px); background: var(--section-bg, transparent); }
+
+  .crab .section-inner { margin: 0 auto; font-size: var(--crab-body-size); line-height: 1.6; color: var(--crab-body-color); }
+  @media (max-width: 749px) { .crab .section-inner { padding-left: 20px; padding-right: 20px; } }
+
+  .crab .section-title { margin: 0 0 0.75em; font-weight: 700; color: var(--crab-heading-color); }
+
+  /* Headings & titles pick heading color */
+  .crab .crab-heading,
+  .crab .faq-group-title,
+  .crab .faq-q,
+  .crab .callout-title { color: var(--crab-heading-color); }
+
+  /* FAQ */
+  .crab-faq { border: 1px solid rgba(0,0,0,.12); border-radius: 12px; padding: 10px 14px; background: rgba(0,0,0,.02); }
+  .crab-faq + .crab-faq { margin-top: 12px; }
+  .crab-faq .faq-q { cursor: pointer; font-weight: 700; display: flex; align-items: center; justify-content: space-between; }
+  .crab-faq .faq-icon { display: inline-flex; margin-left: 8px; }
+  .crab-faq .icon-minus { display: none; }
+  .crab-faq[open] .icon-plus { display: none; }
+  .crab-faq[open] .icon-minus { display: inline; }
+  .crab-faq .faq-a-wrap { overflow: hidden; max-height: 0; transition: max-height 0.28s ease; }
+  /* Fallback: answers visible even if JS doesn't run */
+  .crab-faq[open] .faq-a-wrap { max-height: 1000px; }
+  .crab-faq .faq-a { padding-top: 8px; }
+
+  /* Images: 1:1 ratio + radius */
+  #collection-rich-article-{{ section.id }} .crab-figure { border-radius: 10px; overflow: hidden; aspect-ratio: 1 / 1; }
+  #collection-rich-article-{{ section.id }} img.crab-img { width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 10px !important; display: block; }
+
+  /* FAQ Group */
+  .crab-faq-group { border: 1px solid var(--faqg-border, rgba(0,0,0,.16)); border-radius: 14px; padding: 16px; margin: 20px 0; background: var(--faqg-bg, #fff); box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+  .crab-faq-group.variant-subtle { background: rgba(0,0,0,.02); }
+  .crab-faq-group.variant-plain  { background: transparent; box-shadow: none; }
+  .crab-faq-group .faq-group-title { font-weight: 700; margin: 0 0 8px; color: var(--crab-accent); }
+  .crab-faq-group.with-brand { padding-top: 12px; }
+  .crab-faq-group .faq-brand-header { display: flex; align-items: center; gap: 10px; margin: 4px 0 12px; }
+  .crab-faq-group .faq-brand-icon { width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--crab-accent); color: #fff; }
+  .crab-faq-group .faq-brand-title { font-weight: 800; letter-spacing: .01em; }
+
+  /* Callouts */
+  .crab-callout { border-radius: 12px; padding: 16px 18px; border: 1px solid rgba(0,0,0,.15); background: rgba(0,0,0,.02); }
+  .crab-callout.bordered { border-color: rgba(0,0,0,.22); background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+  .crab-callout.accent-bar { position: relative; }
+  .crab-callout.accent-bar::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--crab-accent); border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+  .crab-callout .callout-title { font-weight: 700; margin-bottom: 6px; }
+  .crab-callout .callout-body :where(p, ul, ol) { margin: 0 0 .75em; }
+
+  /* Quote accent refresh */
+  #collection-rich-article-{{ section.id }} .crab-quote { padding: 16px 20px; border-left: 4px solid var(--crab-accent); border-radius: 10px; background: rgba(14,24,47,.05); background: color-mix(in srgb, var(--crab-accent) 8%, transparent); }
+  #collection-rich-article-{{ section.id }} .crab-quote .quote-cite { display: block; margin-top: 8px; font-size: 0.9em; opacity: 0.9; color: var(--crab-accent); }
+
+  /* Quote style toggle (support both kebab and underscore variants) */
+  #collection-rich-article-{{ section.id }}.quote-style-bar_tint .crab-quote { background: color-mix(in srgb, var(--crab-accent) 8%, transparent); }
+  #collection-rich-article-{{ section.id }}.quote-style-bar_only .crab-quote { background: transparent; }
+  #collection-rich-article-{{ section.id }}.quote-style-bar-tint .crab-quote { background: color-mix(in srgb, var(--crab-accent) 8%, transparent); }
+  #collection-rich-article-{{ section.id }}.quote-style-bar-only .crab-quote { background: transparent; }
+
+  /* ----- Two-column table ----- */
+  .crab .crab-table { width: 100%; margin: 20px 0; border: 1px solid var(--ct-border, rgba(0,0,0,.12)); border-radius: 12px; overflow: hidden; }
+  .crab .crab-table .ct-row { display: grid; grid-template-columns: 1.1fr 1fr; gap: 0; border-top: 1px solid var(--ct-border, rgba(0,0,0,.12)); }
+  .crab .crab-table .ct-row:first-child { border-top: 0; }
+  .crab .crab-table .ct-header { background: rgba(0,0,0,.03); font-weight: 700; color: var(--crab-heading-color); }
+  .crab .crab-table .ct-cell { padding: 16px 18px; vertical-align: top; }
+  .crab .crab-table .ct-c2 { word-break: break-word; }
+
+  /* Mobile stacking */
+  @media (max-width: 749px) {
+    .crab .crab-table .ct-row { grid-template-columns: 1fr; }
+    .crab .crab-table .ct-header { display: none; }
+    .crab .crab-table .ct-row .ct-cell { padding: 12px 16px; }
+    .crab .crab-table .ct-row .ct-c1 { border-bottom: 1px dashed var(--ct-border, rgba(0,0,0,.12)); font-weight: 600; color: var(--crab-heading-color); }
+  }
+
+  /* Collapsible Section: rounded header + narrow collapsed width + clean borders */
+  .crab-section-collapsible { border: 1px solid rgba(0,0,0,.12); border-radius: 12px; background: transparent; padding: 0; box-shadow: 0 1px 2px rgba(0,0,0,.03); overflow: hidden; max-width: var(--crab-collapsed-maxw, 820px); margin-left: auto; margin-right: auto; transition: max-width .3s ease, border-radius .2s ease; }
+  .crab-section-collapsible[open] { max-width: var(--crab-maxw); }
+  .crab-section-summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; font-weight: 700; color: var(--crab-heading-color); border-top-left-radius: 12px; border-top-right-radius: 12px; background: var(--crab-summary-bg, transparent); transition: background-color .2s ease; }
+  .crab-section-summary .summary-icon { display: inline-flex; margin-left: 8px; gap: 4px; }
+  .crab-section-summary .summary-icon svg { transition: transform .25s ease; }
+  .crab-section-collapsible[open] .crab-section-summary { background: var(--crab-summary-bg-open, transparent); }
+  .crab-section-collapsible[open] .crab-section-summary .summary-icon svg { transform: rotate(180deg); }
+
+  .crab-collapsible-body { overflow: hidden; max-height: 0; transition: max-height 0.3s ease; padding: 16px 20px; }
+  /* NEW: No-JS fallback so content shows when <details open> */
+  .crab-section-collapsible[open] .crab-collapsible-body { max-height: 5000px; }
+</style>
+
+{% schema %}
+{
+  "name": "Rich Article",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "section_title", "label": "Optional section title", "default": "Collection Story" },
+    { "type": "select", "id": "global_align", "label": "Default text alignment", "default": "left", "options": [
+      { "value": "left", "label": "Left" },
+      { "value": "center", "label": "Center" },
+      { "value": "right", "label": "Right" },
+      { "value": "justify", "label": "Justify" }
+    ] },
+    { "type": "checkbox", "id": "enable_toc", "label": "Show table of contents", "default": true },
+    { "type": "text", "id": "toc_title", "label": "TOC title", "default": "On this page" },
+    { "type": "checkbox", "id": "show_heading_anchors", "label": "Show anchor links on headings", "default": true },
+    { "type": "range", "id": "body_size", "label": "Base body size (px)", "min": 14, "max": 22, "step": 1, "unit": "px", "default": 16 },
+    { "type": "select", "id": "heading_weight", "label": "Heading font weight", "default": "700", "options": [
+      { "value": "600", "label": "Semi-bold (600)" },
+      { "value": "700", "label": "Bold (700)" },
+      { "value": "800", "label": "Extra Bold (800)" }
+    ] },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#0E182F" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#0E182F" },
+    { "type": "color", "id": "body_color", "label": "Body text color", "default": "#111827" },
+    { "type": "range", "id": "max_width", "label": "Max content width (px)", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 1000 },
+    { "type": "range", "id": "block_gap", "label": "Spacing between blocks (px)", "min": 8, "max": 80, "step": 2, "unit": "px", "default": 20 },
+
+    /* Section spacing + background */
+    { "type": "range", "id": "padding_top", "label": "Top padding (px)", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (px)", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 24 },
+    { "type": "color_background", "id": "section_bg", "label": "Section background", "default": "transparent" },
+
+    /* Section-level collapsible controls */
+    { "type": "header", "content": "Section collapse (optional)" },
+    { "type": "checkbox", "id": "enable_section_collapse", "label": "Make this entire section collapsible", "default": false },
+    { "type": "text", "id": "section_collapse_label", "label": "Collapse label", "default": "Show content" },
+    { "type": "checkbox", "id": "section_start_collapsed", "label": "Start collapsed", "default": false },
+    { "type": "range", "id": "section_collapsed_max_width", "label": "Collapsed max width (px)", "min": 480, "max": 1200, "step": 10, "unit": "px", "default": 820 },
+    { "type": "color", "id": "section_summary_bg", "label": "Collapsed header background", "default": "transparent" },
+    { "type": "color", "id": "section_summary_bg_open", "label": "Open header background", "default": "transparent" },
+
+    /* FAQ & quote style toggles */
+    { "type": "checkbox", "id": "faqs_start_collapsed", "label": "Start FAQs collapsed (override per-item)", "default": false },
+    { "type": "checkbox", "id": "faqs_accordion_mode", "label": "Accordion mode (only one open)", "default": false },
+    { "type": "select", "id": "quote_style", "label": "Quote style", "default": "bar_tint", "options": [
+      { "value": "bar_tint", "label": "Bar + tinted background" },
+      { "value": "bar_only", "label": "Bar only (no tint)" }
+    ] }
+  ],
+  "blocks": [
+    { "type": "faq_group_start", "name": "FAQ Group — Start", "settings": [
+      { "type": "text", "id": "title", "label": "FAQ group title" },
+      { "type": "select", "id": "variant", "label": "Style", "default": "default", "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "subtle", "label": "Subtle" },
+        { "value": "plain", "label": "Plain" }
+      ] },
+      { "type": "color", "id": "bg_color", "label": "Group background", "default": "#FFFFFF" },
+      { "type": "color", "id": "border_color", "label": "Group border color", "default": "#E5E7EB" },
+      { "type": "checkbox", "id": "brand_header", "label": "Use BEDGEAR Q&A header", "default": true },
+      { "type": "text", "id": "brand_title", "label": "Header title", "default": "BEDGEAR Q&A" },
+      { "type": "select", "id": "brand_icon", "label": "Header icon", "default": "chat", "options": [
+        { "value": "chat", "label": "Chat bubble" },
+        { "value": "help", "label": "Question mark" },
+        { "value": "shield", "label": "Shield" }
+      ] }
+    ] },
+    { "type": "faq_group_end", "name": "FAQ Group — End", "settings": [] },
+
+    { "type": "heading", "name": "Heading", "settings": [
+      { "type": "select", "id": "level", "label": "Heading level", "default": "h2", "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ] },
+      { "type": "text", "id": "text", "label": "Heading text", "default": "Your heading" },
+      { "type": "select", "id": "align", "label": "Alignment override", "default": "left", "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+        { "value": "justify", "label": "Justify" }
+      ] }
+    ] },
+
+    { "type": "text", "name": "Text", "settings": [
+      { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Add your paragraph, lists, and links here.</p>" },
+      { "type": "select", "id": "align", "label": "Alignment override", "default": "left", "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+        { "value": "justify", "label": "Justify" }
+      ] }
+    ] },
+
+    { "type": "quote", "name": "Quote", "settings": [
+      { "type": "richtext", "id": "quote", "label": "Quote text", "default": "<p>This is a featured pull-quote.</p>" },
+      { "type": "text", "id": "cite", "label": "Citation (optional)" },
+      { "type": "select", "id": "align", "label": "Alignment override", "default": "left", "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+        { "value": "justify", "label": "Justify" }
+      ] }
+    ] },
+
+    { "type": "image", "name": "Image", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "alt", "label": "Alt text" },
+      { "type": "range", "id": "width", "label": "Image width (% of container)", "min": 30, "max": 100, "step": 5, "unit": "%", "default": 100 },
+      { "type": "select", "id": "float", "label": "Float on desktop", "default": "center", "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ] },
+      { "type": "richtext", "id": "caption", "label": "Caption (optional)" },
+      { "type": "select", "id": "align", "label": "Alignment override", "default": "left", "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+        { "value": "justify", "label": "Justify" }
+      ] }
+    ] },
+
+    { "type": "callout", "name": "Callout", "settings": [
+      { "type": "select", "id": "variant", "label": "Style", "default": "info", "options": [
+        { "value": "info", "label": "Info" },
+        { "value": "success", "label": "Success" },
+        { "value": "warning", "label": "Warning" },
+        { "value": "danger", "label": "Danger" }
+      ] },
+      { "type": "checkbox", "id": "bordered", "label": "Bordered panel", "default": true },
+      { "type": "checkbox", "id": "accent_bar", "label": "Accent bar on the left", "default": true },
+      { "type": "text", "id": "title", "label": "Title", "default": "Heads up" },
+      { "type": "richtext", "id": "content", "label": "Body", "default": "<p>Helpful context.</p>" },
+      { "type": "select", "id": "align", "label": "Alignment override", "default": "left", "options": [
+        { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }, { "value": "justify", "label": "Justify" }
+      ] }
+    ] },
+
+    { "type": "faq", "name": "FAQ", "settings": [
+      { "type": "text", "id": "question", "label": "Question", "default": "What is your return policy?" },
+      { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>We offer a 30-night sleep trial. See our returns page for details.</p>" },
+      { "type": "checkbox", "id": "open_by_default", "label": "Open by default", "default": false }
+    ] },
+
+    /* Two-column table blocks */
+    { "type": "table_start", "name": "Table — Start", "settings": [
+      { "type": "text", "id": "aria_label", "label": "Accessible table label", "default": "Product patents table" },
+      { "type": "text", "id": "col1_heading", "label": "Left column heading", "default": "Product" },
+      { "type": "text", "id": "col2_heading", "label": "Right column heading", "default": "Patent(s) and patent(s) pending" },
+      { "type": "color", "id": "border_color", "label": "Border color", "default": "#E5E7EB" }
+    ]},
+    { "type": "table_row", "name": "Table — Row", "settings": [
+      { "type": "text", "id": "left", "label": "Left cell (plain text)", "default": "Kardex Shuttle" },
+      { "type": "richtext", "id": "right", "label": "Right cell (supports links)", "default": "<p>US9242795B2</p>" },
+      { "type": "select", "id": "align_left", "label": "Left cell alignment", "default": "left", "options": [
+        { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }, { "value": "justify", "label": "Justify" }
+      ]},
+      { "type": "select", "id": "align_right", "label": "Right cell alignment", "default": "left", "options": [
+        { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }, { "value": "justify", "label": "Justify" }
+      ]}
+    ]},
+    { "type": "table_end", "name": "Table — End", "settings": [] }
+  ],
+  "presets": [
+    { "name": "Rich Article", "category": "Collection pages", "blocks": [
+      { "type": "heading" },
+      { "type": "text" },
+      { "type": "faq_group_start" },
+      { "type": "faq" },
+      { "type": "faq" },
+      { "type": "faq_group_end" }
+    ] }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+/* Smooth expand/collapse + section-level options for FAQ; supports FAQ groups AND section wrapper */
+(function () {
+  try {
+    /* Scope to THIS section instance */
+    var root = document.getElementById('collection-rich-article-{{ section.id }}');
+    if (!root) return;
+
+    var faqs = Array.prototype.slice.call(root.querySelectorAll('.crab-faq'));
+    var startCollapsed = root.dataset.startCollapsed === "true";
+    var accordion = root.dataset.accordion === "true";
+
+    function setHeight(det, open) {
+      var wrap = det.querySelector('.faq-a-wrap');
+      var summary = det.querySelector('summary.faq-q');
+      if (!wrap || !summary) return;
+      wrap.style.maxHeight = open ? wrap.scrollHeight + 'px' : '0px';
+      summary.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    function closeOthers(current) {
+      var group = current.closest('.crab-faq-group') || root;
+      Array.prototype.slice.call(group.querySelectorAll('.crab-faq')).forEach(function (det) {
+        if (det !== current && det.open) {
+          det.open = false;
+          setHeight(det, false);
+        }
+      });
+    }
+
+    /* Initialize FAQs */
+    faqs.forEach(function (det) {
+      if (startCollapsed) det.open = false;
+      setHeight(det, det.open);
+      det.addEventListener('toggle', function () {
+        setHeight(det, det.open);
+        if (accordion && det.open) closeOthers(det);
+      });
+    });
+
+    /* Keep FAQ heights accurate */
+    if ('ResizeObserver' in window) {
+      var ro = new ResizeObserver(function () {
+        faqs.forEach(function (det) { if (det.open) setHeight(det, true); });
+      });
+      faqs.forEach(function (det) {
+        var wrap = det.querySelector('.faq-a-wrap');
+        if (wrap) ro.observe(wrap);
+      });
+    } else {
+      window.addEventListener('resize', function () {
+        faqs.forEach(function (det) { if (det.open) setHeight(det, true); });
+      });
+    }
+
+    /* Section-level collapsible */
+    var sectionIsCollapsible = root.dataset.sectionCollapsible === "true";
+    if (sectionIsCollapsible) {
+      var sectionDetails = root.querySelector('.crab-section-collapsible');
+      var sectionBody = sectionDetails && sectionDetails.querySelector('.crab-collapsible-body');
+      var sectionSummary = sectionDetails && sectionDetails.querySelector('.crab-section-summary');
+
+      function setSectionHeight(open) {
+        if (!sectionBody) return;
+        sectionBody.style.maxHeight = open ? sectionBody.scrollHeight + 'px' : '0px';
+        if (sectionSummary) sectionSummary.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      if (sectionDetails) {
+        var startCollapsedSection = root.dataset.sectionStartCollapsed === "true";
+        if (startCollapsedSection) sectionDetails.open = false;
+
+        /* Initial measurement */
+        setSectionHeight(sectionDetails.open);
+
+        /* Recalc on toggle (+ microtask for late layout) */
+        sectionDetails.addEventListener('toggle', function () {
+          setSectionHeight(sectionDetails.open);
+          if (sectionDetails.open) requestAnimationFrame(function(){ setSectionHeight(true); });
+        });
+
+        /* Recalc on size/content changes */
+        if ('ResizeObserver' in window) {
+          var ro2 = new ResizeObserver(function () {
+            if (sectionDetails.open) setSectionHeight(true);
+          });
+          if (sectionBody) ro2.observe(sectionBody);
+        } else {
+          window.addEventListener('resize', function () {
+            if (sectionDetails.open) setSectionHeight(true);
+          });
+        }
+
+        /* Re-measure when images finish loading inside the body */
+        if (sectionBody) {
+          sectionBody.querySelectorAll('img').forEach(function(img){
+            if (img.complete) return;
+            img.addEventListener('load', function(){
+              if (sectionDetails.open) setSectionHeight(true);
+            });
+          });
+        }
+      }
+    }
+  } catch (e) {}
+})();
+{% endjavascript %}

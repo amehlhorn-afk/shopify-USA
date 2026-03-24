@@ -1,0 +1,220 @@
+{% schema %}
+{
+  "name": "Full Width Video Banner",
+  "tag": "section",
+  "class": "video-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "desktop_video",
+      "label": "Desktop Video URL (MP4 or YouTube)"
+    },
+    {
+      "type": "text",
+      "id": "mobile_video",
+      "label": "Mobile Video URL (MP4 or YouTube)"
+    },
+    {
+      "type": "text",
+      "id": "small_heading",
+      "label": "Small Heading",
+      "default": "Greatness isn't just made on the court"
+    },
+    {
+     "type": "image_picker",
+      "id": "large_heading_image",
+      "label": "Large Heading Image"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Get the sleep gear that fuels PJ Washington’s game."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "SLEEP LIKE PJ"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link"
+    },
+    {
+  "type": "image_picker",
+  "id": "bottom_image",
+  "label": "PNG Image Below CTA"
+}
+  ],
+  "presets": [
+    {
+      "name": "Full Width Video Banner"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+                 .video-banner {
+                  position: relative;
+                  width: 100%;
+                  overflow: hidden;
+                }
+                .video-banner video {
+                  width: 100%;
+                  height: 656px;
+                  object-fit: cover;
+                }
+                .video-banner .overlay {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  color: #fff;
+                  text-align: center;
+                  padding: 2rem;
+                }
+                .video-banner .large-heading-image {
+                  max-width: 876px;
+                  height: auto;
+                  margin-top: 12px;
+                  margin-bottom: 24px;
+                }
+                .small-eyebrow {
+                  color: #fff;
+                  text-align: center;
+                  font-family: Roboto;
+                  font-size: 22px;
+                  font-style: normal;
+                  font-weight: 500;
+                  line-height: normal;
+                  letter-spacing: 1px;
+                  margin-top: 50px;
+                }
+                .sub-heading {
+                  color: #FFF;
+              text-align: center;
+              font-family: Roboto;
+              font-size: 20px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: normal;
+                  margin-bottom: 40px;
+                }
+                .video-banner .cta {
+                  margin-top: 1.5rem;
+                  padding: 2rem 3rem;
+                  background: white;
+                  color: #00b5e3;
+                  border-radius: 9999px;
+                  text-decoration: none;
+          font-size: 16px;
+                    transition: background 0.3s ease, color 0.3s ease;
+                }
+
+  .cta:hover {
+      background-color: #00b5e3 !important;
+      color: white !important;
+    }
+
+          .video-banner .bottom-image {
+          margin-top: -25px;
+          height: 200px;
+          width: 100%;
+        }
+              @media (max-width: 768px) {
+
+
+              .small-eyebrow {
+                font-size: 14px;
+                letter-spacing: 1px;
+              }
+
+              .sub-heading {
+                font-size: 16px;
+              }
+
+              .large-heading-image {
+                width: 100%;
+              }
+
+              .video-banner .cta {
+                font-size: 16px;
+                padding: 2rem 3rem;
+              }
+
+            }
+{% endstyle %}
+
+<div class="video-banner">
+  <video
+    autoplay
+    loop
+    muted
+    playsinline
+    id="video-desktop"
+    {% if section.settings.desktop_video %}
+      src="{{ section.settings.desktop_video }}"
+    {% endif %}
+  ></video>
+
+  <video
+    autoplay
+    loop
+    muted
+    playsinline
+    id="video-mobile"
+    style="display: none;"
+    {% if section.settings.mobile_video %}
+      src="{{ section.settings.mobile_video }}"
+    {% endif %}
+  ></video>
+
+  <div class="overlay">
+    <p class="small-eyebrow">{{ section.settings.small_heading }}</p>
+    {% if section.settings.large_heading_image %}
+      <img
+        src="{{ section.settings.large_heading_image | image_url }}"
+        alt="Heading"
+        class="large-heading-image"
+      >
+    {% endif %}
+    <p class="sub-heading">{{ section.settings.subtext }}</p>
+    {% if section.settings.cta_link %}
+      <a href="{{ section.settings.cta_link }}" class="cta">{{ section.settings.cta_text }}</a>
+    {% endif %}
+    {% if section.settings.bottom_image %}
+      <img
+        src="{{ section.settings.bottom_image | image_url }}"
+        alt="Bottom Image"
+        class="bottom-image"
+      >
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  const desktopVideo = document.getElementById('video-desktop');
+  const mobileVideo = document.getElementById('video-mobile');
+
+  function handleResize() {
+    if (window.innerWidth <= 768) {
+      desktopVideo.style.display = 'none';
+      mobileVideo.style.display = 'block';
+    } else {
+      desktopVideo.style.display = 'block';
+      mobileVideo.style.display = 'none';
+    }
+  }
+
+  window.addEventListener('resize', handleResize);
+  window.addEventListener('load', handleResize);
+</script>

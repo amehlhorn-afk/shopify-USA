@@ -1,0 +1,315 @@
+{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+
+{% style %}  
+  @media (min-width:990px){
+      .section-{{ section.id }}-padding{
+          padding-top:{{ section.settings.desktop_padding_top }}px;
+          padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+      }
+  }
+  @media (max-width:989px){
+      .section-{{ section.id }}-padding{
+          padding-top:{{ section.settings.mobile_padding_top }}px;
+          padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+      }
+  }
+{% endstyle %}
+
+{%- paginate blog.articles by 12 -%}
+  <div class="main-blog page-width section-{{ section.id }}-padding">
+    <div class="block__blog_header flex gap-10 items-center">
+      <div class="block_blog_title-tag ">
+        <h1 class=" primary_h2 {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+          {{ blog.title | escape }}
+        </h1>
+      </div>
+      <div class="block__filter-wrapper flex gap-8 items-center">
+        <button type="button" class="slider-button small-hide medium-hide  slider-button--prev flex items-center justify-center  border-none ">
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" viewBox="0 0 10 18" fill="none">
+            <path d="M0.763 9.474L9.289 18V0.948L0.763 9.474Z" fill="var(--selection-color)"/>
+          </svg>
+        </button>
+        <div class="block__filter-list line-height swiper overflow-hidden  flex relative">
+          <ul class="items-center swiper-wrapper">
+            {% assign tagVal = 'All,' %}
+
+            {% for tag in blog.all_tags %}
+              {% assign tagname = tag | append: ',' %}
+              {% assign tagVal = tagVal | append: tagname %}
+            {% endfor %}
+
+            {% assign tagloop = tagVal | split: ',' | uniq %}
+            {% for tag in tagloop %}
+              {% assign tagHandle = tag | handle %}
+
+              {% if forloop.first %}
+                <li class="swiper-slide">
+                  <a
+                    href="{{ blog.url }}"
+                    class="tag_name body {% if canonical_url contains 'tagged' %}{% else %}active{% endif %} inline-block "
+                    data-scroll-url="{{ blog.url }}"
+                  >
+                    {{ tag }}
+                  </a>
+                </li>
+              {% else %}
+                <li class="swiper-slide">
+                  <a
+                    href="{{ blog.url }}/tagged/{{ tag | handle }}"
+                    class="tag_name body {% if canonical_url contains tagHandle %}active{% endif %} inline-block"
+                    data-scroll-url="{{ blog.url }}/tagged/{{ tag | handle }}"
+                  >
+                    {{- tag -}}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {%- comment -%} Custom Navigation Buttons {%- endcomment -%}
+            {% for block in section.blocks %}
+              {% if block.type == 'navigation_button' %}
+                <li class="swiper-slide" {{ block.shopify_attributes }}>
+                  <a
+                    href="{{ block.settings.button_link }}"
+                    class="tag_name body {% if canonical_url == block.settings.button_link %}active{% endif %} inline-block"
+                  >
+                    {{ block.settings.button_label }}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        <button type="button" class="slider-button swiper-button--next small-hide medium-hide flex items-center justify-center border-none ">
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" viewBox="0 0 10 18" fill="none">
+            <path d="M9.23694 9.474L0.710938 18V0.947998L9.23694 9.474Z" fill="var(--selection-color)"/>
+          </svg>
+        </button>
+      </div>
+      <div class="blog-post-search-box senary-border-radius flex items-center gap-8 ">
+        {{- 'icon-search.svg' | inline_asset_content -}}
+        <input
+          type="search"
+          placeholder="Search"
+          class="extra_body filter-apply border-none"
+          id="filter-{{ section.id }}"
+        >
+      </div>
+    </div>
+    <div class="blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% endif %}">
+        {%- for article in blog.articles -%}
+          <div
+            class="blog-articles__article filter_box active article{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+              style="--animation-order: {{ forloop.index }};"
+            {% endif %}
+          >
+            {%- render 'article-card',
+              article: article,
+              media_height: section.settings.image_height,
+              media_aspect_ratio: article.image.aspect_ratio,
+              show_image: section.settings.show_image,
+              show_date: section.settings.show_date,
+              show_author: section.settings.show_author,
+              show_excerpt: section.settings.show_excerpt
+            -%}
+          </div>
+        {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}
+      <div onclick = "blogpagination(event , '{{ canonical_url }}')" class="block_blog-loadmore-button center button-primary"  data-totalpage="{{ paginate.pages }}" data-currentpage="{{ paginate.current_page | plus:1 }}">
+          {{'blogs.article.read_more' | t }}
+        </div> 
+    {%- endif -%}
+  </div>
+{%- endpaginate -%}
+<script type="text/javascript">
+  function handleTagClick(event, url) {
+    fblogpagination(event) 
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+      const blogTabCarousel = document.querySelector(".block__filter-list");
+      if (blogTabCarousel) {
+          var swiper = new Swiper(blogTabCarousel, {
+              slidesPerView: 'auto',
+              spaceBetween: 8,
+              navigation: {
+                  nextEl: ".swiper-button--next",
+                  prevEl: ".slider-button--prev ",
+              },
+              breakpoints: {
+                  200: {
+                      slidesPerView: 2.5,
+                      spaceBetween: 8,
+                  },
+                  768: {
+                      slidesPerView: 3.5,
+                      spaceBetween: 8,
+                  },
+                  992: {
+                      slidesPerView: 4,
+                      spaceBetween: 8,
+                  },
+                  1199: {
+                      slidesPerView:'auto',
+                      spaceBetween: 8,
+                  },
+              },
+          });
+      }
+  });
+</script>
+<script src="{{ 'main-blog.js' | asset_url }}" defer="defer"></script>  
+{% schema %}
+{
+  "name": "t:sections.main-blog.name",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "navigation_button",
+      "name": "Navigation Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Blog Category"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-blog.settings.header.content"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "t:sections.main-blog.settings.layout.options__1.label"
+        },
+        {
+          "value": "collage",
+          "label": "t:sections.main-blog.settings.layout.options__2.label"
+        }
+      ],
+      "default": "collage",
+      "label": "t:sections.main-blog.settings.layout.label",
+      "info": "t:sections.main-blog.settings.layout.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "default": false,
+      "label": "Excerpt Text"
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-blog.settings.image_height.options__1.label"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.main-blog.settings.image_height.options__2.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.main-blog.settings.image_height.options__3.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.main-blog.settings.image_height.options__4.label"
+        }
+      ],
+      "default": "medium",
+      "label": "t:sections.main-blog.settings.image_height.label",
+      "info": "t:sections.main-blog.settings.image_height.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-blog.settings.paragraph.content"
+    },
+    {
+        "type": "header",
+        "content": "Desktop Space"
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding Bottom",
+        "default": 16
+    },
+    {
+        "type": "header",
+        "content": "Mobile Space"
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding Bottom",
+        "default": 16
+    }
+  ]
+}
+{% endschema %}

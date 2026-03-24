@@ -1,0 +1,1440 @@
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{% if section.settings.image_shape == 'blob' %}
+  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- unless section.settings.quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+{%- endunless -%}
+
+{%- if section.settings.quick_add == 'standard' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if section.settings.quick_add == 'bulk' -%}
+  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- style -%}
+/* -- Custom card typography variables (respect theme settings) -- */
+.section-{{ section.id }}-padding{
+  --cc-head-size: {{ section.settings.custom_card_heading_size_desktop | default: 28 }}px;
+  --cc-sub-size:  {{ section.settings.custom_card_description_size_desktop | default: 16 }}px;
+}
+/* === CLP description: tighter to title + fully visible === */
+.section-{{ section.id }}-padding .clp-desc{
+  margin-top: 4px !important;   /* pull it closer to the title */
+  margin-bottom: 12px !important;
+  margin-bottom: 0;
+  font-size: 12px !important;
+  line-height: 1.35;
+  color: var(--color-foreground-75, #4b5563);
+
+  /* show all lines (no clamp) */
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: initial;
+}
+
+/* Dawn's "stack children with gaps" rule can push it down; neutralize just for this element */
+.section-{{ section.id }}-padding .card__information .clp-desc{
+  margin-top: 4px !important;  /* beats *.card__information > * + * spacing */
+}
+
+/* Horizontal/compact cards: a touch more breathing room, still close to the title */
+@media (min-width: 750px){
+  .section-{{ section.id }}-padding .horizontal-cards .clp-desc{
+    margin-top: 6px !important;
+    line-height: 1.4;
+  }
+}
+
+
+/* === Collection card short description (CLP) === */
+.section-{{ section.id }}-padding .clp-desc{
+  margin-top: 6px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--color-foreground-75, #4b5563);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2; /* default grid: 2 lines */
+}
+
+/* Make it a touch roomier in compact horizontal cards */
+@media (min-width: 750px){
+  .section-{{ section.id }}-padding .horizontal-cards .clp-desc{
+    -webkit-line-clamp: 3; /* 3 lines in horizontal layout */
+  }
+}
+
+
+@media (max-width: 749px){
+  .section-{{ section.id }}-padding{
+    --cc-head-size: {{ section.settings.custom_card_heading_size_mobile  | default: 22 }}px;
+    --cc-sub-size:  {{ section.settings.custom_card_description_size_mobile | default: 14 }}px;
+  }
+}
+
+/* === Vertical Stack Layout (safe & isolated) === */
+.section-{{ section.id }}-padding .product-list-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.section-{{ section.id }}-padding .product-list-vertical > li {
+  width: 100% !important;
+  max-width: 100%;
+}
+@media (max-width: 749px) {
+  .section-{{ section.id }}-padding .product-list-vertical { gap: 16px; }
+}
+/* Keep bulk quick-add compatible */
+.section-{{ section.id }}-padding .product-list-vertical.collection-quick-add-bulk {
+  display: flex;
+  flex-direction: column;
+}
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* === Custom Card Font Controls === */
+  .section-{{ section.id }}-padding .block__custom-card-content h3 {
+    font-size: {{ section.settings.custom_card_heading_size_desktop }}px;
+    line-height: 1.3;
+    font-weight: 600;
+  }
+
+  .section-{{ section.id }}-padding .block__custom-card-content p {
+    font-size: {{ section.settings.custom_card_description_size_desktop }}px;
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 749px) {
+    .section-{{ section.id }}-padding .block__custom-card-content h3 {
+      font-size: {{ section.settings.custom_card_heading_size_mobile }}px;
+    }
+
+    .section-{{ section.id }}-padding .block__custom-card-content p {
+      font-size: {{ section.settings.custom_card_description_size_mobile }}px;
+    }
+  }
+
+/* === Compact Horizontal Cards (safe & isolated) === */
+.section-{{ section.id }}-padding .horizontal-cards {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 24px;
+}
+.section-{{ section.id }}-padding .horizontal-cards > .grid__item {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 auto !important;
+}
+
+/* Don't transform your custom card */
+.section-{{ section.id }}-padding .horizontal-cards .is-custom-card {
+  display: block !important;
+}
+
+/* NEW: Make custom card match product card height in horizontal layout */
+@media (min-width: 750px) {
+  .section-{{ section.id }}-padding .horizontal-cards .is-custom-card .block__main-image {
+    height: {{ section.settings.compact_image_height_desktop | default: 220 }}px;
+  }
+  
+  .section-{{ section.id }}-padding .horizontal-cards .is-custom-card .block__image-inner {
+    height: 100%;
+  }
+  
+  .section-{{ section.id }}-padding .horizontal-cards .is-custom-card .block__image-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* Custom-card extras (scoped) */
+.section-{{ section.id }}-padding .is-custom-card .block__custom-card-content {
+  max-width: min(92%, 560px);
+  padding: 24px;
+}
+
+/* Centered text option */
+.section-{{ section.id }}-padding .is-custom-card .block__custom-card-content.cc--center {
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  text-align: center;
+}
+
+/* CTA pill */
+.section-{{ section.id }}-padding .is-custom-card .cc__btn {
+  display:inline-block; margin-top:16px; padding:10px 16px;
+  border-radius:9999px; text-decoration:none;
+  background:#fff; color:#111; font-weight:600;
+}
+
+/* Disclaimer */
+.section-{{ section.id }}-padding .is-custom-card .cc__disclaimer {
+  display:block; margin-top:10px; opacity:.9; font-size:.85em; line-height:1.3;
+}
+
+/* Partner logo positions */
+.section-{{ section.id }}-padding .is-custom-card .cc__logo { position:absolute; }
+.section-{{ section.id }}-padding .is-custom-card .cc-logo-tl { top:14px; left:14px; }
+.section-{{ section.id }}-padding .is-custom-card .cc-logo-tr { top:14px; right:14px; }
+.section-{{ section.id }}-padding .is-custom-card .cc-logo-bl { bottom:14px; left:14px; }
+.section-{{ section.id }}-padding .is-custom-card .cc-logo-br { bottom:14px; right:14px; }
+/* NEW: center top/bottom */
+.section-{{ section.id }}-padding .is-custom-card .cc-logo-ct { top:14px; left:50%; transform: translateX(-50%); }
+.section-{{ section.id }}-padding .is-custom-card .cc-logo-cb { bottom:14px; left:50%; transform: translateX(-50%); }
+.section-{{ section.id }}-padding .is-custom-card .cc__logo-img { height:32px; width:auto; display:block; }
+
+/* ===== Custom Card: Figma-style treatment (scoped) ===== */
+.section-{{ section.id }}-padding .is-custom-card .block__custom-card-content.cc--figma{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  /* place toward top (not dead-center) */
+  top: clamp(18px, 6.5%, 48px);
+  text-align: center;
+  /* wider readable column */
+  max-width: {{ section.settings.custom_card_figma_max_width | default: '92%' }};
+  width: {{ section.settings.custom_card_figma_max_width | default: '92%' }};
+  padding: clamp(12px, 2vw, 20px);
+}
+
+.section-{{ section.id }}-padding .is-custom-card .cc--figma .cc__heading{
+  font-size: var(--cc-head-size);
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+.section-{{ section.id }}-padding .is-custom-card .cc--figma .cc__sub{
+  font-size: var(--cc-sub-size);
+  margin: 0 auto;
+  line-height: 1.45;
+  max-width: 36em;
+}
+
+/* CTA below copy (optional) */
+.section-{{ section.id }}-padding .is-custom-card .cc--figma .cc__btn{
+  display:inline-block;
+  margin-top: 16px;
+  padding: 10px 16px;
+  border-radius: 9999px;
+  background:#fff;
+  color:#111;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* disclaimer sticks to bottom area, small and subtle */
+.section-{{ section.id }}-padding .is-custom-card .cc--figma .cc__disclaimer{
+  display:block;
+  margin-top: clamp(10px, 1.6vw, 14px);
+  font-size: clamp(10px, 1.6vw, 12px);
+  line-height: 1.3;
+  opacity: .9;
+}
+
+/* keep partner logo bottom-right per mock */
+.section-{{ section.id }}-padding .is-custom-card .cc__logo{ position:absolute; }
+.section-{{ section.id }}-padding .is-custom-card .cc-logo-br{ right: 16px; bottom: 18px; }
+.section-{{ section.id }}-padding .is-custom-card .cc__logo-img{ height: clamp(22px, 3vw, 32px); width:auto; display:block; }
+
+/* mobile tweaks */
+@media (max-width: 749px){
+  .section-{{ section.id }}-padding .is-custom-card .block__custom-card-content.cc--figma{
+    top: clamp(12px, 5.5%, 28px);
+    width: 92%;
+    max-width: 92%;
+    padding: 12px;
+  }
+}
+/* Fixed disclaimer: bottom-left, very small */
+.section-{{ section.id }}-padding .is-custom-card .cc__disclaimer-fixed{
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 2; /* above overlay */
+  max-width: calc(100% - 140px); /* leave room for bottom-right logo */
+  font-size: 7px;
+  line-height: 1.25;
+  color: var(--cc-text, #ffffff);
+  opacity: .95;
+  text-shadow: 0 1px 4px rgba(0,0,0,.25);
+  pointer-events: none; /* purely informational */
+}
+
+/* Keep ACS logo bottom-right */
+.section-{{ section.id }}-padding .is-custom-card .cc__logo{ position:absolute; }
+.section-{{ section.id }}-padding .is-custom-card .cc-logo-br{ right:16px; bottom:16px; }
+.section-{{ section.id }}-padding .is-custom-card .cc__logo-img{ height: clamp(18px, 2.8vw, 28px); width:auto; display:block; }
+
+/* Slightly tighter on small screens */
+@media (max-width: 749px){
+  .section-{{ section.id }}-padding .is-custom-card .cc__disclaimer-fixed{
+    left: 12px; bottom: 12px; max-width: calc(100% - 120px);
+    font-size: 7px; /* stays tiny per request */
+  }
+}
+
+/* Mobile niceties */
+@media (max-width: 749px){
+  .section-{{ section.id }}-padding .is-custom-card .block__custom-card-content { max-width: 94%; padding: 16px; }
+}
+
+/* ==== Fix title stretching so CLP desc can sit under it ==== */
+.section-{{ section.id }}-padding .card__heading,
+.section-{{ section.id }}-padding .product-card .card__heading,
+.section-{{ section.id }}-padding .card__information .card__heading {
+  height: auto !important;
+  min-height: 0 !important;
+  flex: 0 0 auto !important; /* don't grow */
+  margin-bottom: 2px;        /* keep it tight to the blurb */
+}
+
+/* Some themes set the <a> to fill height—undo that too */
+.section-{{ section.id }}-padding .card__heading > .full-unstyled-link {
+  display: inline !important;
+  height: auto !important;
+}
+
+/* Horizontal cards: ensure the title doesn't stretch inside flex columns */
+@media (min-width: 750px){
+  .section-{{ section.id }}-padding .horizontal-cards .card__heading {
+    align-self: flex-start !important;
+  }
+}
+
+/* CLP description sits close to title */
+.section-{{ section.id }}-padding .clp-desc{
+  margin-top: 6px !important;
+  margin-bottom: 0;
+  line-height: 1.4;
+  color: var(--color-foreground-75, #4b5563);
+  display: block;
+  overflow: visible;
+}
+
+/* === CLP 2×2 features under title/description === */
+.section-{{ section.id }}-padding .clp-features{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 12px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+.section-{{ section.id }}-padding .clp-feature{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.3;
+  font-size: 0.92rem;
+  color: var(--color-foreground-75, #4b5563);
+}
+.section-{{ section.id }}-padding .clp-feature img{
+  width: 28px; height: 28px; object-fit: contain; flex: 0 0 28px;
+}
+
+/* Horizontal/compact cards get a touch more room */
+@media (min-width: 750px){
+  .section-{{ section.id }}-padding .horizontal-cards .clp-features{
+    margin-top: 10px;
+    gap: 10px 16px;
+  }
+}
+
+/* Force card wrapper to ROW (overrides any .flex-col) */
+@media (min-width: 750px) {
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .card,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .card--product,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .card-wrapper,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .product-card,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item > .flex,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item > .flex-col {
+    flex-direction: row !important;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  /* Left media column */
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .card__inner,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .product-media,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .media-wrapper {
+    flex: 0 0 38% !important;
+    max-width: 38% !important;
+    height: {{ section.settings.compact_image_height_desktop | default: 220 }}px;
+    overflow: hidden;
+    border-radius: var(--media-radius, 12px);
+  }
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .card__inner .media,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .card__inner img,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .media-wrapper img,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .product-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Right content column (FIXED) */
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .card__content,
+  .section-{{ section.id }}-padding .horizontal-cards .grid__item .card__information {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* === NEW: Tighter vertical spacing in horizontal cards === */
+.section-{{ section.id }}-padding .horizontal-cards .card__information > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.section-{{ section.id }}-padding .horizontal-cards .card__heading {
+  margin-bottom: 4px !important;
+}
+
+.section-{{ section.id }}-padding .horizontal-cards .clp-desc {
+  margin-top: 4px !important;
+  margin-bottom: 6px !important;
+}
+
+.section-{{ section.id }}-padding .horizontal-cards .clp-features {
+  margin-top: 6px !important;
+  margin-bottom: 8px !important;
+}
+
+.section-{{ section.id }}-padding .horizontal-cards .price {
+  margin-top: 8px !important;
+  margin-bottom: 0 !important;
+}
+
+.section-{{ section.id }}-padding .horizontal-cards .quick-add {
+  margin-top: 8px !important;
+}
+
+/* === Change CTA text to "Quick Add" and remove cart icon === */
+/* Simple text replacement - hide original, show new */
+.section-{{ section.id }}-padding .horizontal-cards .quick-add__submit span:not(.sold-out-message) {
+  display: none;
+}
+
+.section-{{ section.id }}-padding .horizontal-cards .quick-add__submit svg {
+  display: none !important;
+}
+
+.section-{{ section.id }}-padding .horizontal-cards .quick-add__submit::before {
+  content: 'Quick Add';
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* === Mobile: Price and CTA side by side === */
+@media (max-width: 749px) {
+  /* Force the container to display as flex on mobile only */
+  .section-{{ section.id }}-padding .horizontal-cards .card__information {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+  }
+  
+  /* All children take full width by default */
+  .section-{{ section.id }}-padding .horizontal-cards .card__information > * {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+  }
+  
+  /* Price and Quick Add break the rule - they share a row */
+  .section-{{ section.id }}-padding .horizontal-cards .card__information > .price {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    margin-right: 12px !important;
+    margin-bottom: 0 !important;
+  }
+  
+  .section-{{ section.id }}-padding .horizontal-cards .card__information > .quick-add {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+  }
+}
+
+/* Desktop - ensure button stays full width */
+@media (min-width: 750px) {
+  .section-{{ section.id }}-padding .horizontal-cards .quick-add {
+    width: 100% !important;
+  }
+}
+
+/* === NEW: content XY controls + layout variables applied globally to custom card content === */
+.section-{{ section.id }}-padding .is-custom-card .block__custom-card-content{
+  /* defaults, overridden via inline style */
+  --cc-x: 0%;
+  --cc-y: 0%;
+  --cc-x-m: var(--cc-x);
+  --cc-y-m: var(--cc-y);
+  --cc-max: 92%;
+  --cc-max-m: var(--cc-max);
+  --cc-pad: 16px;
+  --cc-pad-m: var(--cc-pad);
+  --cc-align: left;
+  --cc-align-m: var(--cc-align);
+
+  max-width: var(--cc-max);
+  width: var(--cc-max);
+  padding: var(--cc-pad);
+  text-align: var(--cc-align);
+}
+
+/* Centered variant uses true center + offsets */
+.section-{{ section.id }}-padding .is-custom-card .block__custom-card-content.cc--center{
+  position:absolute;
+  top:50%; left:50%;
+  transform: translate(calc(-50% + var(--cc-x)), calc(-50% + var(--cc-y)));
+}
+/* Figma variant keeps top-center baseline but allows XY nudging */
+.section-{{ section.id }}-padding .is-custom-card .block__custom-card-content.cc--figma{
+  transform: translate(calc(-50% + var(--cc-x)), var(--cc-y));
+  max-width: var(--cc-max); width: var(--cc-max); padding: var(--cc-pad);
+}
+@media (max-width: 749px){
+  .section-{{ section.id }}-padding .is-custom-card .block__custom-card-content{
+    max-width: var(--cc-max-m);
+    width: var(--cc-max-m);
+    padding: var(--cc-pad-m);
+    text-align: var(--cc-align-m);
+  }
+  .section-{{ section.id }}-padding .is-custom-card .block__custom-card-content.cc--center{
+    transform: translate(calc(-50% + var(--cc-x-m)), calc(-50% + var(--cc-y-m)));
+  }
+  .section-{{ section.id }}-padding .is-custom-card .block__custom-card-content.cc--figma{
+    transform: translate(calc(-50% + var(--cc-x-m)), var(--cc-y-m));
+  }
+}
+/* XY nudging when neither cc--center nor cc--figma is enabled */
+.section-{{ section.id }}-padding .is-custom-card .block__custom-card-content:not(.cc--center):not(.cc--figma){
+  position: relative;
+  transform: translate(var(--cc-x), var(--cc-y));
+}
+@media (max-width: 749px){
+  .section-{{ section.id }}-padding .is-custom-card .block__custom-card-content:not(.cc--center):not(.cc--figma){
+    transform: translate(var(--cc-x-m), var(--cc-y-m));
+  }
+}
+
+/* === NEW: Logo XY nudging (desktop + mobile) === */
+.section-{{ section.id }}-padding .is-custom-card .cc__logo{
+  /* default vars, overridden inline */
+  --cc-logo-x: 0px;
+  --cc-logo-y: 0px;
+  --cc-logo-x-m: var(--cc-logo-x);
+  --cc-logo-y-m: var(--cc-logo-y);
+}
+
+/* Inner wrapper gets nudged so outer can keep position transforms */
+.section-{{ section.id }}-padding .is-custom-card .cc__logo-inner{
+  transform: translate(var(--cc-logo-x), var(--cc-logo-y));
+}
+
+@media (max-width: 749px){
+  .section-{{ section.id }}-padding .is-custom-card .cc__logo-inner{
+    transform: translate(var(--cc-logo-x-m), var(--cc-logo-y-m));
+  }
+}
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
+  {%- paginate collection.products by section.settings.products_per_page -%}
+
+    <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
+      {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+      {% if template contains 'collection.shop-all-collection' %}
+        <h1 style="display:none;">{{ collection.title }}</h1>
+      {% endif %}
+      {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+        <aside
+          aria-labelledby="verticalTitle"
+          class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+          id="main-collection-filters"
+          data-id="{{ section.id }}"
+        >
+          {% render 'facets',
+            results: collection,
+            enable_filtering: section.settings.enable_filtering,
+            enable_sorting: section.settings.enable_sorting,
+            filter_type: section.settings.filter_type,
+            paginate: paginate
+          %}
+          <button class="block__custom-olark-live-chat flex items-center justify-center small-hide" onclick="olark('api.box.expand')">
+            <svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.00033 16.1665H16.667V13.4998H6.00033V16.1665ZM6.00033 12.1665H22.0003V9.49984H6.00033V12.1665ZM6.00033 8.16651H22.0003V5.49984H6.00033V8.16651ZM0.666992 26.8332V2.83317C0.666992 2.09984 0.928103 1.47206 1.45033 0.949837C1.97255 0.427615 2.60033 0.166504 3.33366 0.166504H24.667C25.4003 0.166504 26.0281 0.427615 26.5503 0.949837C27.0726 1.47206 27.3337 2.09984 27.3337 2.83317V18.8332C27.3337 19.5665 27.0726 20.1943 26.5503 20.7165C26.0281 21.2387 25.4003 21.4998 24.667 21.4998H6.00033L0.666992 26.8332ZM4.86699 18.8332H24.667V2.83317H3.33366V20.3332L4.86699 18.8332Z" fill="white"/>
+            </svg>
+            <div class="block__olark-chat-button-text">
+              <p class="small_body">Need assistance? <br><span class="medium_body">Live Chat</span></p>
+            </div>
+          </button>
+        </aside>
+      {%- endif -%}
+      <div class="product-grid-container-content w-full">
+        {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
+          <facet-filters-form class="facets facets-vertical-sort w-full block__facets-vertical-sort">
+            <form class="facets-vertical-form" id="FacetSortForm">
+              <div class="product-count-vertical" role="status">
+                <h4 class="product-count__text text-body primary_h4 font-weight-500">
+                  <span id="ProductCountDesktop">
+                    {%- if collection.results_count -%}
+                      {{
+                        'templates.search.results_with_count'
+                        | t: terms: collection.terms, count: collection.results_count
+                      }}
+                    {%- elsif collection.products_count == collection.all_products_count -%}
+                      {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+                    {%- else -%}
+                      {{
+                        'products.facets.product_count'
+                        | t: product_count: collection.products_count, count: collection.all_products_count
+                      }}
+                    {%- endif -%}
+                  </span>
+                </h4>
+                {%- render 'loading-spinner' -%}
+              </div>
+              <div class="facet-filters sorting caption">
+                <div class="facet-filters__field">
+                  <h2 class="facet-filters__label caption-large text-body">
+                    <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
+                  </h2>
+                  <div class="select">
+                    {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                    <select
+                      name="sort_by"
+                      class="facet-filters__sort select__select caption-large font-weight-600"
+                      id="SortBy"
+                      aria-describedby="a11y-refresh-page-message"
+                    >
+                      {%- for option in collection.sort_options -%}
+                        <option
+                          value="{{ option.value | escape }}"
+                          {% if option.value == sort_by %}
+                            selected="selected"
+                          {% endif %}
+                        >
+                          {{ option.name | escape }}
+                        </option>
+                      {%- endfor -%}
+                    </select>
+                    <span class="svg-wrapper">
+                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </facet-filters-form>
+        {%- endif -%}
+        <div
+          class="product-grid-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          id="ProductGridContainer"
+          {% if settings.animations_reveal_on_scroll %}
+            data-cascade
+          {% endif %}
+        >
+          {%- if collection.products.size == 0 -%}
+            <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
+              <div class="loading-overlay gradient"></div>
+              <div class="title-wrapper center">
+                <h2 class="title title--primary">
+                  {{ 'sections.collection_template.empty' | t -}}
+                  <br>
+                  {{
+                    'sections.collection_template.use_fewer_filters_html'
+                    | t: link: collection.url, class: 'underlined-link link'
+                  }}
+                </h2>
+              </div>
+            </div>
+          {%- else -%}
+            <div
+              class="collection block__main-collection-grid {% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+            >
+              <div class="loading-overlay gradient"></div>
+              <ul
+                id="product-grid"
+                data-id="{{ section.id }}"
+                class="
+                  {% if section.settings.vertical_stack_layout %}
+                    product-list-vertical
+                  {% else %}
+                    grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
+                    grid--{{ section.settings.columns_desktop }}-col-desktop
+                  {% endif %}
+                  {% if section.settings.horizontal_compact_layout %} horizontal-cards{% endif %}
+                  {% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}
+                "
+              >
+                {% assign skip_card_product_styles = false %}
+
+                {% render 'promo-banners' %}
+
+                {%- for product in collection.products -%}
+                  {% assign lazy_load = false %}
+                  {%- if forloop.index > 2 -%}
+                    {%- assign lazy_load = true -%}
+                  {%- endif -%}
+
+                  {% if section.settings.unable_custom_card %}
+                    {% if forloop.index == 2 %}
+                      {% render 'holiday-collection-grid' %}
+                    {% endif %}
+                  {% endif %}
+
+                  {% if section.settings.unable_custom_card  %}
+                    {% if forloop.index == 4 %}
+                      {% render 'custom-banner-column' %}
+                    {% endif %}
+                  {% endif %}
+
+                  {% if section.settings.unable_custom_card and section.settings.custom_card_image != blank and forloop.index == 3 %}
+                    <li
+                      class="grid__item is-custom-card{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                      {% if settings.animations_reveal_on_scroll %}data-cascade style="--animation-order: {{ forloop.index }};"{% endif %}
+                    >
+                      <div class="block__main-image relative h-full">
+                        <div class="block__image-inner h-full">
+                          {% render 'custom-image',
+                            image: section.settings.custom_card_image,
+                            class: 'w-full h-full block object-cover tertiary-border-radius'
+                          %}
+                        </div>
+
+                        {%- comment -%} Content over image {%- endcomment -%}
+                        <div
+                          class="absolute block__custom-card-content
+                                 {% if section.settings.custom_card_center_text %} cc--center{% endif %}
+                                 {% if section.settings.custom_card_figma_style %} cc--figma{% endif %}"
+                          style="
+                            {% if section.settings.custom_card_text_color %}color: {{ section.settings.custom_card_text_color }};{% endif %}
+                            --cc-x:  {{ section.settings.custom_card_offset_x | default: 0 }}%;
+                            --cc-y:  {{ section.settings.custom_card_offset_y | default: 0 }}%;
+                            --cc-x-m: {{ section.settings.custom_card_offset_x_mobile | default: section.settings.custom_card_offset_x | default: 0 }}%;
+                            --cc-y-m: {{ section.settings.custom_card_offset_y_mobile | default: section.settings.custom_card_offset_y | default: 0 }}%;
+                            --cc-max: {{ section.settings.custom_card_max_width_desktop | default: '92%' }};
+                            --cc-max-m: {{ section.settings.custom_card_max_width_mobile | default: section.settings.custom_card_max_width_desktop | default: '92%' }};
+                            --cc-pad: {{ section.settings.custom_card_padding_desktop | default: 16 }}px;
+                            --cc-pad-m: {{ section.settings.custom_card_padding_mobile | default: section.settings.custom_card_padding_desktop | default: 12 }}px;
+                            --cc-align: {{ section.settings.custom_card_text_align_desktop | default: 'left' }};
+                            --cc-align-m: {{ section.settings.custom_card_text_align_mobile | default: section.settings.custom_card_text_align_desktop | default: 'left' }};
+                          "
+                        >
+                          {% if section.settings.custom_card_heading != blank %}
+                            <h3 class="cc__heading">{{ section.settings.custom_card_heading }}</h3>
+                          {% endif %}
+                          {% if section.settings.custom_card_description != blank %}
+                            <p class="cc__sub">{{ section.settings.custom_card_description }}</p>
+                          {% endif %}
+
+                          {% if section.settings.custom_card_cta_text and section.settings.custom_card_cta_url %}
+                            <a class="cc__btn" href="{{ section.settings.custom_card_cta_url }}">{{ section.settings.custom_card_cta_text }}</a>
+                          {% endif %}
+                        </div>
+
+                        {%- comment -%} Fixed disclaimer {%- endcomment -%}
+                        {% if section.settings.custom_card_disclaimer != blank %}
+                          <div class="cc__disclaimer-fixed">
+                            {{ section.settings.custom_card_disclaimer }}
+                          </div>
+                        {% endif %}
+
+                        {%- comment -%} Partner logo + XY controls {%- endcomment -%}
+                        {% if section.settings.custom_card_logo != blank %}
+                          <div
+                            class="cc__logo cc-logo-{{ section.settings.custom_card_logo_position | default: 'br' }}"
+                            style="
+                              --cc-logo-x: {{ section.settings.custom_card_logo_offset_x | default: 0 }}px;
+                              --cc-logo-y: {{ section.settings.custom_card_logo_offset_y | default: 0 }}px;
+                              --cc-logo-x-m: {{ section.settings.custom_card_logo_offset_x_mobile | default: section.settings.custom_card_logo_offset_x | default: 0 }}px;
+                              --cc-logo-y-m: {{ section.settings.custom_card_logo_offset_y_mobile | default: section.settings.custom_card_logo_offset_y | default: 0 }}px;
+                            "
+                          >
+                            <div class="cc__logo-inner">
+                              {{ section.settings.custom_card_logo | image_url: width: 220 | image_tag: class: 'cc__logo-img', alt: section.settings.custom_card_heading | escape }}
+                            </div>
+                          </div>
+                        {% endif %}
+                      </div>
+                    </li>
+                  {% endif %}
+
+                  {% assign recycling_free = false %}
+                  {% for tag in product.tags %}
+                    {% if tag == 'Recycling Free' %}
+                      {% assign recycling_free = true %}
+                    {% endif %}
+                  {% endfor %}
+
+                  {% unless recycling_free %}
+                    <li class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                        {% if settings.animations_reveal_on_scroll %}data-cascade style="--animation-order: {{ forloop.index }};"{% endif %}>
+                      {% if section.settings.horizontal_compact_layout %}
+                        {% render 'card-product-horizontal',
+                          card_product: product,
+                          media_aspect_ratio: section.settings.image_ratio,
+                          image_shape: section.settings.image_shape,
+                          lazy_load: lazy_load,
+                          section_id: section.id %}
+                      {% else %}
+                        {% render 'card-product',
+                          card_product: product,
+                          media_aspect_ratio: section.settings.image_ratio,
+                          image_shape: section.settings.image_shape,
+                          show_secondary_image: section.settings.show_secondary_image,
+                          show_vendor: section.settings.show_vendor,
+                          show_rating: section.settings.show_rating,
+                          lazy_load: lazy_load,
+                          quick_add: section.settings.quick_add,
+                          section_id: section.id %}
+                      {% endif %}
+                    </li>
+                  {% endunless %}
+
+                  {%- assign skip_card_product_styles = true -%}
+                {%- endfor -%}
+              </ul>
+
+              {%- if paginate.pages > 1 -%}
+                {% render 'pagination', paginate: paginate, anchor: '' %}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endpaginate -%}
+  {% if section.settings.image_shape == 'arch' %}
+    {{ 'mask-arch.svg' | inline_asset_content }}
+  {%- endif -%}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggleLabel = document.querySelector('.block__toggle-In-Stock input[id="In-Stock"]');
+    const checkboxInput = document.querySelector(".list-menu__item:first-child input[data-stock='in-stock']");
+
+    if (toggleLabel) {
+      toggleLabel.addEventListener('change', function () {
+        if (checkboxInput) {
+          checkboxInput.checked = !checkboxInput.checked;
+          const changeEvent = new Event('change', { bubbles: true });
+          checkboxInput.dispatchEvent(changeEvent);
+          const inStock = document.querySelector('[data-stock="in-stock"]');
+          if (inStock) inStock.click();
+          console.log('Checkbox is now', checkboxInput.checked ? 'checked' : 'unchecked');
+        }
+      });
+    }
+  });
+  window.addEventListener('load', function () {
+    const checkboxInput = document.querySelector('.block__toggle-In-Stock input[type=checkbox]');
+    const buttons = document.querySelectorAll('.active-facets__button-inner');
+    buttons.forEach(function (button) {
+      if (button.textContent.includes('Availability: In stock')) {
+        if (checkboxInput) {
+          checkboxInput.checked = true;
+          checkboxInput.dispatchEvent(new Event('change'));
+          console.log('Checkbox clicked because button was found.');
+        }
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-collection-product-grid.name",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 36,
+      "step": 4,
+      "default": 16,
+      "label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "vertical_stack_layout",
+      "default": false,
+      "label": "Use vertical stacked layout (1 per row on all devices)"
+    },
+    {
+      "type": "checkbox",
+      "id": "horizontal_compact_layout",
+      "default": false,
+      "label": "Compact horizontal cards (image left, details right)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_card_features",
+      "label": "Show feature icons on product cards",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "compact_image_height_desktop",
+      "min": 160,
+      "max": 360,
+      "step": 10,
+      "unit": "px",
+      "default": 220,
+      "label": "Compact image height (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.main-collection-product-grid.settings.columns_desktop.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        { "value": "adapt", "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__1.label" },
+        { "value": "portrait", "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__2.label" },
+        { "value": "square", "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__3.label" }
+      ],
+      "default": "adapt",
+      "label": "t:sections.main-collection-product-grid.settings.image_ratio.label"
+    },
+    {
+      "type": "select",
+      "id": "image_shape",
+      "options": [
+        { "value": "default", "label": "t:sections.all.image_shape.options__1.label" },
+        { "value": "arch", "label": "t:sections.all.image_shape.options__2.label" },
+        { "value": "blob", "label": "t:sections.all.image_shape.options__3.label" },
+        { "value": "chevronleft", "label": "t:sections.all.image_shape.options__4.label" },
+        { "value": "chevronright", "label": "t:sections.all.image_shape.options__5.label" },
+        { "value": "diamond", "label": "t:sections.all.image_shape.options__6.label" },
+        { "value": "parallelogram", "label": "t:sections.all.image_shape.options__7.label" },
+        { "value": "round", "label": "t:sections.all.image_shape.options__8.label" }
+      ],
+      "default": "default",
+      "label": "t:sections.all.image_shape.label",
+      "info": "t:sections.all.image_shape.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
+      "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_clp_description",
+      "default": true,
+      "label": "Show short description (metafield: custom.clp_description)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_clp_features",
+      "default": true,
+      "label": "Show 2×2 product features (metafields)"
+    },
+    {
+      "type": "select",
+      "id": "quick_add",
+      "default": "none",
+      "label": "t:sections.main-collection-product-grid.settings.quick_add.label",
+      "info": "t:sections.main-collection-product-grid.settings.quick_add.info",
+      "options": [
+        { "value": "none", "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_1" },
+        { "value": "standard", "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_2" },
+        { "value": "bulk", "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "unable_custom_card",
+      "label": "Enable custom card",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Custom card"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_card_image",
+      "label": "Card Image"
+    },
+    {
+      "type": "text",
+      "id": "custom_card_heading",
+      "label": "Card Heading"
+    },
+    {
+      "type": "text",
+      "id": "custom_card_description",
+      "label": "Card Description"
+    },
+    {
+      "type": "range",
+      "id": "custom_card_heading_size_desktop",
+      "min": 12,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "custom_card_heading_size_mobile",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "custom_card_description_size_desktop",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "custom_card_description_size_mobile",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_card_center_text",
+      "label": "Custom card – center text block",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_card_logo",
+      "label": "Custom card – partner logo (optional)"
+    },
+    {
+      "type": "select",
+      "id": "custom_card_logo_position",
+      "label": "Custom card – logo position",
+      "default": "br",
+      "options": [
+        { "value": "tl", "label": "Top left" },
+        { "value": "tr", "label": "Top right" },
+        { "value": "ct", "label": "Top center" },
+        { "value": "bl", "label": "Bottom left" },
+        { "value": "br", "label": "Bottom right" },
+        { "value": "cb", "label": "Bottom center" }
+      ]
+    },
+
+    { "type": "header", "content": "Custom card – logo position fine-tune" },
+    {
+      "type": "range",
+      "id": "custom_card_logo_offset_x",
+      "min": -100,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo offset X (desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "custom_card_logo_offset_y",
+      "min": -100,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo offset Y (desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "custom_card_logo_offset_x_mobile",
+      "min": -100,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo offset X (mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "custom_card_logo_offset_y_mobile",
+      "min": -100,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo offset Y (mobile)",
+      "default": 0
+    },
+
+    {
+      "type": "textarea",
+      "id": "custom_card_disclaimer",
+      "label": "Custom card – disclaimer text"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_card_figma_style",
+      "label": "Custom card – use Figma text style (wide, top-centered, larger type)",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "custom_card_figma_max_width",
+      "label": "Custom card – max width for text block (e.g. 92%, 720px)",
+      "default": "92%"
+    },
+    { "type": "header", "content": "Custom card – content position" },
+    {
+      "type": "range",
+      "id": "custom_card_offset_x",
+      "min": -50,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Content offset X (desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "custom_card_offset_y",
+      "min": -50,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Content offset Y (desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "custom_card_offset_x_mobile",
+      "min": -50,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Content offset X (mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "custom_card_offset_y_mobile",
+      "min": -50,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Content offset Y (mobile)",
+      "default": 0
+    },
+    { "type": "header", "content": "Custom card – layout (size, padding, alignment)" },
+    {
+      "type": "text",
+      "id": "custom_card_max_width_desktop",
+      "label": "Max width (desktop, e.g. 92% or 720px)",
+      "default": "92%"
+    },
+    {
+      "type": "text",
+      "id": "custom_card_max_width_mobile",
+      "label": "Max width (mobile, e.g. 92% or 360px)",
+      "default": "92%"
+    },
+    {
+      "type": "range",
+      "id": "custom_card_padding_desktop",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding (desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "custom_card_padding_mobile",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding (mobile)",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "custom_card_text_align_desktop",
+      "label": "Text align (desktop)",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "custom_card_text_align_mobile",
+      "label": "Text align (mobile)",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__1.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
+      "info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        { "value": "horizontal", "label": "t:sections.main-collection-product-grid.settings.filter_type.options__1.label" },
+        { "value": "vertical", "label": "t:sections.main-collection-product-grid.settings.filter_type.options__2.label" },
+        { "value": "drawer", "label": "t:sections.main-collection-product-grid.settings.filter_type.options__3.label" }
+      ],
+      "default": "horizontal",
+      "label": "t:sections.main-collection-product-grid.settings.filter_type.label",
+      "info": "t:sections.main-collection-product-grid.settings.filter_type.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header_mobile.content"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "t:sections.main-collection-product-grid.settings.columns_mobile.label",
+      "options": [
+        { "value": "1", "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__1.label" },
+        { "value": "2", "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__2.label" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promo-banner",
+      "name": "Promo Banner",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "range", "id": "desktop_padding_top", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Desktop Padding Top", "default": 16 },
+        { "type": "range", "id": "desktop_padding_bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Desktop Padding Bottom", "default": 16 },
+        { "type": "header", "content": "Mobile Space" },
+        { "type": "range", "id": "mobile_padding_top", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Mobile Padding Top", "default": 16 },
+        { "type": "range", "id": "mobile_padding_bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Mobile Padding Bottom", "default": 16 }
+      ]
+    },
+    {
+      "type": "block_1",
+      "name": "Block Type 1",
+      "settings": [
+        { "type": "color", "id": "color", "label": "Background Color" },
+        { "type": "image_picker", "id": "bg", "label": "Select Background Image" },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text Align",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "text", "id": "btn", "label": "Button Text" },
+        { "type": "url", "id": "url", "label": "Button URL" },
+        { "type": "image_picker", "id": "img", "label": "Select Image" }
+      ]
+    },
+    {
+      "type": "block_2",
+      "name": "Block Type 2",
+      "settings": [
+        { "type": "color", "id": "color", "label": "Background Color" },
+        { "type": "image_picker", "id": "bg", "label": "Select Background Image" },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text Align",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "text", "id": "btn", "label": "Button Text" },
+        { "type": "url", "id": "url", "label": "Button URL" },
+        { "type": "image_picker", "id": "img", "label": "Select Image" }
+      ]
+    },
+    {
+      "type": "block_3",
+      "name": "Block Type 3",
+      "settings": [
+        { "type": "color", "id": "color", "label": "Background Color" },
+        { "type": "image_picker", "id": "bg", "label": "Select Background Image" },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text Align",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "text", "id": "btn", "label": "Button Text" },
+        { "type": "url", "id": "url", "label": "Button URL" },
+        { "type": "image_picker", "id": "img", "label": "Select Image" },
+        {
+          "type": "select",
+          "id": "img_position",
+          "label": "Image Position",
+          "options": [
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        }
+      ]
+    },
+    {
+      "type": "custom-banner-column",
+      "name": "Custom Banner Column",
+      "settings": [
+        { "type": "color", "id": "text_color", "label": "Color Text" },
+        { "type": "image_picker", "id": "image", "label": "Banner Image" },
+        { "type": "text", "id": "title", "label": "Banner Title", "default": "Banner Title" },
+        { "type": "text", "id": "subheading", "label": "Banner Subheading", "default": "Subheading text" },
+        { "type": "range", "id": "text_position_top", "label": "Text Position from Top (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "text", "id": "button_text", "label": "Button Text" },
+        { "type": "url", "id": "link", "label": "Button Link" }
+      ]
+    }
+  ]
+}
+{% endschema %}

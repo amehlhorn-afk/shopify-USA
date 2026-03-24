@@ -1,0 +1,290 @@
+{% schema %}
+{
+  "name": "Hero Alternating Blocks",
+  "tag": "section",
+  "class": "hero-alternating-blocks",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Top Heading",
+      "default": "RECOVER TONIGHT"
+    },
+    {
+      "type": "image_picker",
+      "id": "heading_image",
+      "label": "Secondary Heading Image (PNG)"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Check out P.J.'s picks and personalize your own Performance® Sleep System today."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_block",
+      "name": "Feature Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Feature Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label (Uppercase, e.g. Product Type)",
+          "default": "M3 PERFORMANCE® MATTRESS"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Built Different. Built For You."
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>The first of its kind. Developed for elite recovery...</p>"
+        },
+        {
+          "type": "text",
+          "id": "button1_text",
+          "label": "Primary Button Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "Primary Button Link"
+        },
+        {
+          "type": "text",
+          "id": "button2_text",
+          "label": "Secondary Button Text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "button2_link",
+          "label": "Secondary Button Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "image_on_left",
+          "label": "Show image on left?",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Hero Alternating Blocks",
+      "blocks": [
+        { "type": "feature_block" },
+        { "type": "feature_block" },
+        { "type": "feature_block" },
+        { "type": "feature_block" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+    .hero-alternating-blocks {
+      background-color: #0E182F;
+      color: #ffffff;
+      padding: 4rem 2rem;
+      font-family: Roboto, sans-serif;
+    }
+
+    .hero-alternating-blocks .wrapper {
+      max-width: 1520px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .hero-alternating-blocks .heading {
+      text-align: center;
+      font-size: 91.143px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .hero-alternating-blocks .heading-image {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .hero-alternating-blocks .heading-image img {
+      max-width: 800px;
+      width: 100%;
+      height: auto;
+    }
+
+    .hero-alternating-blocks .subheading {
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+      max-width: 800px;
+      margin: 0 auto 4rem;
+      font-size: 16px;
+    }
+
+    .hero-alternating-blocks .block {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .hero-alternating-blocks .block.reverse {
+      flex-direction: row-reverse;
+    }
+
+    .hero-alternating-blocks .block-image {
+      flex: 1 1 580px;
+      max-width: 580px;
+    }
+
+    .hero-alternating-blocks .block-image img {
+      width: 100%;
+      border-radius: 16px;
+    }
+
+    .hero-alternating-blocks .block-text {
+      flex: 1 1 480px;
+      max-width: 520px;
+      padding: 0;
+    }
+
+    .hero-alternating-blocks .block-text h4 {
+      font-size: 14px;
+      color: #00c2ff;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .hero-alternating-blocks .block-text h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .hero-alternating-blocks .block-text .description {
+      color: rgba(255,255,255,0.7);
+      font-size: 16px;
+      line-height: 24px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-alternating-blocks .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .hero-alternating-blocks .button-group a {
+      display: inline-block;
+      padding: 0.75rem 1.75rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s ease-in-out;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-alternating-blocks .button-group a:first-child {
+      background-color: #00c2ff;
+      color: #ffffff;
+    }
+
+    .hero-alternating-blocks .button-group a:last-child {
+      background-color: transparent;
+      border: 2px solid #00c2ff;
+      color: #00c2ff;
+    }
+
+    .hero-alternating-blocks .button-group a:first-child:hover {
+    background-color: #ffffff;
+    color: #00c2ff;
+    border: 2px solid #00c2ff;
+  }
+
+  .hero-alternating-blocks .button-group a:last-child:hover {
+    background-color: #00c2ff;
+    color: #ffffff;
+  }
+
+    @media (max-width: 768px) {
+        .hero-alternating-blocks {
+      padding: 1rem 0rem;
+    }
+      .hero-alternating-blocks .block {
+        flex-direction: column;
+      }
+
+      .hero-alternating-blocks .block.reverse {
+        flex-direction: column;
+      }
+
+      .hero-alternating-blocks .block-text,
+      .hero-alternating-blocks .block-image {
+        max-width: 100%;
+        flex: 1 1 100%;
+      }
+
+      .hero-alternating-blocks .heading {
+        font-size: 2.5rem;
+      }
+    }
+{% endstyle %}
+
+<div class="hero-alternating-blocks">
+  <div class="wrapper">
+    <div class="heading">{{ section.settings.heading_text }}</div>
+    {% if section.settings.heading_image %}
+      <div class="heading-image">
+        <img src="{{ section.settings.heading_image | image_url }}" alt="Heading Image">
+      </div>
+    {% endif %}
+    <div class="subheading">{{ section.settings.subheading }}</div>
+
+    {% for block in section.blocks %}
+      <div class="block {% unless block.settings.image_on_left %}reverse{% endunless %}">
+        <div class="block-image">
+          {% if block.settings.image %}
+            <img src="{{ block.settings.image | image_url: width: 800 }}" alt="Feature Image">
+          {% endif %}
+        </div>
+        <div class="block-text">
+          <h4>{{ block.settings.label }}</h4>
+          <h2>{{ block.settings.title }}</h2>
+          <div class="description">{{ block.settings.description }}</div>
+          <div class="button-group">
+            {% if block.settings.button1_link %}
+              <a href="{{ block.settings.button1_link }}">{{ block.settings.button1_text }}</a>
+            {% endif %}
+            {% if block.settings.button2_link %}
+              <a href="{{ block.settings.button2_link }}">{{ block.settings.button2_text }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>

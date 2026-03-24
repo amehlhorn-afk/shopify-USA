@@ -1,0 +1,215 @@
+{% schema %}
+{
+  "name": "Custom Banner Columns",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "custom-banner-column",
+      "name": "Banner Column",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading"
+        },
+        {
+          "type": "range",
+          "id": "text_position_top",
+          "label": "Top Position (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 20
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button Link"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#000000"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Banner Columns",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.custom-banner-columns {
+  padding: 0 16px;
+}
+.custom-banner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.custom-banner-slider {
+  display: none;
+}
+.custom-banner-column {
+  position: relative;
+  text-align: center;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.custom-banner-column img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 20px;
+}
+.custom-banner-column-content {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  padding: 0 10px;
+  text-align: center;
+}
+.custom-banner-column-content h3,
+.custom-banner-column-content p {
+  margin: 0.25em 0;
+}
+.custom-banner-column-content a.btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: black;
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: bold;
+}
+
+/* Mobile: Show slider, hide grid */
+@media screen and (max-width: 767px) {
+  .custom-banner-grid {
+    display: none;
+  }
+  .custom-banner-slider {
+    display: block;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+  // Load Flickity if not already loaded
+  if (window.innerWidth < 768 && typeof Flickity === 'undefined') {
+    var flickityScript = document.createElement('script');
+    flickityScript.src = 'https://cdn.jsdelivr.net/npm/flickity@2/dist/flickity.pkgd.min.js';
+    document.head.appendChild(flickityScript);
+
+    var flickityStyles = document.createElement('link');
+    flickityStyles.rel = 'stylesheet';
+    flickityStyles.href = 'https://cdn.jsdelivr.net/npm/flickity@2/dist/flickity.min.css';
+    document.head.appendChild(flickityStyles);
+
+    flickityScript.onload = function () {
+      new Flickity('.custom-banner-slider-inner', {
+        cellAlign: 'left',
+        contain: true,
+        pageDots: true,
+        prevNextButtons: false,
+        wrapAround: true
+      });
+    };
+  }
+{% endjavascript %}
+
+<div class="custom-banner-columns section-{{ section.id }}"
+     style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+
+  <!-- Desktop Grid -->
+  <div class="custom-banner-grid">
+    {% for block in section.blocks %}
+      <div class="custom-banner-column">
+        {% if block.settings.image %}
+          <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.title | escape }}">
+        {% endif %}
+        <div class="custom-banner-column-content"
+             style="top: {{ block.settings.text_position_top }}%; color: {{ block.settings.text_color }};">
+          {% if block.settings.title %}
+            <h3>{{ block.settings.title }}</h3>
+          {% endif %}
+          {% if block.settings.subheading %}
+            <p>{{ block.settings.subheading }}</p>
+          {% endif %}
+          {% if block.settings.button_text %}
+            <a href="{{ block.settings.link | default: '#' }}" class="btn">{{ block.settings.button_text }}</a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Mobile Slider -->
+  <div class="custom-banner-slider">
+    <div class="custom-banner-slider-inner">
+      {% for block in section.blocks %}
+        <div class="custom-banner-column">
+          {% if block.settings.image %}
+            <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.title | escape }}">
+          {% endif %}
+          <div class="custom-banner-column-content"
+               style="top: {{ block.settings.text_position_top }}%; color: {{ block.settings.text_color }};">
+            {% if block.settings.title %}
+              <h3>{{ block.settings.title }}</h3>
+            {% endif %}
+            {% if block.settings.subheading %}
+              <p>{{ block.settings.subheading }}</p>
+            {% endif %}
+            {% if block.settings.button_text %}
+              <a href="{{ block.settings.link | default: '#' }}" class="btn">{{ block.settings.button_text }}</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>

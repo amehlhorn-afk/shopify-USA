@@ -1,0 +1,63 @@
+<!-- sections/back-in-stock-message.liquid -->
+<div id="back-in-stock-message" style="display: none;" class="back-in-stock-banner">
+  <p class="back-in-stock-text"></p>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function updateBackInStockMessage(variantId) {
+      const variantData = {{ product.variants | json }};
+      const metafields = {{ product.variants | map: 'metafields' | json }};
+
+      const index = variantData.findIndex(v => v.id === variantId);
+      if (index === -1) return;
+
+      const variant = variantData[index];
+      const backInStockDate = metafields[index]?.custom?.product_date_back_in_stock;
+
+      const banner = document.getElementById('back-in-stock-message');
+      const text = banner?.querySelector('.back-in-stock-text');
+
+      if (!variant.available && backInStockDate) {
+        const date = new Date(backInStockDate);
+        const today = new Date();
+
+        // Reset time for accurate comparison
+        date.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+
+        if (date >= today) {
+          const options = { year: 'numeric', month: 'long', day: 'numeric' };
+          const formatted = date.toLocaleDateString(undefined, options);
+          text.textContent = `Back in stock on ${formatted}`;
+          banner.style.display = 'block';
+        } else {
+          banner.style.display = 'none';
+        }
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+
+    // Initial load
+    const currentVariantId = {{ product.selected_or_first_available_variant.id }};
+    updateBackInStockMessage(currentVariantId);
+
+    // On variant change
+    document.addEventListener('variant:change', function(event) {
+      updateBackInStockMessage(event.detail.variant.id);
+    });
+  });
+</script>
+
+<style>
+  .back-in-stock-banner {
+    background-color: #fcebea;
+    color: #cc1f1a;
+    padding: 12px 20px;
+    border-left: 5px solid #cc1f1a;
+    margin-top: 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+  }
+</style>

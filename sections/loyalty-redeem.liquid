@@ -1,0 +1,358 @@
+{% comment %}
+  Loyalty How to Redeem Section
+  Block-based 50/50 split section with image and content
+{% endcomment %}
+
+<style>
+  .loyalty-redeem {
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    background-color: transparent;
+  }
+
+  .loyalty-redeem-wrapper {
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .loyalty-redeem-wrapper {
+      padding-top: var(--mobile-padding-top) !important;
+      padding-bottom: var(--mobile-padding-bottom) !important;
+    }
+  }
+
+  .loyalty-redeem__container {
+    display: flex;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+    gap: 20px;
+  }
+
+  .loyalty-redeem__image-wrapper {
+    flex: 0 0 50%;
+    height: 631px;
+    position: relative;
+    overflow: hidden;
+    background-color: #ffffff;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loyalty-redeem__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .loyalty-redeem__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 0 40px 0 80px;
+  }
+
+  .loyalty-redeem__title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: normal;
+    text-transform: uppercase;
+    margin: 0;
+    color: inherit;
+  }
+
+  .loyalty-redeem__description {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0;
+    opacity: 0.7;
+    color: inherit;
+  }
+
+  /* Layout Options */
+  .loyalty-redeem--image-right .loyalty-redeem__container {
+    flex-direction: row-reverse;
+  }
+
+  .loyalty-redeem--image-right .loyalty-redeem__content {
+    padding: 0 80px 0 40px;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 1200px) {
+    .loyalty-redeem__content {
+      padding: 0 30px 0 60px;
+    }
+
+    .loyalty-redeem--image-right .loyalty-redeem__content {
+      padding: 0 60px 0 30px;
+    }
+
+    .loyalty-redeem__title {
+      font-size: 24px;
+    }
+
+    .loyalty-redeem__description {
+      font-size: 15px;
+      line-height: 22px;
+    }
+  }
+
+  @media (max-width: 968px) {
+    .loyalty-redeem__container {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .loyalty-redeem--image-right .loyalty-redeem__container {
+      flex-direction: column;
+    }
+
+    .loyalty-redeem__image-wrapper {
+      width: 100%;
+      height: 400px;
+      padding: 30px;
+    }
+
+    .loyalty-redeem__content {
+      width: 100%;
+      padding: 40px 40px;
+    }
+
+    .loyalty-redeem--image-right .loyalty-redeem__content {
+      padding: 40px 40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .loyalty-redeem__image-wrapper {
+      height: 350px;
+      padding: 25px;
+    }
+
+    .loyalty-redeem__content {
+      padding: 30px 30px;
+      gap: 24px;
+    }
+
+    .loyalty-redeem__title {
+      font-size: 22px;
+    }
+
+    .loyalty-redeem__description {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .loyalty-redeem__image-wrapper {
+      height: 300px;
+      padding: 20px;
+    }
+
+    .loyalty-redeem__content {
+      padding: 20px 20px;
+      gap: 20px;
+    }
+
+    .loyalty-redeem__title {
+      font-size: 20px;
+    }
+
+    .loyalty-redeem__description {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+</style>
+
+<div class="loyalty-redeem-wrapper" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; --mobile-padding-top: {{ section.settings.mobile_padding_top }}px; --mobile-padding-bottom: {{ section.settings.mobile_padding_bottom }}px;">
+  <section class="loyalty-redeem {% if section.settings.image_position == 'right' %}loyalty-redeem--image-right{% endif %}">
+    <div class="loyalty-redeem__container" style="{% if section.settings.background_color %}background-color: {{ section.settings.background_color }};{% endif %} {% if section.settings.text_color %}color: {{ section.settings.text_color }};{% endif %}">
+    
+    {% if section.settings.image %}
+      <div class="loyalty-redeem__image-wrapper">
+        <img 
+          class="loyalty-redeem__image"
+          src="{{ section.settings.image | img_url: '800x' }}"
+          srcset="{{ section.settings.image | img_url: '600x' }} 600w,
+                  {{ section.settings.image | img_url: '800x' }} 800w,
+                  {{ section.settings.image | img_url: '1200x' }} 1200w"
+          sizes="(max-width: 968px) 100vw, 50vw"
+          alt="{{ section.settings.title }}"
+          loading="lazy"
+        >
+      </div>
+    {% endif %}
+
+    <div class="loyalty-redeem__content">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          
+          {% when 'title' %}
+            {% if block.settings.title_text != blank %}
+              <h2 class="loyalty-redeem__title">{{ block.settings.title_text }}</h2>
+            {% endif %}
+
+          {% when 'description' %}
+            {% if block.settings.description_text != blank %}
+              <p class="loyalty-redeem__description">{{ block.settings.description_text }}</p>
+            {% endif %}
+
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+</div>
+
+{% schema %}
+{
+  "name": "How to Redeem",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile Top Padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile Bottom Padding",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Recommended: 800x631px or larger"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Text Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title_text",
+          "label": "Title",
+          "default": "HOW TO REDEEM AWARDS"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "description_text",
+          "label": "Description",
+          "default": "You can redeem your rewards at checkout. Just log in, and choose the amount you want to redeem prior to completing purchase."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How to Redeem",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "description"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

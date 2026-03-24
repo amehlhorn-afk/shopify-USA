@@ -1,0 +1,141 @@
+{{ 'section-detail-multicolumn.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      background-color: {{ section.settings.color }};
+  }
+  @media (max-width: 1199px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top | times: 0.75 }}px;
+          padding-bottom: {{ section.settings.padding_bottom | times: 0.75 }}px;
+      }
+  }
+  @media (max-width: 749px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top_m }}px;
+          padding-bottom: {{ section.settings.padding_bottom_m }}px;
+      }
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }} section-detail-multicolumn">
+  <div class="page-width">
+    {% assign page_value = page.metafields.custom.technology_detail.value %}
+    <div class="block__detail-multicolumn-row">
+      <div class="block__detail-multicolumn-wrapper">
+        {% if page_value.detail_video_or_image_1 != blank %}
+          <div class="block__detail-multicolumn-img">
+            {% assign file_url_1 = page_value.detail_video_or_image_1 | file_url %}
+            {% if file_url_1 contains '.mp4' or file_url_1 contains '.webm' or file_url_1 contains '.ogg' %}
+            <video poster="{{ page_value.detail_video_or_image_1 | image_url: width: page_value.detail_video_or_image_1.width }}" loop="" muted="" autoplay="" width="100%" height="100%" playsinline="">
+              <source src="{{ file_url_1 }}" type="video/mp4">
+            </video>
+            {% else %}
+              {% render 'custom-image', image: page_value.detail_video_or_image_1, class: 'img-fluid object-cover' %}
+            {% endif %}
+          </div>
+        {% endif %}
+        <div class="block__detail-multicolumn-info">
+          {% if page_value.detail_video_subheading_1 != blank %}
+            <h6 class="extra_small_body">{{ page_value.detail_video_subheading_1 }}</h6>
+          {% endif %}
+          {% if page_value.detail_video_title_1 != blank %}
+            <h4>{{ page_value.detail_video_title_1 }}</h4>
+          {% endif %}
+          {% if page_value.detail_video_caption_1 != blank %}
+            <p class="body">{{ page_value.detail_video_caption_1 }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="block__detail-multicolumn-wrapper block__detail-multicolumn-img-right">
+        <div class="block__detail-multicolumn-info">
+          {% if page_value.detail_video_subheading_2 != blank %}
+            <h6 class="extra_small_body">{{ page_value.detail_video_subheading_2 }}</h6>
+          {% endif %}
+          {% if page_value.detail_video_title_2 != blank %}
+            <h4>{{ page_value.detail_video_title_2 }}</h4>
+          {% endif %}
+          {% if page_value.detail_video_caption_2 != blank %}
+            <p class="body">{{ page_value.detail_video_caption_2 }}</p>
+          {% endif %}
+        </div>
+        {% if page_value.detail_video_or_image_2 != blank %}
+          <div class="block__detail-multicolumn-img">
+            {% assign file_url_2 = page_value.detail_video_or_image_2 | file_url %}
+            {% if file_url_2 contains '.mp4' or file_url_2 contains '.webm' or file_url_2 contains '.ogg' %}
+            <video poster="{{ page_value.detail_video_or_image_2 |  image_url: width:page_value.detail_video_or_image_2.width }}" loop="" muted="" autoplay="" width="100%" height="100%" playsinline="">
+              <source src="{{ file_url_2 }}" type="video/mp4">
+            </video>
+            {% else %}
+              {% render 'custom-image', image: page_value.detail_video_or_image_1, class: 'img-fluid object-cover' %}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Detail Multicolumn",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Select Background Color"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Detail Multicolumn"
+    }
+  ]
+}
+{% endschema %}

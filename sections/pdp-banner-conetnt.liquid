@@ -1,0 +1,143 @@
+{{ 'pdp-banner-conetnts.css' | asset_url | stylesheet_tag }}
+
+{% if product.metafields.custom.pdp_banner_items != blank %}
+    <div class="block__pdp-banner-conetnts" {% if section.settings.bg_color != blank %} style="background-color:{{ section.settings.bg_color }}"{% endif %}>
+        <div class="page-width relative">
+            {% assign pdp_banner_items = product.metafields.custom.pdp_banner_items.value %}
+            {% if pdp_banner_items.image.value.media_type == "video" or pdp_banner_items.image.value.media_type == "image" %}
+            <div class="block__image line-height image_set_pd lazy-video-wrapper">
+                {% if pdp_banner_items.image.value.media_type == "video" %}
+                    {{ pdp_banner_items.image.value | video_tag:
+                        autoplay: true,
+                        loop: true,
+                        controls: false,
+                        muted: true,
+                        playsinline: true,
+                        preload: 'none',
+                        class: 'quaternary-border-radius lazy-video'
+                    }}
+                {% elsif pdp_banner_items.image != blank %}
+                    {% render 'custom-image', image: pdp_banner_items.image, class: 'img-fluid quaternary-border-radius' %}
+                {% endif %}
+            </div>
+            {% endif %}
+            {% if section.settings.title != blank or pdp_banner_items.heading != blank %}
+                <div class="block__heading center absolute inset-0">
+                    {% if pdp_banner_items.heading != blank %}
+                        <h2 class="primary_h2 center">{{- pdp_banner_items.heading -}}</h2>
+                    {% else %} 
+                        <h2 class="primary_h2 center">{{- section.settings.title -}}</h2>
+                    {% endif %}
+                    {% if pdp_banner_items.text != blank %}
+                        <p>{{- pdp_banner_items.text -}}</p>
+                    {% else %} 
+                        <p>{{- section.settings.text -}}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+
+{% style %}  
+    @media (min-width:990px){
+        .block__pdp-banner-conetnts{
+            padding-top:{{ section.settings.desktop_padding_top }}px;
+            padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+        }
+    }
+    @media (max-width:989px){
+        .block__pdp-banner-conetnts{
+            padding-top:{{ section.settings.mobile_padding_top }}px;
+            padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+        }
+    }
+{% endstyle %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const lazyVideos = document.querySelectorAll('video.lazy-video');
+
+    const videoObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.load(); // start loading when in view
+            observer.unobserve(entry.target);
+        }
+        });
+    });
+    lazyVideos.forEach(video => {
+        videoObserver.observe(video);
+    });
+});
+</script>
+{% schema %}
+{
+    "name": "PDP Banner Item",
+    "settings": [
+        {
+            "type": "inline_richtext",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "inline_richtext",
+            "id": "text",
+            "label": "Text"
+        },
+        {
+            "type": "header",
+            "content": "Desktop Space"
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Bottom",
+            "default": 16
+        },
+        {
+            "type": "header",
+            "content": "Mobile Space"
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Bottom",
+            "default": 16
+        }
+    ],
+    "presets": [
+        {
+            "name": "PDP Banner Item"
+        }
+    ]
+}
+{% endschema %}
+

@@ -1,0 +1,705 @@
+{%  style  %}
+  {% if section.settings.text_color != blank %}
+  .section-{{ section.id }} .holiday-banner-content h2,
+  .section-{{ section.id }} .holiday-banner-content h3,
+  .section-{{ section.id }} .holiday-banner-content p,
+  .section-{{ section.id }} .holiday-banner-content span{color:{{ section.settings.text_color }};}
+  {% endif %}
+  
+  /* Loading background color */
+  .section-{{ section.id }}.holiday-banner-wrapper {
+    background-color: #150D4B ;
+  }
+{% endstyle %}
+
+<div
+  class="holiday-banner-wrapper relative section-{{ section.id }}-padding section-{{ section.id }}"
+  data-desktop-bg="{{ section.settings.image_desktop | image_url: width: 2400 }}"
+  data-mobile-bg="{{ section.settings.image_mobile | image_url: width: 1200 }}"
+  data-desktop-video="{% if section.settings.video_desktop != blank %}{{ section.settings.video_desktop.sources[0].url }}{% endif %}"
+  data-mobile-video="{% if section.settings.video_mobile != blank %}{{ section.settings.video_mobile.sources[0].url }}{% endif %}"
+  style="background-color: #150D4B; background-image: url('{% if section.settings.image_mobile != blank %}{{ section.settings.image_mobile | image_url: width: 1200 }}{% else %}{{ section.settings.image_desktop | image_url: width: 2400 }}{% endif %}');"
+>
+  {% if section.settings.video_desktop != blank %}
+    <video 
+      class="banner-video desktop-video" 
+      muted 
+      loop 
+      playsinline
+      preload="metadata"
+      poster="{{ section.settings.image_desktop | image_url: width: 2400 }}"
+      style="display: none; opacity: 0; transition: opacity 0.3s ease-in-out;"
+    >
+      {% for source in section.settings.video_desktop.sources %}
+        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+      {% endfor %}
+    </video>
+  {% endif %}
+  
+  {% if section.settings.video_mobile != blank %}
+    <video 
+      class="banner-video mobile-video" 
+      muted 
+      loop 
+      playsinline
+      preload="metadata"
+      poster="{{ section.settings.image_mobile | image_url: width: 1200 }}"
+      style="display: none; opacity: 0; transition: opacity 0.3s ease-in-out;"
+    >
+      {% for source in section.settings.video_mobile.sources %}
+        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+      {% endfor %}
+    </video>
+  {% endif %}
+
+  {% if section.settings.overlay != blank%}
+    <span class="w-full h-full block absolute block__overlay_opacity inset-0 "
+          style="background-color: {{ section.settings.color }}; opacity:{{ section.settings.overlay_opacity }}%;">
+    </span>
+  {% endif %}
+  <div class="holiday-banner-content z-index-1  {{ section.settings.desktop_content_position }} {{ section.settings.mobile_content_position }}">
+    <div class="banner-content-wrapper">
+      <div class="text-container">
+      {% if section.settings.sale_image != blank %}
+        <img class="sale-image" src="{{ section.settings.sale_image | image_url }}" alt="Promo Tag">
+      {% endif %}
+      
+      {% for block in section.blocks %}
+        <div class="promo-offer-block">
+          {% if block.settings.label != blank %}
+            <p class="offer-label">{{ block.settings.label }}</p>
+          {% endif %}
+          {% if block.settings.headline != blank %}
+            <p class="offer-headline">{{ block.settings.headline }}</p>
+          {% endif %}
+          {% if block.settings.subtext != blank %}
+            <p class="offer-subtext">{{ block.settings.subtext }}</p>
+          {% endif %}
+        </div>
+
+        {% if forloop.index < section.blocks.size %}
+          <hr class="offer-divider">
+        {% endif %}
+      {% endfor %}
+
+      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+        <a href="{{ section.settings.cta_link }}" class="holiday-cta-button">
+          {{ section.settings.cta_label }}
+        </a>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    let videoLoadTimeout;
+    const wrapper = document.querySelector('.holiday-banner-wrapper.section-{{ section.id }}');
+    if (!wrapper) return;
+
+    const mobileBg = wrapper.getAttribute('data-mobile-bg');  
+    const desktopBg = wrapper.getAttribute('data-desktop-bg');
+    const desktopVideoUrl = wrapper.getAttribute('data-desktop-video');
+    const mobileVideoUrl = wrapper.getAttribute('data-mobile-video');
+    
+    const desktopVid = wrapper.querySelector('.desktop-video');
+    const mobileVid = wrapper.querySelector('.mobile-video');
+
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
+
+    function showVideo(video) {
+      if (video) {
+        video.style.opacity = '1';
+      }
+    }
+
+    function hideVideo(video) {
+      if (video) {
+        video.style.display = 'none';
+        video.style.opacity = '0';
+        video.pause();
+      }
+    }
+
+    function loadAndPlayVideo(video, fallbackBg) {
+      if (!video) {
+        wrapper.style.backgroundImage = fallbackBg ? `url('${fallbackBg}')` : '';
+        return;
+      }
+
+      // Set a timeout to fallback to image if video takes too long
+      videoLoadTimeout = setTimeout(() => {
+        console.log('Video loading timeout - using fallback image');
+        hideVideo(video);
+        wrapper.style.backgroundImage = fallbackBg ? `url('${fallbackBg}')` : '';
+      }, 3000); // 3 second timeout
+
+      // Show video when it can play
+      video.addEventListener('canplay', function onCanPlay() {
+        clearTimeout(videoLoadTimeout);
+        video.style.display = 'block';
+        wrapper.style.backgroundImage = 'none';
+        video.play().then(() => {
+          showVideo(video);
+        }).catch(err => {
+          console.error('Video play failed:', err);
+          wrapper.style.backgroundImage = fallbackBg ? `url('${fallbackBg}')` : '';
+        });
+        video.removeEventListener('canplay', onCanPlay);
+      }, { once: true });
+
+      // Handle video errors
+      video.addEventListener('error', function() {
+        clearTimeout(videoLoadTimeout);
+        console.error('Video failed to load');
+        hideVideo(video);
+        wrapper.style.backgroundImage = fallbackBg ? `url('${fallbackBg}')` : '';
+      }, { once: true });
+
+      // Start loading
+      video.load();
+    }
+
+    function updateBannerMedia() {
+      clearTimeout(videoLoadTimeout);
+
+      if (isMobile()) {
+        // Mobile
+        hideVideo(desktopVid);
+        
+        if (mobileVid && mobileVideoUrl) {
+          loadAndPlayVideo(mobileVid, mobileBg || desktopBg);
+        } else {
+          wrapper.style.backgroundImage = mobileBg ? `url('${mobileBg}')` : (desktopBg ? `url('${desktopBg}')` : '');
+        }
+      } else {
+        // Desktop
+        hideVideo(mobileVid);
+        
+        if (desktopVid && desktopVideoUrl) {
+          loadAndPlayVideo(desktopVid, desktopBg);
+        } else {
+          wrapper.style.backgroundImage = desktopBg ? `url('${desktopBg}')` : '';
+        }
+      }
+    }
+
+    // Debounce resize events
+    let resizeTimeout;
+    function handleResize() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateBannerMedia, 150);
+    }
+
+    // Initial load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', updateBannerMedia);
+    } else {
+      updateBannerMedia();
+    }
+
+    window.addEventListener('resize', handleResize);
+  })();
+</script>
+
+
+<style>
+  .banner-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1250px) {
+    .banner-video {
+      object-fit: cover;
+      object-position: right center;
+    }
+  }
+  
+  .holiday-banner-wrapper {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  .holiday-banner-content {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    z-index: 1;
+  }
+
+  .banner-content-wrapper {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .holiday-banner-content.left .banner-content-wrapper {
+    justify-content: flex-start;
+  }
+
+  .holiday-banner-content.center .banner-content-wrapper {
+    justify-content: center;
+  }
+
+  .holiday-banner-content.right .banner-content-wrapper {
+    justify-content: flex-end;
+  }
+
+  .text-container {
+    margin-left: 40px;
+    width: 400px;
+    padding: 30px;
+    border-radius: 0;
+    color: #000000;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    /*background-color:rgb(0, 0, 0);*/
+  }
+
+  .sale-image {
+    max-width: 160px;
+    height: auto;
+    margin: 0 auto 12px;
+    display: block;
+  }
+  
+  .section-{{ section.id }} .sale-image {
+    max-width: {{ section.settings.sale_image_width }}px;
+  }
+
+  .holiday-title {
+    color: #fff;
+    font-family: Roboto;
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 68px;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .holiday-title .highlight {
+    color: white;
+  }
+
+  .holiday-subtext {
+    color: #fff;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .holiday-validity {
+    color: #fff;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .promo-offer-block {
+    margin-top: 24px;
+    color: #fff;
+    text-align: center;
+  }
+
+  .offer-label {
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .offer-headline {
+    font-size: 42px;
+    font-weight: 700;
+    margin: 4px 0;
+  }
+
+  .offer-subtext {
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 6px;
+  }
+
+  .offer-divider {
+    border: none;
+    height: 2px;
+    background-color: #00B5E3;  
+    width: 40%;
+    margin: 20px auto 0;
+  }
+
+  .holiday-cta-button {
+    display: inline-block;
+    margin: 32px auto 0;
+    background-color: #00B5E3;
+    color: #ffffff;
+    padding: 14px 36px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .holiday-banner-wrapper {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 0;
+      min-height: 600px;
+      background-position: center bottom;
+      background-size: contain;
+    }
+
+    .holiday-banner-content {
+      width: 100%;
+      padding: 0;
+      align-items: flex-start;
+    }
+
+    .banner-content-wrapper {
+      width: 100%;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .text-container {
+      margin-left: 0;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      padding: 30px 20px 20px 20px;
+      background-color: transparent !important;
+      justify-content: flex-start;
+    }
+
+    .sale-image {
+      max-width: 100px;
+      margin-bottom: 12px;
+    }
+
+    .promo-offer-block {
+      margin-top: 12px;
+    }
+
+    .offer-label {
+      font-size: 11px;
+      margin-bottom: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .offer-headline {
+      font-size: 32px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .offer-subtext {
+      font-size: 11px;
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    .offer-divider {
+      width: 50%;
+      margin: 10px auto 0;
+      height: 1.5px;
+    }
+
+    .holiday-cta-button {
+      margin: 20px auto 0;
+      padding: 12px 40px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .holiday-title {
+      font-size: 32px;
+      line-height: 38px;
+      color: #FFF;
+    }
+
+    .holiday-subtext,
+    .holiday-validity {
+      font-size: 16px;
+      text-align: center;
+      color: #FFF;
+    }
+  }
+</style>
+
+{% style %}
+  @media (min-width: 990px){
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.desktop_padding_top }}px;
+      padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+    }
+  }
+  @media (max-width: 989px){
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Holiday Homepage Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video Settings"
+    },
+    {
+      "type": "video",
+      "id": "video_desktop",
+      "label": "Desktop Video",
+      "info": "Upload MP4 video for desktop. If provided, replaces background image."
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Mobile Video",
+      "info": "Upload MP4 video for mobile. If provided, replaces mobile background image."
+    },
+    {
+      "type": "header",
+      "content": "Background Images (Fallback)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop Background Image",
+      "info": "Used if no desktop video is provided"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile Background Image",
+      "info": "Used if no mobile video is provided"
+    },
+    {
+      "type": "header",
+      "content": "Text & Overlay Settings"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay",
+      "label": "Enable Overlay"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Overlay Background Color"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "unit": "%",
+      "step": 1,
+      "label": "Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "image_picker",
+      "id": "sale_image",
+      "label": "Sale Tag Image",
+      "info": "Use an image like the 4th of July badge"
+    },
+    {
+      "type": "range",
+      "id": "sale_image_width",
+      "min": 80,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Sale Tag Image Width (Desktop)",
+      "default": 200
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Declare Sleep"
+    },
+    {
+      "type": "text",
+      "id": "highlight_text",
+      "label": "Highlight Text",
+      "default": "Independence"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Buy One, Get One 50% Off Performance® Pillows • Save $300 on the M3 Mattress • 30% Off Performance® Sheets"
+    },
+    {
+      "type": "text",
+      "id": "offer_validity",
+      "label": "Offer Validity",
+      "default": "*Offer Valid From 06/20/25 – 7/11/25"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button Text",
+      "default": "Shop Sale"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "label": "Desktop Content Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_position",
+      "label": "Mobile Content Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Padding (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Padding (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "offer_block",
+      "name": "Offer Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label (e.g. BUY ONE, GET ONE)",
+          "default": "BUY ONE, GET ONE"
+        },
+        {
+          "type": "text",
+          "id": "headline",
+          "label": "Headline (e.g. 50% OFF)",
+          "default": "50% OFF"
+        },
+        {
+          "type": "text",
+          "id": "subtext",
+          "label": "Subtext (e.g. Performance® Pillows)",
+          "default": "Performance® Pillows"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Laborday Homepage Banner",
+      "blocks": [
+        {
+          "type": "offer_block"
+        },
+        {
+          "type": "offer_block"
+        },
+        {
+          "type": "offer_block"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

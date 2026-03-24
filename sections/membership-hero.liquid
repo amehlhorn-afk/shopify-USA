@@ -1,0 +1,175 @@
+{{ 'membership-hero.css' |  asset_url |  stylesheet_tag }}
+{%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.50 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.50 | round: 0 }}px;
+    }
+  
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+<div class="section-{{ section.id }}-padding color-{{ section.settings.section_color_scheme }} block__membership-hero-section">
+  <div class="page-width">
+        <div class="block__membership-hero-main relative quaternary-border-radius overflow-hidden ">
+                <img src="{{ section.settings.img |  image_url: width: 1500, height: 400  }}" alt="{{ section.settings.heading }}" class="block__image-desktop">
+                <img src="{{ section.settings.img_mob |  image_url: width: 420, height: 275  }}" alt="{{ section.settings.heading }}" class="block__image-mobile">    
+                <div class="block__membership-hero-content absolute">
+                            <h1 class="banner__heading font-weight-700 {{ section.settings.heading_size }}">
+                                {{ section.settings.heading }}
+                            </h1>
+                            <div class="banner__text rte {{ section.settings.text_style }}">
+                                <p>{{ section.settings.text }}</p>
+                            </div>
+                            {% if customer %}
+                                   <div class="yotpo-widget-instance" data-yotpo-instance-id="1008744"></div>
+                            {%- else -%}
+                                    {%- if section.settings.button_label_1 != blank -%}
+                                        <a class="button button-primary senary-border-radius"
+                                            role="link"
+                                            href="{{ routes.account_register_url }}">
+                                            {{- section.settings.button_label_1 | escape -}}
+                                        </a>
+                                    {% endif %}
+                            {%- endif -%}
+                    </div>
+         </div>
+    </div>
+</div>
+{% schema %}
+  {
+    "name": "Membership Hero",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "img_mob",
+          "label": "Image"
+        },
+        {
+            "type": "color_scheme",
+            "id": "section_color_scheme",
+            "label": "Color scheme",
+            "default": "scheme-1"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Browse our latest products",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h1",
+              "label": "Extra extra large"
+            },
+            {
+              "value": "h2",
+              "label": "Extra large"
+            },
+            {
+              "value": "h3",
+              "label": "Large"
+            },
+            {
+              "value": "h4",
+              "label": "Extra extra medium"
+            },
+            {
+              "value": "primary_h4",
+              "label": "Extra medium"
+            },
+            {
+              "value": "h5",
+              "label": "Small"
+            },
+            {
+              "value": "h6",
+              "label": "Extra small"
+            }
+          ],
+          "default": "h2",
+          "label": "Heading size"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "default": "Give customers details about the banner image(s) or content on the template.",
+          "label": "Description"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "primary_h4",
+              "label": "Medium"
+            },
+            {
+              "value": "small_body",
+              "label": "Subtitle"
+            },
+            {
+              "value": "body",
+              "label": "Body"
+            },
+            {
+              "value": "extreme_small_body",
+              "label": "Extreme small body"
+            }
+          ],
+          "default": "primary_h4",
+          "label": "Text style"
+        },
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Shop all",
+          "label": "First button label",
+          "info": "Leave the label blank to hide the button."
+        },
+        {
+            "type": "header",
+            "content": "t:sections.all.padding.section_padding_heading"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "t:sections.all.padding.padding_top",
+            "default": 36
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "t:sections.all.padding.padding_bottom",
+            "default": 36
+        }
+      
+    ],
+    "presets": [
+      {
+        "name": "Membership Hero"
+      }
+    ]
+  }
+{% endschema %}

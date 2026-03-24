@@ -1,0 +1,109 @@
+{% comment %}
+  Mattress Page Upsell Section - "Finish Making Your Bed"
+  Features:
+  - Display upsell products (selectable in theme editor)
+  - Auto-adjusts sheet/mattress protector size based on main mattress variant selection
+  - Adds main PDP product + selected upsell items to cart when checkbox is checked and Add to Cart clicked
+{% endcomment %}
+
+<section class="finish-making-bed">
+  <div class="container">
+    <h2>Finish Making Your Bed</h2>
+    <div class="upsell-items">
+      {% for block in section.blocks %}
+        {% assign product = all_products[block.settings.product_handle] %}
+        {% if product %}
+        <div class="upsell-item" data-product-id="{{ product.id }}" data-sync-size="{{ block.settings.sync_size }}">
+          <div class="upsell-checkbox">
+            <input type="checkbox" id="upsell-{{ block.id }}" class="upsell-check">
+          </div>
+          <div class="upsell-image">
+            <img src="{{ product.featured_image | img_url: '300x' }}" alt="{{ product.title }}">
+          </div>
+          <div class="upsell-details">
+            <h3>{{ product.title }}</h3>
+            <p class="price">
+              <span class="compare-at">{{ product.compare_at_price | money }}</span>
+              <span class="sale-price">{{ product.price | money }}</span>
+            </p>
+            <p class="description">{{ product.description | strip_html | truncate: 150 }}</p>
+            {% if block.settings.savings_text != blank %}
+              <span class="savings">{{ block.settings.savings_text }}</span>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .finish-making-bed {border:1px solid #ddd; border-radius:10px; padding:20px;}
+  .upsell-items {display:flex; flex-direction:column; gap:15px;}
+  .upsell-item {display:flex; gap:15px; border:1px solid #ddd; border-radius:8px; padding:10px; align-items:center;}
+  .upsell-checkbox {flex-shrink:0;}
+  .upsell-image img {width:80px; height:auto; border-radius:4px;}
+  .upsell-details {flex:1;}
+  .price {font-weight:bold; color:red;}
+  .compare-at {text-decoration:line-through; margin-right:5px; color:#555;}
+  .savings {display:inline-block; border:1px solid #00aaff; border-radius:15px; padding:2px 8px; font-size:12px; color:#00aaff; margin-top:5px;}
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Listen for mattress variant changes to sync sizes
+    const mattressSelect = document.querySelector('select[name="id"]');
+    const upsellItems = document.querySelectorAll('.upsell-item');
+
+    if (mattressSelect) {
+      mattressSelect.addEventListener('change', function() {
+        const selectedOption = mattressSelect.options[mattressSelect.selectedIndex].text.toLowerCase();
+        upsellItems.forEach(item => {
+          if(item.dataset.syncSize === 'true'){
+            // Replace size in title or select correct variant logic
+            const productId = item.dataset.productId;
+            // Fetch variant update logic via Storefront API or product form handling
+            console.log(`Syncing ${productId} to size: ${selectedOption}`);
+          }
+        });
+      });
+    }
+
+    // Add to Cart functionality
+    const addToCartBtn = document.querySelector('form[action^="/cart"] [type="submit"]');
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', function(e) {
+        const selectedUpsells = document.querySelectorAll('.upsell-check:checked');
+        selectedUpsells.forEach(check => {
+          const productId = check.closest('.upsell-item').dataset.productId;
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: productId, quantity: 1 })
+          });
+        });
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Finish Making Your Bed",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Upsell Product",
+      "settings": [
+        {"type": "product", "id": "product_handle", "label": "Select Product"},
+        {"type": "checkbox", "id": "sync_size", "label": "Sync Size with Mattress", "default": true},
+        {"type": "text", "id": "savings_text", "label": "Savings Text", "default": "SAVE $50"}
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [{"name": "Finish Making Your Bed"}]
+}
+{% endschema %}

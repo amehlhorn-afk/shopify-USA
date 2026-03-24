@@ -1,0 +1,153 @@
+{{ 'section-our-fans.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'our-fans.js' | asset_url }}" defer="defer"></script>
+
+{% style %}
+  .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media (max-width: 1199px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top | times: 0.75 }}px;
+          padding-bottom: {{ section.settings.padding_bottom | times: 0.75 }}px;
+      }
+  }
+  @media (max-width: 749px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top_m }}px;
+          padding-bottom: {{ section.settings.padding_bottom_m }}px;
+      }
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }} section-our-fans">
+  <div class="page-width">
+    <div class="block__our-fans-nav">
+      {% for entry in shop.metaobjects.our_fans_content.values %}
+        {%- assign tag_title = entry.our_fans_category | capitalize | append: '|' -%}
+        {%- assign cattitle = cattitle | append: tag_title -%}
+      {% endfor %}
+      {%- assign tag_cat = cattitle | split: '|' | uniq -%}
+      {%- for tag in tag_cat -%}
+        {% assign forloop_length = forloop.length %}
+      {% endfor %}
+      <ul class="block__our-fans-nav-list {% if forloop_length > 6 %}block__our-fans-nav-list-start{% endif %}">
+        <li class="block__our-fans-nav-item extra_body active">All</li>
+        {%- for tag in tag_cat -%}
+          <li class="block__our-fans-nav-item extra_body" data-tag="{{ tag | handleize }}">{{ tag | capitalize }}s</li>
+        {% endfor %}
+      </ul>
+    </div>  
+    <div class="block__our-fans-row" id="block__our-fans-grid"> 
+      
+      
+      {% assign fans = page.metafields.custom.our_fans.value %}
+      {% for entry in fans %}
+      <div class="block__our-fans-item" id="{{ entry.our_fans_category | handleize }}" {% if forloop.index > 20 %} style="display: none;"{% endif %}>
+          {% assign image = entry.our_fans_image %}
+          {% if image != blank %}
+            <div class="block__our-fans-img">
+              {% if entry.our_fans_instagram_url != blank %}
+                <a href="{{ entry.our_fans_instagram_url }}" target="_blank">
+              {% endif %}
+              {% render 'custom-image', image: image, class: 'img-fluid mobile-bg object-cover' %}
+              {% if entry.our_fans_instagram_url != blank %}
+              </a>
+              {% endif %}
+            </div>
+          {% endif %}
+          <div class="block__our-fans-info">
+            <div class="block__our-fans-tag">
+              {% if entry.our_fans_category != blank %}
+                <span class="extra_small_body">{{ entry.our_fans_category }}</span>
+              {% endif %}
+              {% if entry.our_fans_instagram_url != blank %}
+                <a href="{{ entry.our_fans_instagram_url }}" target="_blank">{{ 'icon-instagram.svg' | inline_asset_content }}</a>
+              {% endif %}
+            </div>
+            {% if entry.our_fans_name_ != blank %}
+              <h5>
+                {% if entry.our_fans_instagram_url != blank %}
+                  <a href="{{ entry.our_fans_instagram_url }}" target="_blank">
+                {% endif %}
+                  {{ entry.our_fans_name_ }}
+                {% if entry.our_fans_instagram_url != blank %}
+                </a>
+                {% endif %}
+                </h5>
+            {% endif %}
+            {% if entry.our_fans_caption != blank %}
+              <p class="small_body">{{ entry.our_fans_caption }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="block__our-fans-btn">
+      <button class="button-quaternary h5 loadMore" id="loadMore">{{ section.settings.btn }}</button>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Our Fans",
+  "settings": [
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Button Text",
+      "default": "load more"
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Fans"
+    }
+  ]
+}
+{% endschema %}

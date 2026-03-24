@@ -1,0 +1,83 @@
+{% schema %}
+{
+  "name": "Promo Banner",
+  "tag": "section",
+  "class": "promo-banner-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Banner Text",
+      "default": "Up To 30% Off Performance® Bedding"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#F74248"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo Banner",
+      "category": "Banners"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+   .promo-banner {
+    padding: 12px 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    max-width: 80%;
+    margin: 0 auto;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    margin-top: 20px;
+  }
+
+  .promo-text {
+    display: inline-block;
+    color: inherit;
+  }
+
+  .star-icon {
+    color: #FFD700; /* Yellow Star */
+    font-size: 32px;
+    line-height: 1;
+  }
+  @media (min-width: 729px) {
+    .promo-banner {
+      height: 120px;
+    }
+  }
+</style>
+
+<div
+  class="promo-banner"
+  style="
+      background-color: {{ section.settings.background_color }};
+      color: {{ section.settings.text_color }};
+    max-width: 1500px;
+  "
+>
+  <span class="star-icon" aria-hidden="true">★</span>
+  <span class="promo-text">{{ section.settings.banner_text }}</span>
+  <span class="star-icon" aria-hidden="true">★</span>
+</div>

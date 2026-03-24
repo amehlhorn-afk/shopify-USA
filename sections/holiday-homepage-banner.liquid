@@ -1,0 +1,448 @@
+{%  style  %}
+  {% if section.settings.text_color != blank %}
+  .section-{{ section.id }} .holiday-banner-content h2,
+  .section-{{ section.id }} .holiday-banner-content h3,
+  .section-{{ section.id }} .holiday-banner-content p,
+  .section-{{ section.id }} .holiday-banner-content span{color:{{ section.settings.text_color }};}
+  {% endif %}
+{% endstyle %}
+<div
+  class="holiday-banner-wrapper relative section-{{ section.id }}-padding section-{{ section.id }}"
+  data-desktop-bg="{{ section.settings.image_desktop | image_url: width: 2400 }}"
+  data-mobile-bg="{{ section.settings.image_mobile | image_url: width: 1200 }}"
+>
+  {% if section.settings.overlay != blank%}
+    <span class="w-full h-full block absolute block__overlay_opacity inset-0 "
+          style="background-color: {{ section.settings.color }}; opacity:{{ section.settings.overlay_opacity }}%;">
+    </span>
+  {% endif %}
+  <div class="holiday-banner-content z-index-1  {{ section.settings.desktop_content_position }} {{ section.settings.mobile_content_position }}">
+    <div class="text-container">
+      {% if section.settings.sale_image != blank %}
+        <img class="sale-image" src="{{ section.settings.sale_image | image_url }}" alt="Promo Tag">
+      {% endif %}
+      
+      {% for block in section.blocks %}
+        <div class="promo-offer-block">
+          {% if block.settings.label != blank %}
+            <p class="offer-label">{{ block.settings.label }}</p>
+          {% endif %}
+          {% if block.settings.headline != blank %}
+            <p class="offer-headline">{{ block.settings.headline }}</p>
+          {% endif %}
+          {% if block.settings.subtext != blank %}
+            <p class="offer-subtext">{{ block.settings.subtext }}</p>
+          {% endif %}
+        </div>
+
+        {% if forloop.index < section.blocks.size %}
+          <hr class="offer-divider">
+        {% endif %}
+      {% endfor %}
+
+      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+        <a href="{{ section.settings.cta_link }}" class="holiday-cta-button">
+          {{ section.settings.cta_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateBannerBackground() {
+    const wrapper = document.querySelector('.holiday-banner-wrapper');
+    if (!wrapper) return;
+
+    const mobileBg = wrapper.getAttribute('data-mobile-bg');  
+    const desktopBg = wrapper.getAttribute('data-desktop-bg');
+
+    if (window.innerWidth <= 768 && mobileBg) {
+      wrapper.style.backgroundImage = `url(${mobileBg})`;
+    } else if (desktopBg) {
+      wrapper.style.backgroundImage = `url(${desktopBg})`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", updateBannerBackground);
+  window.addEventListener("resize", updateBannerBackground);
+</script>
+
+
+<style>
+  
+  .holiday-banner-wrapper {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .holiday-banner-content {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .holiday-banner-content.left {
+    justify-content: flex-start;
+  }
+
+  .holiday-banner-content.center {
+    justify-content: flex-start;
+  }
+
+  .holiday-banner-content.right {
+    justify-content: flex-end;
+  }
+
+  .text-container {
+    margin-left: 120px;
+    width: 619px;
+    padding: 30px;
+    border-radius: 0;
+    color: white;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: #0e1a5f;
+  }
+
+  .sale-image {
+    max-width: 160px;
+    height: auto;
+    margin: 0 auto 12px;
+    display: block;
+  }
+
+  .holiday-title {
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 68px;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .holiday-title .highlight {
+    color: white;
+  }
+
+  .holiday-subtext {
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24.374px;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .holiday-validity {
+    color: #FFF;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .promo-offer-block {
+    margin-top: 24px;
+    color: #fff;
+    text-align: center;
+  }
+
+  .offer-label {
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .offer-headline {
+    font-size: 42px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .offer-subtext {
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 4px;
+  }
+
+  .offer-divider {
+    border: none;
+    height: 2px;
+    background-color: #FF3C3C;
+    width: 80%;
+    margin: 24px auto 0;
+  }
+
+  .holiday-cta-button {
+    display: inline-block;
+    margin: 32px auto 0;
+    background-color: #FF3C3C;
+    color: white;
+    padding: 14px 36px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .holiday-banner-wrapper {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0;
+      min-height: 100% !important;
+    }
+
+    .holiday-banner-content {
+      order: 1;
+      padding: 20px;
+    }
+
+    .text-container {
+      margin-left: 0;
+      width: 100%;
+      height: auto;
+      padding: 24px;
+      background-color: transparent !important;
+    }
+
+    .holiday-title {
+      font-size: 32px;
+      line-height: 38px;
+    }
+
+    .holiday-subtext,
+    .holiday-validity {
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+</style>
+
+{% style %}
+  @media (min-width: 990px){
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.desktop_padding_top }}px;
+      padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+    }
+  }
+  @media (max-width: 989px){
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Holiday Homepage Banner",
+  "settings": [
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay",
+      "label": "Enable Overlay"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Overlay Background Color"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "unit": "%",
+      "step": 1,
+      "label": "Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Background Image",
+      "info": "Full width background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile Background Image",
+      "info": "Replaces the background on smaller screens"
+    },
+    {
+      "type": "image_picker",
+      "id": "sale_image",
+      "label": "Sale Tag Image",
+      "info": "Use an image like the 4th of July badge"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Declare Sleep"
+    },
+    {
+      "type": "text",
+      "id": "highlight_text",
+      "label": "Highlight Text",
+      "default": "Independence"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Buy One, Get One 50% Off Performance® Pillows • Save $300 on the M3 Mattress • 30% Off Performance® Sheets"
+    },
+    {
+      "type": "text",
+      "id": "offer_validity",
+      "label": "Offer Validity",
+      "default": "*Offer Valid From 06/20/25 – 7/11/25"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button Text",
+      "default": "Shop Sale"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "label": "Desktop Content Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_position",
+      "label": "Mobile Content Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Padding (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Padding (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "offer_block",
+      "name": "Offer Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label (e.g. BUY ONE, GET ONE)",
+          "default": "BUY ONE, GET ONE"
+        },
+        {
+          "type": "text",
+          "id": "headline",
+          "label": "Headline (e.g. 50% OFF)",
+          "default": "50% OFF"
+        },
+        {
+          "type": "text",
+          "id": "subtext",
+          "label": "Subtext (e.g. Performance® Pillows)",
+          "default": "Performance® Pillows"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Holiday Homepage Banner",
+      "blocks": [
+        {
+          "type": "offer_block"
+        },
+        {
+          "type": "offer_block"
+        },
+        {
+          "type": "offer_block"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

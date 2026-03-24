@@ -1,0 +1,253 @@
+{{ 'custom-multicolumn.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+/* ---- Section spacing ---- */
+@media (min-width: 990px) {
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.desktop_padding_top }}px;
+    padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+  }
+}
+@media (max-width: 989px) {
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.mobile_padding_top }}px;
+    padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  }
+}
+
+/* Desktop layout width calc */
+@media screen and (min-width: 1024px) {
+  .block__custom-multicolumn-inner {
+    width: calc(100% / {{ section.settings.columns_first_row }} - (20px * ({{ section.settings.columns_first_row }} - 1)));
+  }
+}
+
+/* ---- TILE: rounded corners + clipping ---- */
+.block__custom-multicolumn-media-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px; /* desktop */
+}
+@media (max-width: 768px) {
+  .block__custom-multicolumn-media-inner {
+    border-radius: 16px; /* mobile */
+  }
+}
+
+/* Make image/video respect rounding */
+.block__custom-multicolumn-media-inner > .block__media,
+.block__custom-multicolumn-media-inner video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* ---- BANNER ---- */
+.block__custom-multicolumn-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  z-index: 3;
+  font-weight: 700;
+  line-height: 1.2;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.block__custom-multicolumn-banner-text {
+  font-size: var(--banner-font-desktop, 16px);
+}
+
+@media (max-width: 768px) {
+  .block__custom-multicolumn-banner-text {
+    font-size: var(--banner-font-mobile, 14px);
+  }
+}
+{%- endstyle -%}
+
+<div id="custom-multicolumn-{{ section.id }}" class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <div class="block__custom-multicolumn-main">
+      <div class="block__custom-multicolumn-wrapper swiper-container overflow-hidden flex flex-wrap">
+        <div class="swiper-wrapper flex">
+          {% for block in section.blocks %}
+            {%- case block.type -%}
+              {%- when 'column' -%}
+                <div class="block__custom-multicolumn-inner swiper-slide text-center">
+                  <div class="mobile-link" data-src="{{ block.settings.link }}">
+                    <div class="block__custom-multicolumn-media-inner flex justify-center items-center overflow-hidden w-full relative quaternary-border-radius"
+                      style="
+                        --banner-font-desktop: {{ block.settings.banner_font_desktop }}px;
+                        --banner-font-mobile: {{ block.settings.banner_font_mobile }}px;
+                      "
+                    >
+                      
+                      {% if block.settings.show_banner and block.settings.banner_text != blank %}
+                        <div
+                          class="block__custom-multicolumn-banner"
+                          style="
+                            background: {{ block.settings.banner_bg }};
+                            color: {{ block.settings.banner_text_color }};
+                          "
+                        >
+                          <span class="block__custom-multicolumn-banner-text">
+                            {{ block.settings.banner_text }}
+                          </span>
+                        </div>
+                      {% endif %}
+
+                      {% if block.settings.image != blank %}
+                        {% render 'custom-image',
+                          image: block.settings.image,
+                          class: 'block__media object-cover w-full h-full'
+                        %}
+                      {% else %}
+                        {{
+                          block.settings.video
+                          | video_tag:
+                            loop: true,
+                            controls: false,
+                            muted: true,
+                            autoplay: true,
+                            class: 'h-full w-full object-cover block block__media'
+                        }}
+                      {% endif %}
+
+                      <a
+                        class="block__custom-multicolumn-btn button-tertiary senary-border-radius absolute font-weight-700"
+                        href="{{ block.settings.link }}"
+                      >
+                        {{- block.settings.link_label -}}
+                      </a>
+                    </div>
+
+                    <div class="block__custom-multicolumn-content-inner inline-block relative font-weight-700">
+                      {{ block.settings.text }}
+                    </div>
+                  </div>
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const root = document.getElementById('custom-multicolumn-{{ section.id }}');
+    if (!root) return;
+
+    // Mobile click-through (bind once)
+    function bindMobileLinks() {
+      if (window.innerWidth <= 768) {
+        root.querySelectorAll('.mobile-link').forEach(function (link) {
+          if (link.dataset.bound === '1') return;
+          link.dataset.bound = '1';
+          link.addEventListener('click', function () {
+            const url = link.getAttribute('data-src');
+            if (url) window.location.href = url;
+          });
+        });
+      }
+    }
+    bindMobileLinks();
+    window.addEventListener('resize', bindMobileLinks, { passive: true });
+
+    // Swiper scoped to this section only
+    const ColumnCarousel = root.querySelector('.block__custom-multicolumn-wrapper');
+    if (ColumnCarousel) {
+      const swiper = new Swiper(ColumnCarousel, {
+        slidesPerView: 1.1,
+        spaceBetween: 10,
+        loop: false,
+        breakpoints: {
+          370:  { slidesPerView: 2.1, spaceBetween: 10 },
+          768:  { slidesPerView: 3,   spaceBetween: 10,   allowTouchMove: true  },
+          992:  { slidesPerView: 4,   spaceBetween: 12.5, allowTouchMove: false },
+          1299: { slidesPerView: 5,   spaceBetween: 12.5, allowTouchMove: false }
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Custom Multicolumn",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "inline_richtext", "id": "title", "default": "Heading", "label": "Heading" },
+    {
+      "type": "select", "id": "heading_size", "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
+        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
+        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
+      ],
+      "default": "h1", "label": "t:sections.all.heading_size.label"
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "columns_first_row", "label": "Number of Columns in First Row", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "header", "content": "Mobile Layout" },
+    {
+      "type": "select", "id": "columns_mobile", "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 column" }
+      ],
+      "default": "1", "label": "Number of columns on mobile"
+    },
+    { "type": "checkbox", "id": "swipe_on_mobile", "default": false, "label": "Enable swipe on mobile" },
+    { "type": "header", "content": "Desktop padding" },
+    { "type": "range", "id": "desktop_padding_top", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Desktop Padding Top", "default": 16 },
+    { "type": "range", "id": "desktop_padding_bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Desktop Padding Bottom", "default": 16 },
+    { "type": "header", "content": "Mobile padding" },
+    { "type": "range", "id": "mobile_padding_top", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Mobile Padding Top", "default": 16 },
+    { "type": "range", "id": "mobile_padding_bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Mobile Padding Bottom", "default": 16 }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        { "type": "header", "content": "Image" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "header", "content": "Video" },
+        { "type": "video", "id": "video", "label": "Video" },
+        { "type": "header", "content": "Content" },
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post.</p>",
+          "label": "Description"
+        },
+        { "type": "header", "content": "Button" },
+        { "type": "text", "id": "link_label", "label": "Link label" },
+        { "type": "url", "id": "link", "label": "Link" },
+
+        { "type": "header", "content": "Top Banner" },
+        { "type": "checkbox", "id": "show_banner", "label": "Show top banner", "default": true },
+        { "type": "text", "id": "banner_text", "label": "Banner text", "default": "BUY ONE, GET ONE 50% OFF" },
+        { "type": "color", "id": "banner_bg", "label": "Banner background", "default": "#CBFF47" },
+        { "type": "color", "id": "banner_text_color", "label": "Banner text color", "default": "#000000" },
+        { "type": "range", "id": "banner_font_desktop", "min": 10, "max": 30, "step": 1, "unit": "px", "label": "Banner font size (desktop)", "default": 16 },
+        { "type": "range", "id": "banner_font_mobile", "min": 10, "max": 26, "step": 1, "unit": "px", "label": "Banner font size (mobile)", "default": 14 }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Custom Multicolumn", "blocks": [ { "type": "column" } ] }
+  ]
+}
+{% endschema %}

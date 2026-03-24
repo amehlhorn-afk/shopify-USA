@@ -1,0 +1,350 @@
+{{ 'section-hospitality-banner.css' | asset_url | stylesheet_tag }}
+
+{% comment %}
+Precompute desktop gradient color (RGB), opacity, and length.
+Also precompute mobile overlay RGBA so we never use the `opacity` property inline.
+{% endcomment %}
+{% assign _grad_color = section.settings.overlay_gradient_color | default: '#015294' %}
+{% assign _grad_rgb = _grad_color | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' | split: ',' %}
+{% assign _gr = _grad_rgb[0] | strip %}
+{% assign _gg = _grad_rgb[1] | strip %}
+{% assign _gb = _grad_rgb[2] | strip %}
+{% assign _galpha = section.settings.overlay_gradient_opacity | default: 72 | times: 0.01 %}
+{% assign _glen = section.settings.overlay_gradient_length | default: 60 %}
+
+{% assign _mo_color = section.settings.color | default: '#015294' %}
+{% assign _mo_rgb = _mo_color | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' | split: ',' %}
+{% assign _mr = _mo_rgb[0] | strip %}
+{% assign _mg = _mo_rgb[1] | strip %}
+{% assign _mb = _mo_rgb[2] | strip %}
+{% assign _malpha = section.settings.overlay_opacity | default: 60 | times: 0.01 %}
+
+{% style %}
+  /* Section spacing */
+  .section-{{ section.id }} {
+    position: relative; /* anchor for absolute overlay */
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media (max-width: 1199px) {
+    .section-{{ section.id }} { padding-top: {{ section.settings.padding_top | times: 0.75 }}px; padding-bottom: {{ section.settings.padding_bottom | times: 0.75 }}px; }
+  }
+  @media (max-width: 749px) {
+    .section-{{ section.id }} { padding-top: {{ section.settings.padding_top_m }}px; padding-bottom: {{ section.settings.padding_bottom_m }}px; }
+  }
+
+  /* Ensure overlay covers the image and sits below text */
+  .section-{{ section.id }} .block__hospitality-banner,
+  .section-{{ section.id }} .block__laborday-secondary-banner { position: relative; }
+
+  .section-{{ section.id }} .block__hospitality-banner-overlay,
+  .section-{{ section.id }} .block__laborday-secondary-banner-overlay {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  }
+  .section-{{ section.id }} .block__hospitality-banner-info,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info {
+    position: relative; z-index: 2;
+  }
+
+  /* === DESKTOP-ONLY GRADIENT OVERLAY === */
+  @media (min-width: 750px) {
+    .section-{{ section.id }} .block__hospitality-banner-overlay { background-color: transparent !important; }
+
+    /* Direction variants — fade to transparent by {{ _glen }}% */
+    .section-{{ section.id }} .block__hospitality-banner-overlay.to-right {
+      background-image: linear-gradient(to right,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, {{ _galpha }}) 0%,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, 0) {{ _glen }}%
+      ) !important;
+    }
+    .section-{{ section.id }} .block__hospitality-banner-overlay.to-left {
+      background-image: linear-gradient(to left,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, {{ _galpha }}) 0%,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, 0) {{ _glen }}%
+      ) !important;
+    }
+    .section-{{ section.id }} .block__hospitality-banner-overlay.to-bottom {
+      background-image: linear-gradient(to bottom,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, {{ _galpha }}) 0%,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, 0) {{ _glen }}%
+      ) !important;
+    }
+    .section-{{ section.id }} .block__hospitality-banner-overlay.to-top {
+      background-image: linear-gradient(to top,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, {{ _galpha }}) 0%,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, 0) {{ _glen }}%
+      ) !important;
+    }
+    .section-{{ section.id }} .block__hospitality-banner-overlay.to-bottom-right {
+      background-image: linear-gradient(to bottom right,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, {{ _galpha }}) 0%,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, 0) {{ _glen }}%
+      ) !important;
+    }
+    .section-{{ section.id }} .block__hospitality-banner-overlay.to-bottom-left {
+      background-image: linear-gradient(to bottom left,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, {{ _galpha }}) 0%,
+        rgba({{ _gr }}, {{ _gg }}, {{ _gb }}, 0) {{ _glen }}%
+      ) !important;
+    }
+  }
+
+  /* Mobile: RGBA background only (no element opacity) */
+  @media (max-width: 749px) {
+    .section-{{ section.id }} .block__hospitality-banner-overlay { display: none; }
+    .section-{{ section.id }} .block__hospitality-banner-overlay-mobile { display: block; }
+  }
+
+  {% if section.settings.text_color != blank %}
+  /* Base color if not forcing white */
+  .section-{{ section.id }} .block__laborday-secondary-banner-info p,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info h2,
+  .section-{{ section.id }} .block__hospitality-banner-info p,
+  .section-{{ section.id }} .block__hospitality-banner-info h2 { color: {{ section.settings.text_color }}; }
+  {% endif %}
+
+  {% if section.settings.force_text_white %}
+  /* === Force true-white body copy ONLY; don't touch CTA === */
+  .section-{{ section.id }} .block__hospitality-banner-info h1,
+  .section-{{ section.id }} .block__hospitality-banner-info h2,
+  .section-{{ section.id }} .block__hospitality-banner-info h3,
+  .section-{{ section.id }} .block__hospitality-banner-info h4,
+  .section-{{ section.id }} .block__hospitality-banner-info h5,
+  .section-{{ section.id }} .block__hospitality-banner-info h6,
+  .section-{{ section.id }} .block__hospitality-banner-info p,
+  .section-{{ section.id }} .block__hospitality-banner-info li,
+  .section-{{ section.id }} .block__hospitality-banner-info .body,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info h1,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info h2,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info h3,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info h4,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info h5,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info h6,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info p,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info li,
+  .section-{{ section.id }} .block__laborday-secondary-banner-info .body {
+    color: #fff !important;
+    opacity: 1 !important;
+  }
+  .section-{{ section.id }} .block__hospitality-banner-info a:not(.cta):not(.button-tertiary):not(.button-quaternary),
+  .section-{{ section.id }} .block__laborday-secondary-banner-info a:not(.cta):not(.button-tertiary):not(.button-quaternary) {
+    color: #fff !important;
+  }
+  {% else %}
+  /* Not forcing white, but remove theme opacity from copy—exclude CTA */
+  .section-{{ section.id }} .block__hospitality-banner-info :not(.cta) { opacity: 1 !important; }
+  .section-{{ section.id }} .block__laborday-secondary-banner-info :not(.cta) { opacity: 1 !important; }
+  {% endif %}
+
+  /* === Promo Tiers (restored sizing) === */
+  .section-{{ section.id }} .promo-tiers {
+    display: inline-block;
+    text-align: left;
+    margin-top: 12px;
+  }
+  .section-{{ section.id }} .promo-tier {
+    display: flex;
+    align-items: baseline;
+    justify-content: left;
+    gap: 12px;
+    margin: 6px 0;
+    white-space: nowrap; /* keep "2 Items" on one line */
+  }
+  /* Left: 20% / 25% / 30% OFF */
+  .section-{{ section.id }} .promo-tier-left {
+    font-weight: 800;
+    font-size: 42px !important;
+    line-height: 1;
+    color: #DAF262;
+  }
+  /* Right: 2 Items / 3 Items / 4+ Items */
+  .section-{{ section.id }} .promo-tier-right {
+    font-weight: 600;
+    font-size: 34px !important;
+    line-height: 1.1;
+    opacity: 1 !important;
+  }
+  @media (max-width: 989px) {
+    .section-{{ section.id }} .promo-tier-left { font-size: 30px !important; }
+    .section-{{ section.id }} .promo-tier-right { font-size: 22px !important; }
+  }
+
+  /* === CTA styles (section-scoped) === */
+  .section-{{ section.id }} .cta{
+    display:inline-flex; align-items:center; justify-content:center; text-decoration:none; font-weight:700;
+    padding: {{ section.settings.btn_padding_y | default: 12 }}px {{ section.settings.btn_padding_x | default: 24 }}px;
+    border-radius: {{ section.settings.btn_radius | default: 28 }}px;
+    background: {{ section.settings.btn_bg_color | default: '#DAF262' }};
+    color: {{ section.settings.btn_text_color | default: '#0E182F' }};
+    border: 2px solid {{ section.settings.btn_border_color | default: 'transparent' }};
+    transition: transform .08s ease, box-shadow .2s ease, opacity .2s ease;
+    box-shadow: {% if section.settings.btn_shadow %}0 6px 16px rgba(0,0,0,.15){% else %}none{% endif %};
+  }
+
+  {% if section.settings.btn_override_theme %}
+  /* Force section colors to win over theme button classes if toggled */
+  .section-{{ section.id }} .cta{
+    background: {{ section.settings.btn_bg_color | default: '#DAF262' }} !important;
+    color: {{ section.settings.btn_text_color | default: '#0E182F' }} !important;
+    border-color: {{ section.settings.btn_border_color | default: 'transparent' }} !important;
+  }
+  {% endif %}
+
+  .section-{{ section.id }} .cta:hover{
+    transform: translateY(-1px);
+    box-shadow: {% if section.settings.btn_shadow %}0 8px 20px rgba(0,0,0,.20){% else %}none{% endif %};
+    opacity:.95;
+  }
+  @media (max-width: 749px){
+    .section-{{ section.id }} .cta{ width:{% if section.settings.btn_fullwidth_m %}100%{% else %}auto{% endif %}; text-align:center; }
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }} laborday-secondary-banner hospitality-banner">
+  <div class="page-width">
+    <div class="block__laborday-secondary-banner block__hospitality-banner">
+      {% if section.settings.overlay or section.settings.overlay_mo %}
+        <div
+          class="block__laborday-secondary-banner-overlay block__hospitality-banner-overlay {{ section.settings.overlay_direction | default: 'to-right' }} {% if section.settings.overlay_mo %}block__laborday-secondary-banner-overlay-mobile block__hospitality-banner-overlay-mobile{% endif %}"
+          {%- comment -%} Mobile/general overlay via RGBA background only {%- endcomment -%}
+          style="background-color: rgba({{ _mr }}, {{ _mg }}, {{ _mb }}, {{ _malpha }});"
+        ></div>
+      {% endif %}
+
+      <div class="block__laborday-secondary-banner-img block__hospitality-banner-img">
+        {% assign desktop_img = section.settings.img %}
+        {% assign mobile_img = section.settings.img_mobile %}
+        {% unless mobile_img != blank %}{% assign mobile_img = section.settings.img %}{% endunless %}
+        {% if desktop_img != blank %}
+          <img loading="lazy"
+            src="{{ desktop_img | image_url: width:desktop_img.width }}"
+            alt="{{ desktop_img.alt | default: shop.name }}"
+            width="" height=""
+            class="laborday-secondary-banner-desktop hospitality-banner-desktop">
+          <img loading="lazy"
+            src="{{ mobile_img | image_url: width:mobile_img.width }}"
+            alt="{{ mobile_img.alt | default: shop.name }}"
+            width="" height=""
+            class="laborday-secondary-banner-mobile hospitality-banner-mobile">
+        {% endif %}
+      </div>
+
+      <div class="block__laborday-secondary-banner-info block__hospitality-banner-info">
+        {% if section.settings.title != blank %}
+          <h2 class="primary_h2">{{ section.settings.title }}</h2>
+        {% endif %}
+
+        {% for block in section.blocks %}
+          {% if block.type == 'tier_list' %}
+            <div class="promo-tiers" {{ block.shopify_attributes }}>
+              {% if block.settings.tiers != blank %}
+                {% assign lines = block.settings.tiers | newline_to_br | split: '<br />' %}
+                {% for line in lines %}
+                  {% assign parts = line | split: '|' %}
+                  {% if parts.size > 1 %}
+                    <div class="promo-tier">
+                      <div class="promo-tier-left">{{ parts[0] | strip }}</div>
+                      <div class="promo-tier-right">{{ parts[1] | strip }}</div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% if section.settings.text != blank %}
+          <p class="body body-under-tiers">{{ section.settings.text }}</p>
+        {% endif %}
+
+        {% if section.settings.btn != blank %}
+          <a href="{{ section.settings.url }}" class="cta {{ section.settings.btn_style }} small_body">
+            {{- section.settings.btn -}}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Labor Day Secondary",
+  "settings": [
+    { "type": "image_picker", "id": "img", "label": "Select Background Image(Desktop)" },
+    { "type": "image_picker", "id": "img_mobile", "label": "Select Background Image(Mobile)" },
+    { "type": "text", "id": "title", "label": "Title" },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "text", "id": "btn", "label": "Button Text" },
+    { "type": "url", "id": "url", "label": "Button URL" },
+
+    { "type": "select", "id": "btn_style", "label": "Button Style",
+      "options": [
+        { "value": "button-quaternary", "label": "Style 1" },
+        { "value": "button-tertiary", "label": "Style 2" }
+      ],
+      "default": "button-quaternary"
+    },
+
+    { "type": "header", "content": "Section Style" },
+    { "type": "checkbox", "id": "overlay", "label": "Enable Overlay" },
+    { "type": "color", "id": "text_color", "label": "Text Color" },
+    { "type": "checkbox", "id": "overlay_mo", "label": "Enable Overlay(Mobile)" },
+    { "type": "color", "id": "color", "label": "Overlay Background Color (Mobile/General)" },
+    { "type": "range", "id": "overlay_opacity", "min": 0, "max": 100, "step": 1, "label": "Overlay Opacity (Mobile/General)", "default": 60 },
+
+    { "type": "header", "content": "Desktop Gradient Controls" },
+    { "type": "color", "id": "overlay_gradient_color", "label": "Desktop Gradient Color", "default": "#015294" },
+    { "type": "range", "id": "overlay_gradient_opacity", "min": 0, "max": 100, "step": 1, "label": "Desktop Gradient Start Opacity (%)", "default": 72 },
+    { "type": "range", "id": "overlay_gradient_length", "min": 0, "max": 100, "step": 1, "label": "Desktop Gradient Length (%)", "default": 60 },
+    { "type": "select", "id": "overlay_direction", "label": "Desktop Gradient Direction",
+      "options": [
+        { "value": "to-right", "label": "Left → Right" },
+        { "value": "to-left", "label": "Right → Left" },
+        { "value": "to-bottom", "label": "Top → Bottom" },
+        { "value": "to-top", "label": "Bottom → Top" },
+        { "value": "to-bottom-right", "label": "Diagonal TL → BR" },
+        { "value": "to-bottom-left", "label": "Diagonal TR → BL" }
+      ],
+      "default": "to-right"
+    },
+
+    { "type": "header", "content": "Button Style Controls" },
+    { "type": "color", "id": "btn_bg_color", "label": "Button Background", "default": "#DAF262" },
+    { "type": "color", "id": "btn_text_color", "label": "Button Text Color", "default": "#0E182F" },
+    { "type": "color", "id": "btn_border_color", "label": "Button Border Color", "default": "transparent" },
+    { "type": "range", "id": "btn_radius", "min": 0, "max": 48, "step": 1, "unit": "px", "label": "Button Corner Radius", "default": 28 },
+    { "type": "range", "id": "btn_padding_x", "min": 8, "max": 40, "step": 1, "unit": "px", "label": "Button Padding X", "default": 24 },
+    { "type": "range", "id": "btn_padding_y", "min": 6, "max": 24, "step": 1, "unit": "px", "label": "Button Padding Y", "default": 12 },
+    { "type": "checkbox", "id": "btn_shadow", "label": "Enable Button Shadow", "default": true },
+    { "type": "checkbox", "id": "btn_fullwidth_m", "label": "Full-width on Mobile", "default": true },
+    { "type": "checkbox", "id": "btn_override_theme", "label": "Override Theme Button Styles With Section Colors", "default": true },
+
+    { "type": "header", "content": "Text Rendering" },
+    { "type": "checkbox", "id": "force_text_white", "label": "Force True-White Text (ignores Text Color)", "default": true },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 150, "step": 2, "unit": "px", "label": "Top padding", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 150, "step": 2, "unit": "px", "label": "Bottom padding", "default": 36 },
+    { "type": "range", "id": "padding_top_m", "min": 0, "max": 150, "step": 2, "unit": "px", "label": "Top padding(Mobile)", "default": 36 },
+    { "type": "range", "id": "padding_bottom_m", "min": 0, "max": 150, "step": 2, "unit": "px", "label": "Bottom padding(Mobile)", "default": 36 }
+  ],
+  "blocks": [
+    {
+      "type": "tier_list",
+      "name": "Tier List (multi-line)",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "tiers",
+          "label": "Tiers (one per line as \"LEFT|RIGHT\")",
+          "default": "20% OFF|2 Items\n25% OFF|3 Items\n30% OFF|4+ Items"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Labor Day Secondary", "blocks": [ { "type": "tier_list" } ] }
+  ]
+}
+{% endschema %}

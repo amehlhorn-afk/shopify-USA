@@ -1,0 +1,288 @@
+<div class="fit-to-you-section">
+  <div class="fit-content">
+    <div class="top-heading">{{ section.settings.top_heading }}</div>
+
+    {% if section.settings.fit_image %}
+      <img src="{{ section.settings.fit_image | image_url }}" alt="Fit To You" class="fit-heading-image desktop-only">
+    {% endif %}
+    {% if section.settings.fit_image_mobile %}
+      <img
+        src="{{ section.settings.fit_image_mobile | image_url }}"
+        alt="Fit To You"
+        class="fit-heading-image mobile-only"
+      >
+    {% endif %}
+
+    <div class="subheading">{{ section.settings.subheading }}</div>
+
+    {% if section.settings.mattress_image %}
+      <img
+        src="{{ section.settings.mattress_image | image_url }}"
+        alt="Mattress System"
+        class="mattress-image desktop-only"
+      >
+    {% endif %}
+    {% if section.settings.mattress_image_mobile %}
+      <img
+        src="{{ section.settings.mattress_image_mobile | image_url }}"
+        alt="Mattress System Mobile"
+        class="mattress-image mobile-only"
+      >
+
+      {% assign features = section.blocks | where: 'type', 'feature_item' %}
+      <div class="mobile-only mattress-feature-grid">
+        {% for block in features %}
+          <div class="feature-row">
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="feature-link">
+            {% endif %}
+            <span class="feature-circle">{{ block.settings.number }}</span>
+            <span class="feature-label">{{ block.settings.label }}</span>
+            {% if block.settings.link != blank %}
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+          .fit-to-you-section {
+            background-color: #0E182F;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+          }
+
+          .fit-content {
+            max-width: 1520px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            text-align: center;
+          }
+
+          .top-heading {
+            color: #FFF;
+            font-family: Roboto;
+            font-size: 71.015px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+          }
+
+          .fit-heading-image {
+            max-width: 800px;
+            width: 100%;
+            height: auto;
+            margin: 0 auto 1.5rem;
+          }
+
+          .subheading {
+            color: #FFF;
+            font-family: Roboto;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin-bottom: 3rem;
+          }
+
+          .mattress-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+          }
+
+          .desktop-only {
+            display: block;
+          }
+
+          .mobile-only {
+            display: none;
+          }
+
+    .mattress-feature-grid {
+      display: none;
+    }
+
+     .feature-row {
+      display: flex;
+      align-items: center;
+      justify-content: center; /* <-- centers the row in the column */
+      gap: 0.5rem;
+      text-align: left; /* maintains natural label alignment */
+      font-family: Roboto, sans-serif;
+      font-size: 14px;
+      color: #FFF;
+    }
+
+
+          .feature-circle {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            background-color: #fff;
+            color: #00B2FF;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .feature-label {
+           color: #FFF;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 23.724px; /* 148.276% */
+            width:156px;
+            padding-left: 10px;
+          }
+          .feature-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+          }
+
+          .feature-link:hover .feature-label {
+            text-decoration: underline;
+          }
+
+          @media (max-width: 768px) {
+          /* Feature Grid on Mobile */
+          .mattress-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem 0rem;
+            justify-content: center;
+            margin: 2rem auto 0;
+            max-width: 500px;
+            padding: 0 1rem;
+          }
+          .desktop-only {
+            display: none;
+          }
+
+
+          .fit-heading-image.mobile-only,
+          .mattress-image.mobile-only {
+            display: block;
+          }
+
+          .top-heading {
+            font-size: 32px;
+          }
+
+          .fit-heading-image {
+            max-width: 90%;
+          }
+
+          .subheading {
+            font-size: 14px;
+          }
+
+          /* Maintain 2-column grid */
+          .mattress-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem 0rem;
+            justify-content: center;
+            margin: 2rem auto 0;
+            max-width: 500px;
+            padding: 0 1rem;
+          }
+        }
+</style>
+
+{% schema %}
+{
+  "name": "Fit To You Banner",
+  "tag": "section",
+  "class": "fit-to-you-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "top_heading",
+      "label": "Top Heading",
+      "default": "100% COMFORT"
+    },
+    {
+      "type": "image_picker",
+      "id": "fit_image",
+      "label": "FIT TO YOU Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "fit_image_mobile",
+      "label": "FIT TO YOU Image (Mobile)"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "The only brand that can deliver a complete Performance® Sleep System"
+    },
+    {
+      "type": "image_picker",
+      "id": "mattress_image",
+      "label": "Mattress Image with Labels"
+    },
+    {
+      "type": "image_picker",
+      "id": "mattress_image_mobile",
+      "label": "Mattress Image with Labels (Mobile)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_item",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Feature Number",
+          "default": "1"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Feature Label",
+          "default": "Sheet Set"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 7,
+  "presets": [
+    {
+      "name": "Fit To You Banner",
+      "blocks": [
+        { "type": "feature_item", "settings": { "number": "1", "label": "Sheet Set" } },
+        { "type": "feature_item", "settings": { "number": "2", "label": "Comforter" } },
+        { "type": "feature_item", "settings": { "number": "3", "label": "Duvet Set" } },
+        { "type": "feature_item", "settings": { "number": "4", "label": "Pillow" } },
+        { "type": "feature_item", "settings": { "number": "5", "label": "Mattress Protector" } },
+        { "type": "feature_item", "settings": { "number": "6", "label": "Mattress" } },
+        { "type": "feature_item", "settings": { "number": "7", "label": "Adjustable Base" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

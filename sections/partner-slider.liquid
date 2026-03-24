@@ -1,0 +1,143 @@
+{{ 'section-partner-slider.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'partner-slider.js' | asset_url }}" defer="defer"></script>
+
+{% style %}
+  .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media (max-width: 1199px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top | times: 0.75 }}px;
+          padding-bottom: {{ section.settings.padding_bottom | times: 0.75 }}px;
+      }
+  }
+  @media (max-width: 749px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top_m }}px;
+          padding-bottom: {{ section.settings.padding_bottom_m }}px;
+      }
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }} section-partner-slider">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="block__partner-slider-header primary_h2">{{ section.settings.title }}</h2>
+    {% endif %}
+    <div class="block__partner-slider  swiper-container swiper">
+      <div class="swiper-wrapper">
+        <div class="block__partner-slide block__partner-rating-slide  swiper-slide">
+          <div class="block__partner-slide-rating">
+            {% if section.settings.img != blank %}
+              {% render 'custom-image', image: section.settings.img, class: 'img-fluid object-cover' %}
+            {% endif %}
+            {% if section.settings.text != blank %}
+              <p class="body">{{ section.settings.text }}</p>
+            {% endif %}
+          </div>
+        </div>
+        {% for block in section.blocks %}
+          <div class="block__partner-slide swiper-slide">
+            {% if block.settings.img != blank %}
+              <div class="block__partner-slide-img">
+                {% render 'custom-image', image: block.settings.img, class: 'img-fluid object-cover' %}
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Partner Slider",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Rating Star Image"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Rating Text"
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Partner_Image",
+      "name": "Partner Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Partner Slider"
+    }
+  ]
+}
+{% endschema %}

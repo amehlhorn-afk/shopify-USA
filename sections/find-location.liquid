@@ -1,0 +1,142 @@
+{{ 'section-find-location.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media (max-width: 1199px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top | times: 0.75 }}px;
+          padding-bottom: {{ section.settings.padding_bottom | times: 0.75 }}px;
+      }
+  }
+  @media (max-width: 992px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top_m }}px;
+          padding-bottom: {{ section.settings.padding_bottom_m }}px;
+      }
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }} section-find-location">
+  <div class="page-width">
+    <div
+      class="block__find-location"
+      {% if section.settings.color != blank %}
+        style="background-color: {{ section.settings.color }};"
+      {% endif %}
+    >
+      {% if section.settings.title != blank %}
+        <h3>{{ section.settings.title }}</h3>
+      {% endif %}
+      {% if section.settings.caption != blank %}
+        <p>{{ section.settings.caption }}</p>
+      {% endif %}
+      <div class="block__find-location-btn">
+        {% if section.settings.btn1 != blank %}
+          <a href="{{ section.settings.url1 }}" class="button-primary senary-border-radius body">{{ section.settings.btn1 }}</a>
+        {% endif %}
+        {% if section.settings.btn2 != blank %}
+          <a href="{{ section.settings.url2 }}" class="button-primary button-quaternary body">{{ section.settings.btn2 }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Find Location",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "caption",
+      "label": "Caption"
+    },
+    {
+      "type": "text",
+      "id": "btn1",
+      "label": "Button 1 Text"
+    },
+    {
+      "type": "url",
+      "id": "url2",
+      "label": "Button 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "btn2",
+      "label": "Button 2 Text"
+    },
+    {
+      "type": "url",
+      "id": "url1",
+      "label": "Button 1 URL"
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Background color"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Find Location"
+    }
+  ]
+}
+{% endschema %}

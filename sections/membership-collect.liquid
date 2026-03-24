@@ -1,0 +1,170 @@
+{{ 'membership-collect.css' |  asset_url |  stylesheet_tag }}
+{%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.50 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.50 | round: 0 }}px;
+    }
+  
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+  {%- endstyle -%}
+   <div class="block__membership-collect-section">
+    <div class="page-width color-{{ section.settings.section_color_scheme }} section-{{ section.id }}-padding">
+        <div class="block__membership-collect-main">
+          {%- if section.settings.heading != blank -%}
+            <div class="block__membership-collect-header">
+              <h2 class="primary_h2 {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+              {%- if section.settings.text != blank -%}
+                <p>{{ section.settings.text }}</p> 
+              {%- endif -%}
+              </div>
+            {%- endif -%}
+              <div class="block__membership-collect-wrapper flex items-center justify-between">
+                {%- for block in section.blocks -%}
+                    <div class="block__membership-collect-content">
+                        {%- if block.settings.icon != blank -%}
+                          <div class="block__membership-collect-content-image flex items-center justify-center">
+                            <img src="{{ block.settings.icon |  image_url: width: 36, height: 36  }}" alt="{{ block.settings.title }}">
+                          </div>
+                        {%- endif -%}
+                        <div>
+                          {%- if block.settings.title != blank -%}
+                            <h3 class="">{{ block.settings.title }}</h3>
+                          {%- endif -%} 
+                          {%- if block.settings.description != blank -%}
+                           {{ block.settings.description }}
+                          {%- endif -%}
+                        </div>
+                    </div>
+                {%- endfor -%}
+              </div>
+              <div class="block__membership-collect-button">
+                {%- unless customer -%}   
+                  <a href="/pages/product-registrations-form" class="button button-quaternary  senary-border-radius">
+                    {{ section.settings.button_label_1 }}
+                  </a>
+                {%- endunless -%}
+                <p>{{ section.settings.below_caption }}</p>
+              </div>
+        </div>
+    </div>
+</div>
+{% schema %}
+  {
+    "name": "Membership collect",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+        {
+            "type": "color_scheme",
+            "id": "section_color_scheme",
+            "label": "Color scheme",
+            "default": "scheme-1"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Browse our latest products",
+          "label": "Heading"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "default": "Give customers details about the banner image(s) or content on the template.",
+          "label": "Description"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "primary_h4",
+              "label": "Medium"
+            },
+            {
+              "value": "small_body",
+              "label": "Subtitle"
+            },
+            {
+              "value": "body",
+              "label": "Body"
+            },
+            {
+              "value": "extreme_small_body",
+              "label": "Extreme small body"
+            }
+          ],
+          "default": "primary_h4",
+          "label": "Text style"
+        },
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Shop all",
+          "label": "First button label",
+          "info": "Leave the label blank to hide the button."
+        },
+        {
+          "type":"inline_richtext",
+          "id": "below_caption",
+          "label": "Caption"
+        },
+        {
+            "type": "header",
+            "content": "t:sections.all.padding.section_padding_heading"
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "t:sections.all.padding.padding_top",
+            "default": 36
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 4,
+            "unit": "px",
+            "label": "t:sections.all.padding.padding_bottom",
+            "default": 36
+        }
+    ],
+    "blocks": [
+        {
+            "type": "block",
+            "name": "block",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "icon",
+                    "label": "Icon"
+                },
+                {
+                    "type": "text",
+                    "label": "Title",
+                    "id": "title"
+                },
+                {
+                    "type":"richtext",
+                    "id": "description",
+                    "label": "Discription"
+                }
+            ]
+        }
+    ],
+    "presets": [
+      {
+        "name": "Membership collect"
+      }
+    ]
+  }
+{% endschema %}

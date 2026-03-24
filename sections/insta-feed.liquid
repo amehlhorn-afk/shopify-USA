@@ -1,0 +1,215 @@
+{{ 'insta-feed.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  @media (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.desktop_padding_top }}px;
+      padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+    }
+  }
+  @media (max-width: 989px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="block__insta-feed-main section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="block__insta-feed-wrapper">
+      {% if section.settings.heading %}
+        <h3>
+          <a href="{{ section.settings.insta_url }}" target="_blank">{{ section.settings.heading }}</a>
+        </h3>
+      {% endif %}
+      {% if section.settings.show_image_gallery %}
+      <div class="block__insta-feed-inner swiper-container overflow-hidden">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide">
+              <div class="block__insta-feed-image relative overflow-hidden tertiary-border-radius">
+                {% render 'custom-image',
+                  image: block.settings.insta_feed,
+                  class: 'w-full img-fluid block object-cover'
+                %}
+                <div class="block__insta-feed-hover-svg absolute flex w-full h-full items-center justify-center">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 8.8125C19.9375 8.8125 23.1875 12.0625 23.1875 16C23.1875 20 19.9375 23.1875 16 23.1875C12 23.1875 8.8125 20 8.8125 16C8.8125 12.0625 12 8.8125 16 8.8125ZM16 20.6875C18.5625 20.6875 20.625 18.625 20.625 16C20.625 13.4375 18.5625 11.375 16 11.375C13.375 11.375 11.3125 13.4375 11.3125 16C11.3125 18.625 13.4375 20.6875 16 20.6875ZM25.125 8.5625C25.125 7.625 24.375 6.875 23.4375 6.875C22.5 6.875 21.75 7.625 21.75 8.5625C21.75 9.5 22.5 10.25 23.4375 10.25C24.375 10.25 25.125 9.5 25.125 8.5625ZM29.875 10.25C30 12.5625 30 19.5 29.875 21.8125C29.75 24.0625 29.25 26 27.625 27.6875C26 29.3125 24 29.8125 21.75 29.9375C19.4375 30.0625 12.5 30.0625 10.1875 29.9375C7.9375 29.8125 6 29.3125 4.3125 27.6875C2.6875 26 2.1875 24.0625 2.0625 21.8125C1.9375 19.5 1.9375 12.5625 2.0625 10.25C2.1875 8 2.6875 6 4.3125 4.375C6 2.75 7.9375 2.25 10.1875 2.125C12.5 2 19.4375 2 21.75 2.125C24 2.25 26 2.75 27.625 4.375C29.25 6 29.75 8 29.875 10.25ZM26.875 24.25C27.625 22.4375 27.4375 18.0625 27.4375 16C27.4375 14 27.625 9.625 26.875 7.75C26.375 6.5625 25.4375 5.5625 24.25 5.125C22.375 4.375 18 4.5625 16 4.5625C13.9375 4.5625 9.5625 4.375 7.75 5.125C6.5 5.625 5.5625 6.5625 5.0625 7.75C4.3125 9.625 4.5 14 4.5 16C4.5 18.0625 4.3125 22.4375 5.0625 24.25C5.5625 25.5 6.5 26.4375 7.75 26.9375C9.5625 27.6875 13.9375 27.5 16 27.5C18 27.5 22.375 27.6875 24.25 26.9375C25.4375 26.4375 26.4375 25.5 26.875 24.25Z" fill="white"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% if section.settings.show_instafeedapp %}
+      <div class="block__insta-feed-inner-app">
+      {% for block in section.blocks %}
+          {%- if block.type == '@app' -%}      
+              {% render block %}
+          {%- endif -%}
+      {% endfor %}
+      </div>
+      {% endif %}
+  </div>
+</div>
+
+{% if section.settings.show_image_gallery %}
+  <script>
+      if (window.screen.width < 990) {
+        document.addEventListener('DOMContentLoaded', function () {
+      const InstafeedCarousel = document.querySelector('.block__insta-feed-inner');
+
+      // Initialize Swiper only when the carousel element is present
+      if (InstafeedCarousel) {
+        var swiper;
+
+        // Function to initialize or re-initialize Swiper
+        function initSwiper() {
+          // Destroy existing swiper instance if it exists (to reset it on resize)
+          if (swiper) {
+            swiper.destroy(true, true);
+          }
+
+          // Create a new swiper instance with responsive breakpoints
+          swiper = new Swiper(InstafeedCarousel, {
+            slidesPerView: 3,
+            spaceBetween: 10,
+            loop: false,
+            breakpoints: {
+              320: {
+                slidesPerView: '2.1',
+                spaceBetween: 10,
+              },
+              568: {
+                slidesPerView: '3',
+                spaceBetween: 10,
+              },
+              992: {
+                slidesPerView: '3.1',
+                spaceBetween: 10,
+              },
+              1199: {
+                slidesPerView: '3',
+                spaceBetween: 10,
+              },
+            },
+          });
+        }
+
+        // Initialize Swiper on page load
+        initSwiper();
+
+        // Re-initialize Swiper on window resize
+        window.addEventListener('resize', function () {
+          initSwiper();
+        });
+      }
+    });
+
+      }
+  </script>
+{% endif %}
+{% schema %}
+{
+  "name": "Insta feed",
+  "tag": "section",
+  "class": "shopify",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_image_gallery",
+      "label": "Show Custom Image",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_instafeedapp",
+      "label": "Insta feed App",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "url",
+      "id": "insta_url",
+      "label": "Instagram Url"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Padding"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Padding Bottom",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Mobile Padding"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "insta_feed",
+          "label": "Upload Image"
+        }
+      ]
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Insta feed",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
