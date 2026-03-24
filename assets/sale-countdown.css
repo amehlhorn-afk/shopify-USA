@@ -1,0 +1,184 @@
+.block__sale-countdown-wrapper {
+  padding: 26px 120px 26px 90px;
+}
+
+.block__sale-countdown-center-inner{
+    max-width: 326px;
+    height: auto;
+    width: 100%;
+    /* transform: translateX(150%); */
+}  
+
+.block__sale-countdown-center-inner .block__sale-image {
+   top: -50%;
+   transform: translateY(-50%);
+} 
+
+.block__sale-countdown-main  {
+   border-radius: 18px;
+}
+
+.block__sale-countdown-left-inner h3 {
+    font-weight: 500;
+}
+
+.block__sale-countdown-left-inner p{
+    color: var(--quinary-color);
+    padding-top: 1rem;
+}
+
+.block__timer--main {
+    gap: 5px;
+}
+
+.block__timer-countdown-inner{ 
+    display: inline-flex;
+    gap: 5px;  
+}
+
+.block__timer-countdown-inner span{
+    padding: 6px 8.5px;
+    border: 1px solid #ffffff1f;
+    border-radius: 6px;
+    line-height: 28px;
+    background: #ffffff17;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.block__timer--announcement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--quinary-color);
+}
+
+.block__timer--dots {
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+
+@media screen and (max-width: 1360px) {
+    .block__sale-countdown-wrapper {
+        padding: 31px 60px 31px 60px;
+    }
+}
+
+@media screen and (max-width: 1260px) {
+    .block__sale-countdown-wrapper {
+        padding: 31px;
+    }
+}
+
+
+@media screen and (max-width: 990px) {
+
+    .block__sale-countdown-wrapper {
+        padding: 40px;
+    }
+
+    .block__sale-countdown-center-inner {
+        max-width: 230px;
+        top: -50px;
+    }
+
+    .block__sale-countdown-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .block__sale-countdown-center-inner .block__sale-image {
+        transform: translateX(170%);
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+   .block__sale-countdown-center-inner {
+        max-width: 200px;
+    }
+    .block__sale-countdown-center-inner .block__sale-image {
+        transform: translateX(180%);
+    }
+    .block__sale-countdown-main {
+        border-radius: 10px;
+    }
+    .block__timer--announcement span.extreme_small_body {
+        font-size: var(--ex-small_body);
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .block__sale-countdown-center-inner {
+        max-width: 170px;
+    }
+    .block__sale-countdown-center-inner .block__sale-image {
+        transform: translateX(200%);
+    }
+}
+
+@media screen and (max-width: 600px) {
+   .block__sale-countdown-wrapper {
+        padding: 16px 22px;
+        gap: 6px;
+        overflow: hidden;
+    }
+    .block__sale-countdown-center-inner {
+        max-width: 130px;
+        top: -50px;
+    }
+    .block__sale-countdown-left-inner {
+        width: 100%;
+        max-width: 170px;
+    } 
+    .block__timer-countdown-inner span {
+        padding: 0 5px;
+        font-size: var(--small_body);
+        line-height: 23px;
+        border-radius: 3px;
+    }
+    .block__timer--main, .block__timer--announcement, .block__timer-countdown-inner {
+        gap: 2px;
+    }
+    .block__sale-countdown-left-inner p{
+        line-height: 17px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .block__sale-countdown-center-inner .block__sale-image {
+        transform: translateX(170%);
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .block__sale-countdown-center-inner .block__sale-image {
+        transform: translateX(160%);
+    }
+    .block__sale-countdown-center-inner {
+        top: -50px;
+    }
+}
+
+@media screen and (max-width: 410px) {
+    .block__sale-countdown-center-inner .block__sale-image {
+        transform: translateX(140%);
+    }
+    .block__sale-countdown-center-inner {
+        top: -65px;
+    }
+}
+
+
+@media screen and (max-width: 370px) {
+    .block__sale-countdown-center-inner .block__sale-image {
+        transform: translateX(160%);
+    }
+    .block__sale-countdown-center-inner {
+        max-width: 110px;
+    }    
+}

@@ -1,0 +1,270 @@
+.block__book-sleep-study-header {
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.block__book-sleep-study-header h2 {
+  font-weight: 500;
+  color: var(--selection-color);
+}
+
+.block__book-sleep-study-header p {
+  max-width: 720px;
+  margin: 10px auto 0;
+  color: var(--selection-color);
+  opacity: 0.6;
+}
+
+.block__book-sleep-study-grid {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  align-items: center;
+}
+
+.block__book-sleep-study-header {
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.block__book-sleep-study-header h2 {
+  font-weight: 500;
+  color: var(--selection-color);
+}
+
+.block__book-sleep-study-header p {
+  max-width: 720px;
+  margin: 10px auto 0;
+  color: var(--selection-color);
+  opacity: 0.6;
+}
+
+.block__book-sleep-study-grid {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  align-items: center;
+}
+
+.block__book-sleep-study-item {
+  background-color: var(--quinary-color);
+  border-radius: 10px;
+  padding: 34px;
+  position: relative;
+}
+
+.block__book-sleep-study-item h3 {
+  margin-bottom: 25px;
+  line-height: 1;
+  color: var(--selection-color);
+  font-weight: 500;
+}
+
+.block__book-sleep-study-item > p {
+  color: var(--selection-color);
+  opacity: 0.5;
+}
+
+.block__book-sleep-study-benefit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  margin: 30px 0;
+}
+
+.block__book-sleep-study-benefit:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: var(--selection-color);
+  left: 0;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.block__book-sleep-study-benefit span {
+  border: 1px solid var(--primary-color);
+  line-height: 1;
+  padding: 7px 9px;
+  border-radius: 50px;
+  margin: 0 20px;
+  display: block;
+  color: var(--primary-color);
+}
+.block__book-sleep-study-benefit p {
+  background: var(--quinary-color);
+}
+
+.block__book-sleep-study-benefit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.block__book-sleep-study-benefit-list li {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.block__book-sleep-study-benefit-list li svg {
+  color: var(--primary-color);
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.block__book-sleep-study-popular {
+  border: 1px solid var(--primary-color);
+}
+
+.block__book-sleep-study-tag {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -18px;
+  background: var(--primary-color);
+  color: var(--quinary-color);
+  font-weight: 600;
+  line-height: 1;
+  padding: 11px 44px;
+  white-space: nowrap;
+  border-radius: 50px;
+}
+
+.block__book-sleep-study-item a {
+  display: block;
+  text-align: center;
+  line-height: 1;
+  font-weight: 700;
+  padding: 20px;
+  border-radius: 50px;
+  transition: all 0.4s ease;
+  text-transform: uppercase;
+}
+.block__book-sleep-study-benefit-list li span {
+  max-width: calc(100% - 37px);
+  line-height: 1;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block__book-sleep-study-grid {
+    gap: 20px;
+  }
+}
+@media (min-width: 750px) and (max-width: 991px) {
+  .block__book-sleep-study-header {
+    margin-bottom: 50px;
+  }
+  .block__book-sleep-study-grid {
+    gap: 20px;
+  }
+  .block__book-sleep-study-item {
+    padding: 20px;
+  }
+  .block__book-sleep-study-item {
+    padding: 20px;
+  }
+
+  .block__book-sleep-study-item h3 {
+    margin-bottom: 15px;
+    font-size: 28px;
+  }
+
+  .block__book-sleep-study-item > p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .block__book-sleep-study-benefit {
+    margin: 20px 0;
+  }
+
+  .block__book-sleep-study-benefit span {
+    margin: 0 10px;
+    font-size: 12px;
+  }
+
+  .block__book-sleep-study-benefit-list {
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .block__book-sleep-study-benefit-list li {
+    gap: 10px;
+  }
+
+  .block__book-sleep-study-benefit-list li svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .block__book-sleep-study-benefit-list li span {
+    font-size: 16px;
+    max-width: calc(100% - 28px);
+  }
+
+  .block__book-sleep-study-item a {
+    padding: 15px 15px;
+    font-size: 16px;
+  }
+
+  .block__book-sleep-study-tag {
+    padding: 8px 25px;
+    top: -14px;
+    font-size: 12px;
+  }
+}
+@media (max-width: 749px) {
+  .block__book-sleep-study-header {
+    margin-bottom: 40px;
+  }
+  .block__book-sleep-study-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .block__book-sleep-study-item {
+    padding: 20px;
+  }
+
+  .block__book-sleep-study-benefit {
+    margin: 20px 0;
+  }
+
+  .block__book-sleep-study-benefit span {
+    padding: 8px 17px;
+  }
+  .block__book-sleep-study-benefit-list {
+    margin-bottom: 25px;
+  }
+  .block__book-sleep-study-popular {
+    padding-top: 40px;
+  }
+
+  .block__book-sleep-study-tag {
+    padding: 8px 24px;
+    top: -14px;
+  }
+  .block__book-sleep-study-item h3 {
+    margin-bottom: 20px;
+  }
+  .block__book-sleep-study-benefit-list li {
+    gap: 14px;
+  }
+
+  .block__book-sleep-study-benefit-list li svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .block__book-sleep-study-benefit-list li span {
+    max-width: calc(100% - 32px);
+  }
+}

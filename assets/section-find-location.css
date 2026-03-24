@@ -1,0 +1,66 @@
+.block__find-location {
+  margin: 0 auto;
+  max-width: 1240px;
+  padding: 73px 120px;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.block__find-location h3 {
+  color: var(--selection-color);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.block__find-location p {
+  color: var(--nonary_color);
+  margin-bottom: 32px;
+}
+
+.block__find-location-btn {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.block__find-location-btn a {
+  border-radius: 50px;
+  font-weight: 700;
+  padding: 20px 25px;
+  line-height: 1.1;
+  transition: all 0.4s ease;
+  min-width: 390px;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block__find-location {
+    padding: 60px;
+  }
+}
+@media (max-width: 991px) {
+  .block__find-location {
+    padding: 40px 22px 32px;
+  }
+  .block__find-location p br {
+    display: none;
+  }
+}
+@media (max-width: 749px) {
+  .block__find-location-btn a {
+    min-width: 100%;
+    padding: 19px 15px;
+  }
+
+  .block__find-location p {
+    margin-bottom: 24px;
+  }
+}
+@media (max-width: 400px) {
+  .block__find-location-btn a {
+    font-size: 12px;
+    padding: 19px 10px;
+  }
+}

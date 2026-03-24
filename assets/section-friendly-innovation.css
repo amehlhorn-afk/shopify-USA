@@ -1,0 +1,145 @@
+.block__friendly-innovation-list {
+  display: none;
+}
+.block__friendly-innovation-main {
+  background-color: var(--tertiary-color);
+  padding: 80px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.block__friendly-innovation-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.block__friendly-innovation-header p {
+  margin-top: 16px;
+  color: var(--denary_color);
+}
+
+.block__friendly-innovation-header h2 {
+  font-weight: 500;
+  line-height: 1;
+  color: var(--selection-color);
+}
+.block__friendly-innovation-img img:first-child {
+  max-width: 473px;
+  margin: 0 auto;
+}
+.block__friendly-innovation-img {
+  max-width: 78.5%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.block__friendly-innovation-img:before {
+  content: "";
+  padding-top: 55.825%;
+  display: block;
+}
+
+.block__friendly-innovation-img img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  object-fit: contain;
+}
+.block__friendly-innovation-bg {
+  z-index: -1;
+}
+
+.block__friendly-innovation-img {
+  z-index: 1;
+}
+.block__friendly-innovation-list {
+  margin-top: 32px;
+}
+
+.block__friendly-innovation-list li {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.block__friendly-innovation-list li:last-child {
+  margin-bottom: 0;
+}
+
+.block__friendly-innovation-list li span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: var(--quinary-color);
+  border-radius: 50%;
+  font-weight: 600;
+  color: var(--primary-color);
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+
+.block__friendly-innovation-info {
+  width: calc(100% - 30px);
+  padding-left: 16px;
+}
+
+.block__friendly-innovation-info h6 {
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--selection-color);
+  line-height: 1;
+}
+
+.block__friendly-innovation-info p {
+  color: var(--octonary_color);
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .block__friendly-innovation-img {
+    max-width: 70%;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block__friendly-innovation-img {
+    max-width: 90%;
+  }
+}
+@media (min-width: 750px) and (max-width: 991px) {
+  .block__friendly-innovation-img {
+    max-width: 100%;
+  }
+  .block__friendly-innovation-list {
+    display: block;
+  }
+  .block__friendly-innovation-main {
+    padding: 40px;
+  }
+}
+@media (max-width: 749px) {
+  .section-friendly-innovation .page-width {
+    padding: 0;
+  }
+
+  .block__friendly-innovation-main {
+    border-radius: 0;
+    padding: 40px 20px;
+  }
+
+  .block__friendly-innovation-header {
+    margin-bottom: 30px;
+  }
+
+  .block__friendly-innovation-img {
+    max-width: 100%;
+  }
+
+  .block__friendly-innovation-list {
+    display: block;
+  }
+}

@@ -1,0 +1,223 @@
+.block__marketing-img-text-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.block__marketing-image-wrapper {
+  width: 53.6%;
+  border-radius: 4px;
+  position: relative;
+}
+
+.block__marketing-image-wrapper::after {
+  content: "";
+  display: block;
+  padding-top: 67.17%;
+}
+
+.block__marketing-image-wrapper img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.block__marketing-image-wrapper .mobile-img {
+    display: none;
+}
+.block__marketing-text-wrapper {
+  width: calc(46.4% - 60px);
+  padding: 0 50px;
+}
+
+.block__marketing-text-title {
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 30px;
+  color: var(--selection-color);
+}
+
+.block__marketing-text-caption {
+  color: var(--selection-color);
+  opacity: 0.7;
+  margin-bottom: 45px;
+}
+
+.block__marketing-benefit {
+  margin-bottom: 45px;
+}
+
+.block__marketing-benefit h5 {
+  margin-bottom: 20px;
+  color: var(--quaternary-color);
+  line-height: 1;
+  font-weight: 500;
+}
+
+.block__marketing-benefit-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.block__marketing-benefit-item {
+  background: var(--quinary-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 22px 26px;
+  gap: 16px;
+  box-shadow: 0 4px 20px -6px #0000002e;
+  flex-wrap: wrap;
+}
+
+.block__marketing-benefit-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.block__marketing-benefit-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.block__marketing-benefit-info {
+  max-width: calc(100% - 66px);
+}
+
+.block__marketing-benefit-info h4 {
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.block__marketing-benefit-info p {
+  line-height: 1;
+}
+
+.block__marketing-benefit-text h5 {
+  margin-bottom: 20px;
+  line-height: 1;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.block__marketing-benefit-text p {
+  color: var(--quaternary-color);
+  font-weight: 400;
+}
+
+.block__marketing-benefit-text p:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+@media (min-width: 1440px) and (max-width: 1499px) {
+  .block__marketing-text-wrapper {
+    width: calc(46.4% - 40px);
+    padding: 0 20px;
+  }
+}
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .block__marketing-text-wrapper {
+    width: calc(46.4% - 20px);
+    padding: 0;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block__marketing-text-wrapper {
+    width: calc(46.4% - 20px);
+    padding: 0;
+  }
+  .block__marketing-text-title {
+    margin-bottom: 15px;
+  }
+  .block__marketing-text-caption {
+    margin-bottom: 30px;
+  }
+  .block__marketing-benefit h5 {
+    margin-bottom: 15px;
+  }
+  .block__marketing-benefit-item {
+    padding: 20px 15px;
+    gap: 10px;
+  }
+  .block__marketing-benefit-icon {
+    width: 42px;
+    height: 42px;
+  }
+  .block__marketing-benefit-info {
+    max-width: calc(100% - 52px);
+  }
+  .block__marketing-benefit-info h4 {
+    font-size: 22px;
+    margin-bottom: 5px;
+  }
+  .block__marketing-benefit {
+    margin-bottom: 25px;
+  }
+  .block__marketing-benefit-text p:not(:last-child),
+  .block__marketing-benefit-text h5 {
+    margin-bottom: 15px;
+  }
+}
+@media (max-width: 991px) {
+  .block__marketing-image-wrapper {
+    width: 100%;
+  }
+
+  .block__marketing-text-wrapper {
+    width: 100%;
+    order: 1;
+    padding: 0;
+  }
+
+  .block__marketing-img-text-row {
+    gap: 40px;
+  }
+
+  .block__marketing-text-title {
+    margin-bottom: 26px;
+  }
+
+  .block__marketing-text-caption {
+    margin-bottom: 40px;
+  }
+
+  .block__marketing-benefit {
+    margin-bottom: 40px;
+  }
+}
+@media (max-width: 749px) {
+    .block__marketing-image-wrapper:after {
+        padding-top: 83.12%;
+    }
+    .block__marketing-benefit-row {
+        gap: 10px;
+    }
+    .block__marketing-benefit-icon {
+        width: 40px;
+        height: 40px;
+    }
+    .block__marketing-benefit-info {
+        max-width: 100%;
+        text-align: center;
+        width: 100%;
+    }
+    .block__marketing-benefit-item {
+        justify-content: center;
+        padding: 16px;
+    }
+    .block__marketing-benefit-info h4 {
+        margin-bottom: 6px;
+    }
+    .block__marketing-image-wrapper .mobile-img {
+        display: block;
+    }
+    .block__marketing-image-wrapper .desktop-img {
+        display: none;
+    }
+}

@@ -1,0 +1,94 @@
+.block__heading-with-button h2 {
+    margin: 0;
+}
+
+.block__product-video-slider-list-wrapper {
+    /* padding: 30px 0; */
+    padding: 50px 0;
+}
+
+.block__product-video-slider-list-wrapper .swiper-slide.swiper-slide-active {
+    /* transform: scale(1.1); */
+    transform: scale(1.08);
+    margin-top: -20px;
+}
+
+.block__product-video-slider-list-wrapper .swiper-slide {
+    transition: all .4s ease-in-out;
+    transform: scale(.97);
+}
+
+.block__product-video-slider-list-wrapper .swiper-slide.swiper-slide-active .block__product-video-slider-media {
+    width: 100%;
+    margin: 0 auto;
+    /* max-width: 88%; */
+    /* padding-bottom: 126.6%; */   
+    max-width: 90%;
+    padding-bottom: 153.4%;
+}
+
+.block__product-video-slider-media {
+    /* padding-bottom: 120.6%; */
+    padding-bottom: 136.7%;
+    transition: all .4s ease-in-out;
+}
+
+.block__product-video-slider-list-wrapper .swiper-slide.swiper-slide-active .block__product-video-slider--featured-product {
+    margin: 5px auto 0;
+    transform: scale(.88);
+}
+
+.block__product-video-slider--featured-product {
+    padding: 8px;
+    margin-top: 10px;
+    background-color: var(--tertiary-color);
+}
+
+.block__featured-product-image {
+    width: 66px;
+    height: 66px;
+    background-color: var(--quinary-color);
+    padding: 3px;
+    border-radius: 6px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.block__featured-product-content {
+   margin-left: 1.2rem;
+   width: calc(100% - 78px);
+}
+
+.block__product-video-slider-btn {
+    width: 100%;
+    height: 100%;
+    background-color: transparent !important;
+    padding: 0;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+@media screen and (max-width: 568px){
+    .block__product-video-slider-main .block__heading-with-button {
+        padding: 0 40px;
+        gap: 0;
+        margin-bottom: 3.5rem;
+    }
+
+    .block__product-video-slider-main .block__heading-with-button h2.title{
+        max-width: 60%;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width: 390px){
+
+    .block__product-video-slider-main .block__heading-with-button h2.title{
+        max-width: 70%;
+    }
+
+    .block__product-video-slider-main .block__heading-with-button {
+        padding: 0 20px;
+        gap: 0;
+    }
+}

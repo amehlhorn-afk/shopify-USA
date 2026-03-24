@@ -1,0 +1,27 @@
+.block__text-slide p {
+    color: var(--quinary-color);
+    font-weight: 400;
+    line-height: 1;
+}
+.block__text-slider {
+    padding: 17px 0;
+}
+.block__text-slide {
+    width: max-content;
+}
+.block__text-slider:not(.swiper-initialized) .swiper-wrapper {
+    display: flex;
+    white-space: nowrap;
+    gap: 50px;
+    overflow: hidden;
+}
+.block__text-slider .swiper-wrapper {
+    -webkit-transition-timing-function: linear !important;
+    transition-timing-function: linear !important;
+}
+
+@media (max-width:749px) {
+    .block__text-slider {
+        padding: 16px 0;
+    }
+}

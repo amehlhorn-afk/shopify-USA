@@ -1,0 +1,124 @@
+.block__our-gallery-title {
+  margin-bottom: 35px;
+  font-weight: 500;
+  color: var(--selection-color);
+  line-height: 1;
+  text-align: center;
+}
+
+.block__our-gallery-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.block__our-gallery-img {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.block__our-gallery-img a,
+.block__our-gallery-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.block__our-gallery-img a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.block__our-gallery-img_1 {
+  grid-area: 1 / 1 / span 3 / span 1;
+}
+
+.block__our-gallery-img_2 {
+  grid-area: 1 / 2 / span 2 / span 1;
+}
+
+.block__our-gallery-img_3 {
+  grid-area: 3 / 2 / span 1 / span 1;
+}
+
+.block__our-gallery-img_4 {
+  grid-area: 1 / 3 / span 3 / span 2;
+}
+
+.block__our-gallery-img_5 {
+  grid-area: 1 / 5 / span 1 / span 1;
+}
+
+.block__our-gallery-img_6 {
+  grid-area: 2 / 5 / span 2 / span 1;
+}
+
+.block__our-gallery-btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.block__our-gallery-btn a {
+  line-height: 1;
+  font-weight: 700;
+  padding: 17px 45px;
+  border-radius: 50px;
+  transition: all 0.4s ease;
+}
+
+@media (min-width:1200px) and (max-width:1439px) {
+    .block__our-gallery-row {
+        gap: 15px;
+    }
+}
+@media (min-width:992px) and (max-width:1199px) {
+    .block__our-gallery-row {
+        gap: 10px;
+    }
+}
+@media (max-width:991px) {
+    .block__our-gallery-row {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(5, 1fr);
+    }
+    
+    .block__our-gallery-img_1 {
+        grid-area: 1 / 1 / span 2 / span 1;
+    }
+    
+    .block__our-gallery-img_2 {
+        grid-area: 1 / 2 / span 1 / span 1;
+    }
+    
+    .block__our-gallery-img_3 {
+        grid-area: 2 / 2 / span 1 / span 1;
+    }
+    
+    .block__our-gallery-img_4 {
+        grid-area: 3 / 1 / span 2 / span 2;
+    }
+    
+    .block__our-gallery-img_5 {
+        grid-area: 5 / 1 / span 1 / span 1;
+    }
+    
+    .block__our-gallery-img_6 {
+        grid-area: 5 / 2 / span 1 / span 1;
+    }
+}
+@media (max-width:749px) {
+    .block__our-gallery-title {
+        margin-bottom: 20px;
+    }
+    .block__our-gallery-btn {
+        margin-top: 30px;
+    }
+}

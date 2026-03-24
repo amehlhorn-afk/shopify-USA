@@ -1,0 +1,131 @@
+.block__hospitality-partner-row {
+  position: relative;
+  border-radius: 20px;
+  padding: 0 80px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.block__hospitality-partner-info {
+  padding: 60px 0;
+  width: 37.3%;
+}
+
+.block__hospitality-partner-img {
+  width: auto;
+  position: absolute;
+  height: 98.5%;
+  right: 6.5%;
+  bottom: 0;
+}
+
+.block__hospitality-partner-img img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.block__hospitality-partner-info h2 {
+  color: var(--quinary-color);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.block__hospitality-partner-caption {
+  color: var(--quinary-color);
+  opacity: 0.8;
+}
+
+.block__hospitality-partner-text,
+.block__hospitality-partner-text a {
+  color: var(--quinary-color);
+}
+
+.block__hospitality-partner-text a {
+  text-decoration: underline;
+  transition: all 0.4s ease;
+}
+
+.block__hospitality-partner-text a:hover {
+  opacity: 0.6;
+}
+
+.block__hospitality-partner-info > a {
+  display: inline-block;
+  margin: 20px 0 25px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 16px 35px;
+  transition: all 0.4s ease;
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .block__hospitality-partner-info {
+    width: 45%;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block__hospitality-partner-row {
+    padding: 0 50px;
+  }
+  .block__hospitality-partner-info {
+    padding: 45px 0;
+    width: 50%;
+  }
+  .block__hospitality-partner-info h2 {
+    margin-bottom: 10px;
+  }
+  .block__hospitality-partner-info > a {
+    margin: 15px 0 20px;
+  }
+}
+@media (max-width: 991px) {
+  .block__hospitality-partner-row {
+    padding: 0 20px;
+  }
+  .block__hospitality-partner-info {
+    padding: 45px 0 25px;
+    width: 100%;
+  }
+  .block__hospitality-partner-img {
+    position: relative;
+    margin: 0 auto;
+    width: 70%;
+    right: 0;
+    left: 0;
+  }
+  .section-hospitality-partner .page-width {
+    padding: 0;
+  }
+  
+  .block__hospitality-partner-row {
+    border-radius: 0;
+  }
+}
+@media (max-width: 749px) {
+  .block__hospitality-partner-img {
+    position: relative;
+    right: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 115.26%;
+  }
+
+  .block__hospitality-partner-img img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+  .block__hospitality-partner-info>a {
+    margin: 17px 0;
+  }
+  .block__hospitality-partner-info h2 {
+    margin-bottom: 10px;
+  }
+}
+

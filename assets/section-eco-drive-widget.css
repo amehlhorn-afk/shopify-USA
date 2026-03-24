@@ -1,0 +1,20 @@
+.block__eco-drive-widget .mobile_img {
+    display: none;
+}
+.block__eco-drive-widget a {
+    display: block;
+    width: 100%;
+}
+
+.block__eco-drive-widget a img {
+    width: 100%;
+}
+
+@media (max-width:749px) {
+    .block__eco-drive-widget .desktop_img {
+        display: none;
+    }
+    .block__eco-drive-widget .mobile_img {
+        display: block;
+    }
+}

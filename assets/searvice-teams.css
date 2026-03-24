@@ -1,0 +1,34 @@
+
+
+.block__searvice-team p{color: var(--denary_color);}
+.block__support-cards .block__card-item a{width: 100%;min-height: auto;}
+.block__support-cards {max-width: 1400px;margin: 35px auto 0;}
+@media(min-width:1200px){
+    .block__support-cards .block__card-item{padding: 30px;}
+}
+@media(max-width:1199px){
+    .block__support-cards .block__card-item{padding: 20px;}
+}
+@media(min-width:990px){
+    .block__support-cards .block__card-item{width: calc(33.33% - 20px* 2 / 3);}
+}
+@media(max-width:989px) and (min-width:750px) {
+    .block__support-cards .block__card-item{width: calc(50% - 20px* 1 / 2);}
+}
+@media(min-width:750px){
+    .block__support-cards .block__card-item .block__image-wrapper{display: flex;}
+    .block__support-cards .block__card-item span {width: 80px;height: 80px;margin-bottom: 25px;}
+    .block__support-cards .block__card-item .block__contnet-wrapper {display: flex;flex-direction: column;align-items: center;}
+    .block__support-cards .block__card-item .block__contnet-wrapper h4{height: 100%;}
+    .block__support-cards .block__card-item p {max-width: 316px;margin: 14px auto 25px;flex-grow: 1;}
+    .block__support-cards .block__card-item {display: flex;flex-direction: column;align-items: center;}
+    .block__support-cards .block__card-item a{padding: 13px 10px;max-width: 160px;}
+}
+@media(max-width:749px){
+    .block__support-cards .block__card-item{width: 100%;display: flex;text-align: left;}
+    .block__support-cards .block__card-item .block__contnet-wrapper {width: calc(100% - 80px);}
+    .block__support-cards .block__card-item span {margin-right: 20px;width: 60px;height: 60px;}
+    .block__support-cards .block__card-item p {margin: 15px 0 15px;}
+    .block__support-cards .block__card-item a {max-width: 104px;padding: 10px 10px;}
+}
+

@@ -1,0 +1,139 @@
+.block__sustainability-banner {
+  border-radius: 20px;
+  padding: 80px;
+  overflow: hidden;
+}
+
+.section-sustainability-banner-bg {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+.section-sustainability-banner-bg img {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+.section-sustainability-banner-bg .mobile-bg {
+  display: none;
+}
+.block__sustainability-banner-title {
+  color: var(--quinary-color);
+  margin-bottom: 23px;
+  font-weight: 500;
+}
+
+.block__sustainability-banner-content {
+  max-width: 700px;
+}
+
+.block__sustainability-banner-text {
+  max-width: 530px;
+  color: var(--quinary-color);
+  margin-bottom: 33px;
+}
+
+.block__sustainability-banner-content a {
+  display: inline-block;
+  font-weight: 700;
+  line-height: 1.07;
+  padding: 20px 88px;
+  border-radius: 50px;
+  transition: all 0.4s ease;
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .block__sustainability-banner {
+    padding: 40px;
+  }
+  .block__sustainability-banner-title {
+    margin-bottom: 10px;
+  }
+  .block__sustainability-banner-text {
+    margin-bottom: 20px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block__sustainability-banner {
+    padding: 30px;
+  }
+  .block__sustainability-banner-title {
+    margin-bottom: 10px;
+  }
+  .section-sustainability-banner-bg img {
+    object-position: left;
+  }
+  .block__sustainability-banner-text {
+    margin-bottom: 20px;
+  }
+}
+@media (max-width: 991px) {
+  .section-sustainability-banner-bg .desktop-bg {
+    display: none;
+  }
+  .section-sustainability-banner-bg .mobile-bg {
+    display: block;
+  }
+  .section-sustainability-banner-bg .desktop-bg {
+    display: none;
+  }
+  .section-sustainability-banner-bg .mobile-bg {
+    display: block;
+  }
+  .block__sustainability-banner-text {
+    line-height: 1.44;
+  }
+  .block__sustainability-banner {
+    padding-top: 36px;
+    padding-bottom: 36px;
+  }
+  .section-sustainability-banner-bg {
+    position: relative;
+    padding-top: 61.42%;
+  }
+
+  .block__sustainability-banner {
+    padding: 0;
+  }
+
+  .section-sustainability-banner-bg img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+  }
+
+  .block__sustainability-banner-content {
+    max-width: 100%;
+    background: #018ddd;
+    margin-top: -2px;
+    padding: 30px 20px 40px;
+    text-align: center;
+  }
+
+  .block__sustainability-banner-content p {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .block__sustainability-banner-title {
+    margin-bottom: 20px;
+  }
+}
+@media (max-width: 749px) {
+  .section-sustainability-banner .page-width {
+    padding: 0;
+  }
+
+  .block__sustainability-banner {
+    border-radius: 0;
+  }
+}

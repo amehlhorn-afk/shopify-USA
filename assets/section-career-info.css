@@ -1,0 +1,117 @@
+.block__career-info-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  align-items: center;
+}
+
+.block__career-info-img-wrapper {
+  width: 100%;
+  padding-top: 68.495%;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 100%;
+}
+
+.block__career-info-img-wrapper img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  display: block;
+  object-position: top;
+}
+
+.block__career-info-text-wrapper h2 {
+  color: var(--selection-color);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.block__career-info-text-wrapper p {
+  color: var(--denary_color);
+  margin-top: 20px;
+}
+.block__career-features-text {
+  margin-top: 35px;
+}
+
+.block__career-features-text h5 {
+  line-height: 1;
+  font-weight: 500;
+  color: var(--selection-color);
+  margin-bottom: 30px;
+}
+
+.block__career-features-text-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  max-width: 500px;
+}
+.block__career-features-text-list li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: calc(50% - 12px);
+}
+
+.block__career-features-text-list li img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  display: block;
+}
+
+.block__career-features-text-list li span {
+  display: block;
+  line-height: 1;
+  max-width: calc(100% - 48px);
+  color: var(--selection-color);
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .block__career-features-text {
+    margin-top: 20px;
+  }
+  .block__career-features-text h5 {
+    margin-bottom: 20px;
+  }
+  .block__career-features-text-list {
+    gap: 20px;
+  }
+  .block__career-info-row {
+    gap: 20px;
+  }
+}
+@media (max-width: 1199px) {
+  .block__career-info-row {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+  }
+
+  .block__career-info-img-wrapper {
+    border-radius: 10px;
+    padding-top: 68.42%;
+  }
+
+  .block__career-info-text-wrapper p {
+    margin-top: 6px;
+  }
+
+  .block__career-features-text {
+    margin-top: 26px;
+  }
+
+  .block__career-features-text {
+    margin-top: 20px;
+  }
+
+  .block__career-features-text h5 {
+    margin-bottom: 20px;
+  }
+}

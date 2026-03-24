@@ -1,0 +1,30 @@
+.block__header-top label{cursor: pointer;}
+
+.tab-buttons {
+    display: flex;
+}
+.tab-btn {
+    flex: 1;
+    padding: 10px 15px;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.tab-btn.active {
+    background: #00adee;
+    color: #fff;
+}
+.tab-content {
+    padding: 15px;
+    border-top: 1px solid #ccc;
+}
+.tab-pane {
+    display: none;
+}
+.tab-pane.active {
+  display: block;
+}

@@ -1,0 +1,201 @@
+.block__collaborations-multirow-header {
+  text-align: center;
+  margin-bottom: 55px;
+}
+
+.block__collaborations-multirow-header h2 {
+  margin-bottom: 20px;
+  font-weight: 500;
+  color: var(--selection-color);
+  line-height: 1;
+}
+
+.block__collaborations-multirow-header p {
+  color: var(--denary_color);
+}
+.block__collaborations-multirow-wrapper {
+  padding: 60px;
+  border-radius: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.block__collaborations-multirow-img {
+  width: 49.86%;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.block__collaborations-multirow-img:after {
+  content: "";
+  display: block;
+  padding-top: 62.5%;
+}
+
+.block__collaborations-multirow-img img,
+.block__collaborations-multirow-img video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+}
+
+.block__collaborations-multirow-info {
+  width: 50.14%;
+}
+
+.block__collaborations-multirow-info h3 {
+  margin-bottom: 30px;
+  font-weight: 600;
+  color: var(--selection-color);
+}
+
+.block__collaborations-multirow-caption ul {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-left: 26px;
+}
+.block__collaborations-multirow-caption {
+  margin-bottom: 32px;
+}
+
+.block__collaborations-multirow-caption ul li {
+  color: var(--selection-color);
+  list-style: disc;
+}
+
+.block__collaborations-multirow-caption ul li strong {
+  font-weight: 700;
+}
+.block__collaborations-multirow-btn {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.block__collaborations-multirow-btn a {
+  line-height: 1;
+  text-align: center;
+  border-radius: 50px;
+  font-weight: 700;
+  padding: 16px;
+  transition: all 0.4s ease;
+}
+.block__collaborations-multirow-media-right {
+  flex-direction: row-reverse;
+}
+
+.block__collaborations-multirow-media-left
+  .block__collaborations-multirow-info {
+  padding-left: 120px;
+  padding-right: 72px;
+}
+
+.block__collaborations-multirow-media-right
+  .block__collaborations-multirow-info {
+  padding-right: 120px;
+  padding-left: 72px;
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .block__collaborations-multirow-header {
+    margin-bottom: 40px;
+  }
+  .block__collaborations-multirow-wrapper {
+    padding: 40px;
+  }
+  .block__collaborations-multirow-media-left
+    .block__collaborations-multirow-info {
+    padding-left: 50px;
+    padding-right: 0;
+  }
+  .block__collaborations-multirow-media-right
+    .block__collaborations-multirow-info {
+    padding-right: 50px;
+    padding-left: 0;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block__collaborations-multirow-header {
+    margin-bottom: 35px;
+  }
+  .block__collaborations-multirow-wrapper {
+    padding: 25px;
+  }
+
+  .block__collaborations-multirow-media-left
+    .block__collaborations-multirow-info {
+    padding-left: 20px;
+    padding-right: 0;
+  }
+
+  .block__collaborations-multirow-media-right
+    .block__collaborations-multirow-info {
+    padding-right: 20px;
+    padding-left: 0;
+  }
+}
+@media (max-width: 991px) {
+  .block__collaborations-multirow-wrapper > div {
+    width: 100%;
+  }
+
+  .block__collaborations-multirow-wrapper {
+    gap: 26px;
+    padding: 40px;
+  }
+
+  .block__collaborations-multirow-info {
+    padding: 0 !important;
+  }
+  .block__collaborations-multirow-info h3 {
+    margin-bottom: 20px;
+  }
+  .block__collaborations-multirow-caption ul {
+    gap: 10px;
+  }
+  .block__collaborations-multirow-caption {
+    margin-bottom: 20px;
+  }
+}
+@media (max-width: 749px) {
+  .section-collaborations-multirow .page-width {
+    padding: 0;
+  }
+
+  .block__collaborations-multirow-header {
+    padding: 0 20px;
+    margin-bottom: 30px;
+  }
+
+  .block__collaborations-multirow-header br {
+    display: none;
+  }
+
+  .block__collaborations-multirow-header h2 {
+    margin-bottom: 16px;
+  }
+  .block__collaborations-multirow-wrapper {
+    padding: 20px;
+    border-radius: 0;
+  }
+  .block__collaborations-multirow-info h3 {
+    margin-bottom: 12px;
+  }
+
+  .block__collaborations-multirow-caption ul {
+    gap: 6px;
+  }
+
+  .block__collaborations-multirow-caption {
+    margin-bottom: 20px;
+  }
+  .block__collaborations-multirow-media-right {
+    padding: 32px 20px;
+  }
+}

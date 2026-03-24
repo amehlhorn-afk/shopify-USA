@@ -1,0 +1,9 @@
+.related-products {
+  display: block;
+}
+
+.related-products__heading {
+  margin: 0 0 3rem;
+}
+.related-products .slider-button--prev svg{margin-right: 2px;}
+.related-products .slider-button--next svg{margin-left: 2px;} 

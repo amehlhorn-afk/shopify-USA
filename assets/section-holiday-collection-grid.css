@@ -1,0 +1,339 @@
+@media (min-width: 750px) {
+  .block__holiday-collection-grid {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .block__holiday-collection-grid-item-1 {
+    grid-area: span 2 / span 2;
+    display: flex;
+    align-items: center;
+    padding: 100px;
+  }
+
+  .block__holiday-collection-grid-item-2 {
+    grid-area: span 1 / span 2;
+    padding: 55px 60px;
+  }
+
+  .block__holiday-collection-grid-item-3 {
+    grid-area: span 1 / span 1;
+    padding: 30px 30px 118px;
+  }
+
+  .block__holiday-collection-grid-item {
+    position: relative;
+    border-radius: 20px;
+    z-index: 1;
+  }
+
+  .block__holiday-collection-grid-item-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    object-position: top;
+  }
+
+  .block__holiday-collection-grid-item-img {
+    position: absolute;
+    z-index: -1;
+  }
+
+  .block__holiday-collection-grid-item-img img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+  }
+
+  .block__holiday-collection-grid-item-1
+    .block__holiday-collection-grid-item-img {
+    bottom: -30px;
+    width: calc(100% - 32px);
+    left: 16px;
+  }
+
+  .block__holiday-collection-grid-heading {
+    color: var(--quaternary-color);
+    font-weight: 300;
+  }
+  .block__holiday-collection-grid-item-1 .block__holiday-collection-grid-title {
+    letter-spacing: 0;
+    margin: 5px 0 16px;
+    font-weight: 600;
+  }
+
+  .block__holiday-collection-grid-text,
+  .block__holiday-collection-grid-title {
+    color: var(--selection-color);
+  }
+  .block__holiday-collection-grid-btn {
+    font-weight: 700;
+    line-height: 1.1;
+    display: inline-block;
+    padding: 21px;
+    border-radius: 50px;
+    text-align: center;
+    transition: all 0.4s ease;
+  }
+
+
+
+  .block__holiday-collection-grid-item-1 .block__holiday-collection-grid-btn {
+    min-width: 200px;
+    margin-top: 32px;
+  }
+  .block__holiday-collection-grid-item-2 .block__holiday-collection-grid-btn {
+    min-width: 200px;
+    margin-top: 24px;
+  }
+  .block__holiday-collection-grid-text {
+    font-weight: 400;
+  }
+  .block__holiday-collection-grid-item:not(
+      .block__holiday-collection-grid-item-1
+    )
+    .block__holiday-collection-grid-title {
+    font-weight: 900;
+  }
+
+  .block__holiday-collection-grid-item-2
+    .block__holiday-collection-grid-item-img {
+    top: 15px;
+    right: 50px;
+    height: calc(100% - 30px);
+    width: auto;
+  }
+  .block__holiday-collection-grid-item-3 .block__holiday-collection-grid-btn {
+    min-width: 160px;
+    margin-top: 16px;
+  }
+  .block__holiday-collection-grid-item-3.block__holiday-collection-grid-img-center
+    .block__holiday-collection-grid-item-img {
+    right: 4.73%;
+    bottom: -26.3%;
+    max-width: 86.95%;
+  }
+  .block__holiday-collection-grid-item-3.block__holiday-collection-grid-img-right
+    .block__holiday-collection-grid-item-img {
+    max-width: 87.78%;
+    right: -10.6%;
+    bottom: -13.8%;
+  }
+  .section-holiday-collection-grid {
+    overflow: hidden;
+  }
+  .block__holiday-collection-grid-item {
+    width: unset;
+    height: unset;
+    overflow: unset;
+    transition-property: unset;
+  }
+
+  .block__holiday-collection-grid-slider {
+    overflow: unset;
+  }
+  .block__holiday-grid-wrapper .block__holiday-collection-grid-slider {
+    margin: 50px 0 80px;
+  }
+}
+
+@media (min-width: 1440px) and (max-width: 1599px) {
+  .block__holiday-collection-grid-item-1 {
+    padding: 60px;
+  }
+}
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .block__holiday-collection-grid-item-2 {
+    padding: 35px 40px;
+  }
+  .block__holiday-collection-grid-item-3 {
+    padding: 20px 20px 90px;
+  }
+  .block__holiday-collection-grid-item-1 {
+    padding: 15px;
+  }
+}
+@media (min-width: 750px) and (max-width: 1599px){
+  .block__holiday-collection-grid-item-3.block__holiday-collection-grid-img-right
+    .block__holiday-collection-grid-item-img {
+    max-width: 87.78%;
+    right:-15px;
+    bottom: -17%;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block__holiday-collection-grid-item-1 {
+    padding: 60px 30px;
+  }
+  .block__holiday-collection-grid-item-3 {
+    padding: 20px 20px 60px;
+  }
+  .block__holiday-collection-grid-item-2 {
+    padding: 30px 20px;
+  }
+  .block__holiday-collection-grid-item-2
+    .block__holiday-collection-grid-item-img {
+    top: 15px;
+    right: 15px;
+  }
+  .block__holiday-collection-grid-btn {
+    padding: 16px;
+    font-size: 14px;
+  }
+  .block__holiday-collection-grid-title {
+    font-size: 40px;
+  }
+  .block__holiday-collection-grid-heading {
+    font-size: 20px;
+  }
+  .block__holiday-collection-grid-text {
+    font-size: 20px;
+  }
+  .block__holiday-collection-grid-item-1 .block__holiday-collection-grid-btn {
+    min-width: 200px;
+    margin-top: 25px;
+  }
+  
+  .block__holiday-collection-grid-item-3 .block__holiday-collection-grid-btn {
+    min-width: 140px;
+    margin-top: 10px;
+  }
+  .block__holiday-collection-grid-item-2 .block__holiday-collection-grid-btn {
+    min-width: 175px;
+    margin-top: 20px;
+  }
+  .block__holiday-collection-grid-item-1 .block__holiday-collection-grid-btn {
+    min-width: 175px;
+    margin-top: 20px;
+  }
+}
+@media (min-width: 750px) and (max-width: 991px) {
+  .block__holiday-collection-grid {
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .block__holiday-collection-grid-item-1 {
+    padding: 80px 80px 120px;
+  }
+  .block__holiday-collection-grid-item-1
+    .block__holiday-collection-grid-item-img {
+    bottom: -15px;
+  }
+  .block__holiday-collection-grid-item-2 {
+    padding: 40px;
+  }
+  .block__holiday-collection-grid-item-3 {
+    padding: 20px 20px 115px;
+  }
+  .block__holiday-collection-grid-item-1 .block__holiday-collection-grid-title {
+    margin: 0px 0 10px;
+  }
+}
+@media (max-width: 750px) {
+  .block__holiday-grid-wrapper .block__holiday-collection-grid-slider {
+    margin:40px -10px;
+  }
+  .section-holiday-collection-grid .page-width {
+    padding: 0;
+  }
+  .block__holiday-collection-grid-item {
+    border-radius: 20px;
+    height: auto;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .block__holiday-collection-grid-item .block__wrapper-inner{
+    padding: 35px 15px;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    gap: 24px;
+    box-sizing: border-box;
+    height: 100%;
+  }
+  .block__holiday-collection-grid-item-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    object-position: top;
+    top: 0;
+    left: 0;
+  }
+
+  .block__holiday-collection-grid-item-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .block__holiday-collection-grid-item-img img {
+    width: 100%;
+    height: auto;
+  }
+
+  .block__holiday-collection-grid-content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .block__holiday-collection-grid-heading {
+    color: var(--selection-color);
+    font-weight: 300;
+    margin-bottom: 13px;
+  }
+
+  .block__holiday-collection-grid-title {
+    margin-bottom: 16px;
+    color: var(--selection-color);
+  }
+
+  .block__holiday-collection-grid-text {
+    line-height: 1;
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+
+  .block__holiday-collection-grid-btn {
+    font-weight: 700;
+    line-height: 1.1;
+    display: block;
+    padding: 22px;
+    border-radius: 50px;
+    text-align: center;
+    transition: all 0.4s ease;
+  }
+
+  .block__holiday-collection-grid-item:not(
+      .block__holiday-collection-grid-item-1
+    )
+    .block__holiday-collection-grid-item-img {
+    position: relative;
+    padding-top: 53.24%;
+  }
+
+  .block__holiday-collection-grid-item:not(
+      .block__holiday-collection-grid-item-1
+    )
+    .block__holiday-collection-grid-item-img
+    img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}

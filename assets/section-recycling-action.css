@@ -1,0 +1,109 @@
+.block__recycling-action-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.block__recycling-action-header h2 {
+  font-weight: 500;
+  color: var(--selection-color);
+}
+
+.block__recycling-action-header p {
+  margin-top: 10px;
+  color: var(--denary_color);
+}
+
+.block__recycling-action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.block__recycling-action-item {
+  background: var(--tertiary-color);
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.block__recycling-action-item h2 {
+  line-height: 1;
+  margin-bottom: 85px;
+  font-weight: 700;
+  color: var(--selection-color);
+}
+
+.block__recycling-action-item > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--primary-color);
+  padding: 9px 15px;
+  line-height: 1;
+  background-color: var(--undenary_color);
+  color: var(--selection-color);
+  border-radius: 2px;
+}
+
+.block__recycling-action-item > span svg {
+  color: var(--primary-color);
+}
+
+.block__recycling-action-item p {
+  color: var(--denary_color);
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid #00000033;
+}
+.block__recycling-action-item h2 span {
+  color: var(--primary-color);
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .block__recycling-action-grid {
+    gap: 20px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block__recycling-action-grid {
+    gap: 15px;
+  }
+  .block__recycling-action-item {
+    padding: 20px;
+  }
+  .block__recycling-action-item h2 {
+    margin-bottom: 70px;
+  }
+}
+@media (min-width: 750px) and (max-width: 991px) {
+  .block__recycling-action-grid {
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .block__recycling-action-grid > div {
+    width: calc(50% - 10px);
+  }
+  .block__recycling-action-item h2 {
+    line-height: 1;
+    margin-bottom: 50px;
+    font-weight: 700;
+    color: var(--selection-color);
+  }
+}
+@media (max-width: 749px) {
+  .block__recycling-action-grid {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+  }
+  .block__recycling-action-header {
+    margin-bottom: 30px;
+  }
+  .block__recycling-action-item {
+    padding: 30px;
+  }
+  .block__recycling-action-item h2 {
+    margin-bottom: 40px;
+  }
+}

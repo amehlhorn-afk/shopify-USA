@@ -1,0 +1,110 @@
+.block__hospitality-banner {
+  border-radius: 20px;
+  position: relative;
+  z-index: 1;
+  padding: 90px 70px;
+  overflow: hidden;
+}
+
+.block__hospitality-banner-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+.block__hospitality-banner-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hospitality-banner-desktop {
+  display: block;
+}
+
+.hospitality-banner-mobile {
+  display: none;
+}
+
+.block__hospitality-banner-info {
+  max-width: 437px;
+}
+
+.block__hospitality-banner-info h2 {
+  margin-bottom: 25px;
+  color: var(--quinary-color);
+  font-weight: 500;
+}
+
+.block__hospitality-banner-info p {
+  margin-bottom: 35px;
+  color: var(--quinary-color);
+}
+
+.block__hospitality-banner-info a {
+  display: inline-block;
+  padding: 17px 22px;
+  border-radius: 50px;
+  font-weight: 700;
+  line-height: 1;
+  transition: all 0.4s ease;
+  min-width: 180px;
+  text-align: center;
+}
+
+.block__hospitality-banner-overlay {
+  display: block !important;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.block__hospitality-banner-overlay.block__hospitality-banner-overlay-mobile {
+  display: none !important;
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .block__hospitality-banner {
+    padding: 60px 50px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .block__hospitality-banner {
+    padding: 50px 20px;
+  }
+}
+@media (max-width: 991px) {
+  .block__hospitality-banner {
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .hospitality-banner-mobile {
+    display: block;
+  }
+
+  .hospitality-banner-desktop {
+    display: none;
+  }
+  .block__hospitality-banner-overlay.block__hospitality-banner-overlay-mobile {
+    display: block !important;
+  }
+  .block__hospitality-banner-info {
+    max-width: 100%;
+  }
+  .block__hospitality-banner-info p {
+    opacity: 0.8;
+    margin-bottom: 25px;
+  }
+}
+@media (max-width: 749px) {
+  .block__hospitality-banner-info a {
+    display: block;
+}
+}

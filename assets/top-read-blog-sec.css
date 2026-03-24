@@ -1,0 +1,35 @@
+
+.block__top-read-blog-main .block__left-item .block__card__content {max-width: 595px;bottom: 30px;width: auto;}
+.block__top-read-blog-main .block__left-item .block__card__information, 
+.block__top-read-blog-main .block__left-item .block__card__information h4,
+.block__top-read-blog-main .block__left-item .block__card__information>span time {
+    color: var(--quinary-color);
+}
+
+@media(min-width:1200px){
+    .block__top-read-blog-main .block__right-item .block__blog-articles {column-gap: 30px;}
+    .block__top-read-blog-main .block__blog-list-article .block__right-item {padding-left: 30px;}
+    .block__top-read-blog-main .block__right-item .block__card__content {width: calc(100% - 310px);}
+    .block__top-read-blog-main .block__right-item .article-card__image {width: 280px;}
+}
+@media(max-width:1199px){
+    .block__top-read-blog-main .block__right-item .block__blog-articles {column-gap: 15px;}
+}
+@media(max-width:1199px) and (min-width:990px){
+    .block__top-read-blog-main .block__blog-list-article .block__right-item {padding-left: 10px;}
+    .block__top-read-blog-main .block__right-item .block__card__content {width: calc(100% - 195px);}
+    .block__top-read-blog-main .block__right-item .article-card__image {width: 180px;}
+}
+@media(min-width:990px){
+    .block__top-read-blog-main .block__left-item .block__card__content {left: 40px;right: 40px;}
+    .block__top-read-blog-main .block__blog-list-article .block__left-item {padding-right: 10px;}
+    .block__top-read-blog-main .block__right-item .article-card__image .image_set_pd{padding-bottom: 64%;}
+}
+@media(max-width:989px){
+    .block__top-read-blog-main .block__left-item .block__card__content {left: 20px;width: auto;right: 20px;}
+    .block__top-read-blog-main .block__left-item .article-card__image {padding-bottom: 94%;}
+    .block__top-read-blog-main .block__right-item .block__card__content {width: calc(100% - 135px);}
+    .block__top-read-blog-main .block__right-item .article-card__image {width: 120px;}
+    .block__top-read-blog-main .block__right-item .article-card__image .image_set_pd{padding-bottom: 100%;}
+    .block__top-read-blog-main .block__blog-list-article {row-gap: 40px;}
+}
