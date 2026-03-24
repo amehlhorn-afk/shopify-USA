@@ -1,0 +1,191 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+{{ 'product-registrations.css' | asset_url | stylesheet_tag }}
+<h1 style="display:none">{{ page.title }}</h1>
+<div class="block__product-registrations {% if  page.template_suffix == 'product-registrations-form' %}block__product-registrations-form {% endif %} color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding">
+    <div class="page-width">
+        <div class="block__customer-account-page-main flex items-start">  
+            {%- unless page.template_suffix == 'product-registrations-form' -%}     
+                <div class="block__customer-account-titles-wrapper w-full">
+                    {% render 'account-menu' %}
+                </div>
+            {%- endunless -%}
+      
+        <div class="block__registrations-wrapper quaternary-border-radius" {% if section.settings.bg_color != blank %} style="background-color:{{ section.settings.bg_color }}"{% endif %}>
+            {% if section.settings.title != blank %}
+                <div class="block__header flex justify-between items-center">
+                    <h4>{{ section.settings.title }}</h4>
+                    {% if section.settings.btn_text != blank %}
+                        <a href="{{ section.settings.btn_url }}" class="senary-border-radius button-primary medium-hide small-hide">
+                            {{ section.settings.btn_text }}
+                        </a>
+                    {% endif %}
+                </div>
+                <hr>
+            {% endif %}
+            <div class="block__registrations-form quaternary-border-radius" {% if section.settings.bg_color_form != blank %} style="background-color:{{ section.settings.bg_color_form }}"{% endif %}>
+            {% for block in section.blocks %}
+                {%- if block.type == '@app' -%}       
+                       <div class="app-container">
+                        {% render block %}
+                        </div>
+                {%- endif -%}
+            {% endfor %}
+            </div>
+            {% if section.settings.btn_text != blank %}
+                <a href="{{ section.settings.btn_url }}" class="senary-border-radius button-primary large-up-hide">
+                    {{ section.settings.btn_text }}
+                </a>
+            {% endif %}
+        </div>
+        </div>
+    </div>
+</div>
+{%- if page.template_suffix == 'product-registrations' -%}
+     <script>
+    window.addEventListener('load', function () {
+        setTimeout(() => { 
+            let registered_data = setInterval(() => {
+                let element = document.getElementById('mpr-form-slug-test-new-all-merge');
+
+                if (!element || element.innerHTML.trim() === "") { 
+                    console.log('hello');
+                    document.querySelector('.app-container').innerHTML = "You don't have any registered product";
+                    clearInterval(registered_data); // Stop checking
+                }
+            }, 100);
+        }, 1500);
+    });
+    </script> 
+{%- endif -%}
+<script src="{{ 'product-registrations.js' | asset_url }}" defer="defer"></script>
+{% style %}  
+    @media (min-width:990px){
+        .section-{{ section.id }}-padding{
+            padding-top:{{ section.settings.desktop_padding_top }}px;
+            padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+        }
+    }
+    @media (max-width:989px){
+        .section-{{ section.id }}-padding{
+            padding-top:{{ section.settings.mobile_padding_top }}px;
+            padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+        }
+    }
+{% endstyle %}
+{% schema %}
+{
+    "name": "Product Registrations",
+    "settings": [
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background Color"
+        },
+        {
+            "type": "color",
+            "id": "bg_color_form",
+            "label": "Background Color Form"
+        },
+        {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "t:sections.all.colors.label",
+            "info": "t:sections.all.colors.has_cards_info"
+        },
+        {
+            "type": "inline_richtext",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "text",
+            "id": "btn_text",
+            "label": "Button Text"
+        },
+        {
+            "type": "url",
+            "id": "btn_url",
+            "label": "Button URL"
+        },
+        {
+            "type": "header",
+            "content": "Desktop Space"
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Bottom",
+            "default": 16
+        },
+        {
+            "type": "header",
+            "content": "Mobile Space"
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Bottom",
+            "default": 16
+        }
+    ],
+    "blocks": [
+        {
+      "name": "Account Pages Link",
+      "type": "Link",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "menu_logo",
+          "label": "Logo"
+        },
+        {
+          "type": "text",
+          "id": "menu_text",
+          "label": "Menu Label"
+        },
+        {
+          "type": "url",
+          "id": "menu_url",
+          "label": "Menu Url"
+        }
+      ]
+    },
+    {
+        "type": "@app"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Product Registrations"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,87 @@
+<link rel="stylesheet" href="{{ 'tangent-recommendation-styles.css' | asset_url }}">
+{% if page.title contains 'Bed Gear Recommendation' %}
+  <h1 style="display:none">{{ page.title }}</h1>
+{% endif %}
+<div class="block__tangent-recommendation section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="tangent-recommendation-container">
+    </div>
+  </div>
+</div>
+
+{% style %}  
+  @media (min-width:990px){
+      .section-{{ section.id }}-padding{
+          padding-top:{{ section.settings.desktop_padding_top }}px;
+          padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+      }
+  }
+  @media (max-width:989px){
+      .section-{{ section.id }}-padding{
+          padding-top:{{ section.settings.mobile_padding_top }}px;
+          padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+      }
+  }
+{% endstyle %}
+<script type="text/javascript" src="{{ 'tangent-recommendation.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Tangent recommendation",
+  "settings": [
+    {
+        "type": "header",
+        "content": "Desktop Space"
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding Bottom",
+        "default": 16
+    }, 
+    {
+        "type": "header",
+        "content": "Mobile Space"
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding Bottom",
+        "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tangent recommendation"
+    }
+  ]
+}
+{% endschema %}

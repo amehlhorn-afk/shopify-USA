@@ -1,0 +1,287 @@
+{% comment %}
+  Review Badge Section with half-star support using 0–10 scale
+  + configurable top/bottom padding for desktop and mobile
+{% endcomment %}
+
+{%- assign rating_raw = section.settings.rating_value_raw | default: 10 | plus: 0 -%}
+{%- if rating_raw < 0 -%}
+  {%- assign rating_raw = 0 -%}
+{%- elsif rating_raw > 10 -%}
+  {%- assign rating_raw = 10 -%}
+{%- endif -%}
+
+{%- assign rating_percent = rating_raw | times: 10 -%}
+{%- assign rating_display = rating_raw | divided_by: 2.0 -%}
+
+<section
+  id="review-badge-{{ section.id }}"
+  class="review-badge"
+  style="
+    --review-badge-bg: {{ section.settings.background_color }};
+    --review-badge-text: {{ section.settings.text_color }};
+    --review-badge-stars: {{ section.settings.star_color }};
+    --review-badge-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --review-badge-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --review-badge-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --review-badge-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+  "
+>
+  <div class="review-badge__inner">
+    {% if section.settings.main_label != blank %}
+      <span class="review-badge__label">
+        {{ section.settings.main_label }}
+      </span>
+    {% endif %}
+
+    <div class="review-badge__stars" aria-label="{{ rating_display }} out of 5 stars">
+      <div class="review-badge__stars-base">★★★★★</div>
+      <div class="review-badge__stars-fill" style="width: {{ rating_percent }}%;">★★★★★</div>
+    </div>
+
+    <div class="review-badge__text">
+      {%- if section.settings.rating_number != blank -%}
+        <span class="review-badge__rating-number">
+          {{ section.settings.rating_number }}
+        </span>
+      {%- else -%}
+        <span class="review-badge__rating-number">
+          {{ rating_display }}
+        </span>
+      {%- endif -%}
+
+      {% if section.settings.rating_description != blank %}
+        <span class="review-badge__rating-description">
+          {{ section.settings.rating_description }}
+        </span>
+      {% endif %}
+
+      {% if section.settings.review_count_text != blank %}
+        <span class="review-badge__review-count">
+          {{ section.settings.review_count_text }}
+        </span>
+      {% endif %}
+
+      {% if section.settings.platform_label != blank %}
+        <span class="review-badge__platform">
+          {{ section.settings.platform_label }}
+        </span>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #review-badge-{{ section.id }} {
+    background: var(--review-badge-bg);
+    color: var(--review-badge-text);
+    padding: var(--review-badge-padding-top-desktop) 20px var(--review-badge-padding-bottom-desktop);
+    font-family: inherit;
+  }
+
+  #review-badge-{{ section.id }} .review-badge__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    justify-content: {{ section.settings.alignment }};
+  }
+
+  #review-badge-{{ section.id }} .review-badge__label {
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  #review-badge-{{ section.id }} .review-badge__stars {
+    position: relative;
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  #review-badge-{{ section.id }} .review-badge__stars-base,
+  #review-badge-{{ section.id }} .review-badge__stars-fill {
+    letter-spacing: 2px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  #review-badge-{{ section.id }} .review-badge__stars-base {
+    color: rgba(0, 0, 0, 0.15);
+  }
+
+  #review-badge-{{ section.id }} .review-badge__stars-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--review-badge-stars);
+  }
+
+  #review-badge-{{ section.id }} .review-badge__text {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 14px;
+  }
+
+  #review-badge-{{ section.id }} .review-badge__rating-number {
+    font-weight: 700;
+  }
+
+  #review-badge-{{ section.id }} .review-badge__review-count {
+    font-weight: 600;
+  }
+
+  #review-badge-{{ section.id }} .review-badge__platform {
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  @media (max-width: 749px) {
+    #review-badge-{{ section.id }} {
+      padding-top: var(--review-badge-padding-top-mobile);
+      padding-bottom: var(--review-badge-padding-bottom-mobile);
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    #review-badge-{{ section.id }} .review-badge__inner {
+      justify-content: center;
+      text-align: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Review Badge",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_label",
+      "label": "Main label",
+      "default": "Excellent"
+    },
+    {
+      "type": "range",
+      "id": "rating_value_raw",
+      "label": "Star rating (0–10, half steps)",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 9,
+      "info": "0 = 0★, 1 = 0.5★, 2 = 1★ … 10 = 5★"
+    },
+    {
+      "type": "text",
+      "id": "rating_number",
+      "label": "Rating number (optional override)",
+      "default": "4.5",
+      "info": "If left blank, uses the calculated value (rating/2)."
+    },
+    {
+      "type": "text",
+      "id": "rating_description",
+      "label": "Rating description",
+      "default": "out of 5 based on"
+    },
+    {
+      "type": "text",
+      "id": "review_count_text",
+      "label": "Review count text",
+      "default": "750+ reviews"
+    },
+    {
+      "type": "text",
+      "id": "platform_label",
+      "label": "Platform label",
+      "default": "Trustpilot"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#00b67a"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top padding (desktop, px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom padding (desktop, px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 12
+    },
+    {
+  "type": "range",
+  "id": "padding_top_mobile",
+  "label": "Top padding (mobile, px)",
+  "min": 0,
+  "max": 120,
+  "step": 4,
+  "default": 12
+},
+{
+  "type": "range",
+  "id": "padding_bottom_mobile",
+  "label": "Bottom padding (mobile, px)",
+  "min": 0,
+  "max": 120,
+  "step": 4,
+  "default": 12
+}
+,
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Content alignment",
+      "default": "flex-start",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Review Badge",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

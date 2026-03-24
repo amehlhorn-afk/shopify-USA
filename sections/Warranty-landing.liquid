@@ -1,0 +1,574 @@
+{{ 'block__warranty-landing.css' | asset_url | stylesheet_tag }}
+
+<div class="block__warranty-landing section-{{ section.id }}-padding" {% if section.settings.sec_bg_color != blank %}style="background-color:{{section.settings.sec_bg_color}};"{% endif %}>
+    <div class="page-width">
+        <div class="block__row block__form-wrapper gap-30">
+            <div class="block__left">
+                <div class="pdf-section tertiary-border-radius"  {% if section.settings.box_bg_color != blank %}style="background-color:{{section.settings.box_bg_color}};"{% endif %}>
+                    {% if section.settings.text != blank %}
+                        {{ section.settings.text }}
+                    {% endif %}
+                    <hr>
+                    {% if section.settings.image_pdf != blank and section.settings.pdf_text != blank %}
+                    <div class="downloadpdf flex gap-10 items-center">
+                        <img loading="lazy" src="{{ section.settings.image_pdf |  img_url: 'original'}}" width="{{section.settings.image_pdf.width}}" height="{{section.settings.image_pdf.height}}" data-uw-rm-alt-original="" role="presentation" alt="{{ section.settings.pdf_text | default: shop.name }}" data-uw-rm-alt="SVG">
+                    <a target="_blank" {% if section.settings.pdf_url != blank %}href="{{ section.settings.pdf_url }}" {% endif %} aria-label="Download our Mattress Protection Warranty Details - open in a new tab" data-uw-rm-ext-link="" uw-rm-external-link-id="https://www.bedgear.com/media/wysiwyg/cms/gmwarranty/mattress_protector-gm-warranty.pdf$downloadourmattressprotectionwarrantydetails" data-uw-pdf-br="1" data-uw-pdf-doc="" class="extra_body">{{ section.settings.pdf_text }}</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="block__right ">
+                <div class="block__form-main tertiary-border-radius "{% if section.settings.box_bg_color != blank %}style="background-color:{{section.settings.box_bg_color}};"{% endif %}">
+                    {% if section.settings.form_heading != blank %}
+                    <div class="block_form_heading flex gap-20 justify-between">
+                        <h4>{{ section.settings.form_heading }}</h4>
+                        {% if section.settings.form_heading_content  != blank %}
+                            <span class="small_body">
+                                {{ section.settings.form_heading_content }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    {% endif  %}
+                    <hr>
+                    <div class="block__personal-Information tertiary-border-radius" {% if section.settings.box_bg_color != blank %}style="background-color:{{section.settings.box_bg_color}};"{% endif %}>
+                        <form method="post" id="warranty-form"> 
+                            {% if section.settings.form_first_heading != blank %}
+                                <h4 class="primary_h4">{{ section.settings.form_first_heading }}</h4>
+                            {% endif %}
+                            <hr>
+                            <div class="block__warranty-item-field flex gap-20">
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label class="extra_body" for="First-name">{{ 'warrantylanding.first_name' | t }}<sup>*</sup></label>
+                                    <input
+                                        class="field__input extra_body primary-border-radius"
+                                        autocomplete="name"
+                                        type="text"
+                                        id="First-name"
+                                        minlength="3" 
+                                        maxlength="35"
+                                        pattern="^[A-Za-z\s]+$"
+                                        name="[First Name]"
+                                        value=""
+                                        placeholder="{{ 'warrantylanding.placeholder_First' | t}}"
+                                        onkeypress="return /^[A-Za-z\s]+$/.test(event.key);"
+                                        required
+                                    >
+                                </div>
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label class="extra_body" for="Last-name">{{ 'warrantylanding.last_name' | t }}<sup>*</sup></label>
+                                    <input 
+                                        class="field__input extra_body primary-border-radius"
+                                        autocomplete="name"
+                                        type="text"
+                                        id="Last-name"
+                                        minlength="3" 
+                                        maxlength="35"
+                                        pattern="^[A-Za-z\s]+$"
+                                        name="[Last Name]"
+                                        value=""
+                                        placeholder="{{'warrantylanding.placeholder_last' | t }}"
+                                        onkeypress="return /^[A-Za-z\s]+$/.test(event.key);"
+                                        required
+                                    >
+                                </div>
+                            </div>
+                            <div class="block__warranty-item-field flex gap-20">
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label class="extra_body" for="email">{{ 'warrantylanding.email' | t }}<sup>*</sup></label>
+                                    <input
+                                        class="field__input extra_body primary-border-radius"
+                                        autocomplete="email"
+                                        type="email"
+                                        id="email"
+                                        name="[Email]"
+                                        spellcheck="false"
+                                        autocapitalize="off"
+                                        value=""
+                                        placeholder="{{'warrantylanding.placeholder_email' | t }}"
+                                        required
+                                    >
+                                </div>
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label class="extra_body" for="phone">{{ 'warrantylanding.phone' | t }}<sup>*</sup></label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        class="field__input extra_body primary-border-radius"
+                                        autocomplete="tel"
+                                        name="[Phone]"
+                                        maxlength="15"
+                                        pattern="^\+?[0-9\s\-]{7,15}$"
+                                        value=""
+                                        placeholder="{{ 'warrantylanding.placeholder_phone' | t }}"
+                                        required
+                                    >
+                                </div>
+                            </div>
+                            <div class="block__warranty-item-field flex gap-20">
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label class="extra_body" for="street_address">{{ 'warrantylanding.street_address' | t }}<sup>*</sup></label>
+                                    <input
+                                        type="text"
+                                        id="street_address"
+                                        class="field__input extra_body primary-border-radius"
+                                        autocomplete="street-address"
+                                        name="[Street]"
+                                        value=""
+                                        maxlength="100"
+                                        placeholder="{{ 'warrantylanding.placeholder_street_address' | t }}"
+                                        required
+                                    >
+                                </div>
+                            </div>
+                            <div class="block__warranty-item-field flex gap-20">
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label class="extra_body" for="city">{{ 'warrantylanding.city' | t }}<sup>*</sup></label>
+                                    <input
+                                        type="text"
+                                        id="city"
+                                        class="field__input extra_body primary-border-radius"
+                                        autocomplete="address-level2"
+                                        name="[City]"
+                                        value=""
+                                        placeholder="{{ 'warrantylanding.placeholder_city' | t }}"
+                                        required
+                                    >
+                                </div>
+                                <div id="state-wrapper" class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label class="extra_body" for="state">{{ 'warrantylanding.state' | t }}<sup>*</sup></label>
+                                    <div class="select">
+                                        <select id="state" name="[State]" class="field__input extra_body primary-border-radius">
+                                            <option value="">{{ 'warrantylanding.placeholder_state' | t }}</option>
+                                        </select>
+                                        <span class="svg-wrapper">
+                                            <svg class="icon icon-caret" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"></path></svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="block__warranty-item-field flex gap-20">
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label class="extra_body" for="zip_code">{{ 'warrantylanding.zip_code' | t }}<sup>*</sup></label>
+                                    <input
+                                        type="text"
+                                        id="zip_code"
+                                        class="field__input extra_body primary-border-radius"
+                                        autocomplete="postal-code"
+                                        name="[Zip]"
+                                        pattern="[0-9]*"
+                                        value=""
+                                        placeholder="{{ 'warrantylanding.placeholder_zip_code' | t }}"
+                                        required
+                                    >
+                                </div>
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label for="country" class="extra_body">{{ 'warrantylanding.country' | t }}<sup>*</sup></label>
+                                    <div class="select">
+                                        <select id="country" name="[Country]" class="field__input extra_body primary-border-radius" required>
+                                            {{ all_country_option_tags }}
+                                        </select>
+                                        <span class="svg-wrapper">
+                                            <svg class="icon icon-caret" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"></path></svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if section.settings.form_second_heading != blank %}
+                                <h4 class="primary_h4">{{ section.settings.form_second_heading }}</h4>
+                            {% endif %}
+                            <hr>
+                            <div class="block__warranty-item-field flex gap-20">
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label for="product-category" class="extra_body">{{ 'warrantylanding.product_category' | t }}<sup>*</sup></label>
+                                    <div class="select">
+                                        <select id="product-category" name="[Product Category]" class="field__input extra_body primary-border-radius" required>
+                                            <option value="">{{ 'warrantylanding.placeholder_product_category' | t }}</option>
+                                            {% assign product_types = "" %}
+                                            {% for product in collections.all.products %}
+                                                {% unless product_types contains product.type %}
+                                                    <option value="{{ product.type }}">{{ product.type }}</option>
+                                                    {% assign product_types = product_types | append: product.type | append: "," %}
+                                                {% endunless %}
+                                            {% endfor %}
+                                        </select>
+                                        <span class="svg-wrapper">
+                                            <svg class="icon icon-caret" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"></path></svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label for="product-name" class="extra_body">{{ 'warrantylanding.product_name' | t }}<sup>*</sup></label>
+                                    <div class="select">
+                                        <select id="product-name" name="[Product Name]" class="field__input extra_body primary-border-radius" required>
+                                            <option value="">{{ 'warrantylanding.placeholder_product_name' | t }}</option>
+                                            {% assign product_types = "" %}
+                                            {% for product in collections.all.products %}
+                                                {% unless product_types contains product.type %}
+                                                    <option value="{{ product.type }}">{{ product.type }}</option>
+                                                    {% assign product_types = product_types | append: product.type | append: "," %}
+                                                {% endunless %}
+                                            {% endfor %}
+                                        </select>
+                                        <span class="svg-wrapper">
+                                            <svg class="icon icon-caret" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"></path></svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="block__warranty-item-field flex gap-20">
+                                <div class="block__input-item w-full flex flex-direction-column gap-10">
+                                    <label class="extra_body" for="message">{{ 'warrantylanding.message' | t }} <sup>*</sup></label>
+                                    <textarea
+                                        id="message"
+                                        name="[Message]"
+                                        class="field__input extra_body primary-border-radius"
+                                        rows="9"
+                                        required
+                                        placeholder="{{ 'warrantylanding.placeholder_message' | t }}"
+                                        maxlength="1000"
+                                    ></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="button-quaternary button w-full klaviyo_form_trigger " id="submit-btn">{{ 'warrantylanding.submit' | t }}</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="block__formcopyright extra_small_body w-full">
+                    {{ section.settings.form_bottom_text }}
+                </div>
+            </div>
+        </div>
+        {% if section.settings.thank_you_heading != blank %}
+        <div class="thank-you-container tertiary-border-radius none center" {% if section.settings.box_bg_color != blank %}style="background-color:{{section.settings.box_bg_color}};"{% endif %}>
+            <h1>{{ section.settings.thank_you_heading }}</h1>
+            {% if section.settings.thank_you_message != blank %}
+            <p class="h4">{{ section.settings.thank_you_message }}</p>
+            {% endif %}
+            {% if section.settings.button_tex != blank or section.settings.button_link != blank %}
+            <a href="{{ section.settings.button_link }}" class="button-quaternary button w-full">
+                {{ section.settings.button_text }}
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // ==========  country wise state show Start ============ //
+    var countrySelect = document.getElementById("country");
+    var stateSelect = document.getElementById("state");
+    var stateWrapper = document.getElementById("state-wrapper");
+    function updateStates() {
+        var selectedCountry = countrySelect.value;
+        stateSelect.innerHTML = '<option value="">Please select a region, state or province</option>';
+       
+        var selectedOption = countrySelect.querySelector(`option[value="${selectedCountry}"]`);
+        if (selectedOption?.dataset.provinces) {
+            var provinces = JSON.parse(selectedOption.dataset.provinces);
+            stateWrapper.style.display = provinces.length ? "flex" : "none";
+            provinces.forEach(function (province) {
+                var option = new Option(province[1], province[0]);
+                stateSelect.appendChild(option);
+            });
+        } else {
+            stateWrapper.style.display = "none";
+            
+        }
+    }
+    if (countrySelect.querySelector('option[value="United States"]')) {
+        countrySelect.value = "United States";
+        updateStates();
+    }
+    countrySelect.addEventListener("change", updateStates);
+    // ==========  country wise state show End ============ //
+    // ==========  product-category wise product-name show Start ============ //
+    var categorySelect = document.getElementById("product-category");
+    var productSelect = document.getElementById("product-name");
+    var allProducts = [
+        {% for product in collections.all.products %}
+        {
+            name: "{{ product.title | escape }}",
+            type: "{{ product.type | escape }}"
+        },
+        {% endfor %}
+    ];
+    categorySelect.addEventListener("change", function () {
+        var selectedCategory = this.value;
+        productSelect.innerHTML = '<option value="">Select</option>';
+        var filteredProducts = allProducts.filter(p => p.type === selectedCategory);
+        filteredProducts.forEach(function (product) {
+            var option = new Option(product.name, product.name);
+            productSelect.appendChild(option);
+        });
+    });
+    // ==========  product-category wise product-name show End ============ //
+    // ==========  Button submit Click thanks page Open Start ============ //
+ 
+    // ==========  Button submit Click data add sheets and thanks MSG Open Start ============ //
+    const form = document.getElementById("warranty-form");
+    const submitButton = document.getElementById("submit-btn");
+    const requiredFields = form.querySelectorAll("input, select[required], textarea[required]");
+    const thankYouContainer = document.querySelector(".thank-you-container");
+    const formWrapper = document.querySelector(".block__form-wrapper");
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzEEkZ9HiwcgC1Uuqa-P6rVmhQIkkshp1IoYNG-jrOSYuGbJBAMgcxEmr3QIdxbf2G7/exec";
+     function validateForm(showErrors = false) {
+        let isValid = true;
+        requiredFields.forEach(field => {
+            const errorMessage = field.nextElementSibling;
+            if (errorMessage && errorMessage.classList.contains("error-message")) {
+                errorMessage.remove();
+            }
+
+            if (field.value.trim() === "" && showErrors) {
+                isValid = false;
+                const error = document.createElement("div");
+                error.classList.add("error-message");
+                error.style.color = "red";
+                error.style.fontSize = "12px";
+                error.innerText = "This field is required.";
+                field.insertAdjacentElement("afterend", error);
+            }
+        });
+        return isValid;
+    }
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        if (!validateForm(true)) {
+            return; 
+        }
+        submitButton.innerText = "Submitting...";
+        submitButton.disabled = true;
+        const formData = new FormData(form);
+
+        const email = form.querySelector("input[name='[Email]']").value;
+        const firstName = form.querySelector("input[name='[First Name]']").value;
+        const lastName = form.querySelector("input[name='[Last Name]']").value;
+        const klaviyoData = {
+            '$email': email,
+            '$first_name': firstName,
+            '$last_name': lastName
+        };
+        requiredFields.forEach(field => {
+            const name = field.name;
+            if (name && field.value) {
+                klaviyoData[name] = field.value; 
+            }
+        });
+        const waitForLearnq = setInterval(function () {
+            if (typeof window._learnq !== "undefined") {
+                clearInterval(waitForLearnq);
+                setTimeout(() => {
+                    window._learnq.push(["identify", klaviyoData]);
+                    window._learnq.push(["track", "Warranty Form Submission", klaviyoData]);
+                }, 800); 
+            }
+        }, 300);
+
+        try {
+            const response = await fetch(scriptURL, {
+                method: "POST",
+                body: new URLSearchParams(formData),
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            });
+
+            if (response.ok) {
+                formWrapper.style.display = "none";
+                thankYouContainer.style.display = "block";
+                form.reset();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
+                alert("Error submitting form. Please try again.");
+            }
+        } catch (error) {
+            console.error('Error during fetch:', error);
+        }
+
+        submitButton.innerText = "Submit";
+        submitButton.disabled = false;
+    });
+    
+     // ==========  Button submit Click data add sheets and thanks MSG Open End ============ //
+
+
+});
+</script>
+
+{% style %}  
+    @media (min-width:750px){
+        .section-{{ section.id }}-padding{
+            padding-top:{{ section.settings.desktop_padding_top }}px;
+            padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+        }
+    }
+    @media (max-width:749px){
+        .section-{{ section.id }}-padding{
+            padding-top:{{ section.settings.mobile_padding_top }}px;
+            padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+        }
+    }
+{% endstyle %}
+
+{% schema %}
+{
+    "name": "Warranty Landing",
+    "settings": [
+        {
+            "type": "color",
+            "id": "sec_bg_color",
+            "label": "Section Background Color"
+        },
+        {
+            "type": "color",
+            "id": "box_bg_color",
+            "label": "Box Background Color"
+        },
+        {
+            "type": "header",
+            "content": "PDF Content"
+        },
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_pdf",
+            "label": "PDF Image"
+        },
+        {
+            "type": "text",
+            "id": "pdf_text",
+            "label": "PDF Text"
+        },
+        {
+            "type": "url",
+            "id": "pdf_url",
+            "label": "PDF DownLoad Url"
+        },
+        {
+            "type": "header",
+            "content": "Form Item Heading"
+        },
+        {
+            "type": "text",
+            "id": "form_heading",
+            "label": "Form Heading"
+        },
+        {
+            "type": "richtext",
+            "id": "form_heading_content",
+            "label": "Form Heading Content"
+        },
+        {
+            "type": "header",
+            "content": "Form Content"
+        },
+        {
+            "type": "color",
+            "id": "fc_bg_color",
+            "label": "Form Content Background Color"
+        },
+        {
+            "type": "text",
+            "id": "form_first_heading",
+            "label": "Form First Heading"
+        },
+        {
+            "type": "text",
+            "id": "form_second_heading",
+            "label": "Form Second Heading"
+        },
+        {
+            "type": "header",
+            "content": "Form Bottom Content"
+        },
+        {
+            "type": "richtext",
+            "id": "form_bottom_text",
+            "label": "Form Bottomr Text"
+        },
+        {
+            "type": "header",
+            "content": "Form Bottom Content"
+        },
+        {
+            "type": "text",
+            "id": "thank_you_heading",
+            "label": "Heading"
+        },
+        {
+            "type": "text",
+            "id": "thank_you_message",
+            "label": "Message"
+        },
+        {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button Link",
+            "default": "/"
+        },
+        {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button Text"
+        },
+        {
+            "type": "header",
+            "content": "Desktop Space"
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Bottom",
+            "default": 16
+        },
+        {
+            "type": "header",
+            "content": "Mobile Space"
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Bottom",
+            "default": 16
+        }
+    ],
+    "presets": [
+        {
+            "name": "Warranty Landing"
+        }
+    ]
+}
+{% endschema %}
+    

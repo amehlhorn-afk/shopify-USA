@@ -1,0 +1,332 @@
+
+{% comment %} 
+{{ 'store-locater-sec.css' | asset_url | stylesheet_tag }}
+
+<div class="block__store-locater section-{{ section.id }}-padding"  {% if section.settings.bg_color != blank %}style="background-color: {{ section.settings.bg_color }};"{% endif %}>
+    <div class="page-width">
+        <div class="block__header-top flex items-center justify-between gap-30">
+            {% if section.settings.title != blank %}
+                <h3>{{ section.settings.title }}</h3>
+            {% endif %}
+            <div class="tab-buttons flex items-center ">
+                <label class="tab-btn active" data_id="{{ section.settings.tab_one_text |  handleize }}" data-params="{{ section.settings.tab_one_text |  handleize }}" data-trigger="retails_cls" data-filter="141893">
+                    {{ section.settings.tab_one_icon }}
+                    {{ section.settings.tab_one_text }}
+                </label>
+                <label class="tab-btn" data_id="{{ section.settings.tab_two_text |  handleize }}" data-params="{{ section.settings.tab_two_text | handleize }}" data-trigger="hospitality_cls" data-filter="141894">
+                    {{ section.settings.tab_two_icon }}
+                    {{ section.settings.tab_two_text }}
+                </label>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div id="{{ section.settings.tab_one_text |  handleize }}" class="tab-pane active">
+                <div id='storerocket-widget' style='width:100%;' data-storerocket-filters='141893' data-storerocket-env='p' data-storerocket-id='aKpDxjopdR'><p style='text-align:center;font-size:13px;padding:10px;'>Store locator is loading from StoreRocket <a target='_blank' href='https://storerocket.io' style='font-size:13px;'>Store Locator App</a>..</p></div><script>(function(){var a=document.createElement('script');a.type='text/javascript';a.async=!0;a.src='https://cdn.storerocket.io/js/widget-mb.js';var b=document.getElementsByTagName('script')[0];b.parentNode.insertBefore(a,b);}());</script>
+                <div class="storerocket-store-locator retails_cls"></div>
+                <script src="//cdn.storerocket.io/widget.js"></script>
+                <script>
+                    StoreRocket.init({
+                        selector: ".storerocket-store-locator",
+                        account: "aKpDxjopdR"
+                    });
+                    </script> 
+            </div>
+
+            <div id="{{ section.settings.tab_two_text |  handleize }}" class="tab-pane">
+              <div id='storerocket-widget' style='width:100%;' data-storerocket-filters='141894' data-storerocket-env='p' data-storerocket-id='aKpDxjopdR'><p style='text-align:center;font-size:13px;padding:10px;'>Store locator is loading from StoreRocket <a target='_blank' href='https://storerocket.io' style='font-size:13px;'>Store Locator App</a>..</p></div><script>(function(){var a=document.createElement('script');a.type='text/javascript';a.async=!0;a.src='https://cdn.storerocket.io/js/widget-mb.js';var b=document.getElementsByTagName('script')[0];b.parentNode.insertBefore(a,b);}());</script> 
+                 <div class="storerocket-store-locator hospitality_cls"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    let tab_btn = document.querySelectorAll('.tab-btn');
+    let tab_pane = document.querySelectorAll('.tab-pane');
+    
+    window.addEventListener('load', function(){
+        let url = new URL(window.location.href);
+        let locParam = url.searchParams.get('loc')
+        if(locParam){
+            tab_btn.forEach((btn) => {
+                btn.classList.remove('active')
+                if (!btn.dataset.params == locParam){
+                    document.getElementById(btn.attributes.data_id.value).innerHTML = '';  
+                }   
+             });
+            tab_pane.forEach(pane => {
+            pane.classList.remove('active');
+            });
+
+            tab_btn.forEach(function(btn) {   
+                if (btn.dataset.params === locParam) {
+                     btn.classList.add('active');
+                     console.log(btn.attributes.data_id.value, "DATA")
+                     document.getElementById(btn.attributes.data_id.value).classList.add('active'); 
+               }
+            });
+        }
+         
+    })
+
+    tab_btn.forEach(function(e) {
+           e.addEventListener('click', function(event) {
+    
+            let trigger_class = event.target.dataset.trigger;
+            let filter =  event.target.dataset.filter;
+            let params = event.target.dataset.params; 
+
+            let newUrl = new URL(window.location.href);
+
+            newUrl.searchParams.set('loc', params);
+         
+            window.history.replaceState({}, '', newUrl); 
+          
+            let locParam = newUrl.searchParams.get('loc'); 
+
+            if(locParam){
+                    tab_pane.forEach(pane => {
+                        pane.classList.remove('active');
+                    });
+                    tab_btn.forEach(function(e) {
+                        e.classList.remove('active'); 
+                    });
+
+                    if (params === locParam) {
+                        event.target.classList.add('active');
+                        document.getElementById(event.target.attributes.data_id.value).classList.add('active'); 
+                    }
+                    let scriptEl = 'script'
+                    if(params == 'hospitality-locations'){
+                        document.getElementById('retail-locations').innerHTML = ''; 
+                        document.getElementById(event.target.attributes.data_id.value).innerHTML = `<div id='storerocket-widget' style='width:100%;' data-storerocket-env='p' data-storerocket-id='aKpDxjopdR'><p style='text-align:center;font-size:13px;padding:10px;'>Store locator is loading from StoreRocket <a target='_blank' href='https://storerocket.io' style='font-size:13px;'>Store Locator App</a>..</p></div><${scriptEl}>(function(){var a=document.createElement('script');a.type='text/javascript';a.async=!0;a.src='https://cdn.storerocket.io/js/widget-mb.js';var b=document.getElementsByTagName('script')[0];b.parentNode.insertBefore(a,b);}());</${scriptEl}> <div class="hospitality_cls"></div><${scriptEl} src="//cdn.storerocket.io/widget.js"></${scriptEl}>`
+                        StoreRocket.init({
+                        selector: ".hospitality_cls",
+                        account: "aKpDxjopdR",
+                        filters: "141894"
+                     });
+                    }else if(params == 'retail-locations'){
+                        document.getElementById('hospitality-locations').innerHTML = ''; 
+                        document.getElementById(event.target.attributes.data_id.value).innerHTML = `<div id='storerocket-widget' style='width:100%;'  data-storerocket-env='p' data-storerocket-id='aKpDxjopdR'><p style='text-align:center;font-size:13px;padding:10px;'>Store locator is loading from StoreRocket <a target='_blank' href='https://storerocket.io' style='font-size:13px;'>Store Locator App</a>..</p></div><${scriptEl}>(function(){var a=document.createElement('script');a.type='text/javascript';a.async=!0;a.src='https://cdn.storerocket.io/js/widget-mb.js';var b=document.getElementsByTagName('script')[0];b.parentNode.insertBefore(a,b);}());</${scriptEl}> <div class="retails_cls"></div>    <${scriptEl} src="//cdn.storerocket.io/widget.js"></${scriptEl}>`
+                        StoreRocket.init({
+                           selector: ".retails_cls",
+                           account: "aKpDxjopdR",
+                           filters: "141893"
+                        });
+                    }
+                    }
+
+        });
+    });
+</script> {% endcomment %}
+
+{{ 'store-locater-sec.css' | asset_url | stylesheet_tag }}
+
+<div class="block__store-locater section-{{ section.id }}-padding"  {% if section.settings.bg_color != blank %}style="background-color: {{ section.settings.bg_color }};"{% endif %}>
+    <div class="page-width">
+        <div class="block__header-top flex items-center justify-between gap-30">
+            {% if section.settings.title != blank %}
+                <h3>{{ section.settings.title }}</h3>
+            {% endif %}
+            <div class="tab-buttons flex items-center ">
+                <label class="tab-btn active" data_id="{{ section.settings.tab_one_text |  handleize }}">
+                    {{ section.settings.tab_one_icon }}
+                    {{ section.settings.tab_one_text }}
+                </label>
+                <label class="tab-btn" data_id="{{ section.settings.tab_two_text |  handleize }}">
+                    {{ section.settings.tab_two_icon }}
+                    {{ section.settings.tab_two_text }}
+                </label>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div id="{{ section.settings.tab_one_text |  handleize }}" class="tab-pane active">
+                 <script type="application/json" id="retail_locations">{{shop.metaobjects.retail_locations.values | json }}</script>
+                <div class="block__heading flex items-center justify-between ">
+                    <div class="block__location-search justify-end flex items-center gap-15">
+                        <div class="block__search-item relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                            class="block__menu-search absolute">
+                            <path
+                            d="M8.75033 15.8337C12.6623 15.8337 15.8337 12.6623 15.8337 8.75033C15.8337 4.83833 12.6623 1.66699 8.75033 1.66699C4.83833 1.66699 1.66699 4.83833 1.66699 8.75033C1.66699 12.6623 4.83833 15.8337 8.75033 15.8337Z"
+                            stroke="black" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M13.8428 13.8428L17.3783 17.3783" stroke="black" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        </svg>
+                        <input type="text"placeholder="Enter city, state or zip code"
+                            class="border-none w-full senary-border-radius searchInput" />
+                        </div>
+                        <div class="w-full controls">
+                        <select class="border-none senary-border-radius w-full category-select">
+                        </select>
+                        </div>
+                    </div>
+                    <div class="filter-dropdown">
+                        <button class="filter-button">FILTER</button>
+                        <div class="filter-content">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="sidebar" style="width:30%">
+                        <div class="store-list">
+                        <!-- Stores will be populated here -->
+                        </div>
+                    </div>
+                    <div id="map" class="h-full map" style="height: 500px;width:70%"></div>
+                </div> 
+             
+            </div>
+            <div id="{{ section.settings.tab_two_text |  handleize }}" class="tab-pane">
+                <script type="application/json" id="hospitality_locations">{{shop.metaobjects.hospitality_locations.values | json }}</script>
+                <div class="block__heading flex items-center justify-between ">
+                    <div class="block__location-search justify-end flex items-center gap-15">
+                        <div class="block__search-item relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                            class="block__menu-search absolute">
+                            <path
+                            d="M8.75033 15.8337C12.6623 15.8337 15.8337 12.6623 15.8337 8.75033C15.8337 4.83833 12.6623 1.66699 8.75033 1.66699C4.83833 1.66699 1.66699 4.83833 1.66699 8.75033C1.66699 12.6623 4.83833 15.8337 8.75033 15.8337Z"
+                            stroke="black" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M13.8428 13.8428L17.3783 17.3783" stroke="black" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        </svg>
+                        <input type="text"placeholder="Enter city, state or zip code"
+                            class="border-none w-full senary-border-radius searchInput" />
+                        </div>
+                        <div class="w-full controls">
+                        <select class="border-none senary-border-radius w-full category-select">
+                        </select>
+                        </div>
+                    </div>
+                    <div class="filter-dropdown">
+                        <button class="filter-button">FILTER</button>
+                        <div class="filter-content">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="sidebar" style="width:30%">
+                        <div class="store-list">
+                        <!-- Stores will be populated here -->
+                        </div>
+                    </div>
+                    <div id="map" class="h-full map" style="height: 500px;width:70%"></div>
+                </div> 
+             
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% style %}  
+    @media (min-width:990px){
+        .section-{{ section.id }}-padding{
+            padding-top:{{ section.settings.desktop_padding_top }}px;
+            padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+        }
+    }
+    @media (max-width:989px){
+        .section-{{ section.id }}-padding{
+            padding-top:{{ section.settings.mobile_padding_top }}px;
+            padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+        }
+    }
+{% endstyle %}
+
+
+{% schema %}
+{
+    "name": "Store Locator",
+    "class": "store-locator-section",
+    "settings": [
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background Color"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Section Heading"
+        },
+        {
+            "type": "text",
+            "id": "tab_one_text",
+            "label": "Tab One Text"
+        },
+        {
+            "type": "html",
+            "id": "tab_one_icon",
+            "label": "Tab One Icon"
+        },
+        {
+            "type": "text",
+            "id": "tab_two_text",
+            "label": "Tab Two Text"
+        },
+        {
+            "type": "html",
+            "id": "tab_two_icon",
+            "label": "Tab Two Icon"
+        },
+        {
+            "type": "header",
+            "content": "Desktop Space"
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Bottom",
+            "default": 16
+        },
+        {
+            "type": "header",
+            "content": "Mobile Space"
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Bottom",
+            "default": 16
+        }
+    ],
+    "presets": [
+        {
+            "name": "Store Locator"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,472 @@
+{{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  {%- liquid
+    assign overlay_alpha_desktop = section.settings.image_overlay_opacity | divided_by: 100.0
+    assign overlay_alpha_mobile  = section.settings.image_overlay_opacity_mobile | divided_by: 100.0
+
+    assign overlay_color_desktop = section.settings.image_overlay_color | default: '#000000'
+    assign overlay_color_mobile  = section.settings.image_overlay_color_mobile | default: overlay_color_desktop
+
+    assign od_r = overlay_color_desktop | color_extract: 'red'
+    assign od_g = overlay_color_desktop | color_extract: 'green'
+    assign od_b = overlay_color_desktop | color_extract: 'blue'
+
+    assign om_r = overlay_color_mobile | color_extract: 'red'
+    assign om_g = overlay_color_mobile | color_extract: 'green'
+    assign om_b = overlay_color_mobile | color_extract: 'blue'
+  -%}
+
+  /* ✅ Make Banner its own stacking context */
+  #Banner-{{ section.id }} {
+    position: relative !important;
+    isolation: isolate; /* prevents outside stacking contexts from interfering */
+  }
+
+  /* ✅ HARD-LOCK MEDIA UNDERLAY */
+  #Banner-{{ section.id }} .banner__media {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    overflow: hidden;
+  }
+
+  #Banner-{{ section.id }} .banner__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ✅ HARD-LOCK OVERLAY ABOVE MEDIA */
+  #Banner-{{ section.id }} .banner__overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    display: block !important;
+    opacity: 1 !important;
+    background-color: rgba({{ od_r }}, {{ od_g }}, {{ od_b }}, {{ overlay_alpha_desktop }}) !important;
+  }
+
+  @media screen and (max-width: 749px) {
+    #Banner-{{ section.id }} .banner__overlay {
+      background-color: rgba({{ om_r }}, {{ om_g }}, {{ om_b }}, {{ overlay_alpha_mobile }}) !important;
+    }
+  }
+
+  /* ✅ HARD-LOCK CONTENT ABOVE OVERLAY */
+  #Banner-{{ section.id }} .banner__content {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* ✅ Content offset variables */
+  #Banner-{{ section.id }} {
+    --content-offset-x: {{ section.settings.content_offset_x }}px;
+    --content-offset-y: {{ section.settings.content_offset_y }}px;
+  }
+  @media screen and (max-width: 749px) {
+    #Banner-{{ section.id }} {
+      --content-offset-x: {{ section.settings.content_offset_x_mobile }}px;
+      --content-offset-y: {{ section.settings.content_offset_y_mobile }}px;
+    }
+  }
+
+  /* ✅ Offset wrapper (desktop always) */
+  #Banner-{{ section.id }} .banner__content-offset {
+    position: relative;
+    transform: translate(var(--content-offset-x), var(--content-offset-y)) !important;
+    will-change: transform;
+    z-index: 2;
+  }
+
+  /* ✅ On mobile: disable offsets only if using "text below" layout */
+  @media screen and (max-width: 749px) {
+    #Banner-{{ section.id }}.banner--mobile-bottom .banner__content-offset {
+      transform: none !important;
+    }
+  }
+
+  /* Banner height control */
+  #Banner-{{ section.id }}.banner--custom { height: {{ section.settings.custom_height }}px; }
+  @media screen and (max-width: 749px) {
+    #Banner-{{ section.id }}.banner--custom { height: {{ section.settings.custom_height_mobile }}px; }
+  }
+
+  /* ✅ Media visibility rules (desktop vs mobile swap) */
+  #Banner-{{ section.id }} .block__desktop-video { display: block; }
+  #Banner-{{ section.id }} .block__mobile-video { display: none; }
+
+  @media screen and (max-width: 749px) {
+    #Banner-{{ section.id }}.has-mobile-media .block__desktop-video { display: none; }
+    #Banner-{{ section.id }}.has-mobile-media .block__mobile-video { display: block; }
+  }
+
+  #Banner-{{ section.id }} .banner__box .banner__heading,
+  #Banner-{{ section.id }} .banner__box .banner__text,
+  #Banner-{{ section.id }} .banner__box .banner__text p,
+  #Banner-{{ section.id }} .banner__box .banner__text a,
+  #Banner-{{ section.id }} .banner__box .inline-richtext,
+  #Banner-{{ section.id }} .banner__box .rte,
+  #Banner-{{ section.id }} .banner__box .rte p,
+  #Banner-{{ section.id }} .banner__box .rte a { color: var(--video-banner-text) !important; }
+
+  .banner__inline-image-wrapper { display:flex; justify-content:center; margin:16px auto; }
+  .banner__inline-image-wrapper img { height:auto; max-width:100%; }
+
+  /* ✅ Make mobile content positioning behave like desktop
+     (only when NOT using "text below" layout) */
+  @media screen and (max-width: 749px) {
+    #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Re-apply the 9-position grid on mobile */
+    #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content--top-left {
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content--top-center {
+      align-items: flex-start;
+      justify-content: center;
+    }
+    #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content--top-right {
+      align-items: flex-start;
+      justify-content: flex-end;
+    }
+
+    #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content--middle-left {
+      align-items: center;
+      justify-content: flex-start;
+    }
+    #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content--middle-center {
+      align-items: center;
+      justify-content: center;
+    }
+    #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content--middle-right {
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content--bottom-left {
+      align-items: flex-end;
+      justify-content: flex-start;
+    }
+    #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content--bottom-center {
+      align-items: flex-end;
+      justify-content: center;
+    }
+    #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content--bottom-right {
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign full_width = '100vw'
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+-%}
+
+<div
+  id="Banner-{{ section.id }}"
+  class="
+    banner
+    banner--content-align-{{ section.settings.desktop_content_alignment }}
+    banner--content-align-mobile-{{ section.settings.mobile_content_alignment }}
+    banner--{{ section.settings.image_height }}
+    {% if section.settings.image_height == 'custom' %} banner--custom{% endif %}
+    {% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}
+    {% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}
+    {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}
+    {% if section.settings.mobile_video != blank or section.settings.mobile_poster != blank %} has-mobile-media{% endif %}
+  "
+>
+  <!-- ✅ REAL overlay element -->
+  <div class="banner__overlay"></div>
+
+  <!-- Desktop Media -->
+  <div class="banner__media media block__desktop-video{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    {%- if section.settings.desktop_video != blank -%}
+      <video
+        class="banner__video"
+        {% if section.settings.autoplay %}autoplay{% endif %}
+        {% if section.settings.muted %}muted{% endif %}
+        {% if section.settings.loop %}loop{% endif %}
+        {% if section.settings.show_controls %}controls{% endif %}
+        playsinline
+        poster="{%- if section.settings.poster != blank -%}{{ section.settings.poster | image_url: width: 3840 }}{%- endif -%}"
+        preload="metadata"
+        aria-label="{{ section.settings.video_aria_label | escape }}"
+      >
+        {%- for source in section.settings.desktop_video.sources -%}
+          <source src="{{ source.url }}" type="{{ source.mime_type }}">
+        {%- endfor -%}
+      </video>
+    {%- elsif section.settings.poster != blank -%}
+      {{ section.settings.poster | image_url: width: 3840 | image_tag: widths: '375, 750, 1100, 1500, 2000, 3000, 3840', sizes: full_width, alt: shop.name, fetchpriority: fetch_priority }}
+    {%- endif -%}
+  </div>
+
+  <!-- Mobile Media (only renders if mobile video or poster exists) -->
+  {%- if section.settings.mobile_video != blank or section.settings.mobile_poster != blank -%}
+    <div class="banner__media media block__mobile-video{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      {%- if section.settings.mobile_video != blank -%}
+        <video
+          class="banner__video"
+          {% if section.settings.autoplay %}autoplay{% endif %}
+          {% if section.settings.muted %}muted{% endif %}
+          {% if section.settings.loop %}loop{% endif %}
+          {% if section.settings.show_controls %}controls{% endif %}
+          playsinline
+          poster="{%- if section.settings.mobile_poster != blank -%}{{ section.settings.mobile_poster | image_url: width: 1920 }}{%- endif -%}"
+          preload="metadata"
+          aria-label="{{ section.settings.video_aria_label | escape }}"
+        >
+          {%- for source in section.settings.mobile_video.sources -%}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {%- endfor -%}
+        </video>
+      {%- elsif section.settings.mobile_poster != blank -%}
+        {{ section.settings.mobile_poster | image_url: width: 1920 | image_tag: widths: '375, 750, 1100, 1500, 2000', sizes: full_width, alt: shop.name, fetchpriority: fetch_priority }}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <!-- Content -->
+  <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    <div class="banner__content-offset">
+      <div
+        class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient"
+        style="--video-banner-text: {{ section.settings.text_color }};"
+      >
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+
+            {%- when 'heading' -%}
+              <h1 class="banner__heading inline-richtext {{ block.settings.heading_size }} h2" {{ block.shopify_attributes }}>
+                {{ block.settings.heading }}
+              </h1>
+
+            {%- when 'text' -%}
+              <div class="banner__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
+                <p>{{ block.settings.text }}</p>
+              </div>
+
+            {%- when 'buttons' -%}
+              <div class="banner__buttons{% if block.settings.button_label_1 != blank and block.settings.button_label_2 != blank %} banner__buttons--multiple{% endif %}" {{ block.shopify_attributes }}>
+                {%- if block.settings.button_label_1 != blank -%}
+                  <a
+                    {% if block.settings.button_link_1 == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.button_link_1 }}"
+                    {% endif %}
+                    class="button{% if block.settings.button_style_secondary_1 %} button--secondary{% else %} button--primary{% endif %}"
+                  >
+                    {{- block.settings.button_label_1 | escape -}}
+                  </a>
+                {%- endif -%}
+
+                {%- if block.settings.button_label_2 != blank -%}
+                  <a
+                    {% if block.settings.button_link_2 == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.button_link_2 }}"
+                    {% endif %}
+                    class="button{% if block.settings.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %}"
+                  >
+                    {{- block.settings.button_label_2 | escape -}}
+                  </a>
+                {%- endif -%}
+              </div>
+
+            {%- when 'inline_image' -%}
+              {%- if block.settings.image != blank -%}
+                {%- capture inline_style -%}
+                  max-width: {{ block.settings.max_width }}px; height: auto;
+                {%- endcapture -%}
+
+                <div
+                  class="banner__inline-image-wrapper"
+                  style="
+                    justify-content:
+                      {% if block.settings.alignment == 'left' %}flex-start{% elsif block.settings.alignment == 'right' %}flex-end{% else %}center{% endif %};
+                  "
+                  {{ block.shopify_attributes }}
+                >
+                  {{ block.settings.image
+                    | image_url: width: 800
+                    | image_tag: style: inline_style, loading: 'lazy'
+                  }}
+                </div>
+              {%- endif -%}
+
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Video Coll Banner",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "video", "id": "desktop_video", "label": "Desktop Video" },
+    { "type": "image_picker", "id": "poster", "label": "Desktop Poster (fallback)" },
+    { "type": "video", "id": "mobile_video", "label": "Mobile Video (optional)" },
+    { "type": "image_picker", "id": "mobile_poster", "label": "Mobile Poster (fallback)" },
+
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": true },
+    { "type": "checkbox", "id": "muted", "label": "Muted (required for mobile autoplay)", "default": true },
+    { "type": "checkbox", "id": "loop", "label": "Loop", "default": true },
+    { "type": "checkbox", "id": "show_controls", "label": "Show Controls", "default": false },
+    { "type": "text", "id": "video_aria_label", "label": "Video aria-label (accessibility)", "default": "Promotional video banner" },
+
+    { "type": "range", "id": "image_overlay_opacity", "min": 0, "max": 100, "step": 10, "unit": "%", "label": "Overlay Opacity (Desktop)", "default": 0 },
+    { "type": "range", "id": "image_overlay_opacity_mobile", "min": 0, "max": 100, "step": 10, "unit": "%", "label": "Overlay Opacity (Mobile)", "default": 0 },
+
+    { "type": "color", "id": "image_overlay_color", "label": "Overlay Color (Desktop)", "default": "#000000" },
+    { "type": "color", "id": "image_overlay_color_mobile", "label": "Overlay Color (Mobile)", "default": "#000000" },
+
+    { "type": "select", "id": "image_height", "label": "Banner Height", "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "custom", "label": "Custom Height" }
+      ], "default": "medium" },
+    { "type": "range", "id": "custom_height", "label": "Custom Height (px)", "min": 300, "max": 900, "step": 10, "default": 600 },
+    { "type": "range", "id": "custom_height_mobile", "label": "Custom Height Mobile (px)", "min": 200, "max": 700, "step": 10, "default": 400 },
+
+    { "type": "select", "id": "desktop_content_position", "label": "Content Position (Desktop)", "options": [
+        { "value": "top-left", "label": "Top Left" },
+        { "value": "top-center", "label": "Top Center" },
+        { "value": "top-right", "label": "Top Right" },
+        { "value": "middle-left", "label": "Middle Left" },
+        { "value": "middle-center", "label": "Middle Center" },
+        { "value": "middle-right", "label": "Middle Right" },
+        { "value": "bottom-left", "label": "Bottom Left" },
+        { "value": "bottom-center", "label": "Bottom Center" },
+        { "value": "bottom-right", "label": "Bottom Right" }
+      ], "default": "middle-center" },
+
+    { "type": "header", "content": "Content offset (Desktop)" },
+    {
+      "type": "range",
+      "id": "content_offset_x",
+      "label": "Content Offset X (Desktop)",
+      "min": -300,
+      "max": 300,
+      "step": 6,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_offset_y",
+      "label": "Content Offset Y (Desktop)",
+      "min": -300,
+      "max": 300,
+      "step": 6,
+      "unit": "px",
+      "default": 0
+    },
+
+    { "type": "header", "content": "Content offset (Mobile)" },
+    {
+      "type": "range",
+      "id": "content_offset_x_mobile",
+      "label": "Content Offset X (Mobile)",
+      "min": -200,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_offset_y_mobile",
+      "label": "Content Offset Y (Mobile)",
+      "min": -200,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+
+    { "type": "checkbox", "id": "show_text_box", "label": "Show Text Box", "default": true },
+    { "type": "select", "id": "desktop_content_alignment", "label": "Content Alignment (Desktop)", "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ], "default": "center" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color Scheme", "default": "scheme-1" },
+    { "type": "select", "id": "mobile_content_alignment", "label": "Content Alignment (Mobile)", "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ], "default": "center" },
+    { "type": "checkbox", "id": "show_text_below", "label": "Show Text Below on Mobile", "default": true },
+
+    { "type": "color", "id": "text_color", "label": "Text Color", "default": "#ffffff" }
+  ],
+  "blocks": [
+    { "type": "heading", "name": "Heading", "limit": 1, "settings": [
+        { "type": "inline_richtext", "id": "heading", "label": "Heading Text", "default": "Big bold banner heading" },
+        { "type": "select", "id": "heading_size", "label": "Size", "options": [
+            { "value": "h2", "label": "H2" },
+            { "value": "h1", "label": "H1" },
+            { "value": "h0", "label": "Huge" },
+            { "value": "hxl", "label": "XL" },
+            { "value": "hxxl", "label": "XXL" }
+          ], "default": "h1" }
+      ] },
+    { "type": "text", "name": "Text", "limit": 2, "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Text" },
+        { "type": "select", "id": "text_style", "label": "Style", "options": [
+            { "value": "body", "label": "Body" },
+            { "value": "subtitle", "label": "Subtitle" },
+            { "value": "caption-with-letter-spacing", "label": "Caption" }
+          ], "default": "body" }
+      ] },
+    { "type": "buttons", "name": "Buttons", "limit": 1, "settings": [
+        { "type": "text", "id": "button_label_1", "label": "Button 1 Label", "default": "Shop Now" },
+        { "type": "url", "id": "button_link_1", "label": "Button 1 Link" },
+        { "type": "checkbox", "id": "button_style_secondary_1", "label": "Secondary Style?", "default": false },
+        { "type": "text", "id": "button_label_2", "label": "Button 2 Label" },
+        { "type": "url", "id": "button_link_2", "label": "Button 2 Link" },
+        { "type": "checkbox", "id": "button_style_secondary_2", "label": "Secondary Style?", "default": false }
+      ] },
+    { "type": "inline_image", "name": "Inline Image", "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "range", "id": "max_width", "label": "Max Width (px)", "min": 20, "max": 400, "step": 10, "default": 100 },
+        { "type": "select", "id": "alignment", "label": "Alignment", "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ], "default": "center" }
+      ] }
+  ],
+  "presets": [
+    { "name": "Video Coll Banner", "blocks": [
+        { "type": "heading" },
+        { "type": "text" },
+        { "type": "buttons" },
+        { "type": "inline_image" }
+      ] }
+  ]
+}
+{% endschema %}

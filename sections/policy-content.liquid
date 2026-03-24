@@ -1,0 +1,1245 @@
+{{ 'section-policy-content.css' | asset_url | stylesheet_tag }}
+{% style %}
+     .section-{{ section.id }} .block__policy-content-main {
+       max-width: {{ section.settings.content_width }}px;
+     }
+     .section-{{ section.id }} {
+         padding-top: {{ section.settings.padding_top }}px;
+         padding-bottom: {{ section.settings.padding_bottom }}px;
+     }
+     @media (max-width: 749px) {
+         .section-{{ section.id }} {
+             padding-top: {{ section.settings.padding_top_m }}px;
+             padding-bottom: {{ section.settings.padding_bottom_m }}px;
+         }
+     }
+
+    .policy-tabs {
+       display: flex;
+       justify-content: center; /* Center buttons horizontally */
+       gap: 10px;
+       margin-bottom: 20px;
+       padding-top: 20px; /* Space above the tabs */
+     }
+  .block__policy-content-main h4 {
+    margin-top: 22px;
+  }
+     .policy-tab {
+       background-color: #00B5E3; /* Updated Bedgear Blue */
+       color: white;
+       padding: 10px 20px;
+       border: none;
+       cursor: pointer;
+       font-size: 16px;
+       border-radius: 4px;
+       transition: background-color 0.3s ease;
+     }
+
+     .policy-tab:hover {
+       background-color: #009dc4; /* Slightly darker on hover */
+     }
+
+     .policy-tab.active {
+       font-weight: bold;
+       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+     }
+
+     .policy-section {
+       display: none;
+     }
+
+     .policy-section.active {
+       display: block;
+     }
+{% endstyle %}
+
+<div class="policy-content section-{{ section.id }}">
+  <div class="page-width">
+    <div class="policy-tabs">
+      <button class="policy-tab active" onclick="showPolicySection('privacy')">Privacy Policy</button>
+      <button class="policy-tab" onclick="showPolicySection('ccpa')">CCPA</button>
+    </div>
+
+    <div class="block__policy-content-main">
+      <div id="privacy" class="policy-section active">
+        {{ page.content }}
+      </div>
+      <div id="ccpa" class="policy-section">
+        <div>
+          <p style="margin-top:0pt; margin-bottom:1.5pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <strong><span style="text-transform:uppercase;">PRIVACY NOTICE - CALIFORNIA</span></strong
+            ><strong><span style="text-transform:uppercase;">&nbsp;</span></strong>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >This PRIVACY NOTICE FOR CALIFORNIA RESIDENTS supplements the information contained in the Privacy
+              Statement of BEDGEAR, LLC (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) and applies solely to
+              natural persons who reside in the State of California (&ldquo;consumers&rdquo; or &ldquo;you&rdquo;). We
+              adopt this notice to comply with the California Consumer Privacy Act of 2018 (&ldquo;CCPA&rdquo;),
+              California Privacy Rights Act (&ldquo;CPRA&rdquo;) and other California privacy laws.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;Any terms defined in the CCPA and CPRA have the same meaning when used in this notice.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <u><span style="color:#414042;">Information We Collect</span></u>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We collect information that identifies, relates to, describes, is capable of being associated with, or
+              could reasonably be linked, directly or indirectly, with a particular consumer or household
+              (&ldquo;personal information&rdquo;). In particular, we have collected the following categories of
+              personal information from its consumers within the last twelve (12) months:</span
+            >
+          </p>
+          <table
+            cellspacing="0"
+            cellpadding="0"
+            style="width:100%; border:0.75pt outset #eeeeee; border-collapse:collapse;"
+          >
+            <tbody>
+              <tr>
+                <td style="width:27.54%; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <strong><span style="color:#414042;">Category</span></strong>
+                  </p>
+                </td>
+                <td style="width:61.2%; border-right:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <strong><span style="color:#414042;">Examples</span></strong>
+                  </p>
+                </td>
+                <td style="width:11.24%; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <strong><span style="color:#414042;">Collected</span></strong>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">A. Identifiers.</span>
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >A real name, alias, postal address, unique personal identifier, online identifier, Internet
+                      Protocol address, email address, account name, Social Security number, driver&apos;s license
+                      number, passport number, or other similar identifiers.</span
+                    >
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">YES</span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >B. Personal information categories listed in the California Customer Records statute (Cal. Civ.
+                      Code &sect; 1798.80(e)).</span
+                    >
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >A name, signature, Social Security number, physical characteristics or description, address,
+                      telephone number, passport number, driver&apos;s license or state identification card number,
+                      insurance policy number, education, employment, employment history, bank account number, credit
+                      card number, debit card number, or any other financial information, medical information, or health
+                      insurance information. Some personal information included in this category may overlap with other
+                      categories.</span
+                    >
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">YES</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >C. Protected classification characteristics under California or federal law.</span
+                    >
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >Age (40 years or older), race, color, ancestry, national origin, citizenship, religion or creed,
+                      marital status, medical condition, physical or mental disability, sex (including gender, gender
+                      identity, gender expression, pregnancy or childbirth and related medical conditions), sexual
+                      orientation, veteran or military status, genetic information (including familial genetic
+                      information).</span
+                    >
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">YES</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">D. Commercial information.</span>
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >Records of personal property, products or services purchased, obtained, or considered, or other
+                      purchasing or consuming histories or tendencies.</span
+                    >
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">YES</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">E. Biometric information.</span>
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >Genetic, physiological, behavioral, and biological characteristics, or activity patterns used to
+                      extract a template or other identifier or identifying information, such as, fingerprints,
+                      faceprints, and voiceprints, iris or retina scans, keystroke, gait, or other physical patterns,
+                      and sleep, health, or exercise data.</span
+                    >
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">NO</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">F. Internet or other similar network activity.</span>
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >Browsing history, search history, information on a consumer&apos;s interaction with a website,
+                      application, or advertisement.</span
+                    >
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">YES</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">G. Geolocation data.</span>
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">Physical location or movements.</span>
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">YES</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">H. Sensory data.</span>
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >Audio, electronic, visual, thermal, olfactory, or similar information.</span
+                    >
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">NO</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">I. Professional or employment-related information.</span>
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">Current or past job history or performance evaluations.</span>
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">YES</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >J. Non-public education information (per the Family Educational Rights and Privacy Act (20 U.S.C.
+                      Section 1232g, 34 C.F.R. Part 99)).</span
+                    >
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >Education records directly related to a student maintained by an educational institution or party
+                      acting on its behalf, such as grades, transcripts, class lists, student schedules, student
+                      identification codes, student financial information, or student disciplinary records.</span
+                    >
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">NO</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">K. Inferences drawn from other personal information.</span>
+                  </p>
+                </td>
+                <td style="width:61.2%; border:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >Profile reflecting a person&apos;s preferences, characteristics, psychological trends,
+                      predispositions, behavior, attitudes, intelligence, abilities, and aptitudes, e.g., via cookies.</span
+                    >
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; border-bottom:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">YES</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:27.54%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;">L.</span><span style="color:#414042;">&nbsp;&nbsp;</span
+                    ><span style="color:#414042;">Sensitive personal information</span>
+                  </p>
+                </td>
+                <td style="width:61.2%; border-top:0.75pt inset #eeeeee; border-right:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; vertical-align:middle; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:9.4pt; font-size:12pt;">
+                    <span style="color:#414042;"
+                      >Any communications the consumer has with a third party (i.e., somebody outside our business);
+                      Biometric data processed to identify an individual; Data about sexual orientation or sex life;
+                      Financial account details in a combination (e.g., card number and password) that gives access to
+                      an account; Genetic data; Government-issued numbers (such as a social security number or a number
+                      on a passport, or driver&apos;s license); Health data; Philosophical or religious beliefs; Precise
+                      geolocation; Racial or ethnic origin; Union membership</span
+                    >
+                  </p>
+                </td>
+                <td style="width:11.24%; border-top:0.75pt inset #eeeeee; border-left:0.75pt inset #eeeeee; vertical-align:top; background-color:#ffffff;">
+                  <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">YES</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;">&nbsp;</span>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;">Personal information does not include:</span>
+          </p>
+          <div style="margin-top:14pt; margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">Publicly available information from government records.</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">De-identified or aggregated consumer information.</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">Information excluded from the scope of the CCPA/CPRA, like:</span>
+            </p>
+          </div>
+          <div style="margin-left:54pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:'Courier New'; font-size:10pt; color:#414042;">o</span
+              ><span style="width:12pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >health or medical information covered by the Health Insurance Portability and Accountability Act of
+                1996 (HIPAA) and the California Confidentiality of Medical Information Act (CMIA) or clinical trial
+                data;</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:54pt; margin-bottom:14pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:'Courier New'; font-size:10pt; color:#414042;">o</span
+              ><span style="width:12pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >personal information covered by certain sector-specific privacy laws, including the Fair Credit
+                Reporting Act (FRCA), the Gramm-Leach-Bliley Act (GLBA) or California Financial Information Privacy Act
+                (FIPA), and the Driver&apos;s Privacy Protection Act of 1994.</span
+              >
+            </p>
+          </div>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We obtain the categories of personal information listed above from the following categories of sources:</span
+            >
+          </p>
+          <div style="margin-top:14pt; margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Directly from you or your agents. For example, from information that you provide to us related to the
+                products and services we provide to you.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Indirectly from you or your agents. For example, through information we collect from you in the course
+                of providing products and services to you.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="font-size:12pt; color:#414042;">Directly and indirectly from activity on our website (</span
+              ><a href="http://www.bedgear.com" style="text-decoration:none;"
+                ><u><span style="font-size:12pt; color:#0563c1;">www.bedgear.com</span></u></a
+              ><span style="font-size:12pt; color:#414042;">) and our social media networks.</span
+              ><span style="font-size:12pt; color:#414042;">&nbsp;&nbsp;</span
+              ><span style="font-size:12pt; color:#414042;"
+                >For example, from submissions through our website portal or website usage details collected
+                automatically.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >From third-parties that interact with us in connection with the products and services we provide to
+                you.</span
+              ><span style="color:#414042;">&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >For example, information received as part of routine card verification (fraud) checks, or joint
+                marketing partners when they share information with us.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; margin-bottom:14pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">Publicly available databases.</span>
+            </p>
+          </div>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <u><span style="color:#414042;">Use of Personal Information</span></u>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We may use or disclose the personal information we collect for one or more of the following business
+              purposes:</span
+            >
+          </p>
+          <div style="margin-top:14pt; margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >To fulfill or meet the reason for which the information is provided. For example, if you provide us
+                with personal information in order to ask a question about our products or services, we will use that
+                personal information to respond to your inquiry, or if you provide your personal information to purchase
+                a product or service, we will use that information to process your payment and facilitate delivery. We
+                may also save your information to facilitate new product orders or process returns.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >To provide, support, personalize, and develop our websites, products, and services.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">To create, maintain, customize, and secure your account with us.</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >To process your requests, purchases, transactions, and payments and prevent transactional fraud.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >To provide you with support and to respond to your inquiries, including to investigate and address your
+                concerns and monitor and improve our responses.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >To personalize your customer experience and to deliver content and product and service offerings
+                relevant to your interests, including targeted offers and ads through the mail or our websites,
+                third-party sites, and via email or text message (with your consent, where required by law).</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >To help maintain the safety, security, and integrity of our websites, products and services, databases
+                and other technology assets, and business.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >For testing, research, analysis and product development, including to develop and improve our websites,
+                products, and services.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >As necessary or appropriate to carry out our obligations and protect the rights, property or safety of
+                us, our clients or others.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >To respond to law enforcement requests and as required by applicable law, court order, or governmental
+                regulations.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >As described to you when collecting your personal information or as otherwise set forth in the
+                CCPA/CPRA.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; margin-bottom:14pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >To evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale
+                or transfer of some or all of our assets, whether as a going concern or as part of bankruptcy,
+                liquidation, or similar proceeding, in which personal information held by us is among the assets
+                transferred.</span
+              >
+            </p>
+          </div>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We will not collect additional categories of personal information or use the personal information we
+              collected for materially different, unrelated, or incompatible purposes without providing you notice.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;">&nbsp;</span>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We do not use your personal information for automated decision making (also called data profiling).</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;">&nbsp;</span>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <u><span style="color:#414042;">Sharing Personal Information</span></u>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We may disclose your personal information to a third party for a business purpose.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;When we disclose personal information for a business purpose, we enter a contract that describes
+              the purpose and requires the recipient to both keep that personal information confidential and not use it
+              for any purpose except performing the contract.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >In the preceding twelve (12) months, we have disclosed the following categories of personal information
+              for a business purpose:</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >Categories: Identifiers, Personal information categories listed in the California Customer Records
+              statute (Cal. Civ. Code &sect; 1798.80(e)), Protected classification characteristics under California or
+              federal law, Commercial information, Internet or other similar network activity, Geolocation data,
+              Professional or employment-related information, Inferences drawn from other personal information.&nbsp;</span
+            ><br>
+            <span style="color:#414042;">&nbsp;</span>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We disclose your personal information for a business purpose to the following categories of third
+              parties:</span
+            >
+          </p>
+          <div style="margin-top:14pt; margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Third-parties that interact with us in connection with the products and services we provide to you.</span
+              ><span style="color:#414042;">&nbsp;&nbsp;</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">Service providers to us.</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; margin-bottom:14pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Third parties to whom you or your agents authorize us to disclose your personal information in
+                connection with products or services we provide to you.</span
+              >
+            </p>
+          </div>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >In the preceding twelve (12) months, we have not sold any personal information.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <u><span style="color:#414042;">Data Retention</span></u>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >For each of the categories of personal information listed above, we will retain your personal information
+              only for as long as is necessary for the business purposes set out herein and in our other policies.</span
+            ><span style="color:#414042;">&nbsp;&nbsp;</span
+            ><span style="color:#414042;"
+              >We will also retain and use your personal information to the extent necessary to comply with our legal
+              obligations, resolve disputes and enforce our legal agreements and policies.</span
+            ><span style="color:#414042;">&nbsp;&nbsp;</span
+            ><span style="color:#414042;">We will also retain usage data for internal analysis purposes.</span
+            ><span style="color:#414042;">&nbsp;&nbsp;</span
+            ><span style="color:#414042;"
+              >Usage data is generally retained for a shorter period of time, except when this data is used to
+              strengthen the security or to improve the functionality of our systems or if we are legally obligated to
+              retain this information for longer time periods.&nbsp;</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <u><span style="color:#414042;">Your Rights and Choices</span></u>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >The CCPA/CPRA provide consumers (California residents) with specific rights regarding their personal
+              information. This section generally describes your CCPA/CPRA rights and explains how to exercise those
+              rights.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <em><span style="color:#414042;">Opt-out Requests</span></em>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;">&nbsp;</span>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >You have the right to tell us not to sell or share your personal information.</span
+            ><span style="color:#414042;">&nbsp;&nbsp;</span
+            ><span style="color:#414042;"
+              >You can exercise this right by either sending us a verifiable consumer request via the means set forth
+              below or accessing our internet website below and visiting the particular webpage and/or link identified
+              as &quot;Do Not Sell or Share My Personal Information&rdquo;.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;">&nbsp;</span>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >For the category of sensitive personal information, you have the right to tell us to only use this
+              information to provide requested goods or services and, in such case, we cannot use the information for
+              other purposes, regardless if we give you notice.</span
+            ><span style="color:#414042;">&nbsp;&nbsp;</span>We may however continue to use the sensitive personal
+            information even if you have submitted a request as necessary to provide certain services set forth in the
+            CCPA/CPRA and as permitted by other regulations.&nbsp;
+            <span style="color:#414042;"
+              >You can exercise this right by either sending us a verifiable consumer request via the means set forth
+              below or accessing our internet website below and visiting the particular webpage and/or link identified
+              as &quot;Limit the Use of My Sensitive Personal Information&rdquo;.&nbsp;</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;">&nbsp;</span>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <em><span style="color:#414042;">Access to Specific Information and Data Portability Rights</span></em>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >You have the right to request that we disclose certain information to you about our collection and use of
+              your personal information over the past 12 months. Once we receive and confirm your verifiable consumer
+              request, we will disclose to you:</span
+            >
+          </p>
+          <div style="margin-top:14pt; margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">The categories of personal information we collected about you.</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >The categories of sources for the personal information we collected about you.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Our business or commercial purpose for collecting or selling that personal information.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >The categories of third parties with whom we share that personal information.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >The specific pieces of personal information we collected about you (also called a data portability
+                request).</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >If we sold or disclosed your personal information for a business purpose, two separate lists
+                disclosing:</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:54pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:'Courier New'; font-size:10pt; color:#414042;">o</span
+              ><span style="width:12pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >sales, identifying the personal information categories that each category of recipient purchased; and</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:54pt; margin-bottom:14pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:'Courier New'; font-size:10pt; color:#414042;">o</span
+              ><span style="width:12pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >disclosures for a business purpose, identifying the personal information categories that each category
+                of recipient obtained.</span
+              >
+            </p>
+          </div>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <em><span style="color:#414042;">&nbsp;</span></em>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <em><span style="color:#414042;">Data Correction Rights</span></em>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; background-color:#ffffff;">
+            <span style="font-size:12pt; color:#414042;"
+              >You have the right to request that we correct any inaccuracies in your personal information that we
+              collected from you and retained.</span
+            >
+            <span style="font-size:12pt; color:#414042;"
+              >Once we receive and confirm your verifiable consumer request, we shall use commercially reasonable
+              efforts to correct the inaccurate personal information in accordance with the CCPA/CPRA.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <em><span style="color:#414042;">Deletion Request Rights</span></em>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >You have the right to request that we delete any of your personal information that we collected from you
+              and retained, subject to certain exceptions. Once we receive and confirm your verifiable consumer request,
+              we will delete (and direct our service providers to delete) your personal information from our records,
+              unless an exception applies.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We may deny your deletion request if retaining the information is necessary for us or our service
+              providers to:</span
+            >
+          </p>
+          <div style="margin-top:14pt; margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="color:#414042;">1.</span
+              ><span style="width:9pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Complete the transaction for which we collected the personal information, provide a good or service
+                that you requested, take actions reasonably anticipated within the context of our ongoing business
+                relationship with you, or otherwise perform our contract with you.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="color:#414042;">2.</span
+              ><span style="width:9pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Detect security incidents, protect against malicious, deceptive, fraudulent, or illegal activity, or
+                prosecute those responsible for such activities.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="color:#414042;">3.</span
+              ><span style="width:9pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Debug products to identify and repair errors that impair existing intended functionality.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="color:#414042;">4.</span
+              ><span style="width:9pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Exercise free speech, ensure the right of another consumer to exercise their free speech rights, or
+                exercise another right provided for by law.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="color:#414042;">5.</span
+              ><span style="width:9pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Comply with the California Electronic Communications Privacy Act (Cal. Penal Code &sect; 1546</span
+              ><span style="color:#414042;">&nbsp;</span><em><span style="color:#414042;">seq.</span></em
+              ><span style="color:#414042;">).</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="color:#414042;">6.</span
+              ><span style="width:9pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Engage in public or peer-reviewed scientific, historical, or statistical research in the public
+                interest that adheres to all other applicable ethics and privacy laws, when the information&apos;s
+                deletion may likely render impossible or seriously impair the research&apos;s achievement, if you
+                previously provided informed consent.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="color:#414042;">7.</span
+              ><span style="width:9pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Enable solely internal uses that are reasonably aligned with consumer expectations based on your
+                relationship with us.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="color:#414042;">8.</span
+              ><span style="width:9pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">Comply with a legal obligation.</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; margin-bottom:14pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="color:#414042;">9.</span
+              ><span style="width:9pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Make other internal and lawful uses of that information that are compatible with the context in which
+                you provided it.</span
+              >
+            </p>
+          </div>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <em
+              ><span style="color:#414042;"
+                >Exercising Access, Data Portability, Data Correction and Deletion Rights</span
+              ></em
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >To exercise the access, data portability, data correction and deletion rights described above, please
+              submit a verifiable consumer request to us by either:</span
+            >
+          </p>
+          <div style="margin-top:14pt; margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">Calling us at 631-414-7763,</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="font-size:12pt; color:#414042;">Visiting</span
+              ><span style="font-size:12pt; color:#414042;">&nbsp;</span
+              ><a href="https://www.bedgear.com" style="text-decoration:none;"
+                ><u><span style="font-size:12pt; color:#0563c1;">https://www.bedgear.com</span></u></a
+              ><span style="font-size:12pt; color:#414042;">,&nbsp;</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="font-size:12pt; color:#414042;">Emailing us at&nbsp;</span
+              ><a href="mailto:WOW@BEDGEAR.com" style="text-decoration:none;"
+                ><u><span style="font-size:12pt; color:#0563c1;">WOW@BEDGEAR.com</span></u></a
+              ><span style="font-size:12pt; color:#414042;">, or</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; margin-bottom:14pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Sending a letter to us at BEDGEAR, LLC, 200 Sea Lane, Farmingdale, NY 11735</span
+              >
+            </p>
+          </div>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >Only you or a person registered with the California Secretary of State that you authorize to act on your
+              behalf, may make a verifiable consumer request related to your personal information. You may also make a
+              verifiable consumer request on behalf of your minor child.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >You may only make a verifiable consumer request for access or data portability twice within a 12-month
+              period. The verifiable consumer request must:</span
+            >
+          </p>
+          <div style="margin-top:14pt; margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Provide sufficient information that allows us to reasonably verify you are the person about whom we
+                collected personal information or an authorized representative.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; margin-bottom:14pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Describe your request with sufficient detail that allows us to properly understand, evaluate, and
+                respond to it.</span
+              >
+            </p>
+          </div>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We cannot respond to your request or provide you with personal information if we cannot verify your
+              identity or authority to make the request and confirm the personal information relates to you.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;Making a verifiable consumer request does not require you to create an account with us.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;We will only use personal information provided in a verifiable consumer request to verify the
+              requestor&apos;s identity or authority to make the request.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <em><span style="color:#414042;">Response Timing and Format</span></em>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We endeavor to respond to a verifiable consumer request within 45 days of its receipt.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;If we require more time (up to 90 days), we will inform you of the reason and extension period in
+              writing.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;If you have an account with us, we will deliver our written response to that account.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;If you do not have an account with us, we will deliver our written response by mail or
+              electronically, at your option.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;Any disclosures we provide will only cover the 12-month period preceding the verifiable consumer
+              request&apos;s receipt.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;The response we provide will also explain the reasons we cannot comply with a request, if
+              applicable.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;For data portability requests, we will select a format to provide your personal information that is
+              readily useable and should allow you to transmit the information from one entity to another entity without
+              hindrance.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We do not charge a fee to process or respond to your verifiable consumer request unless it is excessive,
+              repetitive, or manifestly unfounded.</span
+            ><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;"
+              >&nbsp;If we determine that the request warrants a fee, we will tell you why we made that decision and
+              provide you with a cost estimate before completing your request.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <u><span style="color:#414042;">Non-Discrimination</span></u>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >We will not discriminate against you for exercising any of your CCPA/CPRA rights. Unless permitted by the
+              CCPA/CPRA, we will not:</span
+            >
+          </p>
+          <div style="margin-top:14pt; margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">Deny you goods or services.</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Charge you different prices or rates for goods or services, including through granting discounts or
+                other benefits, or imposing penalties.</span
+              >
+            </p>
+          </div>
+          <div style="margin-left:18pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;">Provide you a different level or quality of goods or services.</span>
+            </p>
+          </div>
+          <div style="margin-left:18pt; margin-bottom:14pt; background-color:#ffffff;">
+            <p style="margin-top:0pt; margin-left:18pt; margin-bottom:0pt; text-indent:-18pt; line-height:normal; font-size:12pt;">
+              <span style="font-family:Symbol; font-size:10pt; color:#414042;"></span
+              ><span style="width:13.4pt; font:7pt 'Times New Roman'; display:inline-block;"
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              ><span style="color:#414042;"
+                >Suggest that you may receive a different price or rate for goods or services or a different level or
+                quality of goods or services.</span
+              >
+            </p>
+          </div>
+          <p style="margin-top:14pt; margin-bottom:14pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >However, we may offer you certain financial incentives permitted by the CCPA/CPRA that can result in
+              different prices, rates, or quality levels. Any CCPA/CPRA-permitted financial incentive we offer will
+              reasonably relate to your personal information&rsquo;s value and contain written terms that describe the
+              program&rsquo;s material aspects. Participation in a financial incentive program requires your prior opt
+              in consent, which you may revoke at any time.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <u><span style="color:#414042;">Changes to Our Privacy Notice</span></u>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; background-color:#ffffff;">
+            <span style="font-size:12pt; color:#414042;"
+              >We reserve the right to amend this privacy notice at our discretion and at any time. When we make changes
+              to this privacy notice, we will notify you by email or post a notice on our website homepage, and update
+              the notice&rsquo;s effective date.</span
+            >
+            <span style="font-size:12pt; color:#414042;"
+              >Your continued use of our website following the posting of changes constitutes your acceptance of such
+              changes.</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <u><span style="color:#414042;">Contact Information</span></u>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:9.4pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;"
+              >If you have any questions or comments about this notice, our Privacy Notice, the ways in which we collect
+              and use your personal information, your choices and rights regarding such use, or wish to exercise your
+              rights under California law, please do not hesitate to contact us at:</span
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; background-color:#ffffff;">
+            <span style="font-size:12pt; color:#414042;">Phone: 631-414-7763</span><br>
+            <span style="font-size:12pt; color:#414042;">Website:</span
+            ><span style="font-size:12pt; color:#414042;">&nbsp;</span
+            ><a href="https://www.bedgear.com" style="text-decoration:none;"
+              ><u><span style="font-size:12pt; color:#0563c1;">https://www.bedgear.com</span></u></a
+            >
+          </p>
+          <p style="margin-top:0pt; margin-bottom:0pt; line-height:normal; font-size:12pt; background-color:#ffffff;">
+            <span style="color:#414042;">Email:</span><span style="color:#414042;">&nbsp;</span
+            ><span style="color:#414042;">WOW@BEDGEAR.com</span>
+          </p>
+          <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">&nbsp;</p>
+          <p style="margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt;">
+            Dated:&nbsp; January 1, 2023
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPolicySection(sectionId) {
+    document.querySelectorAll('.policy-tab').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.policy-section').forEach(sec => sec.classList.remove('active'));
+
+    document.getElementById(sectionId).classList.add('active');
+    document.querySelector(`.policy-tab[onclick*="${sectionId}"]`).classList.add('active');
+  }
+</script>

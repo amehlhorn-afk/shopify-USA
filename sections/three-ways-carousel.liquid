@@ -1,0 +1,312 @@
+{% schema %}
+{
+  "name": "Three Ways to Score",
+  "tag": "section",
+  "class": "three-ways-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Three Ways to Score"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bundle_card",
+      "name": "Bundle Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "card_id",
+          "label": "Card ID (for linking features)",
+          "default": "pj"
+        },
+        {
+          "type": "text",
+          "id": "card_heading",
+          "label": "Card Heading",
+          "default": "P.J.'s Picks"
+        },
+        {
+          "type": "text",
+          "id": "card_subheading",
+          "label": "Card Subheading",
+          "default": "Save on individual items. No bundle required."
+        },
+        {
+          "type": "text",
+          "id": "card_discount",
+          "label": "Discount Text",
+          "default": "20% OFF"
+        },
+        {
+          "type": "text",
+          "id": "discount_note",
+          "label": "Discount Note",
+          "default": "Individual Items"
+        },
+        {
+          "type": "text",
+          "id": "label_text",
+          "label": "Mid-section Label",
+          "default": "What You Get"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Shop All"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    },
+    {
+      "type": "feature_item",
+      "name": "Feature Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "card_id",
+          "label": "Card ID to attach this item to (e.g., pj, starter, pro)"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Item Icon"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Item Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Three Ways to Score",
+      "blocks": [
+        { "type": "bundle_card" },
+        { "type": "feature_item" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  .three-ways-section {
+    background-color: #0e182f;
+    padding: 4rem 2rem;
+    color: #ffffff;
+    font-family: Roboto, sans-serif;
+  }
+
+  .three-ways-section .wrapper {
+    max-width: 1520px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .three-ways-section h2.section-title {
+    color: #ffffff;
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  .bundle-cards {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .bundle-card {
+    background-color: #2b3145;
+    border-radius: 16px;
+    padding: 2rem;
+    flex: 1 1 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-top: 4px solid #00c2ff;
+    min-width: 300px;
+  }
+
+  .bundle-card h3 {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .bundle-card p.subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    margin-bottom: 1.5rem;
+  }
+
+  .bundle-card .discount {
+    font-size: 32px;
+    font-weight: 700;
+    color: #00c2ff;
+    margin-bottom: 0.25rem;
+  }
+
+  .bundle-card .discount-note {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+  }
+
+  .mid-label-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem 0;
+    gap: 1rem;
+  }
+
+  .mid-line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+    min-width: 20px;
+    display: block !important;
+  }
+
+  .mid-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #00c2ff;
+    padding: 0.25rem 1rem;
+    border: 1px solid #00c2ff;
+    border-radius: 9999px;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .feature-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 2rem;
+  }
+
+  .feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+
+  .button {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00c2ff;
+    color: #fff;
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .button:hover {
+    background: white;
+    color: #00b5e3;
+  }
+
+  /* Mobile Carousel */
+  @media (max-width: 768px) {
+    .bundle-cards {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE/Edge */
+    }
+
+    .bundle-cards::-webkit-scrollbar {
+      display: none; /* Chrome/Safari */
+    }
+
+    .bundle-card {
+      flex: 0 0 80%;
+      scroll-snap-align: center;
+    }
+
+    .three-ways-section {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      padding: 0px !important;
+    }
+    .three-ways-section .wrapper{
+      padding-left: 2rem;
+      padding-right: 0px;
+    }
+  }
+{% endstyle %}
+
+<div class="three-ways-section">
+  <div class="wrapper">
+    <h2 class="section-title">{{ section.settings.section_heading }}</h2>
+    <div class="bundle-cards">
+      {% assign cards = section.blocks | where: 'type', 'bundle_card' %}
+      {% assign features = section.blocks | where: 'type', 'feature_item' %}
+
+      {% for card in cards %}
+        <div class="bundle-card">
+          <div>
+            <h3>{{ card.settings.card_heading }}</h3>
+            <p class="subtitle">{{ card.settings.card_subheading }}</p>
+            <div class="discount">{{ card.settings.card_discount }}</div>
+            <div class="discount-note">{{ card.settings.discount_note }}</div>
+
+            <div class="mid-label-wrap">
+              <div class="mid-line"></div>
+              <div class="mid-label">{{ card.settings.label_text }}</div>
+              <div class="mid-line"></div>
+            </div>
+
+            <ul class="feature-list">
+              {% for item in features %}
+                {% if item.settings.card_id == card.settings.card_id %}
+                  <li>
+                    {% if item.settings.icon %}
+                      <img class="feature-icon" src="{{ item.settings.icon | image_url: width: 24 }}" alt="Icon">
+                    {% endif %}
+                    {{ item.settings.text }}
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+
+          {% if card.settings.button_link %}
+            <a class="button" href="{{ card.settings.button_link }}">
+              {{ card.settings.button_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

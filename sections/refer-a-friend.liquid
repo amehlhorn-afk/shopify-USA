@@ -1,0 +1,436 @@
+{% comment %}
+  Loyalty Refer a Friend Section
+  Block-based 50/50 split section with image and content
+{% endcomment %}
+
+<style>
+  .loyalty-refer {
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    background-color: transparent;
+  }
+
+  .loyalty-refer__container {
+    display: flex;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .loyalty-refer__image-wrapper {
+    flex: 0 0 50%;
+    height: 631px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .loyalty-refer__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .loyalty-refer__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    text-align: center;
+  }
+
+  .loyalty-refer__eyebrow {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-size: 28.672px;
+    line-height: 31.282px;
+    letter-spacing: 1.4336px;
+    text-transform: uppercase;
+    margin: 0 0 12px 0;
+    color: inherit;
+  }
+
+  .loyalty-refer__title {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 40.295px;
+    line-height: 49.5px;
+    margin: 0 0 16px 0;
+    color: inherit;
+  }
+
+  .loyalty-refer__description {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-size: 21.938px;
+    line-height: 32.117px;
+    margin: 0 0 31px 0;
+    max-width: 523px;
+    color: inherit;
+  }
+
+  .loyalty-refer__button {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 19.171px;
+    letter-spacing: 0.85px;
+    text-transform: uppercase;
+    padding: 13.42px 38.341px;
+    border-radius: 69.015px;
+    border: 2px solid;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .loyalty-refer__button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Layout Options */
+  .loyalty-refer--image-right .loyalty-refer__container {
+    flex-direction: row-reverse;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 1200px) {
+    .loyalty-refer__content {
+      padding: 50px 60px;
+    }
+
+    .loyalty-refer__eyebrow {
+      font-size: 24px;
+      line-height: 28px;
+    }
+
+    .loyalty-refer__title {
+      font-size: 34px;
+      line-height: 42px;
+    }
+
+    .loyalty-refer__description {
+      font-size: 19px;
+      line-height: 28px;
+    }
+  }
+
+  @media (max-width: 968px) {
+    .loyalty-refer__container {
+      flex-direction: column;
+    }
+
+    .loyalty-refer--image-right .loyalty-refer__container {
+      flex-direction: column;
+    }
+
+    .loyalty-refer__image-wrapper {
+      width: 100%;
+      height: 400px;
+    }
+
+    .loyalty-refer__content {
+      width: 100%;
+      padding: 50px 40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .loyalty-refer__image-wrapper {
+      height: 350px;
+    }
+
+    .loyalty-refer__content {
+      padding: 40px 30px;
+    }
+
+    .loyalty-refer__eyebrow {
+      font-size: 20px;
+      line-height: 24px;
+      margin-bottom: 10px;
+    }
+
+    .loyalty-refer__title {
+      font-size: 28px;
+      line-height: 36px;
+      margin-bottom: 12px;
+    }
+
+    .loyalty-refer__description {
+      font-size: 17px;
+      line-height: 26px;
+      margin-bottom: 24px;
+    }
+
+    .loyalty-refer__button {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .loyalty-refer__image-wrapper {
+      height: 300px;
+    }
+
+    .loyalty-refer__content {
+      padding: 30px 20px;
+    }
+
+    .loyalty-refer__eyebrow {
+      font-size: 18px;
+      line-height: 22px;
+    }
+
+    .loyalty-refer__title {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .loyalty-refer__description {
+      font-size: 15px;
+      line-height: 24px;
+    }
+
+    .loyalty-refer__button {
+      font-size: 15px;
+      padding: 14px 30px;
+    }
+  }
+</style>
+
+<section class="loyalty-refer {% if section.settings.image_position == 'right' %}loyalty-refer--image-right{% endif %}" 
+         style="margin-top: {{ section.settings.padding_top }}px; margin-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="loyalty-refer__container" style="{% if section.settings.background_color %}background-color: {{ section.settings.background_color }};{% endif %} {% if section.settings.text_color %}color: {{ section.settings.text_color }};{% endif %}">
+    
+    {% if section.settings.image %}
+      <div class="loyalty-refer__image-wrapper">
+        <img 
+          class="loyalty-refer__image"
+          src="{{ section.settings.image | img_url: '800x' }}"
+          srcset="{{ section.settings.image | img_url: '600x' }} 600w,
+                  {{ section.settings.image | img_url: '800x' }} 800w,
+                  {{ section.settings.image | img_url: '1200x' }} 1200w"
+          sizes="(max-width: 968px) 100vw, 50vw"
+          alt="{{ section.settings.title }}"
+          loading="lazy"
+        >
+      </div>
+    {% endif %}
+
+    <div class="loyalty-refer__content">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          
+          {% when 'eyebrow' %}
+            {% if block.settings.eyebrow_text != blank %}
+              <p class="loyalty-refer__eyebrow">{{ block.settings.eyebrow_text }}</p>
+            {% endif %}
+
+          {% when 'title' %}
+            {% if block.settings.title_text != blank %}
+              <h2 class="loyalty-refer__title">{{ block.settings.title_text }}</h2>
+            {% endif %}
+
+          {% when 'description' %}
+            {% if block.settings.description_text != blank %}
+              <p class="loyalty-refer__description">{{ block.settings.description_text }}</p>
+            {% endif %}
+
+          {% when 'button' %}
+            {% if block.settings.button_text != blank %}
+              <a 
+                href="{{ block.settings.button_link }}" 
+                class="loyalty-refer__button"
+                style="{% if block.settings.button_bg_color %}background-color: {{ block.settings.button_bg_color }};{% endif %} {% if block.settings.button_text_color %}color: {{ block.settings.button_text_color }};{% endif %} {% if block.settings.button_border_color %}border-color: {{ block.settings.button_border_color }};{% endif %}"
+              >
+                {{ block.settings.button_text }}
+              </a>
+            {% endif %}
+
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Refer a Friend",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#243658"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Recommended: 800x631px or larger"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "header",
+      "content": "Text Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "eyebrow",
+      "name": "Eyebrow Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow_text",
+          "label": "Eyebrow Text",
+          "default": "REFER A FRIEND"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title_text",
+          "label": "Title",
+          "default": "GIVE $40 OFF, GET $40"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "description_text",
+          "label": "Description",
+          "default": "Give your friends $40 off their first purchase of $200, and get $40 to redeem on your next purchase."
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "REFER A FRIEND"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "header",
+          "content": "Button Colors"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": "Background Color",
+          "default": "transparent"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_border_color",
+          "label": "Border Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Refer a Friend",
+      "blocks": [
+        {
+          "type": "eyebrow"
+        },
+        {
+          "type": "title"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

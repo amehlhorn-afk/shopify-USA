@@ -1,0 +1,196 @@
+{{ 'take-inside-items.css' | asset_url | stylesheet_tag }}
+
+{% if product.metafields.custom.take_inside_content != blank %}
+    {% assign take_inside_item = product.metafields.custom.take_inside_content.value %}
+    {% if take_inside_item.inside_image != blank %}
+    <div class="block__take-inside-item">
+        <div class="page-width">
+            <div class="block__take-wrapper center" {% if section.settings.bg_color != blank %} style="background-color:{{ section.settings.bg_color }}"{% endif %}>
+                {% if section.settings.title != blank or take_inside_item.pdp_section_heading != blank %}
+                    <div class="block__heading">
+                        {% if take_inside_item.pdp_section_heading != blank %}
+                            <h2 class="primary_h2 center">{{- take_inside_item.pdp_section_heading -}}</h2>
+                        {% else %}  
+                            <h2 class="primary_h2 center">{{- section.settings.title -}}</h2>
+                        {% endif %} 
+                    </div>
+                {% endif %}
+
+                <div class="block__inside-img-text relative inline-block">
+                    {% if take_inside_item.inside_image %}
+                        {% render 'custom-image', image: take_inside_item.inside_image, class: 'img-fluid object-cover' %}
+                    {% endif %}
+                    <div class="block__tooltip-container">
+                    {% for i in (1..4) %}
+                        
+                        {%- capture content_icon -%}content_icon_{{i}}{%- endcapture -%}
+                        {%- assign block_content_icon = take_inside_item[content_icon] -%}
+
+                        {%- capture content_heading -%}content_heading_{{i}}{%- endcapture -%}
+                        {%- assign block_content_heading = take_inside_item[content_heading] -%}
+                        
+                        {%- capture content_description -%}content_description_{{i}}{%- endcapture -%}
+                        {%- assign block_content_description = take_inside_item[content_description] -%}
+
+                        {%- capture position_top -%}content_position_top_side_{{i}}{%- endcapture -%}
+                        {%- assign block_position_top = take_inside_item[position_top]  -%}
+
+                        {%- capture position_left -%}content_position_left_side_{{i}}{%- endcapture -%}
+                        {%- assign block_position_left = take_inside_item[position_left]  -%}
+                        {% if block_content_heading != blank and block_content_description != blank %}
+                        <div class="block__tooltip-item absolute " data-layer="{{ i }}" style="top:{{ block_position_top }}%; left:{{ block_position_left }}%;">
+                            <div class="layer layer-{{ i }} flex justify-center items-center">
+                                <strong class="large-up-hide font-weight-600">{{ i }}</strong>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" class="small-hide medium-hide">
+                                    <path d="M8 0V16" stroke="#00B5E3" stroke-width="2"/>
+                                    <path d="M16 8L-5.96046e-08 8" stroke="#00B5E3" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div class="tooltip secondary-border-radius flex gap-15 small_body tooltip-{{ i }} medium-hide small-hide">
+                                {% if block_content_icon != blank %}
+                                    {% render 'custom-image', image: block_content_icon, class: 'img-fluid object-cover' %}
+                                {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none">
+                                        <rect x="1" y="1" width="50" height="50" rx="25" stroke="#00B5E3" stroke-width="2"/>
+                                        <path d="M31.0571 25L25.9954 12L20.9337 25L15.872 38L25.9954 32.4589L36.128 38L31.0571 25ZM23.8656 21.7546L25.9954 16.3979L28.1252 21.7546H23.8656Z" fill="#00B5E3"/>
+                                    </svg>
+                                {% endif %}
+                                <div class="block__tooltip-content text-left">
+                                    <h6 class="font-weight-600">{{ block_content_heading }}</h6>
+                                    <p class="small_body">{{ block_content_description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+                <!-- Mobile Content -->
+                <div class="block__tooltip-container large-up-hide">
+                    {% for i in (1..4) %}
+                        {%- capture content_heading -%}content_heading_{{i}}{%- endcapture -%}
+                        {%- assign block_content_heading = take_inside_item[content_heading] -%}
+                        
+                        {%- capture content_description -%}content_description_{{i}}{%- endcapture -%}
+                        {%- assign block_content_description = take_inside_item[content_description] -%}
+                        {% if block_content_heading != blank and block_content_description != blank %}
+                        <div class="flex gap-15">
+                            <strong class="font-weight-600 body flex justify-center items-center">{{ i }}</strong>
+                            <div class="block__tooltip-content text-left">
+                                <h6 class="body font-weight-600">{{ block_content_heading }}</h6>
+                                <p class="small_body">{{ block_content_description }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+<script>
+    
+</script>
+{% style %}  
+    @media (min-width:990px){
+        .block__take-inside-item {
+            padding-top:{{ section.settings.desktop_padding_top }}px;
+            padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+        }
+    }
+    @media (max-width:989px){
+        .block__take-inside-item {
+            padding-top:{{ section.settings.mobile_padding_top }}px;
+            padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+        }
+        .template-product-pillow .block__take-inside-item{border-bottom: 1px solid var(--border_color);}
+    }
+    
+{% endstyle %}
+
+<script>
+    if (window.innerWidth >= 767) {
+        document.querySelectorAll('.block__tooltip-item').forEach(item => {
+            item.addEventListener('mouseenter', function () {
+                this.classList.add('show-tooltip');
+            });
+
+            item.addEventListener('mouseleave', function () {
+                this.classList.remove('show-tooltip'); 
+            });
+        });
+    }
+    
+</script>
+
+{% schema %}
+{
+    "name": "Take Inside Item",
+    "settings": [
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background Color"
+        },
+        {
+            "type": "inline_richtext",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "header",
+            "content": "Desktop Space"
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Bottom",
+            "default": 16
+        },
+        {
+            "type": "header",
+            "content": "Mobile Space"
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Bottom",
+            "default": 16
+        }
+    ],
+    "presets": [
+        {
+            "name": "Take Inside Item"
+        }
+    ]
+}
+{% endschema %}

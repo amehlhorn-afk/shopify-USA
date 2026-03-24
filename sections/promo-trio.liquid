@@ -1,0 +1,281 @@
+{% schema %}
+{
+  "name": "Promo Trio",
+  "settings": [
+    { "type": "text", "id": "section_heading", "label": "Section Heading", "default": "Promotions" },
+    { "type": "range", "id": "mobile_peek", "label": "Mobile Peek Width", "default": 20, "min": 0, "max": 50, "unit": "px" },
+
+    { "type": "header", "content": "Section Background" },
+    { "type": "color", "id": "section_bg_color", "label": "Background Color" },
+    { "type": "image_picker", "id": "section_bg_image", "label": "Background Image" },
+    {
+      "type": "select",
+      "id": "section_bg_size",
+      "label": "Background Image Size",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" },
+        { "value": "auto", "label": "Auto" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "section_bg_position",
+      "label": "Background Image Position",
+      "default": "center center",
+      "options": [
+        { "value": "left top", "label": "Left Top" },
+        { "value": "left center", "label": "Left Center" },
+        { "value": "left bottom", "label": "Left Bottom" },
+        { "value": "center top", "label": "Center Top" },
+        { "value": "center center", "label": "Center Center" },
+        { "value": "center bottom", "label": "Center Bottom" },
+        { "value": "right top", "label": "Right Top" },
+        { "value": "right center", "label": "Right Center" },
+        { "value": "right bottom", "label": "Right Bottom" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "section_bg_repeat",
+      "label": "Background Image Repeat",
+      "default": "no-repeat",
+      "options": [
+        { "value": "no-repeat", "label": "No repeat" },
+        { "value": "repeat", "label": "Tile" },
+        { "value": "repeat-x", "label": "Tile horizontally" },
+        { "value": "repeat-y", "label": "Tile vertically" }
+      ]
+    },
+
+    { "type": "header", "content": "Section Padding" },
+    { "type": "range", "id": "pad_top_desktop", "label": "Top Padding (Desktop)", "default": 40, "min": 0, "max": 200, "step": 4, "unit": "px" },
+    { "type": "range", "id": "pad_bottom_desktop", "label": "Bottom Padding (Desktop)", "default": 40, "min": 0, "max": 200, "step": 4, "unit": "px" },
+    { "type": "range", "id": "pad_top_mobile", "label": "Top Padding (Mobile)", "default": 20, "min": 0, "max": 160, "step": 4, "unit": "px" },
+    { "type": "range", "id": "pad_bottom_mobile", "label": "Bottom Padding (Mobile)", "default": 20, "min": 0, "max": 160, "step": 4, "unit": "px" },
+
+    { "type": "header", "content": "Card Height" },
+    { "type": "range", "id": "card_height_desktop", "label": "Card Height (Desktop)", "default": 480, "min": 240, "max": 700, "step": 10, "unit": "px" },
+    { "type": "range", "id": "card_height_mobile", "label": "Card Height (Mobile)", "default": 360, "min": 200, "max": 600, "step": 10, "unit": "px" },
+
+    { "type": "header", "content": "Typography (Desktop)" },
+    { "type": "range", "id": "headline_size_desktop", "label": "Headline (h3) Size", "default": 28, "min": 12, "max": 64, "unit": "px" },
+    { "type": "range", "id": "subheadline_size_desktop", "label": "Subheadline (h2) Size", "default": 50, "min": 18, "max": 96, "unit": "px" },
+    { "type": "range", "id": "description_size_desktop", "label": "Description (p) Size", "default": 20, "min": 12, "max": 40, "unit": "px" },
+
+    { "type": "header", "content": "Typography (Mobile)" },
+    { "type": "range", "id": "headline_size_mobile", "label": "Headline (h3) Size (Mobile)", "default": 22, "min": 10, "max": 48, "unit": "px" },
+    { "type": "range", "id": "subheadline_size_mobile", "label": "Subheadline (h2) Size (Mobile)", "default": 36, "min": 14, "max": 72, "unit": "px" },
+    { "type": "range", "id": "description_size_mobile", "label": "Description (p) Size (Mobile)", "default": 18, "min": 10, "max": 36, "unit": "px" }
+  ],
+
+  "blocks": [
+    {
+      "type": "promo_tile",
+      "name": "Promo Tile",
+      "settings": [
+        { "type": "color", "id": "text_color", "label": "Text Color" },
+        { "type": "checkbox", "id": "overlay", "label": "Enable Overlay" },
+        { "type": "color", "id": "color", "label": "Overlay Background Color" },
+
+        { "type": "header", "content": "Border Radius" },
+        { "type": "range", "id": "border_radius", "min": 0, "max": 30, "step": 1, "default": 12, "unit": "px", "label": "Card Border Radius" },
+        { "type": "range", "id": "overlay_opacity", "min": 0, "max": 100, "unit": "%", "step": 1, "label": "Overlay Opacity", "default": 60 },
+
+        { "type": "image_picker", "id": "background_image", "label": "Background Image" },
+        { "type": "text", "id": "headline", "label": "Headline", "default": "Save Big" },
+        { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Up to 50% Off" },
+        { "type": "text", "id": "description", "label": "Description", "default": "All Performance Pillows" },
+        { "type": "select", "id": "vertical_alignment", "label": "Text Vertical Alignment", "default": "bottom", "options": [ { "value": "top", "label": "Top" }, { "value": "center", "label": "Center" }, { "value": "bottom", "label": "Bottom" } ] },
+        { "type": "range", "id": "content_margin_top", "label": "Content Margin Top", "min": 0, "max": 100, "default": 0, "unit": "px" },
+
+        { "type": "url", "id": "link", "label": "Button Link" },
+        { "type": "text", "id": "button_label", "label": "Button Label", "default": "Shop Now" },
+
+        { "type": "select", "id": "button_style", "label": "Button Style", "default": "filled", "options": [ { "value": "filled", "label": "Filled" }, { "value": "outline", "label": "Outline (Stroke)" } ] },
+        { "type": "color", "id": "button_border_color", "label": "Outline Color", "default": "#BCF433" },
+
+        { "type": "header", "content": "CTA Hover Colors" },
+        { "type": "color", "id": "button_hover_bg_color", "label": "Filled: Hover Background Color" },
+        { "type": "color", "id": "button_hover_text_color", "label": "Filled: Hover Text Color" },
+        { "type": "color", "id": "button_outline_hover_bg_color", "label": "Outline: Hover Background Color" },
+        { "type": "color", "id": "button_outline_hover_text_color", "label": "Outline: Hover Text Color" },
+        { "type": "color", "id": "button_outline_hover_border_color", "label": "Outline: Hover Border Color" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    { "name": "Promo Trio", "blocks": [ { "type": "promo_tile" }, { "type": "promo_tile" }, { "type": "promo_tile" }, { "type": "promo_tile" } ] }
+  ]
+}
+{% endschema %}
+
+{%- comment -%}
+  FULL-BLEED BACKGROUND WRAPPER
+  Outer wrapper is full width and carries background.
+  Inner .promo-trio-section stays capped at 1500px.
+{%- endcomment -%}
+
+<div
+  class="promo-trio-bleed"
+  style="
+    --mobile-peek: {{ section.settings.mobile_peek | default: 20 }}px;
+    --card-height-d: {{ section.settings.card_height_desktop | default: 480 }}px;
+    --card-height-m: {{ section.settings.card_height_mobile | default: 360 }}px;
+
+    --fs-h3-d: {{ section.settings.headline_size_desktop | default: 28 }}px;
+    --fs-h2-d: {{ section.settings.subheadline_size_desktop | default: 50 }}px;
+    --fs-p-d:  {{ section.settings.description_size_desktop | default: 20 }}px;
+
+    --fs-h3-m: {{ section.settings.headline_size_mobile | default: 22 }}px;
+    --fs-h2-m: {{ section.settings.subheadline_size_mobile | default: 36 }}px;
+    --fs-p-m:  {{ section.settings.description_size_mobile | default: 18 }}px;
+
+    --pad-top-d: {{ section.settings.pad_top_desktop | default: 40 }}px;
+    --pad-bottom-d: {{ section.settings.pad_bottom_desktop | default: 40 }}px;
+    --pad-top-m: {{ section.settings.pad_top_mobile | default: 20 }}px;
+    --pad-bottom-m: {{ section.settings.pad_bottom_mobile | default: 20 }}px;
+
+    {% if section.settings.section_bg_color != blank %}
+      --section-bg-color: {{ section.settings.section_bg_color }};
+    {% endif %}
+
+    {% if section.settings.section_bg_image != blank %}
+      --section-bg-image: url({{ section.settings.section_bg_image | img_url: 'master' }});
+    {% endif %}
+
+    --section-bg-size: {{ section.settings.section_bg_size | default: 'cover' }};
+    --section-bg-position: {{ section.settings.section_bg_position | default: 'center center' }};
+    --section-bg-repeat: {{ section.settings.section_bg_repeat | default: 'no-repeat' }};
+  "
+>
+  <div class="promo-trio-section">
+    <div class="promo-trio-wrapper blocks-{{ section.blocks.size }}">
+      {% for block in section.blocks %}
+        {% assign align = block.settings.vertical_alignment %}
+        {% assign btn_style = block.settings.button_style %}
+        {% assign btn_border = block.settings.button_border_color %}
+        <div class="promo-card relative promo-card-{{ forloop.index0 }} block__promo-card-{{ block.id }}" style="border-radius: {{ block.settings.border_radius | default: 12 }}px;">
+          {% if block.settings.background_image != blank %}
+            <img class="promo-bg" src="{{ block.settings.background_image | img_url: 'master' }}" alt="">
+          {% endif %}
+
+          {% if block.settings.overlay %}
+            <span class="overlay" style="background-color: {{ block.settings.color }}; opacity: {{ block.settings.overlay_opacity | default: 60 }}%; border-radius: inherit;"></span>
+          {% endif %}
+
+          <div class="promo-content align-{{ align }}" style="margin-top: {{ block.settings.content_margin_top }}px">
+            <h3>{{ block.settings.headline }}</h3>
+            <h2>{{ block.settings.subheadline }}</h2>
+            <p>{{ block.settings.description }}</p>
+
+            {% if block.settings.link %}
+              <a href="{{ block.settings.link }}" class="promo-btn {% if btn_style == 'outline' %}outline{% endif %}"
+                 style="{% if btn_style == 'outline' %}border-color: {{ btn_border }}; color: {{ btn_border }};{% endif %}">
+                {{ block.settings.button_label }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% style %}
+  {% for block in section.blocks %}
+    {% if block.settings.text_color != blank %}
+      .block__promo-card-{{ block.id }} .promo-content h2,
+      .block__promo-card-{{ block.id }} .promo-content h3,
+      .block__promo-card-{{ block.id }} .promo-content p {
+        color: {{ block.settings.text_color }};
+      }
+    {% endif %}
+
+    /* Filled button hover overrides (per tile) */
+    .block__promo-card-{{ block.id }} .promo-btn:not(.outline):hover {
+      {% if block.settings.button_hover_bg_color != blank %}background-color: {{ block.settings.button_hover_bg_color }};{% endif %}
+      {% if block.settings.button_hover_text_color != blank %}color: {{ block.settings.button_hover_text_color }};{% endif %}
+    }
+
+    /* Outline button hover overrides (per tile) */
+    .block__promo-card-{{ block.id }} .promo-btn.outline:hover {
+      {% if block.settings.button_outline_hover_bg_color != blank %}background-color: {{ block.settings.button_outline_hover_bg_color }};{% endif %}
+      {% if block.settings.button_outline_hover_text_color != blank %}color: {{ block.settings.button_outline_hover_text_color }};{% endif %}
+      {% if block.settings.button_outline_hover_border_color != blank %}border-color: {{ block.settings.button_outline_hover_border_color }};{% endif %}
+    }
+  {% endfor %}
+{% endstyle %}
+
+<style>
+  /* FULL-BLEED OUTER WRAPPER */
+  .promo-trio-bleed {
+    width: 100%;
+    background-color: var(--section-bg-color, transparent);
+    background-image: var(--section-bg-image, none);
+    background-size: var(--section-bg-size, cover);
+    background-position: var(--section-bg-position, center center);
+    background-repeat: var(--section-bg-repeat, no-repeat);
+  }
+
+  /* Inner max-width container */
+  .promo-trio-section {
+    margin: 0 auto;
+    max-width: 1500px;
+  }
+
+  .promo-trio-wrapper { 
+    display: flex; 
+    gap: 20px; 
+    padding: var(--pad-top-d) 20px var(--pad-bottom-d); 
+    overflow: hidden; 
+  }
+
+  .promo-card { position: relative; height: var(--card-height-d); border-radius: 12px; overflow: hidden; display: flex; justify-content: center; flex: 1 1 25%; }
+  .promo-trio-wrapper.blocks-3 .promo-card { flex: 1 1 30%; }
+  .promo-trio-wrapper.blocks-3 .promo-card-0,
+  .promo-trio-wrapper.blocks-3 .promo-card-2 { flex: 1 1 25%; }
+  .promo-trio-wrapper.blocks-3 .promo-card-1 { flex: 1 1 50%; }
+  .promo-trio-wrapper.blocks-4 .promo-card { flex: 1 1 25%; }
+
+  .promo-card img.promo-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+  .overlay { position: absolute; inset: 0; display: block; z-index: 1; }
+
+  .promo-content { position: relative; z-index: 2; width: 100%; padding: 30px 20px; text-align: center; }
+  .promo-content.align-top { align-self: flex-start; }
+  .promo-content.align-center { align-self: center; }
+  .promo-content.align-bottom { align-self: flex-end; }
+
+  .promo-content h3 { margin: 0 0 10px; font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif; font-size: var(--fs-h3-d); font-weight: 500; letter-spacing: 1.138px; line-height: 1.1; }
+  .promo-content h2 { margin: 0; text-transform: uppercase; font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif; font-size: var(--fs-h2-d); font-weight: 900; letter-spacing: 2px; line-height: 1.05; }
+  .promo-content p { margin: 10px 0 0; font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif; font-size: var(--fs-p-d); font-weight: 400; line-height: 150%; }
+
+  /* CTA styles */
+  .promo-btn { display: inline-block; background: #BCF433; color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 700; margin-top: 12px; border: 2px solid transparent; transition: all 0.25s ease; }
+  .promo-btn.outline { background: transparent; border: 2px solid currentColor; }
+
+  /* Default outline hover (can be overridden per-tile above) */
+  .promo-btn.outline:hover { background-color: currentColor; color: #000; }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .promo-card { height: var(--card-height-m); }
+    .promo-trio-wrapper { 
+      flex-wrap: nowrap; 
+      overflow-x: auto; 
+      -webkit-overflow-scrolling: touch; 
+      scroll-snap-type: x mandatory; 
+      gap: 12px; 
+      padding: var(--pad-top-m) 20px var(--pad-bottom-m);
+    }
+    .promo-trio-wrapper::-webkit-scrollbar { display: none; }
+    .promo-trio-wrapper { -ms-overflow-style: none; scrollbar-width: none; }
+    .promo-card { flex: 0 0 calc(100% - (var(--mobile-peek) * 2)); min-width: calc(100% - (var(--mobile-peek) * 2)); scroll-snap-align: center; border-radius: 16px; }
+    .promo-content { padding: 24px 16px; }
+    .promo-content h3 { font-size: var(--fs-h3-m); }
+    .promo-content h2 { font-size: var(--fs-h2-m); }
+    .promo-content p  { font-size: var(--fs-p-m); }
+  }
+</style>

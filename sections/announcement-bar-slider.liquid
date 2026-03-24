@@ -1,0 +1,326 @@
+{{ 'announcement-bar.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  IMPORTANT:
+  Add this to announcement-bar.css to ensure constant perceived speed:
+  
+  .block__announcement-bar-slider .swiper-wrapper {
+    transition-timing-function: linear !important;
+  }
+{%- endcomment -%}
+
+<div
+  class="block__utility-bar h-full color-{{ section.settings.color_scheme }} gradient{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}"
+  {{ block.shopify_attributes }}
+>
+  <div class="page-width">
+    <div class="block__announcement-bar-wrapper">
+      {% if section.settings.store_locator != blank %}
+        <div class="block__left-side-announcement flex items-center">
+          {{- 'icon-location.svg' | inline_asset_content -}}
+          <a href="{{ section.settings.store_location_url }}" class="small_body small-hide">
+            {{ section.settings.store_locator }}
+          </a>
+        </div>
+      {% endif %}
+      {%- if section.blocks.size == 1 or section.settings.announcement_slider == false -%}
+        <div
+          class="block__announcement-bar"
+          role="region"
+          aria-label="{{ 'sections.header.announcement' | t }}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if section.blocks.first.settings.text != blank -%}
+            {%- if section.blocks.first.settings.link != blank -%}
+              <a
+                href="{{ section.blocks.first.settings.link }}"
+                class="announcement-bar__link link link--text focus-inset animate-arrow"
+              >
+            {%- endif -%}
+            <p class="announcement-bar__message small_body">
+              <span>{{ section.blocks.first.settings.text | escape }}</span>
+              {%- if section.blocks.first.settings.link != blank -%}
+                {{- 'icon-arrow.svg' | inline_asset_content -}}
+              {%- endif -%}
+            </p>
+            {%- if section.blocks.first.settings.link != blank -%}
+              </a>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      {%- elsif section.blocks.size > 1 -%}
+        <slideshow-component
+          class="block__announcement-bar"
+        >
+          <div class="block__announcement-bar-slider swiper-container">
+            <div
+              class="swiper-wrapper"
+              id="Slider-{{ section.id }}"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {%- for block in section.blocks -%}
+                <div
+                  class="swiper-slide"
+                  id="Slide-{{ section.id }}-{{ forloop.index }}"
+                  {{ block.shopify_attributes }}
+                >
+                  <div
+                    class="block__announcement-bar__announcement"
+                    role="region"
+                    aria-label="{{ 'sections.header.announcement' | t }}"
+                    {{ block.shopify_attributes }}
+                  >
+                    {%- if block.settings.text != blank -%}
+                      {%- if block.settings.link != blank -%}
+                        <a
+                          href="{{ block.settings.link }}"
+                          class="announcement-bar__link link link--text focus-inset animate-arrow"
+                        >
+                      {%- endif -%}
+                      <p class="announcement-bar__message  small_body">
+                        <span>{{ block.settings.text | escape }}</span>
+                        {%- if block.settings.text != blank -%}
+                          {{- 'star-icon.svg' | inline_asset_content -}}
+                        {%- endif -%}
+                      </p>
+                      {%- if block.settings.link != blank -%}
+                        </a>
+                      {%- endif -%}
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </slideshow-component>
+      {%- endif -%}
+      {% if section.settings.contact_number != blank %}
+        <div class="block__right-side-announcement flex items-center small-hide">
+          {{- 'icon-phone.svg' | inline_asset_content -}}
+          <a href="{{ section.settings.contact_url }}" class="small_body">
+            {{ section.settings.contact_number }}
+          </a>
+        </div>
+      {% endif %}
+      <div class="localization-wrapper">
+        {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+          <localization-form class="small-hide medium-hide">
+            {%- form 'localization', id: 'AnnouncementCountryForm', class: 'localization-form' -%}
+              <div>
+                <span class="visually-hidden h2" id="AnnouncementCountryLabel">{{ 'localization.country_label' | t }}</span>
+                {%- render 'country-localization', localPosition: 'AnnouncementCountry' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {% endif %}
+
+        {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+          <localization-form class="small-hide medium-hide">
+            {%- form 'localization', id: 'AnnouncementLanguageForm', class: 'localization-form' -%}
+              <div>
+                <span class="visually-hidden h2" id="AnnouncementLanguageLabel">{{ 'localization.language_label' | t }}</span>
+                {%- render 'language-localization', localPosition: 'AnnouncementLanguage' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% assign speed = section.settings.change_slides_speed %}
+{% if section.settings.announcement_slider == true %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const announcementBarCarousel = document.querySelector('.block__announcement-bar-slider');
+      if (!announcementBarCarousel) return;
+
+      const baseDurationMs = {{ speed }}; // theme setting = avg slide duration
+
+      const swiper = new Swiper(announcementBarCarousel, {
+        slidesPerView: 'auto',
+        spaceBetween: 20,
+        loop: true,
+        speed: baseDurationMs, // overridden per slide to keep constant px/sec
+        autoplay: {
+          delay: 0,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: false
+        },
+        allowTouchMove: false,
+        on: {
+          init: function () {
+            normalizeSpeed(this, baseDurationMs);
+          },
+          resize: function () {
+            normalizeSpeed(this, baseDurationMs);
+          },
+          beforeTransitionStart: function () {
+            applyPerSlideSpeed(this);
+          }
+        }
+      });
+
+      function normalizeSpeed(swiperInstance, baseMs) {
+        const realSlides = Array.from(swiperInstance.slides)
+          .filter(slide => !slide.classList.contains('swiper-slide-duplicate'));
+
+        if (!realSlides.length) return;
+
+        const widths = realSlides.map(s => s.getBoundingClientRect().width);
+        const avgWidth = widths.reduce((a, b) => a + b, 0) / widths.length;
+
+        // desired constant rate (px per ms)
+        swiperInstance._pxPerMs = avgWidth / baseMs;
+
+        applyPerSlideSpeed(swiperInstance);
+      }
+
+      function applyPerSlideSpeed(swiperInstance) {
+        if (!swiperInstance._pxPerMs) return;
+
+        const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
+        if (!activeSlide) return;
+
+        const activeWidth = activeSlide.getBoundingClientRect().width;
+
+        // duration = distance / rate
+        const durationMs = Math.max(300, activeWidth / swiperInstance._pxPerMs);
+
+        swiperInstance.params.speed = durationMs;
+
+        // keep autoplay rolling smoothly with the new speed
+        if (swiperInstance.autoplay && swiperInstance.autoplay.running) {
+          swiperInstance.autoplay.stop();
+          swiperInstance.autoplay.start();
+        }
+      }
+    });
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement bar slider",
+  "max_blocks": 12,
+  "class": "announcement-bar-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },
+    
+    {
+      "type": "header",
+      "content": "Left Content"
+    },
+    {
+      "type": "text",
+      "id": "store_locator",
+      "label": "Store Location Text"
+    },
+    {
+      "type": "url",
+      "id": "store_location_url",
+      "label": "Store Location Url"
+    },
+    {
+      "type": "header",
+      "content": "Right Content"
+    },
+    {
+      "type": "text",
+      "id": "contact_number",
+      "label": "Contact Info"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Contact Info Url"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.header__1.content",
+      "info": "t:sections.announcement-bar.settings.header__1.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.header__2.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "announcement_slider",
+      "label": "Announcement slider",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "change_slides_speed",
+      "min": 1000,
+      "max": 9000,
+      "step": 1000,
+      "unit": "ms",
+      "label": "t:sections.announcement-bar.settings.change_slides_speed.label",
+      "default": 4000
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.header__3.content",
+      "info": "t:sections.announcement-bar.settings.header__3.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": false,
+      "label": "t:sections.announcement-bar.settings.enable_country_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.header__4.content",
+      "info": "t:sections.announcement-bar.settings.header__4.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": false,
+      "label": "t:sections.announcement-bar.settings.enable_language_selector.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "t:sections.announcement-bar.blocks.announcement.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "t:sections.announcement-bar.blocks.announcement.settings.text.default",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar slider",
+      "blocks": [
+        {
+          "type": "announcement"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

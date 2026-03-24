@@ -1,0 +1,349 @@
+{{ 'hero-banner.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+    /* DESKTOP STYLES */
+    @media (min-width: 990px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.desktop_padding_top }}px;
+        padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+      }
+
+      .quaternary-border-radius {
+        border-radius: 20px;
+      }
+      .summer-sale-banner-content a{
+        margin-top: 2rem !important;
+      }
+
+      .page-width {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+
+      .block__hero-banner-wrapper {
+        height: auto;
+      }
+
+      .block__hero-banner-wrapper > .relative {
+        height: auto;
+      }
+
+      .block__hero-banner-wrapper img,
+      .block__hero-banner-wrapper video {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+
+      .summer-sale-banner-content {
+        padding-left: 32px;
+        padding-right: 32px;
+        text-align: left;
+        align-items: flex-start;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+      }
+
+  .summer-sale-sticker {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 120px !important;
+    height: auto;
+    z-index: 1;
+    max-width: none;
+    object-fit: contain;
+    pointer-events: none;
+  }
+    }
+
+    /* GLOBAL TYPOGRAPHY */
+    .summer-sale-banner-content * {
+      font-family: 'Roboto', sans-serif;
+      text-transform: capitalize;
+    }
+
+    /* MOBILE STYLES */
+    @media (max-width: 989px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.mobile_padding_top }}px;
+        padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+      }
+
+      .quaternary-border-radius {
+        border-radius: 0 !important;
+      }
+
+      .page-width {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      .block__hero-banner-wrapper {
+        height: 385px;
+      }
+
+      .block__hero-banner-wrapper > .relative {
+        height: 100%;
+        position: relative;
+      }
+
+      .block__hero-banner-wrapper img,
+      .block__hero-banner-wrapper video {
+        height: 100% !important;
+        width: 100% !important;
+        object-fit: cover !important;
+      }
+
+      .summer-sale-banner-content {
+        height: 100%;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        text-align: center;
+        align-items: center;
+        justify-content: flex-start;
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .summer-sale-sticker {
+        top: 1rem;
+        right: 1rem;
+        width: 90px;
+      }
+
+      .summer-sale-banner-content h2 {
+        font-size: 60px !important;
+        line-height: 1.1 !important;
+      }
+
+      .summer-sale-banner-content h3,
+      .summer-sale-banner-content p {
+        font-size: 20px !important;
+        line-height: 1.4;
+      }
+
+      .summer-sale-banner-content a {
+        margin-top: 1rem;
+      }
+    }
+
+    #Banner-{{ section.id }} .block__hero-banner-content {
+      z-index: 2;
+    }
+    {% if section.settings.text_color != blank %}
+    #Banner-{{ section.id }} .block__hero-banner-wrapper h2,
+    #Banner-{{ section.id }} .block__hero-banner-wrapper h3,
+    #Banner-{{ section.id }} .block__hero-banner-wrapper p,
+    #Banner-{{ section.id }} .block__hero-banner-wrapper span{color:{{ section.settings.text_color }};}
+    {% endif %}
+{% endstyle %}
+
+<div id="Banner-{{ section.id }}" class="section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="relative block__hero-banner-wrapper">
+      <div class="relative overflow-hidden quaternary-border-radius">
+        {% if section.settings.background_image %}
+          <img
+            src="{{ section.settings.background_image | image_url: width: 1600 }}"
+            alt="{{ section.settings.background_image.alt | escape }}"
+            class="object-cover w-full h-full block quaternary-border-radius"
+          >
+        {% endif %}
+
+        {% assign has_sticker = false %}
+        {% for block in section.blocks %}
+          {% if block.type == 'sticker_image' and block.settings.image != blank %}
+            {% assign has_sticker = true %}
+          {% endif %}
+        {% endfor %}
+
+        {% if has_sticker %}
+          {% for block in section.blocks %}
+            {% if block.type == 'sticker_image' and block.settings.image != blank %}
+              <img class="summer-sale-sticker" src="{{ block.settings.image | image_url }}" alt="Sticker">
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+       {% if section.settings.overlay != blank%}
+          <span class="w-full h-full block absolute block__overlay_opacity inset-0 quaternary-border-radius"
+                style="background-color: {{ section.settings.color }}; opacity:{{ section.settings.overlay_opacity }}%;">
+          </span>
+        {% endif %}
+        <div class="absolute inset-0 w-full flex justify-start items-center">
+          <div class="summer-sale-banner-content block__hero-content-inner text-left w-full max-w-[600px] z-10">
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'badge' %}
+                  <div style="background:#FDB521; color:#fff; font-size:20px; font-weight:700; line-height:26px; padding:0.25rem 0.75rem; border-radius:4px; display:inline-block;">
+                    {{ block.settings.text }}
+                  </div>
+
+                {% when 'heading' %}
+                  <h2 style="font-size:112px; font-weight:700; line-height:116.5px; margin:0;">
+                    {{ block.settings.text }}
+                  </h2>
+
+                {% when 'subheading' %}
+                  <h3 style="font-size:34px; font-weight:700; margin:0;">
+                    {{ block.settings.text }}
+                  </h3>
+
+                {% when 'body' %}
+                  <p style="font-size:34px; font-weight:400; margin:0;">
+                    {{ block.settings.text }}
+                  </p>
+
+                {% when 'button' %}
+                  <a
+                    href="{{ block.settings.link }}"
+                    style="background:#00BFF3; color:#fff; font-weight:700; font-size:16px; padding:0.75rem 2rem; border-radius:999px; display:inline-block; margin-top:1rem; border:none; box-shadow:none;"
+                  >
+                    {{ block.settings.text }}
+                  </a>
+              {% endcase %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Summer Sale Banner",
+  "settings": [
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay",
+      "label": "Enable Overlay"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Overlay Background Color"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "unit": "%",
+      "step": 1,
+      "label": "Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Padding Bottom",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "LIMITED TIME ONLY" }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Main Heading",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Heading Text", "default": "70% Off" }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Subheading", "default": "Hyper-Linen & Hyper-Wool" }
+      ]
+    },
+    {
+      "type": "body",
+      "name": "Body Text",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Description", "default": "Performance® Sheet Sets" }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "CTA Button",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Button Text", "default": "Shop Now" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "sticker_image",
+      "name": "Sticker Image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Sticker Image" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Summer Sale Banner",
+      "blocks": [
+        { "type": "badge" },
+        { "type": "heading" },
+        { "type": "subheading" },
+        { "type": "body" },
+        { "type": "button" },
+        { "type": "sticker_image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

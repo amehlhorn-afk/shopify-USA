@@ -1,0 +1,222 @@
+{{ 'pdp-faqs-sec.css' | asset_url | stylesheet_tag }}
+{% assign faq_items = product.metafields.custom.pdp_faq_list_items.value %}
+{% if faq_items != blank %}
+<div class="block__faq-section" {% if section.settings.bg_color != blank %} style="background-color:{{ section.settings.bg_color }}"{% endif %}>
+    <div class="page-width">
+
+        <div class="block__row gap-30">
+        {% if section.settings.title != blank  %}
+        <div class="block__faq-header">
+            {% if section.settings.title != blank %}
+            <h2 class="primary_h2">{{ section.settings.title }}</h2>
+            {% endif %} 
+            {% if section.settings.text != blank %}
+                <p>{{ section.settings.text }}</p>
+            {% endif %}
+            {% if section.settings.content_text != blank or section.settings.btn_text != blank  %}
+            <div class="block__faq-contact ">
+                {% if section.settings.content_text != blank %}
+                    <p>{{ section.settings.content_text }}</p>
+                {% endif %}
+                <div class="flex gap-15 ">
+                {% if section.settings.btn_text != blank %}
+                    <a href="{{ section.settings.btn_url }}" class="button-primary button senary-border-radius">
+                        {{ section.settings.btn_text }}
+                    </a>
+                {% endif %}
+                {% if section.settings.btn_two_text != blank %}
+                    <a href="{{ section.settings.btn_two_url }}" class="button-primary button senary-border-radius">
+                        {{ section.settings.btn_two_text }}
+                    </a>
+                {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        </div>
+        {% endif %}
+        <div class="block__faq-container quaternary-border-radius">
+            {% for i in (1..14) %}
+                {%- capture list_title -%}title_{{i}}{%- endcapture -%}
+                {%- assign block_title = faq_items[list_title] -%}
+                
+                {%- capture list_description -%}content_{{i}}{%- endcapture -%}
+                {%- assign block_content = faq_items[list_description] -%}
+
+                {% if block_title != blank or  block_content != blank %}
+                    <div class="block__faq-item">
+                        <div class="block__faq-title flex items-center gap-15 justify-between">
+                            <h5 class="relative"><strong class="absolute inset-0 font-weight-500">{{ i }}.</strong>{{block_title}}</h5>
+                            <span class="primary-border-radius flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                                    <path d="M16.875 8.5C16.8229 9.07292 16.5104 9.38542 15.9375 9.4375H9.6875V15.6875C9.63542 16.2604 9.32292 16.5729 8.75 16.625C8.17708 16.5729 7.86458 16.2604 7.8125 15.6875V9.4375H1.5625C0.989583 9.38542 0.677083 9.07292 0.625 8.5C0.677083 7.92708 0.989583 7.61458 1.5625 7.5625H7.8125V1.3125C7.86458 0.739583 8.17708 0.427083 8.75 0.375C9.32292 0.427083 9.63542 0.739583 9.6875 1.3125V7.5625H15.9375C16.5104 7.61458 16.8229 7.92708 16.875 8.5Z" fill="black"></path>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="block__faq-content">
+                            <p>{{ block_content }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        </div>
+    </div>
+</div>
+{% endif  %}
+<script>
+    if(document.querySelectorAll('.block__faq-contact a[href="#olark-container"]')){
+        document.querySelectorAll('.block__faq-contact a[href="#olark-container"]').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); 
+                const olarkContainer = document.querySelector('.olark-launch-button');
+                if (olarkContainer) {
+                olarkContainer.click();
+                }
+            });
+        });
+    }
+</script>
+{% style %}  
+    @media (min-width:990px){
+        .block__faq-section{
+            padding-top:{{ section.settings.desktop_padding_top }}px;
+            padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+        }
+    }
+    @media (max-width:989px){
+        .block__faq-section{
+            padding-top:{{ section.settings.mobile_padding_top }}px;
+            padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+        }
+    }
+{% endstyle %}
+<script>
+                    
+const faq_item = document.querySelectorAll(".block__faq-item");
+faq_item.forEach(item => {
+    const header = item.querySelector(".block__faq-title");
+    header.addEventListener("click", function () {
+        faq_item.forEach(otherItem => {
+            if (otherItem !== item && otherItem.classList.contains("active")) {
+                otherItem.classList.remove("active");
+                otherItem.querySelector(".block__faq-content").style.maxHeight = null;
+            }
+        });
+        item.classList.toggle("active");
+        const content = item.querySelector(".block__faq-content");
+        if (item.classList.contains("active")) {
+            content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+            content.style.maxHeight = null;
+        }
+    });
+});
+</script>
+{% schema %}
+{
+    "name": "PDP Faq Section",
+    "settings": [
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background Color"
+        },
+        {
+            "type": "inline_richtext",
+            "id": "title",
+            "label": "Title",
+            "default": "Frequently Asked Questions"
+        },
+        {
+            "type": "inline_richtext",
+            "id": "text",
+            "label": "Subtext",
+            "default": "Quick Answers to questions you may have."
+        },
+        {
+            "type": "header",
+            "content": "Contact Section"
+        },
+        {
+            "type": "inline_richtext",
+            "id": "content_text",
+            "label": "Content Text",
+            "default": "Can't Find what you're looking for?"
+        },
+        {
+            "type": "text",
+            "id": "btn_text",
+            "label": "Button Text",
+            "default": "Contact Us"
+        },
+        {
+            "type": "url",
+            "id": "btn_url",
+            "label": "Button URL"
+        },
+        {
+            "type": "text",
+            "id": "btn_two_text",
+            "label": "Button Two Text"
+        },
+        {
+            "type": "url",
+            "id": "btn_two_url",
+            "label": "Button Two URL"
+        },
+        {
+            "type": "header",
+            "content": "Desktop Space"
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "desktop_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Desktop Padding Bottom",
+            "default": 16
+        },
+        {
+            "type": "header",
+            "content": "Mobile Space"
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Top",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "mobile_padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Mobile Padding Bottom",
+            "default": 16
+        }
+    ],
+    "presets": [
+        {
+            "name": "PDP Faq Section"
+        }
+    ]
+}
+{% endschema %}

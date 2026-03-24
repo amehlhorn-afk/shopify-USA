@@ -1,0 +1,473 @@
+{% comment %}
+  Anchor Collection Nav
+  - Anchors by section ID (name).
+  - For each block:
+      Label        -> what shows in the button
+      Target ID    -> the HTML id of the section to scroll to (no #)
+  - Example:
+      Target ID = "gifts-for-the-hot-sleeper"
+      Then somewhere on the page:
+        <section id="gifts-for-the-hot-sleeper"> ... </section>
+{% endcomment %}
+
+<section id="anchor-collection-nav-{{ section.id }}" class="anchor-collection-nav">
+  <div class="anchor-collection-nav__inner">
+
+    {% if section.settings.heading != blank %}
+      <h2 class="anchor-collection-nav__heading">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="anchor-collection-nav__list">
+        {% for block in section.blocks %}
+          {% if block.settings.label != blank and block.settings.target_id != blank %}
+            <button
+              type="button"
+              class="anchor-collection-nav__item"
+              data-anchor-target="{{ block.settings.target_id | escape }}"
+              style="
+                --anchor-bg: {{ block.settings.bg_color }};
+                --anchor-bg-hover: {{ block.settings.bg_color_hover }};
+                --anchor-bg-active: {{ block.settings.bg_color_active }};
+                --anchor-border: {{ block.settings.border_color }};
+                --anchor-border-active: {{ block.settings.border_color_active }};
+
+                /* NEW: text color variables (with safe fallbacks) */
+                --anchor-text: {{ block.settings.text_color | default: section.settings.anchor_text_color }};
+                --anchor-text-hover: {{ block.settings.text_color_hover | default: block.settings.text_color | default: section.settings.anchor_text_color }};
+                --anchor-text-active: {{ block.settings.text_color_active | default: block.settings.text_color_hover | default: block.settings.text_color | default: section.settings.anchor_text_color }};
+              "
+              {{ block.shopify_attributes }}
+            >
+              <span class="anchor-collection-nav__label">
+                {{ block.settings.label }}
+              </span>
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+
+  <style>
+    #anchor-collection-nav-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+      background: {{ section.settings.background }};
+    }
+
+    #anchor-collection-nav-{{ section.id }} .anchor-collection-nav__inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    /* Dynamic heading sizes */
+    #anchor-collection-nav-{{ section.id }} .anchor-collection-nav__heading {
+      margin-bottom: 32px;
+      color: #1b2740;
+      font-size: {{ section.settings.heading_size_desktop }}px;
+      line-height: 1.2;
+      letter-spacing: 0.03em;
+    }
+
+    /* Desktop = one horizontal row */
+    #anchor-collection-nav-{{ section.id }} .anchor-collection-nav__list {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      gap: 24px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Firefox */
+    }
+
+    #anchor-collection-nav-{{ section.id }} .anchor-collection-nav__list::-webkit-scrollbar {
+      display: none; /* Chrome + Safari */
+    }
+
+    .anchor-collection-nav__item {
+      border-radius: 16px;
+      border: 1px solid var(--anchor-border, rgba(0, 0, 0, 0.06));
+      background: var(--anchor-bg, #f7f7f7);
+      padding: 18px 32px;
+      white-space: normal;
+      text-align: center;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition:
+        transform 0.16s ease,
+        box-shadow 0.16s ease,
+        background 0.16s ease,
+        border-color 0.16s ease;
+    }
+
+    .anchor-collection-nav__item:hover {
+      background: var(--anchor-bg-hover, #ffffff);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+    }
+
+    .anchor-collection-nav__item.is-active {
+      background: var(--anchor-bg-active, #ffffff);
+      border-color: var(--anchor-border-active, rgba(0,0,0,0.1));
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+    }
+
+    .anchor-collection-nav__label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.3;
+
+      /* NEW: base text color from var */
+      color: var(--anchor-text, {{ section.settings.anchor_text_color }});
+      transition: color 0.16s ease;
+    }
+
+    /* NEW: hover text color */
+    .anchor-collection-nav__item:hover .anchor-collection-nav__label {
+      color: var(--anchor-text-hover, var(--anchor-text, {{ section.settings.anchor_text_color }}));
+    }
+
+    /* NEW: active text color */
+    .anchor-collection-nav__item.is-active .anchor-collection-nav__label {
+      color: var(--anchor-text-active, var(--anchor-text-hover, var(--anchor-text, {{ section.settings.anchor_text_color }})));
+    }
+
+    /* MOBILE — horizontal slider */
+    @media (max-width: 768px) {
+      #anchor-collection-nav-{{ section.id }} {
+        padding-top: {{ section.settings.padding_top_mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      }
+
+      #anchor-collection-nav-{{ section.id }} .anchor-collection-nav__heading {
+        font-size: {{ section.settings.heading_size_mobile }}px;
+        margin-bottom: 24px;
+      }
+
+      /* Turn list into a native horizontal slider */
+      #anchor-collection-nav-{{ section.id }} .anchor-collection-nav__list {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 4px 4px 10px;
+        margin: 0 -4px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #anchor-collection-nav-{{ section.id }} .anchor-collection-nav__list::-webkit-scrollbar {
+        display: none;
+      }
+
+      #anchor-collection-nav-{{ section.id }} .anchor-collection-nav__item {
+        flex: 0 0 70%;
+        max-width: none;
+        padding: 16px 14px;
+        scroll-snap-align: start;
+      }
+
+      #anchor-collection-nav-{{ section.id }} .anchor-collection-nav__label {
+        font-size: 12px;
+      }
+    }
+  </style>
+
+  <script>
+    (function() {
+      const sectionEl = document.getElementById("anchor-collection-nav-{{ section.id }}");
+      if (!sectionEl) return;
+
+      const offset = {{ section.settings.scroll_offset | default: 0 | json }};
+      const buttons = sectionEl.querySelectorAll("[data-anchor-target]");
+      if (!buttons.length) return;
+
+      function setActive(btn) {
+        buttons.forEach(b => b.classList.remove("is-active"));
+        if (btn) btn.classList.add("is-active");
+      }
+
+      buttons.forEach(button => {
+        button.addEventListener("click", () => {
+          const targetId = button.getAttribute("data-anchor-target");
+          if (!targetId) return;
+
+          const targetEl = document.getElementById(targetId);
+          if (!targetEl) {
+            console.warn("Anchor target not found:", targetId);
+            return;
+          }
+
+          const rect = targetEl.getBoundingClientRect();
+          const targetTop = rect.top + window.scrollY - Number(offset || 0);
+
+          window.scrollTo({
+            top: targetTop,
+            behavior: "smooth"
+          });
+
+          setActive(button);
+        });
+      });
+
+      // Optional: highlight anchor as sections come into view
+      const targets = Array.from(buttons)
+        .map(btn => {
+          const id = btn.getAttribute("data-anchor-target");
+          const el = document.getElementById(id);
+          return el ? { id, el, btn } : null;
+        })
+        .filter(Boolean);
+
+      if ("IntersectionObserver" in window && targets.length) {
+        const observer = new IntersectionObserver(
+          entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const match = targets.find(t => t.el === entry.target);
+                if (match) setActive(match.btn);
+              }
+            });
+          },
+          {
+            rootMargin: "-40% 0px -40% 0px",
+            threshold: 0.1
+          }
+        );
+
+        targets.forEach(t => observer.observe(t.el));
+      }
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Anchor collection nav",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop By Collection"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "Heading size (desktop)",
+      "min": 20,
+      "max": 60,
+      "step": 1,
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "default": 26
+    },
+
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 16
+    },
+
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background color",
+      "default": "rgba(0,0,0,0)"
+    },
+
+    {
+      "type": "color",
+      "id": "anchor_text_color",
+      "label": "Anchor text color",
+      "default": "#1b2740"
+    },
+
+    {
+      "type": "number",
+      "id": "scroll_offset",
+      "label": "Scroll offset (px)",
+      "default": 0,
+      "info": "Use this if you have a sticky header that covers the top of sections."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "anchor",
+      "name": "Anchor item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Gifts for the hot sleeper"
+        },
+        {
+          "type": "text",
+          "id": "target_id",
+          "label": "Target section ID",
+          "info": "ID of the section to scroll to (without the #). Example: gifts-for-the-hot-sleeper",
+          "default": "gifts-for-the-hot-sleeper"
+        },
+
+        {
+          "type": "header",
+          "content": "Container colors"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background color",
+          "default": "#f7f7f7"
+        },
+        {
+          "type": "color",
+          "id": "bg_color_hover",
+          "label": "Background color (hover)",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "bg_color_active",
+          "label": "Background color (active)",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border color",
+          "default": "rgba(0,0,0,0.06)"
+        },
+        {
+          "type": "color",
+          "id": "border_color_active",
+          "label": "Border color (active)",
+          "default": "rgba(0,0,0,0.1)"
+        },
+
+        {
+          "type": "header",
+          "content": "Text colors"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#1b2740"
+        },
+        {
+          "type": "color",
+          "id": "text_color_hover",
+          "label": "Text color (hover)",
+          "default": "#1b2740"
+        },
+        {
+          "type": "color",
+          "id": "text_color_active",
+          "label": "Text color (active)",
+          "default": "#1b2740"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Anchor collection nav",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "anchor",
+          "settings": {
+            "label": "Gifts for the hot sleeper",
+            "target_id": "gifts-for-the-hot-sleeper"
+          }
+        },
+        {
+          "type": "anchor",
+          "settings": {
+            "label": "Gifts for the Jetsetter",
+            "target_id": "gifts-for-the-jetsetter"
+          }
+        },
+        {
+          "type": "anchor",
+          "settings": {
+            "label": "Gifts for the New Homeowners",
+            "target_id": "gifts-for-the-new-homeowners"
+          }
+        },
+        {
+          "type": "anchor",
+          "settings": {
+            "label": "Gifts for the Whole Family",
+            "target_id": "gifts-for-the-whole-family"
+          }
+        },
+        {
+          "type": "anchor",
+          "settings": {
+            "label": "Gifts for the Expecting Parent",
+            "target_id": "gifts-for-the-expecting-parent"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

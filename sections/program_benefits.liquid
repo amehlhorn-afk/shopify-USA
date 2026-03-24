@@ -1,0 +1,788 @@
+{% comment %}
+  Loyalty Program Benefits Section
+  Block-based comparison table for program tiers
+{% endcomment %}
+
+<style>
+  .loyalty-benefits {
+    font-family: 'Roboto', sans-serif;
+    background: #ffffff;
+    width: 100%;
+  }
+
+  .loyalty-benefits__container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  .loyalty-benefits__header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .loyalty-benefits__title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 1.3;
+    margin: 0 0 24px 0;
+  }
+
+  .loyalty-benefits__intro {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    color: #666;
+    margin: 0;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Table Wrapper */
+  .loyalty-benefits__table-wrapper {
+    background: #f5f5f5;
+    max-width: 1021px;
+    margin: 0 auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+  }
+
+  /* Table */
+  .loyalty-benefits__table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f5f5f5;
+    min-width: 600px;
+  }
+
+  .loyalty-benefits__table thead {
+    background: #000000;
+  }
+
+  .loyalty-benefits__table th {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 19.544px;
+    line-height: 30.399px;
+    letter-spacing: 3.5179px;
+    text-transform: uppercase;
+    padding: 24px 16px;
+    text-align: center;
+    color: #ffffff;
+    background: #000000;
+  }
+
+  .loyalty-benefits__table th:first-child {
+    text-align: left;
+    padding-left: 37px;
+  }
+
+  .loyalty-benefits__table tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .loyalty-benefits__table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .loyalty-benefits__table td {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.5;
+    letter-spacing: 0.34px;
+    padding: 20px 16px;
+    text-align: center;
+    vertical-align: middle;
+    background: #f5f5f5;
+  }
+
+  .loyalty-benefits__table td:first-child {
+    text-align: left;
+    padding-left: 37px;
+  }
+
+  .loyalty-benefits__table td:nth-child(2) {
+    background: #ffffff;
+  }
+
+  .loyalty-benefits__table td:nth-child(3) {
+    background: #f5f5f5;
+  }
+
+  .loyalty-benefits__checkmark {
+    font-family: 'Roboto', 'Noto Sans', sans-serif;
+    font-size: 22.152px;
+    line-height: 22px;
+    letter-spacing: 0.2215px;
+  }
+
+  .loyalty-benefits__asterisk {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18.152px;
+    vertical-align: super;
+    margin-left: 2px;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .loyalty-benefits__container {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .loyalty-benefits__header {
+      margin-bottom: 40px;
+    }
+
+    .loyalty-benefits__title {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .loyalty-benefits__intro {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .loyalty-benefits__table th {
+      font-size: 14px;
+      padding: 16px 8px;
+      letter-spacing: 2px;
+    }
+
+    .loyalty-benefits__table th:first-child {
+      padding-left: 12px;
+    }
+
+    .loyalty-benefits__table td {
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 16px 8px;
+    }
+
+    .loyalty-benefits__table td:first-child {
+      padding-left: 12px;
+      font-size: 13px;
+    }
+
+    .loyalty-benefits__checkmark {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .loyalty-benefits__title {
+      font-size: 28px;
+    }
+
+    .loyalty-benefits__intro {
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .loyalty-benefits__table {
+      min-width: 500px;
+    }
+
+    .loyalty-benefits__table th {
+      font-size: 12px;
+      padding: 14px 6px;
+    }
+
+    .loyalty-benefits__table th:first-child {
+      padding-left: 10px;
+    }
+
+    .loyalty-benefits__table td {
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 14px 6px;
+    }
+
+    .loyalty-benefits__table td:first-child {
+      font-size: 11px;
+      padding-left: 10px;
+    }
+  }
+</style>
+
+<section class="loyalty-benefits" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="loyalty-benefits__container">
+    
+    {% for block in section.blocks %}
+      {% case block.type %}
+        
+        {% when 'header' %}
+          <div class="loyalty-benefits__header">
+            {% if block.settings.title != blank %}
+              <h2 class="loyalty-benefits__title">{{ block.settings.title }}</h2>
+            {% endif %}
+            {% if block.settings.intro != blank %}
+              <p class="loyalty-benefits__intro">{{ block.settings.intro }}</p>
+            {% endif %}
+          </div>
+
+        {% when 'comparison_table' %}
+          <div class="loyalty-benefits__table-wrapper">
+            <table class="loyalty-benefits__table">
+              <thead>
+                <tr>
+                  <th>{{ block.settings.column_1_header | default: "Perks" }}</th>
+                  <th>{{ block.settings.column_2_header | default: "Rewards" }}</th>
+                  <th>{{ block.settings.column_3_header | default: "Membership" }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if block.settings.row_1_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_1_label }}</td>
+                  <td>{% if block.settings.row_1_col2 != blank %}{{ block.settings.row_1_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_1_col3 != blank %}{{ block.settings.row_1_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_2_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_2_label }}</td>
+                  <td>{% if block.settings.row_2_col2 != blank %}{{ block.settings.row_2_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_2_col3 != blank %}{{ block.settings.row_2_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_3_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_3_label }}</td>
+                  <td>{% if block.settings.row_3_col2 != blank %}{{ block.settings.row_3_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_3_col3 != blank %}{{ block.settings.row_3_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_4_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_4_label }}</td>
+                  <td>{% if block.settings.row_4_col2 != blank %}{{ block.settings.row_4_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_4_col3 != blank %}{{ block.settings.row_4_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_5_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_5_label }}</td>
+                  <td>{% if block.settings.row_5_col2 != blank %}{{ block.settings.row_5_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_5_col3 != blank %}{{ block.settings.row_5_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_6_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_6_label }}</td>
+                  <td>{% if block.settings.row_6_col2 != blank %}{{ block.settings.row_6_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_6_col3 != blank %}{{ block.settings.row_6_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_7_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_7_label }}</td>
+                  <td>{% if block.settings.row_7_col2 != blank %}{{ block.settings.row_7_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_7_col3 != blank %}{{ block.settings.row_7_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_8_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_8_label }}</td>
+                  <td>{% if block.settings.row_8_col2 != blank %}{{ block.settings.row_8_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_8_col3 != blank %}{{ block.settings.row_8_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_9_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_9_label }}</td>
+                  <td>{% if block.settings.row_9_col2 != blank %}{{ block.settings.row_9_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_9_col3 != blank %}{{ block.settings.row_9_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_10_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_10_label }}</td>
+                  <td>{% if block.settings.row_10_col2 != blank %}{{ block.settings.row_10_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_10_col3 != blank %}{{ block.settings.row_10_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_11_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_11_label }}</td>
+                  <td>{% if block.settings.row_11_col2 != blank %}{{ block.settings.row_11_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_11_col3 != blank %}{{ block.settings.row_11_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_12_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_12_label }}</td>
+                  <td>{% if block.settings.row_12_col2 != blank %}{{ block.settings.row_12_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_12_col3 != blank %}{{ block.settings.row_12_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_13_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_13_label }}</td>
+                  <td>{% if block.settings.row_13_col2 != blank %}{{ block.settings.row_13_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_13_col3 != blank %}{{ block.settings.row_13_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_14_label != blank %}
+                <tr>
+                  <td>{{ block.settings.row_14_label }}</td>
+                  <td>{% if block.settings.row_14_col2 != blank %}{{ block.settings.row_14_col2 }}{% endif %}</td>
+                  <td>{% if block.settings.row_14_col3 != blank %}{{ block.settings.row_14_col3 }}{% endif %}</td>
+                </tr>
+                {% endif %}
+
+                {% if block.settings.row_15_label != blank %}
+                <tr>
+                  <td><strong>{{ block.settings.row_15_label }}</strong></td>
+                  <td>{% if block.settings.row_15_col2 != blank %}<strong>{{ block.settings.row_15_col2 }}</strong>{% endif %}</td>
+                  <td>{% if block.settings.row_15_col3 != blank %}<strong>{{ block.settings.row_15_col3 }}</strong>{% endif %}</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+
+      {% endcase %}
+    {% endfor %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Program Benefits",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "header",
+      "name": "Section Header",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "PROGRAM BENEFITS"
+        },
+        {
+          "type": "textarea",
+          "id": "intro",
+          "label": "Introduction Text",
+          "default": "Do we need an intro here to break down the difference between the free program and paid?"
+        }
+      ]
+    },
+    {
+      "type": "comparison_table",
+      "name": "Comparison Table",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Column Headers"
+        },
+        {
+          "type": "text",
+          "id": "column_1_header",
+          "label": "Column 1 Header",
+          "default": "PERKS"
+        },
+        {
+          "type": "text",
+          "id": "column_2_header",
+          "label": "Column 2 Header",
+          "default": "REWARDS"
+        },
+        {
+          "type": "text",
+          "id": "column_3_header",
+          "label": "Column 3 Header (Highlighted)",
+          "default": "MEMBERSHIP"
+        },
+        {
+          "type": "paragraph",
+          "content": "Use ✓ for checkmarks, leave blank for empty cells, or add text/asterisks as needed"
+        },
+        {
+          "type": "header",
+          "content": "Row 1"
+        },
+        {
+          "type": "text",
+          "id": "row_1_label",
+          "label": "Feature Name",
+          "default": "Sign up gift"
+        },
+        {
+          "type": "text",
+          "id": "row_1_col2",
+          "label": "Rewards Column"
+        },
+        {
+          "type": "text",
+          "id": "row_1_col3",
+          "label": "Membership Column",
+          "default": "✓"
+        },
+        {
+          "type": "header",
+          "content": "Row 2"
+        },
+        {
+          "type": "text",
+          "id": "row_2_label",
+          "label": "Feature Name",
+          "default": "Earn points on purchases"
+        },
+        {
+          "type": "text",
+          "id": "row_2_col2",
+          "label": "Rewards Column",
+          "default": "✓"
+        },
+        {
+          "type": "text",
+          "id": "row_2_col3",
+          "label": "Membership Column",
+          "default": "✓"
+        },
+        {
+          "type": "header",
+          "content": "Row 3"
+        },
+        {
+          "type": "text",
+          "id": "row_3_label",
+          "label": "Feature Name",
+          "default": "Points per $1 spent"
+        },
+        {
+          "type": "text",
+          "id": "row_3_col2",
+          "label": "Rewards Column",
+          "default": "1x"
+        },
+        {
+          "type": "text",
+          "id": "row_3_col3",
+          "label": "Membership Column",
+          "default": "2x"
+        },
+        {
+          "type": "header",
+          "content": "Row 4"
+        },
+        {
+          "type": "text",
+          "id": "row_4_label",
+          "label": "Feature Name",
+          "default": "Always-on sitewide discount"
+        },
+        {
+          "type": "text",
+          "id": "row_4_col2",
+          "label": "Rewards Column"
+        },
+        {
+          "type": "text",
+          "id": "row_4_col3",
+          "label": "Membership Column",
+          "default": "✓"
+        },
+        {
+          "type": "header",
+          "content": "Row 5"
+        },
+        {
+          "type": "text",
+          "id": "row_5_label",
+          "label": "Feature Name",
+          "default": "Sample sale exclusive??"
+        },
+        {
+          "type": "text",
+          "id": "row_5_col2",
+          "label": "Rewards Column"
+        },
+        {
+          "type": "text",
+          "id": "row_5_col3",
+          "label": "Membership Column",
+          "default": "✓"
+        },
+        {
+          "type": "header",
+          "content": "Row 6"
+        },
+        {
+          "type": "text",
+          "id": "row_6_label",
+          "label": "Feature Name",
+          "default": "Early access to sales"
+        },
+        {
+          "type": "text",
+          "id": "row_6_col2",
+          "label": "Rewards Column"
+        },
+        {
+          "type": "text",
+          "id": "row_6_col3",
+          "label": "Membership Column",
+          "default": "✓"
+        },
+        {
+          "type": "header",
+          "content": "Row 7"
+        },
+        {
+          "type": "text",
+          "id": "row_7_label",
+          "label": "Feature Name",
+          "default": "Exclusive bonus points events"
+        },
+        {
+          "type": "text",
+          "id": "row_7_col2",
+          "label": "Rewards Column",
+          "default": "Double Points"
+        },
+        {
+          "type": "text",
+          "id": "row_7_col3",
+          "label": "Membership Column",
+          "default": "Triple Points"
+        },
+        {
+          "type": "header",
+          "content": "Row 8"
+        },
+        {
+          "type": "text",
+          "id": "row_8_label",
+          "label": "Feature Name",
+          "default": "Free ground shipping"
+        },
+        {
+          "type": "text",
+          "id": "row_8_col2",
+          "label": "Rewards Column"
+        },
+        {
+          "type": "text",
+          "id": "row_8_col3",
+          "label": "Membership Column",
+          "default": "✓"
+        },
+        {
+          "type": "header",
+          "content": "Row 9"
+        },
+        {
+          "type": "text",
+          "id": "row_9_label",
+          "label": "Feature Name",
+          "default": "Birthday reward"
+        },
+        {
+          "type": "text",
+          "id": "row_9_col2",
+          "label": "Rewards Column",
+          "default": "✓"
+        },
+        {
+          "type": "text",
+          "id": "row_9_col3",
+          "label": "Membership Column",
+          "default": "✓*"
+        },
+        {
+          "type": "header",
+          "content": "Row 10"
+        },
+        {
+          "type": "text",
+          "id": "row_10_label",
+          "label": "Feature Name",
+          "default": "Anniversary gift"
+        },
+        {
+          "type": "text",
+          "id": "row_10_col2",
+          "label": "Rewards Column",
+          "default": "✓"
+        },
+        {
+          "type": "text",
+          "id": "row_10_col3",
+          "label": "Membership Column",
+          "default": "✓"
+        },
+        {
+          "type": "header",
+          "content": "Row 11"
+        },
+        {
+          "type": "text",
+          "id": "row_11_label",
+          "label": "Feature Name",
+          "default": "Members-only swag/GWP see if yotpo has functionality)"
+        },
+        {
+          "type": "text",
+          "id": "row_11_col2",
+          "label": "Rewards Column"
+        },
+        {
+          "type": "text",
+          "id": "row_11_col3",
+          "label": "Membership Column",
+          "default": "✓"
+        },
+        {
+          "type": "header",
+          "content": "Row 12"
+        },
+        {
+          "type": "text",
+          "id": "row_12_label",
+          "label": "Feature Name",
+          "default": "Sleep Coaching Session"
+        },
+        {
+          "type": "text",
+          "id": "row_12_col2",
+          "label": "Rewards Column"
+        },
+        {
+          "type": "text",
+          "id": "row_12_col3",
+          "label": "Membership Column",
+          "default": "✓*"
+        },
+        {
+          "type": "header",
+          "content": "Row 13"
+        },
+        {
+          "type": "text",
+          "id": "row_13_label",
+          "label": "Feature Name",
+          "default": "In-home sleep study"
+        },
+        {
+          "type": "text",
+          "id": "row_13_col2",
+          "label": "Rewards Column"
+        },
+        {
+          "type": "text",
+          "id": "row_13_col3",
+          "label": "Membership Column",
+          "default": "✓*"
+        },
+        {
+          "type": "header",
+          "content": "Row 14"
+        },
+        {
+          "type": "text",
+          "id": "row_14_label",
+          "label": "Feature Name",
+          "default": "Elevated referral rewards"
+        },
+        {
+          "type": "text",
+          "id": "row_14_col2",
+          "label": "Rewards Column"
+        },
+        {
+          "type": "text",
+          "id": "row_14_col3",
+          "label": "Membership Column",
+          "default": "✓"
+        },
+        {
+          "type": "header",
+          "content": "Row 15 - Cost Row (Bold)"
+        },
+        {
+          "type": "text",
+          "id": "row_15_label",
+          "label": "Feature Name",
+          "default": "Cost"
+        },
+        {
+          "type": "text",
+          "id": "row_15_col2",
+          "label": "Rewards Column",
+          "default": "$0"
+        },
+        {
+          "type": "text",
+          "id": "row_15_col3",
+          "label": "Membership Column",
+          "default": "$99/year"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Program Benefits",
+      "blocks": [
+        {
+          "type": "header"
+        },
+        {
+          "type": "comparison_table"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

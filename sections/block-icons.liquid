@@ -1,0 +1,416 @@
+{% comment %}
+  Section: Block Icons
+  File: sections/block-icons.liquid
+{% endcomment %}
+
+<section id="block-icons-{{ section.id }}" class="block-icons">
+  <div class="block-icons__wrapper">
+    {% if section.settings.eyebrow != blank
+      or section.settings.heading != blank
+      or section.settings.subheading != blank
+    %}
+      <div class="block-icons__header block-icons__header--{{ section.settings.content_alignment }}">
+        {% if section.settings.eyebrow != blank %}
+          <p class="block-icons__eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="block-icons__heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.subheading != blank %}
+          <div class="block-icons__subheading">
+            {{ section.settings.subheading }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="block-icons__grid {% if section.blocks.size < 4 %}block-icons__grid--centered{% endif %}">
+        {% for block in section.blocks %}
+          <div class="block-icons__item" {{ block.shopify_attributes }}>
+            <div class="block-icons__card">
+              
+              {% if block.settings.icon != blank %}
+                <div class="block-icons__icon-wrapper">
+                  {{ block.settings.icon | image_url: width: 200 | image_tag: alt: block.settings.title }}
+                </div>
+              {% endif %}
+
+              {% if block.settings.title != blank %}
+                <h3 class="block-icons__title">
+                  {{ block.settings.title | newline_to_br }}
+                </h3>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <div class="block-icons__text">
+                  {{ block.settings.text }}
+                </div>
+              {% endif %}
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <style>
+    /* SECTION PADDING — DESKTOP */
+    #shopify-section-{{ section.id }} .block-icons {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__wrapper {
+      max-width: {{ section.settings.max_width }}px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__header {
+      margin-bottom: {{ section.settings.header_spacing }}px;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__header--left {
+      text-align: left;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__header--center {
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__eyebrow {
+      font-size: {{ section.settings.eyebrow_font_size_desktop }}px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__heading {
+      font-size: {{ section.settings.heading_font_size_desktop }}px;
+      line-height: 1.2;
+      margin: 0 0 10px;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__subheading {
+      font-size: 16px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* GRID LAYOUT */
+    #shopify-section-{{ section.id }} .block-icons__grid {
+      display: grid;
+      gap: 20px;
+      align-items: stretch;
+      justify-content: center;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__grid--centered {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__item {
+      width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__card {
+      background: #f7f7f7;
+      border-radius: 20px;
+      padding: 24px 18px;
+      text-align: center;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__icon-wrapper {
+      width: {{ section.settings.icon_wrapper_size }}px;
+      height: {{ section.settings.icon_wrapper_size }}px;
+      border-radius: 999px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__icon-wrapper img {
+      max-width: {{ section.settings.icon_size }}px;
+      max-height: {{ section.settings.icon_size }}px;
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__title {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      white-space: pre-line;
+      line-height: {{ section.settings.title_line_height }};
+    }
+
+    #shopify-section-{{ section.id }} .block-icons__text {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    @media screen and (max-width: 749px) {
+
+      /* SECTION PADDING — MOBILE */
+      #shopify-section-{{ section.id }} .block-icons {
+        padding-top: {{ section.settings.padding_top_mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      }
+
+      #shopify-section-{{ section.id }} .block-icons__wrapper {
+        padding: 0 16px;
+      }
+
+      #shopify-section-{{ section.id }} .block-icons__heading {
+        font-size: {{ section.settings.heading_font_size_mobile }}px;
+      }
+
+      #shopify-section-{{ section.id }} .block-icons__eyebrow {
+        font-size: {{ section.settings.eyebrow_font_size_mobile }}px;
+      }
+
+      #shopify-section-{{ section.id }} .block-icons__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      #shopify-section-{{ section.id }} .block-icons__grid.block-icons__grid--centered {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        justify-content: center;
+      }
+
+      #shopify-section-{{ section.id }} .block-icons__card {
+        padding: 18px 10px;
+      }
+
+      #shopify-section-{{ section.id }} .block-icons__title {
+        font-size: 14px;
+      }
+
+      #shopify-section-{{ section.id }} .block-icons__text {
+        font-size: 13px;
+      }
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "Block Icons",
+  "tag": "section",
+  "class": "section block-icons-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top padding (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom padding (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding (mobile)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding (mobile)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 40
+    },
+
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Beauty Benefits"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "This is Beauty Sleep, Elevated."
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Silk set the standard for beauty sleep. Hyper-Silk® just raised it.</p>"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width (px)",
+      "min": 800,
+      "max": 1520,
+      "step": 20,
+      "default": 1100
+    },
+    {
+      "type": "range",
+      "id": "title_line_height",
+      "label": "Title line height",
+      "min": 0.0,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.2
+    },
+    {
+      "type": "header",
+      "content": "Icon styling"
+    },
+    {
+      "type": "range",
+      "id": "icon_wrapper_size",
+      "label": "Icon container size (px)",
+      "min": 40,
+      "max": 140,
+      "step": 4,
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size inside container (px)",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Header styling"
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Spacing below header (px)",
+      "min": 10,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size_desktop",
+      "label": "Eyebrow font size (desktop, px)",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "label": "Heading font size (desktop, px)",
+      "min": 18,
+      "max": 60,
+      "step": 1,
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size_mobile",
+      "label": "Eyebrow font size (mobile, px)",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading font size (mobile, px)",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "default": 26
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_block",
+      "name": "Icon block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Title",
+          "default": "Supports Healthy,\nRadiant Skin"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Optional supporting description.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Block Icons",
+      "blocks": [
+        { "type": "icon_block" },
+        { "type": "icon_block" },
+        { "type": "icon_block" },
+        { "type": "icon_block" }
+      ]
+    }
+  ]
+}
+{% endschema %}

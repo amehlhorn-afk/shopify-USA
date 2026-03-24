@@ -1,0 +1,222 @@
+{{ 'section-breadcrumb-banner.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  {% if section.settings.text_color != blank %}
+  .block__breadcrumb-banner-content .h2,.block__breadcrumb-banner-content p{color:{{ section.settings.text_color }};}
+  {% endif %}
+  
+  .section-{{ section.id }} .block__breadcrumb-banner-overlay{
+    background-color: {{ section.settings.overlay_color }};
+    opacity: 0.{{ section.settings.overlay_opacity }};
+  }
+  .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media (max-width: 1199px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top | times: 0.75 }}px;
+          padding-bottom: {{ section.settings.padding_bottom | times: 0.75 }}px;
+      }
+  }
+  @media (max-width: 749px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top_m }}px;
+          padding-bottom: {{ section.settings.padding_bottom_m }}px;
+      }
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }} section-breadcrumb-banner z-index-1 relative">
+  {% if section.settings.overlay %} <span class="block__breadcrumb-banner-overlay z-index--1 absolute"></span> {% endif %}
+  {% if section.settings.img != blank %}
+    <div class="section-breadcrumb-banner-bg absolute">
+      {% render 'custom-image', image: section.settings.img, class: 'img-fluid desktop-bg object-cover' %}
+      {% if section.settings.img_mobile != blank %}
+        {% assign mobile_bg = section.settings.img_mobile %}
+        {% else %}
+        {% assign mobile_bg = section.settings.img %}
+    {% endif %}
+    {% render 'custom-image', image: mobile_bg, class: 'img-fluid mobile-bg object-cover' %}
+    </div>
+  {% endif %}
+  <div class="page-width">
+    <div class="block__breadcrumb-banner-content text-center">
+      <h1 class="block__breadcrumb-banner-title {{ section.settings.title_font_size }} h2">
+        {% if section.settings.title != blank %}{{ section.settings.title }}{% else %}{{ page.title }}{% endif %}
+      </h1>
+      {% if section.settings.text != blank %}
+        <p class="{{ section.settings.text_font_size }} block__breadcrumb-banner-text">{{ section.settings.text }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Breadcrumb Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Select Background Image(Desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_mobile",
+      "label": "Select Background Image(Mobile)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "select",
+      "id": "title_font_size",
+      "label": "Title Font Size",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "primary_h2",
+          "label": "Primary H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "text_font_size",
+      "label": "Text Font Size",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4" 
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        },
+        {
+          "value": "medium_body",
+          "label": "Font-size 18"
+        },
+        {
+          "value": "body",
+          "label": "Font-size 16"
+        }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#ffffff",
+      "label": "Text Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay",
+      "label": "Enable Overlay",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "unit": "%",
+      "step": 1,
+      "label": "Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200, 
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Breadcrumb Banner"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,125 @@
+{% schema %}
+{
+  "name": "Scroll Effect Section",
+  "tag": "section",
+  "class": "scroll-section-wrapper",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scroll Effect Section"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="scroll-section">
+  <div class="scroll-label">WAKE READY<sup class="spaced-sup">®</sup></div>
+  <div class="scroll-inner">
+    <div class="scroll-text">
+      <p class="para">
+        At BEDGEAR, we don’t do tired.<br>
+        Because tired is a waste of time.<br>
+        We don’t crash. We don’t coast.<br>
+        And we <em>never</em> quit.
+      </p>
+      <p class="para">
+        We make Performance<sup class="spaced-sup">®</sup> sleep gear for people who like being awake. For the
+        go-getters, the hard workers, and the weekend warriors. The night-shifters and the early risers. The ones who
+        don’t leave recovery to chance, because they know it’s either bounce back or burn out.
+      </p>
+      <p class="para">
+        Sleep isn’t a break from the grind. It’s part of it.<br>
+        And when your sleep keeps up, so do you.<br>
+        <br>
+        Wake Ready<sup class="spaced-sup">®</sup>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .scroll-section {
+    position: relative;
+    background-image: url({{ section.settings.background_image | image_url }});
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    padding: 300px 0;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .scroll-inner {
+    position: relative;
+    max-width: 918px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    z-index: 2;
+  }
+
+  .scroll-label {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%) translateY(180px) rotate(-90deg);
+    transform-origin: left top;
+    font-family: Roboto;
+    font-size: 52px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #FFF;
+    white-space: nowrap;
+    z-index: 1;
+    pointer-events: none;
+    display:none;
+  }
+
+  .scroll-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+    padding-top: 0vh; /* Push paragraphs lower into the viewport */
+  }
+
+  .scroll-text .para {
+    font-family: Roboto;
+    font-size: 42px;
+    font-weight: 500;
+    line-height: 75px;
+    color: #FFF;
+  }
+
+  .scroll-text em {
+    font-style: italic;
+  }
+
+  .spaced-sup {
+    margin-left: 4px;
+    font-size: 0.6em;
+  }
+
+  @media (max-width: 768px) {
+    .scroll-inner {
+      padding: 0 20px;
+    }
+  .scroll-section {
+    padding-top: 100px !important;
+    padding-bottom: 100px !important;
+  }
+    .scroll-text .para {
+      font-size: 24px;
+      line-height: 1.6;
+    }
+
+    .scroll-label {
+      display: none;
+    }
+  }
+</style>

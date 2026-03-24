@@ -1,0 +1,479 @@
+{% comment %}
+  Loyalty Points Value Section
+  Shows point redemption values with image
+{% endcomment %}
+
+<style>
+  .loyalty-points-value {
+    font-family: 'Roboto', sans-serif;
+    background: #ffffff;
+    width: 100%;
+  }
+
+  .loyalty-points-value__container {
+    display: flex;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+    background: #f5f5f5;
+  }
+
+  .loyalty-points-value__image-wrapper {
+    flex: 0 0 50%;
+    height: 649px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .loyalty-points-value__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .loyalty-points-value__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    text-align: center;
+  }
+
+  .loyalty-points-value__header {
+    margin-bottom: 40px;
+  }
+
+  .loyalty-points-value__title {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 33.152px;
+    line-height: 36.17px;
+    letter-spacing: 1.6576px;
+    text-transform: uppercase;
+    color: #000000;
+    margin: 0 0 18px 0;
+  }
+
+  .loyalty-points-value__subtitle {
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-style: italic;
+    font-size: 25.024px;
+    line-height: 29.484px;
+    color: #000000;
+    margin: 0;
+  }
+
+  .loyalty-points-value__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .loyalty-points-value__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    font-family: 'DIN', 'Roboto', sans-serif;
+    font-size: 27.024px;
+    line-height: 29.484px;
+    letter-spacing: 1.3512px;
+    text-transform: uppercase;
+    color: #000000;
+  }
+
+  .loyalty-points-value__points {
+    text-align: left;
+  }
+
+  .loyalty-points-value__arrow {
+    flex-shrink: 0;
+    width: 55px;
+    height: 15px;
+    background: url('data:image/svg+xml,<svg width="55" height="15" viewBox="0 0 55 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 7.5H53M53 7.5L46 1M53 7.5L46 14" stroke="%23000000" stroke-width="2"/></svg>') center center no-repeat;
+    background-size: contain;
+  }
+
+  .loyalty-points-value__value {
+    text-align: right;
+  }
+
+  /* Layout Options */
+  .loyalty-points-value--image-right .loyalty-points-value__container {
+    flex-direction: row-reverse;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 1200px) {
+    .loyalty-points-value__content {
+      padding: 50px 60px;
+    }
+
+    .loyalty-points-value__title {
+      font-size: 28px;
+    }
+
+    .loyalty-points-value__subtitle {
+      font-size: 20px;
+    }
+
+    .loyalty-points-value__item {
+      font-size: 22px;
+      gap: 30px;
+    }
+
+    .loyalty-points-value__arrow {
+      width: 45px;
+    }
+  }
+
+  @media (max-width: 968px) {
+    .loyalty-points-value__container {
+      flex-direction: column;
+    }
+
+    .loyalty-points-value--image-right .loyalty-points-value__container {
+      flex-direction: column;
+    }
+
+    .loyalty-points-value__image-wrapper {
+      width: 100%;
+      height: 400px;
+    }
+
+    .loyalty-points-value__content {
+      width: 100%;
+      padding: 50px 40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .loyalty-points-value__image-wrapper {
+      height: 350px;
+    }
+
+    .loyalty-points-value__content {
+      padding: 40px 30px;
+    }
+
+    .loyalty-points-value__header {
+      margin-bottom: 30px;
+    }
+
+    .loyalty-points-value__title {
+      font-size: 26px;
+      margin-bottom: 12px;
+    }
+
+    .loyalty-points-value__subtitle {
+      font-size: 18px;
+    }
+
+    .loyalty-points-value__item {
+      font-size: 20px;
+      gap: 20px;
+    }
+
+    .loyalty-points-value__arrow {
+      width: 40px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .loyalty-points-value__image-wrapper {
+      height: 300px;
+    }
+
+    .loyalty-points-value__content {
+      padding: 30px 20px;
+    }
+
+    .loyalty-points-value__title {
+      font-size: 24px;
+    }
+
+    .loyalty-points-value__subtitle {
+      font-size: 16px;
+    }
+
+    .loyalty-points-value__item {
+      font-size: 18px;
+      gap: 15px;
+      flex-wrap: nowrap;
+    }
+
+    .loyalty-points-value__arrow {
+      width: 35px;
+      min-width: 35px;
+    }
+
+    .loyalty-points-value__list {
+      gap: 12px;
+    }
+  }
+</style>
+
+<section class="loyalty-points-value {% if section.settings.image_position == 'right' %}loyalty-points-value--image-right{% endif %}" 
+         style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="loyalty-points-value__container">
+    
+    {% if section.settings.image %}
+      <div class="loyalty-points-value__image-wrapper">
+        <img 
+          class="loyalty-points-value__image"
+          src="{{ section.settings.image | img_url: '800x' }}"
+          srcset="{{ section.settings.image | img_url: '600x' }} 600w,
+                  {{ section.settings.image | img_url: '800x' }} 800w,
+                  {{ section.settings.image | img_url: '1200x' }} 1200w"
+          sizes="(max-width: 968px) 100vw, 50vw"
+          alt="{{ section.settings.title }}"
+          loading="lazy"
+        >
+      </div>
+    {% endif %}
+
+    <div class="loyalty-points-value__content">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          
+          {% when 'header' %}
+            <div class="loyalty-points-value__header">
+              {% if block.settings.title != blank %}
+                <h2 class="loyalty-points-value__title">{{ block.settings.title }}</h2>
+              {% endif %}
+              {% if block.settings.subtitle != blank %}
+                <p class="loyalty-points-value__subtitle">{{ block.settings.subtitle }}</p>
+              {% endif %}
+            </div>
+
+          {% when 'points_list' %}
+            <div class="loyalty-points-value__list">
+              {% if block.settings.row_1_points != blank %}
+                <div class="loyalty-points-value__item">
+                  <span class="loyalty-points-value__points">{{ block.settings.row_1_points }}</span>
+                  <span class="loyalty-points-value__arrow"></span>
+                  <span class="loyalty-points-value__value">{{ block.settings.row_1_value }}</span>
+                </div>
+              {% endif %}
+
+              {% if block.settings.row_2_points != blank %}
+                <div class="loyalty-points-value__item">
+                  <span class="loyalty-points-value__points">{{ block.settings.row_2_points }}</span>
+                  <span class="loyalty-points-value__arrow"></span>
+                  <span class="loyalty-points-value__value">{{ block.settings.row_2_value }}</span>
+                </div>
+              {% endif %}
+
+              {% if block.settings.row_3_points != blank %}
+                <div class="loyalty-points-value__item">
+                  <span class="loyalty-points-value__points">{{ block.settings.row_3_points }}</span>
+                  <span class="loyalty-points-value__arrow"></span>
+                  <span class="loyalty-points-value__value">{{ block.settings.row_3_value }}</span>
+                </div>
+              {% endif %}
+
+              {% if block.settings.row_4_points != blank %}
+                <div class="loyalty-points-value__item">
+                  <span class="loyalty-points-value__points">{{ block.settings.row_4_points }}</span>
+                  <span class="loyalty-points-value__arrow"></span>
+                  <span class="loyalty-points-value__value">{{ block.settings.row_4_value }}</span>
+                </div>
+              {% endif %}
+
+              {% if block.settings.row_5_points != blank %}
+                <div class="loyalty-points-value__item">
+                  <span class="loyalty-points-value__points">{{ block.settings.row_5_points }}</span>
+                  <span class="loyalty-points-value__arrow"></span>
+                  <span class="loyalty-points-value__value">{{ block.settings.row_5_value }}</span>
+                </div>
+              {% endif %}
+            </div>
+
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Points Value",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Recommended: 800x649px or larger"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "header",
+      "name": "Section Header",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "POINTS VALUE"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "100 points = $1 redemption"
+        }
+      ]
+    },
+    {
+      "type": "points_list",
+      "name": "Points List",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Row 1"
+        },
+        {
+          "type": "text",
+          "id": "row_1_points",
+          "label": "Points Amount",
+          "default": "1,000 POINTS"
+        },
+        {
+          "type": "text",
+          "id": "row_1_value",
+          "label": "Dollar Value",
+          "default": "$10"
+        },
+        {
+          "type": "header",
+          "content": "Row 2"
+        },
+        {
+          "type": "text",
+          "id": "row_2_points",
+          "label": "Points Amount",
+          "default": "2,500 POINTS"
+        },
+        {
+          "type": "text",
+          "id": "row_2_value",
+          "label": "Dollar Value",
+          "default": "$25"
+        },
+        {
+          "type": "header",
+          "content": "Row 3"
+        },
+        {
+          "type": "text",
+          "id": "row_3_points",
+          "label": "Points Amount",
+          "default": "5,000 POINTS"
+        },
+        {
+          "type": "text",
+          "id": "row_3_value",
+          "label": "Dollar Value",
+          "default": "$50"
+        },
+        {
+          "type": "header",
+          "content": "Row 4"
+        },
+        {
+          "type": "text",
+          "id": "row_4_points",
+          "label": "Points Amount",
+          "default": "7,500 POINTS"
+        },
+        {
+          "type": "text",
+          "id": "row_4_value",
+          "label": "Dollar Value",
+          "default": "$75"
+        },
+        {
+          "type": "header",
+          "content": "Row 5 (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "row_5_points",
+          "label": "Points Amount",
+          "info": "Leave blank to hide"
+        },
+        {
+          "type": "text",
+          "id": "row_5_value",
+          "label": "Dollar Value"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Points Value",
+      "blocks": [
+        {
+          "type": "header"
+        },
+        {
+          "type": "points_list"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

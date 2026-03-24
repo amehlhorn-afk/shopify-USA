@@ -1,0 +1,115 @@
+
+{% style %}
+  @media (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.desktop_padding_top }}px;
+      padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+    }
+  }
+  @media (max-width: 989px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+  }
+    .p-w-r .pr-war {margin: 0 auto;}
+    .p-w-r .pr-header-title {display: none;}
+    .block__write-a-review  .block__heading .h2{margin-bottom: 30px;}
+    .p-w-r .alert-danger, .p-w-r .pr-alert-danger {display: none;}
+{% endstyle %}
+{% if page.title contains 'Write a Review' %}
+  <h1 style="display:none">{{ page.title }}</h1>
+{% endif %}
+<div class="block__write-a-review section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="block__heading center">
+        {% if section.settings.heading %}
+            <h2 class="h2"> {{ section.settings.heading }}</h2>
+        {% endif %}
+    </div>
+    <!-- PowerReviews Code Start -->
+    <div id="pr-write"></div>
+    <!-- PowerReviews Code End -->
+  </div>
+</div>
+<script src="https://ui.powerreviews.com/stable/4.1/ui.js" async></script>
+<script>
+  window.pwr = window.pwr || function () {
+    (pwr.q = pwr.q || []).push(arguments); 
+  };
+   pwr("render", {
+    api_key: '3a5017af-6b0b-4aa7-ac7d-3352896fe3e2',
+    locale: 'en_US',
+    merchant_group_id: '2014345704',
+    merchant_id: '1806575603',
+    on_submit:function(config, data){
+         window.scrollTo(0,0); 
+     },
+    components: {
+      Write: 'pr-write'
+    }
+  });
+</script>
+{% schema %}
+{
+  "name": "Write a Review",
+  "class": "block__write-a-review-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Padding Bottom",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Mobile Padding"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Write a Review",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

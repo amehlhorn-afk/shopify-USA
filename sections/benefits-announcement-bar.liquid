@@ -1,0 +1,225 @@
+{{ 'benefits-announcement-bar.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  @media (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.desktop_padding_top }}px;
+      padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+    }
+  }
+  @media (max-width: 989px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+  }
+  
+  .block__benefits-bar-static-inner {
+    gap: 60px;
+    justify-content: center;
+  }
+  
+  .block__benefit-item {
+    gap: 12px;
+  }
+  
+  /* Hide duplicate items on desktop */
+  @media (min-width: 990px) {
+    .block__benefit-item-duplicate {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 989px) {
+    .block__benefits-bar-mobile-wrapper {
+      overflow: hidden;
+      width: 100%;
+    }
+    
+    .block__benefits-bar-static-inner {
+      display: flex;
+      gap: 40px;
+      animation: scroll-mobile 20s linear infinite;
+      width: max-content;
+    }
+    
+    .block__benefit-item {
+      flex-shrink: 0;
+      min-width: max-content;
+    }
+    
+    .block__slider-content-inner {
+      white-space: nowrap;
+    }
+    
+    @keyframes scroll-mobile {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+    
+    /* Pause animation on hover */
+    .block__benefits-bar-mobile-wrapper:hover .block__benefits-bar-static-inner {
+      animation-play-state: paused;
+    }
+  }
+{% endstyle %}
+
+<div class="block__benefits-announcement-bar section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="block__benefits-bar-mobile-wrapper">
+      <div class="block__benefits-bar-static-inner flex items-center w-full">
+        {% for block in section.blocks %}
+          {% if block.settings.icon_image != blank or block.settings.text != blank %}
+            <div class="block__benefit-item flex items-center">
+              <div class="block__slider-image-inner">
+                {% render 'custom-image', image: block.settings.icon_image, class: 'object-cover block h-full' %}
+              </div>
+              <div class="block__slider-content-inner whitespace-nowrap">
+                {{ block.settings.text }}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+        <!-- Duplicate items for seamless loop on mobile -->
+        {% for block in section.blocks %}
+          {% if block.settings.icon_image != blank or block.settings.text != blank %}
+            <div class="block__benefit-item block__benefit-item-duplicate flex items-center">
+              <div class="block__slider-image-inner">
+                {% render 'custom-image', image: block.settings.icon_image, class: 'object-cover block h-full' %}
+              </div>
+              <div class="block__slider-content-inner whitespace-nowrap">
+                {{ block.settings.text }}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Benefits Announcement Bar",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Padding Bottom",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Text",
+      "name": "Benefits",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "default": "Browse our latest products",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h1",
+              "label": "Extra extra large"
+            },
+            {
+              "value": "h2",
+              "label": "Extra large"
+            },
+            {
+              "value": "h3",
+              "label": "Large"
+            },
+            {
+              "value": "h4",
+              "label": "Extra extra medium"
+            },
+            {
+              "value": "primary_h4",
+              "label": "Extra medium"
+            },
+            {
+              "value": "seconday_h4",
+              "label": "Medium"
+            },
+            {
+              "value": "h5",
+              "label": "Small"
+            },
+            {
+              "value": "h6",
+              "label": "Extra small"
+            }
+          ],
+          "default": "h2",
+          "label": "Heading size"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits Announcement Bar",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

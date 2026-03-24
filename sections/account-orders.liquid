@@ -1,0 +1,324 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.50 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.50 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding color-{{ section.settings.section_color_scheme }} block__order-history-section">
+  <div class="page-width">
+    <div class="block__customer-account-page-main flex items-start">
+      <div class="block__customer-account-titles-wrapper w-full">
+        {% render 'account-menu' %}
+      </div>
+      <div class="block__customer-account-overview">
+        {%- if customer.orders.size > 0 -%}
+          <h1 class="customer-account-detail-title font-weight-600">{{ 'customer.orders.order_subheading' | t }}</h1>
+          <hr>
+          <div class="block_customers-order-inner">
+            {% paginate customer.orders by 999 %}
+              <div class="block_customers-order-data">
+                {%- for order in customer.orders -%}
+                  <div class="block_customers-order-info {% if forloop.index == 1 %}open{% endif %}">
+                    <div class="block_customers-order-info-wrapper">
+                      <div class="block_customers-order-info-top flex items-center justify-between">
+                        <div class="block_customers-order-info-top-left flex items-center">
+                          <p class="block_order-name">
+                            {{ 'customer.orders.order_number' | t }}
+                            <span class="font-weight-700">{{ order.name }}</span>
+                          </p>
+                          <p class="block_order-date">
+                            {{ 'customer.orders.order_date' | t }}
+                            <strong>{{- order.created_at | time_tag: format: 'date' -}}</strong>
+                          </p>
+                        </div>
+                        <div class="block_customers-order-info-top-right flex items-center">
+                          <div class="block_total-order-info">
+                            <p class="medium_body">
+                              <span>{{ 'customer.order.total_order' | t }}:</span>
+                              <strong class="font-weight-700">{{ order.total_price | money }}</strong>
+                            </p>
+                          </div>
+                          <div
+                            class="block_order-mange-order block__mobile-view flex items-center gap-15 {% if forloop.index == 1 %}active{% endif %}"
+                          >
+                            <p>{{ 'customer.order.manage_order' | t }}</p>
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 20 20"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="arrow-svg"
+                            >
+                              <path d="M15 12.5L10 7.5L5 12.5" stroke="#0F1433" stroke-width="1.5"
+                                  stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                          </div>
+                          <div class="block_order-mange-order block__toggle-button flex items-center {% if forloop.index == 1 %}active{% endif %}">
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="block__minus-svg"
+                            >
+                              <path d="M13.5 9.5H2.5C2.20833 9.5 1.96875 9.40625 1.78125 9.21875C1.59375 9.03125 1.5 8.79167 1.5 8.5C1.5 8.20833 1.59375 7.96875 1.78125 7.78125C1.96875 7.59375 2.20833 7.5 2.5 7.5H13.5C13.7917 7.5 14.0312 7.59375 14.2188 7.78125C14.4062 7.96875 14.5 8.20833 14.5 8.5C14.5 8.79167 14.4062 9.03125 14.2188 9.21875C14.0312 9.40625 13.7917 9.5 13.5 9.5Z" fill="#101828" />
+                            </svg>
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="block__plus-svg"
+                            >
+                              <path d="M14.5 8.5C14.5 8.79167 14.4062 9.03125 14.2188 9.21875C14.0312 9.40625 13.7917 9.5 13.5 9.5H9V14C9 14.2917 8.90625 14.5312 8.71875 14.7188C8.53125 14.9062 8.29167 15 8 15C7.70833 15 7.46875 14.9062 7.28125 14.7188C7.09375 14.5312 7 14.2917 7 14V9.5H2.5C2.20833 9.5 1.96875 9.40625 1.78125 9.21875C1.59375 9.03125 1.5 8.79167 1.5 8.5C1.5 8.20833 1.59375 7.96875 1.78125 7.78125C1.96875 7.59375 2.20833 7.5 2.5 7.5H7V3C7 2.70833 7.09375 2.46875 7.28125 2.28125C7.46875 2.09375 7.70833 2 8 2C8.29167 2 8.53125 2.09375 8.71875 2.28125C8.90625 2.46875 9 2.70833 9 3V7.5H13.5C13.7917 7.5 14.0312 7.59375 14.2188 7.78125C14.4062 7.96875 14.5 8.20833 14.5 8.5Z" fill="#101828" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="block_customers-order-info-bottom {% if forloop.index == 1 %}active{% endif %}">
+                      {% for item in order.line_items %}
+                        <div class="block_customers-order-info-bottom-inner">
+                          <div class="block_customers-order-info-history">
+                            <div class="block_customers-order-image">
+                              <img
+                                class="block_order_image"
+                                src="{{ item.image | image_url: width: 128, height: 128 }}"
+                                loading="lazy"
+                                width="100px"
+                                height="80px"
+                              >
+                            </div>
+                            <div class="block_customers-order-image-info block__desktop-view">
+                              <div class="block__order-items-detail">
+                                <p class="block_data_order_items_title extra_body">
+                                  <a href="{{ item.url }}">{{ item.product.title }}</a>
+                                </p>
+                              </div>
+                              <div class="block_data_order_items_quantity">
+                                <p class="extra_body">
+                                  <span>Qty:</span>
+                                  {{ item.quantity }}
+                                </p>
+                              </div>
+                              <div class="block_data_order_price">
+                                <p class="extra_body font-weight-500">{{ item.price | money }}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="block__customer-order-product-info">
+                            <div class="block_customers-order-image-info block__mobile-view">
+                              <div class="block_customers-order-image-info">
+                                <div class="block__order-items-detail">
+                                  <p class="block_data_order_items_title extra_body">
+                                    <a href="{{ item.url }}">{{ item.product.title }}</a>
+                                  </p>
+                                </div>
+                                <div class="block_data_order_items_quantity">
+                                  <p class="extra_body"><span>Qty:</span> {{ item.quantity }}</p>
+                                </div>
+                                <div class="block_data_order_price">
+                                  <p class="extra_body font-weight-500">{{ item.price | money }}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="block_data_order_items_status flex gap-15 items-center">
+                              <div class="block__order-status-items-text order-default-text extra_body">
+                                <span>{{ 'customer.orders.date' | t }}: </span>
+                                <span>{{ 'customer.orders.payment_status' | t }}:</span>
+                                <span>{{ 'customer.orders.fulfillment_status' | t }}:</span>
+                              </div>
+                              <div class="block__order-status-items-text extra_body font-weight-500">
+                                <span>
+                                  {{- order.created_at | time_tag: format: 'date' -}}
+                                </span>
+                                <span>
+                                  {{ order.financial_status_label }}
+                                </span>
+                                <span>
+                                  {{ order.fulfillment_status_label }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                    <div class="block_total-order-info-bottom">
+                      <div class="block__bottom-inner flex items-center">
+                        <div class="block_address_box">
+                          {%- for address in customer.addresses limit: 1 -%}
+                            <div class="block__address-box-inner">
+                              <p class="block__account-tabs-address-person-name small_body">
+                                {{ 'customer.order.billing_address' | t }}:
+                              </p>
+                              <div class="block__account-tabs-address font-weight-500">
+                                {% if address.address1 != blank %}
+                                  {{ address.address1 }},
+                                {% endif %}
+                                {% if address.address2 != blank %}
+                                  {{ address.address2 }}
+                                  <br>
+                                {% endif %}
+                                {% if address.city != blank %}
+                                  {{ address.city }}
+                                  {% if address.zip != blank %}- {{ address.zip }}{% endif %},
+                                {% endif %}
+                                {{ address.country }}
+                              </div>
+                            </div>
+                          {% endfor %}
+                          <div class="block__order-payment-info-wrapper">
+                            <span class="small_body block__order-payment-method-text block">Payment Method: </span>
+                            <span class=" block__order-payment-method-name font-weight-500">
+                              {% for transaction in order.transactions %}
+                                {% if transaction.payment_details.credit_card_company %}
+                                  <span>
+                                    {{- transaction.payment_details.credit_card_company }}
+                                    {{ transaction.payment_details.credit_card_last_four_digits -}}
+                                  </span>
+                                {% elsif transaction.gateway != 'shopify_payments' %}
+                                  <span>{{ transaction.gateway_display_name }}</span>
+                                {% endif %}
+                              {% endfor %}
+                            </span>
+                          </div>
+                          <div class="block__order-total-price-moile none medium_body font-weight-500">
+                            <div class="total-price-wrapper flex items-center">
+                              <p>{{ 'customer.order.total_order' | t }}:</p>
+                              <span>{{ order.total_price | money }}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="block__order-total-info-inner flex flex-direction-column">
+                          <div class="block__order-total-info-items flex justify-between">
+                            <p>{{ 'customer.order.subtotal' | t }}</p>
+                            <span class="font-weight-500">{{ order.subtotal_price | money }}</span>
+                          </div>
+                          <div class="block__order-total-info-items flex justify-between">
+                            <p>{{ 'customer.order.shipping_amount' | t }}</p>
+                            <span class="font-weight-500">{{ order.shipping_price | money }}</span>
+                          </div>
+                          <div class="block__order-total-info-items flex justify-between">
+                            <p>{{ 'customer.order.tax' | t }}</p>
+                            <span class="font-weight-500">{{ order.tax_price | money }}</span>
+                          </div>
+                          <div class="block__order-total-price-items medium_body flex justify-between font-weight-500">
+                            <p>{{ 'customer.order.total_order' | t }}</p>
+                            <span>{{ order.total_price | money }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="block__traking-order-button w-full flex items-center justify-end gap-15">
+                        <a
+                          href="https://bedgear.com/pages/faq"
+                          class="block__return-and-exchnage-button w-full flex items-center justify-center button-primary small_body"
+                          target="_blank"
+                        >
+                          {{ 'customer.order.return_and_exchange' | t }}
+                        </a>
+                        <a
+                          href="{{ order.item.fulfillment.tracking_url }}"
+                          class="block__track-order-button button-quaternary small_body"
+                          target="_blank"
+                        >
+                          {{ 'customer.order.tracking_order' | t }}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endpaginate %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Account Order",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "section_color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Account Pages Link",
+      "type": "Link",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "menu_logo",
+          "label": "Logo"
+        },
+        {
+          "type": "text",
+          "id": "menu_text",
+          "label": "Menu Label"
+        },
+        {
+          "type": "url",
+          "id": "menu_url",
+          "label": "Menu Url"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Account Orders",
+      "blocks": [
+        {
+          "type": "Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

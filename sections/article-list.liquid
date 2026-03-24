@@ -1,0 +1,279 @@
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-featured-blog.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  @media (min-width:750px){
+      .section-{{ section.id }}-padding{
+          padding-top:{{ section.settings.desktop_padding_top }}px;
+          padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+      }
+  }
+  @media (max-width:749px){
+      .section-{{ section.id }}-padding{
+          padding-top:{{ section.settings.mobile_padding_top }}px;
+          padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+      }
+      {% if section.settings.text_center_mo %}
+        .article-list-section.section-{{ section.id }}-padding .article-row {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        .article-list-section.section-{{ section.id }}-padding .shop-all-btn {
+          margin: 0 auto;
+        }
+      {% endif %}
+  }
+{% endstyle %}
+
+<div class="article-list-section color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding">
+  <div class="page-width">
+    {% unless section.settings.section_title == blank %}
+      <div class="title-wrapper-with-link">
+        <h2
+          id="SectionHeading-{{ section.id }}"
+          class="article-section__title {{ section.settings.heading_size }}"
+        >
+          {{ section.settings.section_title }}
+        </h2>
+        {% if section.settings.section_subtitle != blank %}
+          <p class="article-section__subtitle">{{ section.settings.section_subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endunless %}
+
+    <div class="article-list">
+      {% for block in section.blocks %}
+        <div class="article-row">
+          <h3 class="article-title">{{ block.settings.article_title }}</h3>
+          <p class="article-description">{{ block.settings.article_description }}</p>
+          {% if block.settings.article_link != blank %}
+            <a href="{{ block.settings.article_link }}" class="shop-all-btn" target="_blank">
+              {{ block.settings.button_text }}
+            </a>
+          {% endif %}
+        </div>
+
+        {% unless forloop.last %}
+          <hr class="article-divider">
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+.page-width {
+  max-width: 1500px; /* Constrain content */
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.article-section__title {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.article-section__subtitle {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 32px;
+  color: var(--secondary-color);
+}
+
+.article-list {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.article-row {
+  text-align: left;
+}
+
+.article-title {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.article-description {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.shop-all-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--primary-color);
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.shop-all-btn:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+/* Divider between articles */
+.article-divider {
+  margin: 32px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .article-section__title {
+    font-size: 22px;
+  }
+  .article-section__subtitle {
+    font-size: 14px;
+  }
+  .article-title {
+    font-size: 18px;
+  }
+  .article-description {
+    font-size: 14px;
+  }
+  .shop-all-btn {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Article List Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Featured Articles"
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "default": "Check out our latest updates and products."
+    },
+    {
+      "type": "checkbox",
+      "id": "text_center_mo",
+      "label": "Center content on mobile",
+      "default": false
+    },
+    {
+        "type": "header",
+        "content": "Desktop Spacing"
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_top",
+        "min": 0,
+        "max": 200,
+        "step": 2,
+        "unit": "px",
+        "label": "Desktop Padding Top",
+        "default": 40
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_bottom",
+        "min": 0,
+        "max": 200,
+        "step": 2,
+        "unit": "px",
+        "label": "Desktop Padding Bottom",
+        "default": 40
+    },
+    {
+        "type": "header",
+        "content": "Mobile Spacing"
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_top",
+        "min": 0,
+        "max": 200,
+        "step": 2,
+        "unit": "px",
+        "label": "Mobile Padding Top",
+        "default": 20
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_bottom",
+        "min": 0,
+        "max": 200,
+        "step": 2,
+        "unit": "px",
+        "label": "Mobile Padding Bottom",
+        "default": 20
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Section Heading Size",
+      "default": "h2",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article",
+      "name": "Article",
+      "settings": [
+        {
+          "type": "text",
+          "id": "article_title",
+          "label": "Article Title",
+          "default": "This will be the title of the article"
+        },
+        {
+          "type": "textarea",
+          "id": "article_description",
+          "label": "Article Description",
+          "default": "This is where the description of the article will go."
+        },
+        {
+          "type": "text",
+          "id": "article_link",
+          "label": "Article Link",
+          "default": "/products/night-ice-performance-pillow"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Read More"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article List Section",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

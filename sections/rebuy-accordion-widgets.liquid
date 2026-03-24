@@ -1,0 +1,403 @@
+{%- comment -%}
+  Rebuy Carousel Accordion Section
+  Allows adding up to 6 rebuy widgets with custom toggle titles
+{%- endcomment -%}
+
+<div id="rebuy-accordion-{{ section.id }}" class="{{ section.settings.custom_class }} rebuy-accordion">
+  <div class="rebuy-accordion-container">
+    <div class="rebuy-accordion-toggles">
+        {% for block in section.blocks %}
+          <button
+            class="rebuy-accordion-toggle{% if forloop.first %} is-active{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.title }}
+          </button>
+        {% endfor %}
+    </div>
+
+    {% for block in section.blocks %}
+      <div
+        class="rebuy-accordion-panel{% if forloop.first %} is-active{% endif %}"
+        data-rebuy-id="{{ block.settings.widget_id }}"
+        {{ block.shopify_attributes }}
+      ></div>
+    {% endfor %}
+  </div>
+</div>
+
+{%- comment -%} Render widget templates for each block {%- endcomment -%}
+{% for block in section.blocks %}
+  {% render 'rebuy-accordion-widget-template', widget_id: block.settings.widget_id %}
+{% endfor %}
+
+<script>
+  document.addEventListener('rebuy.loaded', () => {
+    const accordion = document.getElementById('rebuy-accordion-{{ section.id }}');
+    if (!accordion) return;
+
+    const toggles = accordion.querySelectorAll('.rebuy-accordion-toggle');
+    const panels = accordion.querySelectorAll('.rebuy-accordion-panel');
+    const combinedWidgetIds = Array.from(panels).map(p => p.dataset.rebuyId);
+
+    document.addEventListener('rebuy.ready', function (event) {
+      const widget = event.detail.widget;
+      if (combinedWidgetIds.includes(String(widget.id))) {
+        // console.log("combined widget is ready", widget.data.config, widget);
+
+        const panelIndex = combinedWidgetIds.indexOf(String(widget.id));
+        const toggle = toggles[panelIndex];
+        if (toggle) {
+          toggle.addEventListener('click', () => {
+            const allTogglesAndPanels = accordion.querySelectorAll('.rebuy-accordion-toggle, .rebuy-accordion-panel');
+            allTogglesAndPanels.forEach(el => el.classList.remove('is-active'));
+            toggle.classList.add('is-active');
+            const panel = accordion.querySelector(`.rebuy-accordion-panel[data-rebuy-id="${widget.id}"]`);
+            panel?.classList.add('is-active');
+          });
+        }
+      }
+    });
+  });
+</script>
+
+<style>
+.collection.block__main-product-grid {
+  display: none !important;
+}
+
+#rebuy-accordion-{{ section.id }} {
+  background: transparent;
+  padding: 48px 20px;
+  margin: 0 auto;
+  max-width: 1600px;
+  overflow: hidden;
+}
+#rebuy-accordion-{{ section.id }} .rebuy-accordion-container {
+  position: relative;
+  margin: auto;
+}
+#rebuy-accordion-{{ section.id }} + [data-rebuy-id] {
+  display: none;
+}
+#rebuy-accordion-{{ section.id }} .rebuy-accordion-toggles {
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 20px;
+  z-index: 1;
+  min-width: 100%;
+  padding: 0 0 20px 0;
+}
+#rebuy-accordion-{{ section.id }} .rebuy-accordion-toggle {
+  position: relative;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #000000;
+  padding: 10px 22px;
+  border: unset;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  background: #f5f5f5;
+  font-family:  var(--font-heading-family);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border 0.3s;
+}
+#rebuy-accordion-{{ section.id }} .rebuy-accordion-toggle.is-active,
+#rebuy-accordion-{{ section.id }} .rebuy-accordion-toggle:hover {
+  background: #009FC7;
+  color: #ffffff;
+  border: unset;
+}
+
+#rebuy-accordion-{{ section.id }} .rebuy-accordion-toggle.is-active:after {
+  width: 100%;
+}
+
+#rebuy-accordion-{{ section.id }} .rebuy-accordion-panel {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  overflow: hidden;
+}
+#rebuy-accordion-{{ section.id }} .rebuy-accordion-panel.is-active {
+  opacity: 1;
+  visibility: visible;
+  max-height: 2000px;
+  overflow: visible;
+}
+
+@media (max-width: 768px) {
+  #rebuy-accordion-{{ section.id }} .rebuy-accordion {
+    padding: 20px;
+  }
+  #rebuy-accordion-{{ section.id }} .rebuy-accordion-toggles {
+    gap: 10px 20px;
+    flex-wrap: wrap;
+  }
+  #rebuy-accordion-{{ section.id }} .rebuy-accordion-toggle {
+    padding: 6px 16px;
+  }
+  #rebuy-accordion-{{ section.id }} .rebuy-accordion-toggles::-webkit-scrollbar {
+    height: 0;
+  }
+}
+@media (min-width: 990px) {
+  #rebuy-accordion-{{ section.id }} {
+    padding: 30px 50px;
+  }
+}
+
+#rebuy-accordion-{{ section.id }} .rebuy-accordion-container .rebuy-widget {
+  padding: 0 0 30px 0;
+
+  .super-title {
+    display: none;
+  }
+  .primary-title {
+    font-weight: 500;
+    font-size: 32px;
+  }
+  .rebuy-product-grid {
+    padding-inline: 0;
+  }
+  .rebuy-product-block {
+    padding: 10px;
+    border-radius: 8px;
+    text-align: left;
+    /* background: #f5f5f5; */
+  }
+  .rebuy-product-media {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 335/248;
+  }
+  .rebuy-product-media a {
+    display: flex;
+    aspect-ratio: 335/248;
+  }
+  .rebuy-product-img {
+    max-height: unset;
+    min-width: 100%;
+    object-fit: cover;
+  }
+  .rebuy-product-hover-img {
+    max-height: unset;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .rebuy-product-block:hover .rebuy-product-image .rebuy-product-hover-img {
+    transform: scale(1.05) translateY(-50%);
+  }
+  .rebuy-product-title-link {
+    font-size: 18px;
+    font-weight: 400;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    line-height: 22px;
+  }
+  .rebuy-product-block:hover .rebuy-product-title-link {
+    text-decoration-color: #000000;
+  }
+  .rebuy-product-price {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .rebuy-product-options {
+    margin-top: 0;
+  }
+  .rebuy-product-actions {
+    margin-top: 10px;
+  }
+  .rebuy-option-name {
+    width: 100%;
+    text-align: left;
+    font-weight: 500;
+    display: block;
+    line-height: 1;
+    margin-block: 10px 5px;
+    font-size: 15px;
+  }
+  .rebuy-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-position: bottom 50% right 14px;
+    background-size: 10px 10px;
+    padding: 7px 32px 7px 14px;
+    font-size: 14px;
+    color: #000000;
+    background-color: #ffffff;
+  }
+  .rebuy-select option {
+    font-weight: 500;
+  }
+  .rebuy-button {
+    background: #000;
+    color: #ffffff;
+    font-size: unset;
+  }
+  .rebuy-product-block:hover .rebuy-button {
+    background: #ffffff;
+    color: #00b5e3;
+  }
+  .flickity-button,
+  .rebuy-carousel__arrow {
+    /*top: -30px; */
+    top: 25%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: solid 1px #dddedf;
+  }
+  .flickity-button svg,
+  .rebuy-carousel__arrow svg {
+    display: none;
+  }
+  .flickity-button.next,
+  .rebuy-carousel__arrow--next {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0ibTkgMTggNi02LTYtNiIvPjwvc3ZnPg==);
+    /*right: calc(50% - 50px);*/
+    right: -10px;
+  }
+  .flickity-button.previous,
+  .rebuy-carousel__arrow--prev {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0ibTE1IDE4LTYtNiA2LTYiLz48L3N2Zz4=);
+    /*left: calc(50% - 50px);*/
+    left: -10px;
+  }
+
+  @media (min-width: 750px) {
+    .rebuy-product-title-link {
+      font-size: 20px;
+      line-height: 24px;
+    }
+    .rebuy-button,
+    .rebuy-product-price {
+      font-size: 16px;
+    }
+    .rebuy-product-media {
+      border-radius: 0;
+    }
+    .rebuy-button {
+      padding: 15px;
+    }
+  }
+
+  @media (min-width: 990px) {
+    .rebuy-carousel__arrow {
+      top: 29%;
+    }
+    .flickity-button.next,
+    .rebuy-carousel__arrow--next {
+      right: -40px;
+    }
+    .flickity-button.previous,
+    .rebuy-carousel__arrow--prev {
+      left: -40px;
+    }
+  }
+}
+#rebuy-accordion-template--20785331961996__rebuy_accordion_widgets_jRTGdW.rebuy-accordion {
+    padding: 80px 0 !important
+}
+#rebuy-accordion-template--20785331961996__rebuy_accordion_widgets_jRTGdW .rebuy-product-title-link {
+            font-size: 16px !important;
+            line-height: 24px;
+        }
+
+
+#rebuy-accordion-template--20785331961996__rebuy_accordion_widgets_jRTGdW .rebuy-accordion-container .rebuy-widget .rebuy-product-block {
+    padding: 10px 20px !important;
+}
+#rebuy-accordion-template--20785331961996__rebuy_accordion_widgets_jRTGdW .rebuy-product-actions .rebuy-button {border-radius: var(--primary-border-radius) !important}
+</style>
+
+{% schema %}
+{
+  "name": "Rebuy Carousel Accordion",
+  "tag": "section",
+  "class": "rebuy-carousel-accordion-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS Class"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Carousel Widget",
+      "type": "widget",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Toggle Title",
+          "info": "The title displayed on the toggle button"
+        },
+        {
+          "type": "text",
+          "id": "widget_id",
+          "label": "Rebuy Widget ID",
+          "info": "The ID of the Rebuy widget to display"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rebuy Carousel Accordion",
+      "blocks": [
+        {
+          "type": "widget",
+          "settings": {
+            "title": "Collection 1",
+            "widget_id": ""
+          }
+        },
+        {
+          "type": "widget",
+          "settings": {
+            "title": "Collection 2",
+            "widget_id": ""
+          }
+        },
+        {
+          "type": "widget",
+          "settings": {
+            "title": "Collection 3",
+            "widget_id": ""
+          }
+        },
+        {
+          "type": "widget",
+          "settings": {
+            "title": "Collection 4",
+            "widget_id": ""
+          }
+        },
+        {
+          "type": "widget",
+          "settings": {
+            "title": "Collection 5",
+            "widget_id": ""
+          }
+        },
+        {
+          "type": "widget",
+          "settings": {
+            "title": "Collection 6",
+            "widget_id": ""
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

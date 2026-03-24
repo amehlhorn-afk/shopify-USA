@@ -1,0 +1,203 @@
+{{ 'section-video.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      background-color: {{ section.settings.color }};
+  }
+  @media (max-width: 991px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top | times: 0.75 }}px;
+          padding-bottom: {{ section.settings.padding_bottom | times: 0.75 }}px;
+      }
+  }
+  @media (max-width: 749px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top_m }}px;
+          padding-bottom: {{ section.settings.padding_bottom_m }}px;
+      }
+  }
+{% endstyle %}
+
+{%- liquid
+  assign video_id = section.settings.video_url.id | default: section.settings.video_url.id
+  assign loop = ''
+  if section.settings.enable_video_looping
+    assign loop = '&loop=1&playlist=' | append: video_id
+  endif
+-%}
+{% assign page_width = section.settings.page_width %}
+<div class="section-{{ section.id }} video-section">
+  {% unless page_width %}
+    <span class="block__video-bg"></span>
+  {% endunless %}
+  {% unless page_width %}
+    <div class="page-width">
+  {% endunless %}
+  {% if section.settings.title != blank and section.settings.text != blank %}
+  <div class="block__video-header text-center">
+    {% if section.settings.title != blank %}
+      <h2 class="h3 block__video-title">{{ section.settings.title }}</h2>
+    {% endif %}
+    {% if section.settings.text != blank %}
+      <p class="primary_h4 block__video-caption">{{ section.settings.text }}</p>
+    {% endif %}
+    </div>
+  {% endif %}
+  {% if section.settings.video_url != blank %}
+    {% assign video = 'youtube' %} 
+    {% else %}
+    {% assign video = 'mp4' %}   
+  {% endif %}
+
+  <div class="block__video-wrapper block__video-{{ video }} {% if page_width %}block__video-full-width{% endif %}" {% unless page_width %}style="border-radius:0;"{% endunless %}>
+    {% if section.settings.video_url != blank %}
+      <iframe
+        src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&autoplay=1{{ loop }}"
+        class="js-youtube"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+        title="{{ section.settings.description | escape }}"
+      ></iframe>
+    {% else %}
+      {% assign poster = section.settings.video | image_url: width: section.settings.video.width %}
+      {{
+        section.settings.video
+        | video_tag: poster: poster, loop: false, width: '100%', height: '100%', playsinline: true
+      }}
+      <a href="javascript:void(0)" class="block__video-btn">{% render 'youtube-icon' %}</a>
+    {% endif %}
+  </div>
+  {% unless page_width %}
+    </div>
+  {% endunless %}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+  const playButton = document.querySelector(".block__video-btn");
+
+  playButton.addEventListener("click", function () {
+    const video = this.closest(".block__video-mp4").querySelector("video");
+    if (video) {
+      video.play();
+      video.setAttribute("controls", "true");
+      this.style.display = "none"; // Hide play button
+    }
+  });
+
+  const videoMp4 = document.querySelector(".block__video-mp4 video");
+    videoMp4.addEventListener("click", function () {
+      if (!this.paused) {
+        this.pause();
+        this.removeAttribute("controls");
+        const playButton = this.closest(".block__video-mp4").querySelector(".block__video-btn");
+        if (playButton) {
+          playButton.style.display = "block"; // Show play button when paused
+        }
+      }
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Video Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "accept": ["youtube"],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+      "label": "Video URL",
+      "info": "Use a YouTube URL"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "upload a video, Video will be show if youtube video is not available"
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "checkbox",
+      "id": "page_width",
+      "label": "Enable Section Full Width",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Background Color"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Section"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,200 @@
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+{{ 'top-read-blog-sec.css' | asset_url | stylesheet_tag }}
+
+<div class="block__top-read-blog-main section-{{ section.id }}-padding" >
+    <div class="page-width">
+        {% if section.settings.title != blank %}
+        <div class="block__blog_header flex gap-10 items-center justify-between">
+            <h2 class="primary_h2">{{ section.settings.title }}</h2>
+            <a {% if section.settings.button_url !=blank %}href="{{ section.settings.button_url }}" {% endif %} class="link-btn flex items-center gap-10">
+                {{ section.settings.button_text }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="7" height="13" viewBox="0 0 7 13" fill="none">
+                    <path d="M1.78125 1.25L6.28125 6C6.40625 6.14583 6.46875 6.3125 6.46875 6.5C6.46875 6.6875 6.40625 6.86458 6.28125 7.03125L1.78125 11.7812C1.44792 12.0729 1.10417 12.0729 0.75 11.7812C0.4375 11.4479 0.427083 11.0938 0.71875 10.7188L4.71875 6.5L0.71875 2.25C0.427083 1.89583 0.4375 1.55208 0.75 1.21875C1.10417 0.927083 1.44792 0.9375 1.78125 1.25Z" fill="#00B5E3"/>
+                </svg>
+            </a>
+        </div>
+        {% endif %}
+        <div class="block__blog-list-article block__row">
+            <div class="block__col block__left-item">
+                {%- assign selected_articles = section.blocks | where: "type", "featured_article" -%}
+                {%- if selected_articles.size > 0 -%}
+                    {%- assign main_article = selected_articles[0].settings.article -%}
+                    {%- if main_article -%}
+                        {% render 'article-card-large', article: main_article, section: section %}
+                    {%- endif -%}
+                {%- else -%}    
+                    {%- for article in section.settings.blog.articles limit: 1 -%}
+                        {% render 'article-card-large', article: article, section: section %}
+                    {% endfor %}
+                {%- endif -%}
+            </div>
+            <div class="block__col block__right-item flex flex-direction-column gap-20">
+                {%- if selected_articles.size > 1 -%}
+                    {%- for block in selected_articles offset: 1 limit: 3 -%}
+                        {%- assign article = block.settings.article -%}
+                        {% if article %}
+                            {% render 'article-card-small', article: article, section: section %}
+                        {% endif %}
+                    {%- endfor -%}
+                {%- else -%}
+                    {%- for article in section.settings.blog.articles offset: 1 limit: 3 -%}
+                        {% render 'article-card-small', article: article, section: section %}
+                    {%- endfor -%}
+                {%- endif -%}
+            </div>
+        </div>
+    </div>
+</div>
+{% style %}  
+    @media (min-width:990px){
+        .section-{{ section.id }}-padding{
+            padding-top:{{ section.settings.desktop_padding_top }}px;
+            padding-bottom:{{ section.settings.desktop_padding_bottom }}px;
+        }
+    }
+    @media (max-width:989px){
+        .section-{{ section.id }}-padding{
+            padding-top:{{ section.settings.mobile_padding_top }}px;
+            padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+        }
+    }
+{% endstyle %}
+
+{% schema %}
+{
+"name": "Top Read Blog",
+"settings": [
+    {
+        "type": "blog",
+        "id": "blog",
+        "label": "Blog"
+    },
+    {
+        "type": "checkbox",
+        "id": "show_image",
+        "default": true,
+        "label": "t:sections.main-blog.settings.show_image.label"
+    },
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+    },
+    {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button Text"
+    },
+    {
+        "type": "url",
+        "id": "button_url",
+        "label": "Button Url"
+    },
+    {
+        "type": "select",
+        "id": "image_height",
+        "options": [
+            {
+            "value": "adapt",
+            "label": "t:sections.main-blog.settings.image_height.options__1.label"
+            },
+            {
+            "value": "small",
+            "label": "t:sections.main-blog.settings.image_height.options__2.label"
+            },
+            {
+            "value": "medium",
+            "label": "t:sections.main-blog.settings.image_height.options__3.label"
+            },
+            {
+            "value": "large",
+            "label": "t:sections.main-blog.settings.image_height.options__4.label"
+            }
+        ],
+        "default": "medium",
+        "label": "t:sections.main-blog.settings.image_height.label",
+        "info": "t:sections.main-blog.settings.image_height.info"
+    },
+    {
+        "type": "checkbox",
+        "id": "show_date",
+        "default": true,
+        "label": "t:sections.main-blog.settings.show_date.label"
+    },
+    {
+        "type": "checkbox",
+        "id": "show_author",
+        "default": false,
+        "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+        "type": "header",
+        "content": "Desktop Space"
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "desktop_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Desktop Padding Bottom",
+        "default": 16
+    },
+    {
+        "type": "header",
+        "content": "Mobile Space"
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding Top",
+        "default": 16
+    },
+    {
+        "type": "range",
+        "id": "mobile_padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile Padding Bottom",
+        "default": 16
+    }
+],
+"blocks": [
+    {
+        "type": "featured_article",
+        "name": "Featured Article",
+        "settings": [
+        {
+            "type": "article",
+            "id": "article",
+            "label": "Select Blog Post"
+        }
+        ]
+    }
+],
+"max_blocks": 4,
+"presets": [
+    {
+        "name": "Top Read Blog"
+    }
+]
+}
+{% endschema %}
+

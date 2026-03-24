@@ -1,0 +1,534 @@
+{% schema %}
+{
+  "name": "ACS Secondary Split",
+  "settings": [
+    { "type": "range", "id": "outer_gap", "label": "Banner Gap (desktop)", "min": 0, "max": 48, "step": 2, "unit": "px", "default": 20 },
+    { "type": "range", "id": "border_radius", "label": "Banner Border Radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 16 },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#FFFFFF" },
+    { "type": "color", "id": "global_text_color", "label": "Global text color (fallback)", "default": "#FFFFFF" },
+    { "type": "range", "id": "section_pad_top_desktop", "label": "Desktop top padding (section)", "min": 0, "max": 240, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "section_pad_bottom_desktop", "label": "Desktop bottom padding (section)", "min": 0, "max": 240, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "section_pad_top_mobile", "label": "Mobile top padding (section)", "min": 0, "max": 240, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "section_pad_bottom_mobile", "label": "Mobile bottom padding (section)", "min": 0, "max": 240, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "blocks": [
+    {
+      "type": "main_banner",
+      "name": "Main Long Banner",
+      "limit": 1,
+      "settings": [
+        { "type": "image_picker", "id": "bg_image_desktop", "label": "Background image – Desktop" },
+        { "type": "image_picker", "id": "bg_image_mobile", "label": "Background image – Mobile" },
+        { "type": "checkbox", "id": "enable_overlay", "label": "Enable color overlay", "default": true },
+        { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#C63C74" },
+        { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 30 },
+        { "type": "color", "id": "text_color", "label": "Text color (overrides global)" },
+        { "type": "color", "id": "subheader_color", "label": "Subheader color" },
+        { "type": "color", "id": "title_color", "label": "Title color" },
+        { "type": "color", "id": "desc_color", "label": "Description color" },
+        { "type": "color", "id": "cta_bg_color", "label": "CTA background color" },
+        { "type": "color", "id": "cta_text_color", "label": "CTA text color" },
+        { "type": "text", "id": "subheader", "label": "Subheader", "default": "COMFORT THAT CARES" },
+        { "type": "checkbox", "id": "subheader_bold", "label": "Bold subheader", "default": false },
+        { "type": "text", "id": "h1", "label": "H1 Title", "default": "Buy 2 Pillows, Get $49.99 OFF" },
+        { "type": "range", "id": "h1_size_desktop", "label": "H1 font size (desktop)", "min": 20, "max": 80, "step": 1, "unit": "px", "default": 44 },
+        { "type": "range", "id": "h1_size_mobile", "label": "H1 font size (mobile)", "min": 16, "max": 60, "step": 1, "unit": "px", "default": 32 },
+        { "type": "image_picker", "id": "headline_logo", "label": "Logo image (optional)" },
+        { "type": "text", "id": "headline_logo_alt", "label": "Logo alt text", "default": "Brand logo" },
+        { "type": "checkbox", "id": "headline_logo_replace", "label": "Replace H1 with logo", "default": false },
+{ "type": "range", "id": "headline_logo_width_desktop", "label": "Logo width (desktop)", "min": 40, "max": 640, "step": 10, "unit": "px", "default": 280 },
+{ "type": "range", "id": "headline_logo_width_mobile",  "label": "Logo width (mobile)",  "min": 32, "max": 432, "step": 4, "unit": "px", "default": 232 },
+        { "type": "range", "id": "headline_logo_gap_below", "label": "Spacing below logo", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 12 },
+        { "type": "richtext", "id": "description", "label": "Description (supports bold)", "default": "<p>Plus, we'll donate a Seatbelt Pillow to the American Cancer Society, bringing comfort and relief to cancer patients traveling for treatment.</p>" },
+        { "type": "range", "id": "space_subheader", "label": "Spacing: below subheader", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 2 },
+        { "type": "range", "id": "space_title", "label": "Spacing: below title", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 4 },
+        { "type": "range", "id": "space_desc", "label": "Spacing: below description", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 10 },
+        { "type": "range", "id": "space_cta", "label": "Spacing: above CTA button", "min": 0, "max": 60, "step": 1, "unit": "px", "default": 12 },
+        { "type": "range", "id": "content_max_width_desktop", "label": "Copy max width (desktop)", "min": 380, "max": 960, "step": 10, "unit": "px", "default": 760 },
+        { "type": "range", "id": "content_side_padding_desktop", "label": "Copy left/right padding (desktop)", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 24 },
+        { "type": "range", "id": "content_side_padding_mobile", "label": "Copy left/right padding (mobile)", "min": 10, "max": 40, "step": 1, "unit": "px", "default": 12 },
+        { "type": "range", "id": "content_top_padding_desktop", "label": "Desktop top padding", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 0 },
+        { "type": "range", "id": "content_bottom_padding_desktop", "label": "Desktop bottom padding", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 0 },
+        { "type": "range", "id": "content_top_padding_mobile", "label": "Mobile top padding", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 0 },
+        { "type": "range", "id": "content_bottom_padding_mobile", "label": "Mobile bottom padding", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 0 },
+        { "type": "select", "id": "text_halign_desktop", "label": "Text horizontal (desktop)", "default": "center", "options": [
+          { "value": "left", "label": "Left" },
+          { "value": "center", "label": "Center" },
+          { "value": "right", "label": "Right" }
+        ]},
+        { "type": "select", "id": "text_valign_desktop", "label": "Text vertical (desktop)", "default": "center", "options": [
+          { "value": "top", "label": "Top" },
+          { "value": "center", "label": "Center" },
+          { "value": "bottom", "label": "Bottom" }
+        ]},
+        { "type": "select", "id": "text_halign_mobile", "label": "Text horizontal (mobile)", "default": "center", "options": [
+          { "value": "left", "label": "Left" },
+          { "value": "center", "label": "Center" },
+          { "value": "right", "label": "Right" }
+        ]},
+        { "type": "select", "id": "text_valign_mobile", "label": "Text vertical (mobile)", "default": "center", "options": [
+          { "value": "top", "label": "Top" },
+          { "value": "center", "label": "Center" },
+          { "value": "bottom", "label": "Bottom" }
+        ]},
+        { "type": "range", "id": "offset_x_desktop", "label": "Horizontal offset (desktop)", "min": -150, "max": 150, "step": 3, "unit": "px", "default": 0 },
+{ "type": "range", "id": "offset_y_desktop", "label": "Vertical offset (desktop)",   "min": -150, "max": 150, "step": 3, "unit": "px", "default": 0 },
+{ "type": "range", "id": "offset_x_mobile",  "label": "Horizontal offset (mobile)",  "min": -150, "max": 150, "step": 3, "unit": "px", "default": 0 },
+{ "type": "range", "id": "offset_y_mobile",  "label": "Vertical offset (mobile)",    "min": -150, "max": 150, "step": 3, "unit": "px", "default": 0 },
+
+{ "type": "url",  "id": "cta_link", "label": "CTA link" },
+{ "type": "text", "id": "cta_label", "label": "CTA label", "default": "Shop Now" },
+{ "type": "image_picker", "id": "badge_image", "label": "Badge / Logo image" },
+{ "type": "select", "id": "badge_position", "label": "Badge position", "default": "top-left", "options": [
+  { "value": "top-left", "label": "Top left" },
+  { "value": "bottom-left", "label": "Bottom left" }
+]},
+{ "type": "checkbox", "id": "badge_show_mobile", "label": "Show badge on mobile", "default": true },
+{ "type": "text", "id": "meta_text", "label": "Meta / legal text", "default": "The American Cancer Society does not endorse any product or service. ©2024, American Cancer Society, Inc. No. 041503." }
+      ]
+    },
+    {
+      "type": "small_banner",
+      "name": "Smaller Banner",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "use_video", "label": "Use video instead of image", "default": false },
+        { "type": "video", "id": "video_mp4", "label": "Background video (Shopify-hosted)" },
+        { "type": "video_url", "id": "video_external", "label": "YouTube/Vimeo URL", "accept": ["youtube", "vimeo"] },
+        { "type": "image_picker", "id": "poster_image", "label": "Poster image (optional)" },
+        { "type": "image_picker", "id": "bg_image", "label": "Fallback background image" },
+        { "type": "checkbox", "id": "enable_overlay", "label": "Enable color overlay", "default": true },
+        { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#C63C74" },
+        { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 30 },
+        { "type": "color", "id": "text_color", "label": "Text color (overrides global)" },
+        { "type": "text", "id": "subheader", "label": "Subheader", "default": "Sleep Fuels The Fight" },
+        { "type": "checkbox", "id": "subheader_bold", "label": "Bold subheader", "default": false },
+        { "type": "text", "id": "title", "label": "Title", "default": "Sleep Fuels The Fight" },
+        { "type": "range", "id": "title_size_desktop", "label": "Title font size (desktop)", "min": 16, "max": 80, "step": 1, "unit": "px", "default": 28 },
+        { "type": "range", "id": "title_size_mobile", "label": "Title font size (mobile)", "min": 14, "max": 60, "step": 1, "unit": "px", "default": 22 },
+        { "type": "richtext", "id": "description", "label": "Description (supports bold)", "default": "<p>This October, we're donating <strong>5% of all pillow sales</strong> to the American Cancer Society...</p>" },
+        { "type": "range", "id": "space_subheader", "label": "Spacing: below subheader", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 2 },
+        { "type": "range", "id": "space_title", "label": "Spacing: below title", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 4 },
+        { "type": "range", "id": "space_desc", "label": "Spacing: below description", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 10 },
+        { "type": "range", "id": "space_cta", "label": "Spacing: above CTA button", "min": 0, "max": 60, "step": 1, "unit": "px", "default": 12 },
+        { "type": "range", "id": "content_top_padding_desktop", "label": "Desktop top padding", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 0 },
+        { "type": "range", "id": "content_bottom_padding_desktop", "label": "Desktop bottom padding", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 0 },
+        { "type": "range", "id": "content_top_padding_mobile", "label": "Mobile top padding", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 0 },
+        { "type": "range", "id": "content_bottom_padding_mobile", "label": "Mobile bottom padding", "min": 0, "max": 200, "step": 2, "unit": "px", "default": 0 },
+        { "type": "select", "id": "text_valign_desktop", "label": "Text vertical (desktop)", "default": "center", "options": [
+          { "value": "top", "label": "Top" },
+          { "value": "center", "label": "Center" },
+          { "value": "bottom", "label": "Bottom" }
+        ]},
+        { "type": "select", "id": "text_valign_mobile", "label": "Text vertical (mobile)", "default": "center", "options": [
+          { "value": "top", "label": "Top" },
+          { "value": "center", "label": "Center" },
+          { "value": "bottom", "label": "Bottom" }
+        ]},
+        { "type": "range", "id": "offset_y_desktop", "label": "Y offset (desktop)", "min": -100, "max": 100, "step": 2, "unit": "px", "default": 0 },
+        { "type": "range", "id": "offset_y_mobile", "label": "Y offset (mobile)", "min": -100, "max": 100, "step": 2, "unit": "px", "default": 0 },
+        { "type": "url", "id": "cta_link", "label": "CTA link" },
+        { "type": "color", "id": "cta_bg_color", "label": "CTA background color" },
+        { "type": "color", "id": "cta_text_color", "label": "CTA text color" },
+        { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Learn More" }
+      ]
+    }
+  ],
+  "max_blocks": 2,
+  "presets": [
+    { "name": "ACS Secondary Split", "blocks": [ { "type": "main_banner" }, { "type": "small_banner" } ] }
+  ]
+}
+{% endschema %}
+
+{% assign first_banner = section.blocks | first %}
+{% assign second_banner = section.blocks | last %}
+{% assign first_is_main = false %}
+{% if first_banner and first_banner.type == 'main_banner' %}
+  {% assign first_is_main = true %}
+{% endif %}
+
+<div
+  class="acs-split"
+  style="
+    --acs-gap: {{ section.settings.outer_gap | default: 20 }}px;
+    --acs-radius: {{ section.settings.border_radius | default: 16 }}px;
+    --acs-section-bg: {{ section.settings.section_bg }};
+    --acs-global-text: {{ section.settings.global_text_color }};
+    --sec-pad-top-desktop: {{ section.settings.section_pad_top_desktop | default: 40 }}px;
+    --sec-pad-bottom-desktop: {{ section.settings.section_pad_bottom_desktop | default: 40 }}px;
+    --sec-pad-top-mobile: {{ section.settings.section_pad_top_mobile | default: 32 }}px;
+    --sec-pad-bottom-mobile: {{ section.settings.section_pad_bottom_mobile | default: 32 }}px;
+  "
+>
+  <div class="acs-split__inner acs-cols--{% if first_is_main %}main-left{% else %}small-left{% endif %}">
+
+    {% if first_banner %}
+      {% assign b = first_banner %}
+      {% assign is_main = false %}
+      {% if b.type == 'main_banner' %}{% assign is_main = true %}{% endif %}
+
+      <div class="acs-banner {% if is_main %}acs-banner--main{% else %}acs-banner--small{% endif %} block--{{ b.id }}">
+        {% if is_main %}
+          <picture>
+            {% if b.settings.bg_image_mobile %}
+              <source media="(max-width: 768px)" srcset="{{ b.settings.bg_image_mobile | image_url: width: 900 }}">
+            {% endif %}
+            {% if b.settings.bg_image_desktop %}
+              <img class="acs-banner__bg" src="{{ b.settings.bg_image_desktop | image_url: width: 2000 }}" alt="" loading="lazy">
+            {% endif %}
+          </picture>
+        {% else %}
+          {% if b.settings.use_video and b.settings.video_mp4 %}
+            <video class="acs-banner__bg acs-bg-video" autoplay muted playsinline loop {% if b.settings.poster_image %}poster="{{ b.settings.poster_image | image_url: width: 2000 }}"{% endif %}>
+              {% for s in b.settings.video_mp4.sources %}
+                <source src="{{ s.url }}" type="{{ s.mime_type }}">
+              {% endfor %}
+            </video>
+          {% elsif b.settings.use_video and b.settings.video_external %}
+            <div class="acs-video-embed acs-banner__bg">
+              <iframe
+                src="{{ b.settings.video_external | video_url: autoplay: true, loop: true, playlist: true }}"
+                title="Video"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen
+                loading="lazy"></iframe>
+            </div>
+          {% elsif b.settings.bg_image %}
+            <img class="acs-banner__bg" src="{{ b.settings.bg_image | image_url: width: 2000 }}" alt="" loading="lazy">
+          {% endif %}
+        {% endif %}
+
+        {% if b.settings.enable_overlay %}
+          <span class="acs-banner__overlay" style="background-color: {{ b.settings.overlay_color }}; opacity: {{ b.settings.overlay_opacity | times: 0.01 }};"></span>
+        {% endif %}
+
+        {% if is_main %}
+          <div class="acs-banner__badge-wrap {% if b.settings.badge_position == 'bottom-left' %}pos-bottom-left{% else %}pos-top-left{% endif %}">
+            {% if b.settings.badge_image %}
+              <img class="acs-banner__badge" src="{{ b.settings.badge_image | image_url: width: 240 }}" alt="Badge">
+            {% endif %}
+            {% if b.settings.meta_text != blank %}
+              <div class="acs-banner__meta">{{ b.settings.meta_text }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <div class="acs-banner__content"
+             style="
+               --acs-text: {{ b.settings.text_color | default: section.settings.global_text_color }};
+               --sp-sub: {{ b.settings.space_subheader | default: 2 }}px;
+               --sp-title: {{ b.settings.space_title | default: 4 }}px;
+               --sp-desc: {{ b.settings.space_desc | default: 10 }}px;
+               --sp-cta: {{ b.settings.space_cta | default: 12 }}px;
+               {% if is_main %}--pad-x-desktop: {{ b.settings.content_side_padding_desktop | default: 24 }}px; --pad-x-mobile: {{ b.settings.content_side_padding_mobile | default: 12 }}px; --copy-max-desktop: {{ b.settings.content_max_width_desktop | default: 760 }}px;{% endif %}
+               --pad-top-desktop: {{ b.settings.content_top_padding_desktop | default: 0 }}px;
+               --pad-bottom-desktop: {{ b.settings.content_bottom_padding_desktop | default: 0 }}px;
+               --pad-top-mobile: {{ b.settings.content_top_padding_mobile | default: 0 }}px;
+               --pad-bottom-mobile: {{ b.settings.content_bottom_padding_mobile | default: 0 }}px;
+               {% if b.settings.subheader_color %}--col-sub: {{ b.settings.subheader_color }};{% endif %}
+               {% if b.settings.title_color %}--col-title: {{ b.settings.title_color }};{% endif %}
+               {% if b.settings.desc_color %}--col-desc: {{ b.settings.desc_color }};{% endif %}
+               {% if b.settings.cta_bg_color %}--cta-bg: {{ b.settings.cta_bg_color }};{% endif %}
+               {% if b.settings.cta_text_color %}--cta-text: {{ b.settings.cta_text_color }};{% endif %}
+               --logo-w-desktop: {{ b.settings.headline_logo_width_desktop | default: 280 }}px;
+               --logo-w-mobile: {{ b.settings.headline_logo_width_mobile | default: 228 }}px;
+               --logo-gap: {{ b.settings.headline_logo_gap_below | default: 12 }}px;
+               --off-x-d: {{ b.settings.offset_x_desktop | default: 0 }}px;
+               --off-y-d: {{ b.settings.offset_y_desktop | default: 0 }}px;
+               --off-x-m: {{ b.settings.offset_x_mobile  | default: 0 }}px;
+               --off-y-m: {{ b.settings.offset_y_mobile  | default: 0 }}px;
+             ">
+          <div class="acs-copy">
+            {% if b.settings.subheader != blank %}
+              <div class="acs-subheader">{{ b.settings.subheader }}</div>
+            {% endif %}
+
+            {% if is_main %}
+              {% if b.settings.headline_logo %}
+                {% if b.settings.headline_logo_replace %}
+                  <img class="acs-logo-heading" src="{{ b.settings.headline_logo | image_url: width: 1200 }}" alt="{{ b.settings.headline_logo_alt | escape }}">
+                {% else %}
+                  <img class="acs-logo-heading" src="{{ b.settings.headline_logo | image_url: width: 1200 }}" alt="{{ b.settings.headline_logo_alt | escape }}">
+                  {% if b.settings.h1 != blank %}<h1 class="acs-title acs-title--h1">{{ b.settings.h1 }}</h1>{% endif %}
+                {% endif %}
+              {% else %}
+                {% if b.settings.h1 != blank %}<h1 class="acs-title acs-title--h1">{{ b.settings.h1 }}</h1>{% endif %}
+              {% endif %}
+            {% else %}
+              {% if b.settings.title != blank %}
+                <h3 class="acs-title acs-title--h3">{{ b.settings.title }}</h3>
+              {% endif %}
+            {% endif %}
+
+            {% if b.settings.description %}<div class="acs-desc rte">{{ b.settings.description }}</div>{% endif %}
+            {% if b.settings.cta_link and b.settings.cta_label %}<a class="acs-cta acs-cta--light" href="{{ b.settings.cta_link }}">{{ b.settings.cta_label }}</a>{% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if second_banner %}
+      {% assign b = second_banner %}
+      {% assign is_main = false %}
+      {% if b.type == 'main_banner' %}{% assign is_main = true %}{% endif %}
+
+      <div class="acs-banner {% if is_main %}acs-banner--main{% else %}acs-banner--small{% endif %} block--{{ b.id }}">
+        {% if is_main %}
+          <picture>
+            {% if b.settings.bg_image_mobile %}
+              <source media="(max-width: 768px)" srcset="{{ b.settings.bg_image_mobile | image_url: width: 900 }}">
+            {% endif %}
+            {% if b.settings.bg_image_desktop %}
+              <img class="acs-banner__bg" src="{{ b.settings.bg_image_desktop | image_url: width: 2000 }}" alt="" loading="lazy">
+            {% endif %}
+          </picture>
+        {% else %}
+          {% if b.settings.use_video and b.settings.video_mp4 %}
+            <video class="acs-banner__bg acs-bg-video" autoplay muted playsinline loop {% if b.settings.poster_image %}poster="{{ b.settings.poster_image | image_url: width: 2000 }}"{% endif %}>
+              {% for s in b.settings.video_mp4.sources %}
+                <source src="{{ s.url }}" type="{{ s.mime_type }}">
+              {% endfor %}
+            </video>
+          {% elsif b.settings.use_video and b.settings.video_external %}
+            <div class="acs-video-embed acs-banner__bg">
+              <iframe
+                src="{{ b.settings.video_external | video_url: autoplay: true, loop: true, playlist: true }}"
+                title="Video"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen
+                loading="lazy"></iframe>
+            </div>
+          {% elsif b.settings.bg_image %}
+            <img class="acs-banner__bg" src="{{ b.settings.bg_image | image_url: width: 2000 }}" alt="" loading="lazy">
+          {% endif %}
+        {% endif %}
+
+        {% if b.settings.enable_overlay %}
+          <span class="acs-banner__overlay" style="background-color: {{ b.settings.overlay_color }}; opacity: {{ b.settings.overlay_opacity | times: 0.01 }};"></span>
+        {% endif %}
+
+        {% if is_main %}
+          <div class="acs-banner__badge-wrap {% if b.settings.badge_position == 'bottom-left' %}pos-bottom-left{% else %}pos-top-left{% endif %}">
+            {% if b.settings.badge_image %}
+              <img class="acs-banner__badge" src="{{ b.settings.badge_image | image_url: width: 240 }}" alt="Badge">
+            {% endif %}
+            {% if b.settings.meta_text != blank %}
+              <div class="acs-banner__meta">{{ b.settings.meta_text }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <div class="acs-banner__content"
+             style="
+               --acs-text: {{ b.settings.text_color | default: section.settings.global_text_color }};
+               --sp-sub: {{ b.settings.space_subheader | default: 2 }}px;
+               --sp-title: {{ b.settings.space_title | default: 4 }}px;
+               --sp-desc: {{ b.settings.space_desc | default: 10 }}px;
+               --sp-cta: {{ b.settings.space_cta | default: 12 }}px;
+               {% if is_main %}--pad-x-desktop: {{ b.settings.content_side_padding_desktop | default: 24 }}px; --pad-x-mobile: {{ b.settings.content_side_padding_mobile | default: 12 }}px; --copy-max-desktop: {{ b.settings.content_max_width_desktop | default: 760 }}px;{% endif %}
+               --pad-top-desktop: {{ b.settings.content_top_padding_desktop | default: 0 }}px;
+               --pad-bottom-desktop: {{ b.settings.content_bottom_padding_desktop | default: 0 }}px;
+               --pad-top-mobile: {{ b.settings.content_top_padding_mobile | default: 0 }}px;
+               --pad-bottom-mobile: {{ b.settings.content_bottom_padding_mobile | default: 0 }}px;
+               {% if b.settings.subheader_color %}--col-sub: {{ b.settings.subheader_color }};{% endif %}
+               {% if b.settings.title_color %}--col-title: {{ b.settings.title_color }};{% endif %}
+               {% if b.settings.desc_color %}--col-desc: {{ b.settings.desc_color }};{% endif %}
+               {% if b.settings.cta_bg_color %}--cta-bg: {{ b.settings.cta_bg_color }};{% endif %}
+               {% if b.settings.cta_text_color %}--cta-text: {{ b.settings.cta_text_color }};{% endif %}
+               --logo-w-desktop: {{ b.settings.headline_logo_width_desktop | default: 280 }}px;
+               --logo-w-mobile: {{ b.settings.headline_logo_width_mobile | default: 228 }}px;
+               --logo-gap: {{ b.settings.headline_logo_gap_below | default: 12 }}px;
+               --off-x-d: {{ b.settings.offset_x_desktop | default: 0 }}px;
+               --off-y-d: {{ b.settings.offset_y_desktop | default: 0 }}px;
+               --off-x-m: {{ b.settings.offset_x_mobile  | default: 0 }}px;
+               --off-y-m: {{ b.settings.offset_y_mobile  | default: 0 }}px;
+             ">
+          <div class="acs-copy">
+            {% if b.settings.subheader != blank %}
+              <div class="acs-subheader">{{ b.settings.subheader }}</div>
+            {% endif %}
+
+            {% if is_main %}
+              {% if b.settings.headline_logo %}
+                {% if b.settings.headline_logo_replace %}
+                  <img class="acs-logo-heading" src="{{ b.settings.headline_logo | image_url: width: 1200 }}" alt="{{ b.settings.headline_logo_alt | escape }}">
+                {% else %}
+                  <img class="acs-logo-heading" src="{{ b.settings.headline_logo | image_url: width: 1200 }}" alt="{{ b.settings.headline_logo_alt | escape }}">
+                  {% if b.settings.h1 != blank %}<h1 class="acs-title acs-title--h1">{{ b.settings.h1 }}</h1>{% endif %}
+                {% endif %}
+              {% else %}
+                {% if b.settings.h1 != blank %}<h1 class="acs-title acs-title--h1">{{ b.settings.h1 }}</h1>{% endif %}
+              {% endif %}
+            {% else %}
+              {% if b.settings.title != blank %}
+                <h3 class="acs-title acs-title--h3">{{ b.settings.title }}</h3>
+              {% endif %}
+            {% endif %}
+
+            {% if b.settings.description %}<div class="acs-desc rte">{{ b.settings.description }}</div>{% endif %}
+            {% if b.settings.cta_link and b.settings.cta_label %}<a class="acs-cta acs-cta--light" href="{{ b.settings.cta_link }}">{{ b.settings.cta_label }}</a>{% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% stylesheet %}
+.acs-split {
+  background: var(--acs-section-bg);
+  padding-top: var(--sec-pad-top-desktop, 0px);
+  padding-bottom: var(--sec-pad-bottom-desktop, 0px);
+}
+.acs-split__inner {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  column-gap: var(--acs-gap);
+  row-gap: var(--acs-gap);
+  align-items: stretch;
+}
+
+@media screen and (min-width: 750px) {
+  .acs-split__inner {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+.acs-cols--main-left { grid-template-columns: 2fr 1fr; }
+.acs-cols--small-left { grid-template-columns: 1fr 2fr; }
+
+.acs-banner { position: relative; border-radius: var(--acs-radius); overflow: hidden; width: 100%; min-width: 0; }
+.acs-banner--main { min-height: 320px; }
+.acs-banner--small { min-height: 320px; }
+
+.acs-banner__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.acs-bg-video { object-fit: cover; width: 100%; height: 100%; }
+.acs-video-embed { position: absolute; inset: 0; }
+.acs-video-embed iframe { position: absolute; width: 100%; height: 100%; border: 0; }
+.acs-banner__overlay { position: absolute; inset: 0; }
+
+.acs-banner__badge-wrap { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 10px; }
+.acs-banner__badge-wrap.pos-top-left { top: 12px; left: var(--pad-x-desktop, 24px); }
+.acs-banner__badge-wrap.pos-bottom-left { bottom: 12px; left: var(--pad-x-desktop, 24px); }
+.acs-banner__badge { height: 28px; width: auto; display: block; }
+.acs-banner__meta { font-size: 8px; line-height: 1.2; color: #fff; opacity: .95; }
+
+.acs-banner__content {
+  position: absolute; inset: 0; z-index: 2;
+  color: var(--acs-text, var(--acs-global-text));
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding-top: var(--pad-top-desktop, 0px);
+  padding-bottom: var(--pad-bottom-desktop, 0px);
+  padding-left: var(--pad-x-desktop, 24px);
+  padding-right: var(--pad-x-desktop, 24px);
+}
+
+.acs-copy { width: 100%; max-width: var(--copy-max-desktop, 760px); }
+
+.acs-subheader { font-size: 14px; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 var(--sp-sub); opacity: .95; color: var(--col-sub, currentColor); }
+.acs-title--h1 { font-weight: 900; letter-spacing: 1.5px; margin: 0 0 var(--sp-title); color: var(--col-title, currentColor); }
+.acs-title--h3 { font-size: 28px; font-weight: 700; letter-spacing: .5px; margin: 0 0 var(--sp-title); color: var(--col-title, currentColor); }
+.acs-desc { font-size: 16px; line-height: 1.5; margin: 0 0 var(--sp-desc); color: var(--col-desc, currentColor); }
+
+.acs-cta { display: inline-block; padding: 12px 28px; border-radius: 999px; font-weight: 700; text-decoration: none; margin-top: var(--sp-cta, 0px); }
+.acs-cta--light { background: var(--cta-bg, #fff); color: var(--cta-text, #C63C74); }
+.acs-cta--light:hover { filter: brightness(0.95); }
+
+.acs-logo-heading { display: inline-block; width: var(--logo-w-desktop, 280px); height: auto; margin: 0 0 var(--logo-gap, 12px); }
+
+@media (max-width: 768px) {
+  .acs-split { padding-top: var(--sec-pad-top-mobile, 0px); padding-bottom: var(--sec-pad-bottom-mobile, 0px); }
+  .acs-split__inner { display: block; }
+  .acs-banner { width: 380px; max-width: 100%; margin: 0 auto var(--acs-gap); }
+  .acs-banner--main { min-height: 380px; }
+  .acs-banner--small { min-height: 280px; }
+  .acs-banner__content { padding-top: var(--pad-top-mobile, 0px); padding-bottom: var(--pad-bottom-mobile, 0px); padding-left: var(--pad-x-mobile, 12px); padding-right: var(--pad-x-mobile, 12px); }
+  .acs-logo-heading { width: var(--logo-w-mobile, 228px); }
+  .acs-banner__badge-wrap.pos-top-left { left: var(--pad-x-mobile, 12px); }
+  .acs-banner__badge-wrap.pos-bottom-left { left: var(--pad-x-mobile, 12px); }
+}
+{% endstylesheet %}
+
+<style>
+{% for block in section.blocks %}
+  {% if block.type == 'main_banner' %}
+    .block--{{ block.id }} .acs-title--h1 { font-size: {{ block.settings.h1_size_desktop | default: 44 }}px; }
+    @media (max-width: 768px) {
+      .block--{{ block.id }} .acs-title--h1 { font-size: {{ block.settings.h1_size_mobile | default: 32 }}px; }
+    }
+    .block--{{ block.id }} .acs-banner__content {
+      {% assign h = block.settings.text_halign_desktop | default: 'center' %}
+      {% if h == 'left' %} align-items: flex-start; text-align: left;
+      {% elsif h == 'right' %} align-items: flex-end; text-align: right;
+      {% else %} align-items: center; text-align: center;
+      {% endif %}
+      {% assign v = block.settings.text_valign_desktop | default: 'center' %}
+      {% if v == 'top' %} justify-content: flex-start;
+      {% elsif v == 'bottom' %} justify-content: flex-end;
+      {% else %} justify-content: center;
+      {% endif %}
+      transform: translate(var(--off-x-d, 0px), var(--off-y-d, 0px));
+    }
+    @media (max-width: 768px) {
+      .block--{{ block.id }} .acs-banner__content {
+        {% assign hm = block.settings.text_halign_mobile | default: 'center' %}
+        {% if hm == 'left' %} align-items: flex-start; text-align: left;
+        {% elsif hm == 'right' %} align-items: flex-end; text-align: right;
+        {% else %} align-items: center; text-align: center;
+        {% endif %}
+        {% assign vm = block.settings.text_valign_mobile | default: 'center' %}
+        {% if vm == 'top' %} justify-content: flex-start;
+        {% elsif vm == 'bottom' %} justify-content: flex-end;
+        {% else %} justify-content: center;
+        {% endif %}
+        transform: translate(var(--off-x-m, 0px), var(--off-y-m, 0px));
+      }
+    }
+    {% if block.settings.subheader_bold %}
+      .block--{{ block.id }} .acs-subheader { font-weight: 700; }
+    {% else %}
+      .block--{{ block.id }} .acs-subheader { font-weight: 400; }
+    {% endif %}
+  {% endif %}
+
+  {% if block.type == 'small_banner' %}
+    .block--{{ block.id }} .acs-title--h3 { font-size: {{ block.settings.title_size_desktop | default: 28 }}px; }
+    @media (max-width: 768px) {
+      .block--{{ block.id }} .acs-title--h3 { font-size: {{ block.settings.title_size_mobile | default: 22 }}px; }
+    }
+    .block--{{ block.id }} .acs-banner__content {
+      {% assign vS = block.settings.text_valign_desktop | default: 'center' %}
+      {% if vS == 'top' %} justify-content: flex-start;
+      {% elsif vS == 'bottom' %} justify-content: flex-end;
+      {% else %} justify-content: center;
+      {% endif %}
+      transform: translateY({{ block.settings.offset_y_desktop | default: 0 }}px);
+    }
+    @media (max-width: 768px) {
+      .block--{{ block.id }} .acs-banner__content {
+        {% assign vSm = block.settings.text_valign_mobile | default: 'center' %}
+        {% if vSm == 'top' %} justify-content: flex-start;
+        {% elsif vSm == 'bottom' %} justify-content: flex-end;
+        {% else %} justify-content: center;
+        {% endif %}
+        transform: translateY({{ block.settings.offset_y_mobile | default: 0 }}px);
+      }
+    }
+    {% if block.settings.subheader_bold %}
+      .block--{{ block.id }} .acs-subheader { font-weight: 700; }
+    {% else %}
+      .block--{{ block.id }} .acs-subheader { font-weight: 400; }
+    {% endif %}
+  {% endif %}
+{% endfor %}
+</style>
+
+{% javascript %}
+// No JS required
+{% endjavascript %}

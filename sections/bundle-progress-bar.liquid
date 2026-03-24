@@ -1,0 +1,174 @@
+<style>
+  #cart-progress-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background-color: #ffffff;
+    padding: 1rem;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+    text-align: center;
+  }
+
+  #cart-progress-label {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  #cart-progress-bar {
+    background-color: {{ section.settings.bar_bg_color }};
+    border-radius: 8px;
+    height: 20px;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  #cart-progress-fill {
+    background-color: {{ section.settings.bar_color }};
+    height: 100%;
+    width: 0%;
+    display: block;
+    transition: width 0.3s ease-in-out;
+  }
+
+  #reward-message {
+    margin-top: 10px;
+    font-weight: bold;
+    color: green;
+    display: none;
+  }
+</style>
+
+{% comment %}
+  Serialize handle + quantity blocks into JSON
+{% endcomment %}
+{% capture bundle_json %}
+[
+  {% for block in section.blocks %}
+    {
+      "handle": "{{ block.settings.product_handle | escape }}",
+      "qty": {{ block.settings.qty | default: 1 }}
+    }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+]
+{% endcapture %}
+
+<div
+  id="cart-progress-wrapper"
+  data-bundle="{{ bundle_json | strip_newlines | escape }}"
+  data-total="{{ section.blocks.size }}"
+>
+  <p id="cart-progress-label">Bundle Progress: <span id="bundle-count">0</span> / {{ section.blocks.size }}</p>
+  <div id="cart-progress-bar">
+    <div id="cart-progress-fill"></div>
+  </div>
+  <div id="reward-message">{{ section.settings.reward_message }}</div>
+</div>
+
+<script>
+  function updateBundleProgress() {
+    const wrapper = document.getElementById('cart-progress-wrapper');
+    if (!wrapper) return;
+
+    const bundleData = JSON.parse(wrapper.dataset.bundle);
+    const totalRequired = parseInt(wrapper.dataset.total, 10) || 0;
+    let matched = 0;
+
+    fetch('/cart.js')
+      .then(res => res.json())
+      .then(cart => {
+        const handleCounts = {};
+
+        cart.items.forEach(item => {
+          const handle = item.product && item.product.handle;
+          if (!handle) return;
+
+          bundleData.forEach(bundle => {
+            if (handle === bundle.handle) {
+              handleCounts[handle] = (handleCounts[handle] || 0) + item.quantity;
+            }
+          });
+        });
+
+        bundleData.forEach(bundle => {
+          if ((handleCounts[bundle.handle] || 0) >= bundle.qty) {
+            matched += 1;
+          }
+        });
+
+        const percent = Math.min((matched / totalRequired) * 100, 100);
+        document.getElementById('bundle-count').textContent = matched;
+        document.getElementById('cart-progress-fill').style.width = percent + "%";
+
+        const reward = document.getElementById('reward-message');
+        reward.style.display = matched >= totalRequired ? 'block' : 'none';
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', updateBundleProgress);
+  setInterval(updateBundleProgress, 3000);
+</script>
+
+{% schema %}
+{
+  "name": "Cart Bundle Progress Bar",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bar_color",
+      "label": "Progress Fill Color",
+      "default": "#00bcd4"
+    },
+    {
+      "type": "color",
+      "id": "bar_bg_color",
+      "label": "Progress Background Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "text",
+      "id": "reward_message",
+      "label": "Reward Message",
+      "default": "🎉 Bundle Complete! You’ve unlocked a bonus!"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bundle_item",
+      "name": "Bundle Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "product_handle",
+          "label": "Product Handle (e.g., night-ice-performance-pillow)",
+          "default": "night-ice-performance-pillow"
+        },
+        {
+          "type": "number",
+          "id": "qty",
+          "label": "Required Quantity",
+          "default": 1
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sticky Cart Bundle Progress",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "bundle_item",
+          "settings": {
+            "product_handle": "night-ice-performance-pillow",
+            "qty": 2
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

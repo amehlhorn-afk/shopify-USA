@@ -1,0 +1,21 @@
+<div id="pr-irlgallery-section">
+  <h2 class="pr-irlgallery-header"> {{ section.settings.custom_text_title }} </h2>
+  <!-- PowerReviews Code Start -->
+  <div id="pr-irlsnippet"></div>
+  <!-- PowerReviews Code End -->
+</div>
+{% schema %}
+{
+	"name": "PowerReviews IRL Gallery",
+	"settings": [{
+        	"id": "custom_text_title", 
+        	"type": "text",
+        	"label": "Text box heading",
+        	"default": "@bedgear"
+	}],
+	"presets": [{
+		"name": "PowerReviews IRL Gallery",
+		"category": "ADVANCED LAYOUT"
+	}]
+}
+{% endschema %}

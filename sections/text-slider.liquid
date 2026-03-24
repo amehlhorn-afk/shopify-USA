@@ -1,0 +1,81 @@
+{{ 'section-text-slider.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .section-{{ section.id }} {
+      background-color: {{ section.settings.color }};
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }} section-text-slider">
+  <div class="block__text-slider swiper-container swiper">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="block__text-slide swiper-slide">
+          {% if block.settings.text != blank %}
+            <p class="h5">{{ block.settings.text }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+      {% for block in section.blocks %}
+        <div class="block__text-slide swiper-slide">
+          {% if block.settings.text != blank %}
+            <p class="h5">{{ block.settings.text }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const announcementBarCarousel = document.querySelector('.section-{{ section.id }} .block__text-slider');
+    if (announcementBarCarousel)
+      var swiper = new Swiper(announcementBarCarousel, {
+        slidesPerView: 'auto',
+        spaceBetween: 50,
+        loop: true,
+        speed: 5000,
+        autoplay: {
+          delay: 0,
+        }
+      });
+  });
+
+</script>
+
+
+{% schema %}
+{
+  "name": "Text Slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Background Color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_slider",
+      "name": "Text Slider",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text Slider"
+    }
+  ]
+}
+{% endschema %}

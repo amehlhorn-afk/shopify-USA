@@ -1,0 +1,513 @@
+{{ 'testimonials.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  @media (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.desktop_padding_top }}px;
+      padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+    }
+  }
+  @media (max-width: 989px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.mobile_padding_top }}px;
+      padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+    }
+  }
+  {% if section.settings.card_block_color != blank %}
+    .block__testimonials .block__col .block__content {
+      background-color: {{ section.settings.card_block_color }};
+    }
+  {% endif %}
+
+  /* =========================================================
+     Testimonials arrows – 50x50 desktop, thin ring, blue hover
+     while removing browser/Swiper default states
+  ========================================================== */
+  .{{ section.id }} .slider-button {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    /* desktop size */
+    width: 50px;
+    height: 50px;
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+
+    color: inherit;
+    transition: border-color 200ms ease, color 200ms ease, background-color 200ms ease;
+  }
+
+  /* mobile sizing */
+  @media (max-width: 767px) {
+    .{{ section.id }} .slider-button {
+      width: 44px;
+      height: 44px;
+      border-width: 1px;
+    }
+  }
+
+  /* prevent Swiper default pseudo arrow icons */
+  .{{ section.id }} .slider-button::after {
+    content: none !important;
+  }
+
+  /* don’t restyle svg, just ensure clean rendering */
+  .{{ section.id }} .slider-button svg {
+    display: block;
+  }
+
+  /* Bedgear blue hover ring */
+.{{ section.id }} .slider-button:hover {
+  border-color: #00B5E3; /* Bedgear blue */
+  color: #00B5E3;
+  background: transparent;
+}
+{% endstyle %}
+
+<div class="block__testimonials color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding  tertiary-border-radius {{ section.id }}">
+  <div class="page-width">
+    <div class="block__heading-with-button flex items-center justify-center">
+      {% if section.settings.subheading != blank %}
+        <span class="medium_body">{{ section.settings.subheading }}</span>
+      {% endif %}
+      <button
+        type="button"
+        class="slider-button slider-button--prev swiper-button-prev-{{ section.id }}"
+        name="previous"
+      >
+        {{- 'icon-prev-arrow.svg' | inline_asset_content -}}
+      </button>
+      {%- if section.settings.title != blank -%}
+        <h2 class="title inline-richtext {{ section.settings.heading_size }}">
+          {{ section.settings.title }}
+        </h2>
+      {%- endif -%}
+      <button
+        type="button"
+        class="slider-button slider-button--next swiper-button-next-{{ section.id }}"
+        name="next"
+      >
+        {{- 'icon-next-arrow.svg' | inline_asset_content -}}
+      </button>
+    </div>
+    <div class="block__row">
+      <div class="swiper block__testimonials-swiper swiper-container">
+        <div class="swiper-wrapper block__wrapper-content">
+          {% for block in section.blocks %}
+            <div class="block__col swiper-slide">
+              <div class="block__content h-full flex flex-direction-column">
+                <div class="review_star flex items-center">
+                  {% assign rating = block.settings.review_rating %}
+                  {% assign max_stars = 5 %}
+                  {% for i in (1..rating) %}
+                    <svg width="19" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9.86273 0.33181C10.0065 -0.110603 10.6324 -0.110604 10.7761 0.33181L12.7991 6.55787C12.8634 6.75573 13.0478 6.88968 13.2558 6.88968H19.8023C20.2674 6.88968 20.4609 7.48495 20.0845 7.75837L14.7883 11.6063C14.62 11.7286 14.5496 11.9453 14.6139 12.1432L16.6368 18.3692C16.7806 18.8116 16.2742 19.1795 15.8979 18.9061L10.6017 15.0582C10.4334 14.9359 10.2055 14.9359 10.0372 15.0582L4.74096 18.9061C4.36463 19.1795 3.85826 18.8116 4.00201 18.3692L6.02498 12.1432C6.08927 11.9453 6.01884 11.7286 5.85054 11.6063L0.554335 7.75837C0.177996 7.48495 0.371408 6.88968 0.836589 6.88968H7.38306C7.59109 6.88968 7.77547 6.75573 7.83976 6.55787L9.86273 0.33181Z" fill="#FFB015"/>
+                    </svg>
+                  {% endfor %}
+                  {% assign empty_stars = max_stars | minus: rating %}
+                  {% for j in (1..empty_stars) %}
+                    <svg width="20" height="20" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M9.86273 0.33181C10.0065 -0.110603 10.6324 -0.110604 10.7761 0.33181L12.7991 6.55787C12.8634 6.75573 13.0478 6.88968 13.2558 6.88968H19.8023C20.2674 6.88968 20.4609 7.48495 20.0845 7.75837L14.7883 11.6063C14.62 11.7286 14.5496 11.9453 14.6139 12.1432L16.6368 18.3692C16.7806 18.8116 16.2742 19.1795 15.8979 18.9061L10.6017 15.0582C10.4334 14.9359 10.2055 14.9359 10.0372 15.0582L4.74096 18.9061C4.36463 19.1795 3.85826 18.8116 4.00201 18.3692L6.02498 12.1432C6.08927 11.9453 6.01884 11.7286 5.85054 11.6063L0.554335 7.75837C0.177996 7.48495 0.371408 6.88968 0.836589 6.88968H7.38306C7.59109 6.88968 7.77547 6.75573 7.83976 6.55787L9.86273 0.33181Z"
+                        fill="none"
+                        stroke="#FFB015"
+                        stroke-width="1"
+                      />
+                    </svg>
+                  {% endfor %}
+                </div>
+
+                {% if block.settings.title != blank %}
+                  <div class="block__heading-content-inner flex flex-direction-column h-full">
+                    <h5>
+                      {{ block.settings.title }}
+                    </h5>
+                    {% if block.settings.text != blank %}
+                      <p>{{ block.settings.text }}</p>
+                    {% endif %}
+                  </div>
+                {% endif %}
+
+                {% if block.settings.author != blank %}
+                  <div class="block__verified flex items-center justify-between">
+                    <div class="block__author-info flex items-center">
+                      {% if block.settings.author_image != blank %}
+                        <div class="block__author-profileImage">
+                          {% render 'custom-image',
+                            image: block.settings.author_image,
+                            class: 'w-full h-full object-cover block'
+                          %}
+                        </div>
+                      {% endif %}
+                      {% if block.settings.author != blank %}
+                        <h6 class="block__author-name text-uppercase font-weight-500">{{ block.settings.author }}</h6>
+                      {% endif %}
+                    </div>
+                    <div class="block__verified-name flex items-center gap-5">
+                      {% if block.settings.verified_icon != blank %}
+                        {% render 'custom-image', image: block.settings.verified_icon, class: 'w-full h-full' %}
+                      {% endif %}
+                      <span class="extra_body">
+                        {{ block.settings.verified_text }}
+                      </span>
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.featured_product != blank %}
+                  <div class="block__testimonials--featured-product flex items-center gap-10 justify-between secondary-border-radius">
+                    {% assign product = block.settings.featured_product %}
+                    <div class="flex items-center">
+                      {% if block.settings.featured_product_image != blank %}
+                        <div class="block__testimonials-featured-product-image flex items-center">
+                          {% render 'custom-image',
+                            image: block.settings.featured_product_image,
+                            class: 'w-full h-full block object-contain'
+                          %}
+                        </div>
+                      {% else %}
+                        <div class="block__testimonials-featured-product-image flex items-center">
+                          {% render 'custom-image',
+                            image: product.featured_image,
+                            class: 'w-full h-full block object-contain'
+                          %}
+                        </div>
+                      {% endif %}
+                      <div class="block__testimonials-featured-product-content flex flex-direction-column">
+                        {% if product.title != blank %}
+                          <a href="{{ product.url }}" title="{{ product.title }}" class="small_body font-weight-500">
+                            {{ product.title }}
+                          </a>
+                        {% endif %}
+                        <span class="extra_body font-weight-700">
+                          {% if product.price_varies %}
+                            {{ product.price_min | money }}
+                          {% else %}
+                            {{ product.price | money }}
+                          {% endif %}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="block__testimonials-add-to-cart">
+                      {%- if product.variants.size > 1 -%}
+                        <modal-opener data-modal="#QuickAdd-{{ product.id }}">
+                          <button
+                            id="{{ product.id }}-submit"
+                            type="submit"
+                            name="add"
+                            class="quick-add__submit  button button--full-width button-quaternary senary-border-radius"
+                            aria-haspopup="dialog"
+                            aria-labelledby="{{ product.id }}-submit title-{{ section.id }}-{{ product.id }}"
+                            data-product-url="{{ product.url }}"
+                          >
+                            <span class="small_body">
+                              {% if block.settings.button_label != blank %}
+                                {{ block.settings.button_label }}
+                              {% else %}
+                                {{ 'products.product.choose_options' | t }}
+                              {% endif %}
+                            </span>
+                            {%- render 'loading-spinner' -%}
+                          </button>
+                        </modal-opener>
+                        <quick-add-modal id="QuickAdd-{{ product.id }}" class="quick-add-modal">
+                          <div
+                            role="dialog"
+                            aria-label="{{ 'products.product.choose_product_options' | t: product_name: product.title | escape }}"
+                            aria-modal="true"
+                            class="quick-add-modal__content global-settings-popup"
+                            tabindex="-1"
+                          >
+                            <button
+                              id="ModalClose-{{ product.id }}"
+                              type="button"
+                              class="quick-add-modal__toggle"
+                              aria-label="{{ 'accessibility.close' | t }}"
+                            >
+                              {{- 'icon-close.svg' | inline_asset_content -}}
+                            </button>
+                            <div id="QuickAddInfo-{{ product.id }}" class="quick-add-modal__content-info"></div>
+                          </div>
+                        </quick-add-modal>
+                      {%- else -%}
+                        <product-form data-section-id="{{ section.id }}">
+                          {%- form 'product',
+                            product,
+                            id: product.id,
+                            class: 'form',
+                            novalidate: 'novalidate',
+                            data-type: 'add-to-cart-form'
+                          -%}
+                            <input
+                              type="hidden"
+                              name="id"
+                              value="{{ product.selected_or_first_available_variant.id }}"
+                              class="product-variant-id"
+                              {% if product.selected_or_first_available_variant.available == false %}
+                                disabled
+                              {% endif %}
+                            >
+                            <button
+                              id="{{ product.id }}-submit"
+                              type="submit"
+                              name="add"
+                              class="quick-add__submit button button--full-width button-quaternary senary-border-radius"
+                              aria-haspopup="dialog"
+                              aria-labelledby="{{ product.id }}-submit title-{{ section.id }}-{{ product.id }}"
+                              aria-live="polite"
+                              data-sold-out-message="true"
+                              {% if product.selected_or_first_available_variant.available == false %}
+                                disabled
+                              {% endif %}
+                            >
+                              <span class="small_body">
+                                {%- if product.selected_or_first_available_variant.available -%}
+                                  {% if block.settings.button_label != blank %}
+                                    {{ block.settings.button_label }}
+                                  {% else %}
+                                    {{ 'products.product.choose_options' | t }}
+                                  {% endif %}
+                                {%- else -%}
+                                  {{ 'products.product.sold_out' | t }}
+                                {%- endif -%}
+                              </span>
+                              <span class="sold-out-message hidden small_body">
+                                {{ 'products.product.sold_out' | t }}
+                              </span>
+                              {%- render 'loading-spinner' -%}
+                            </button>
+                          {%- endform -%}
+                        </product-form>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const ReviewCarousel = document.querySelector('.{{ section.id }} .block__testimonials-swiper');
+    if (ReviewCarousel)
+      var swiper = new Swiper(ReviewCarousel, {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoHeight: true,
+        navigation: {
+          nextEl: '.swiper-button-next-{{ section.id }}',
+          prevEl: '.swiper-button-prev-{{ section.id }}',
+        },
+        breakpoints: {
+          320: {
+            slidesPerView: '1.1',
+            spaceBetween: 10,
+            centeredSlides: true,
+          },
+          575: {
+            slidesPerView: '1.4',
+            spaceBetween: 10,
+            centeredSlides: true,
+          },
+          768: {
+            slidesPerView: '1.5',
+            spaceBetween: 20,
+            centeredSlides: true,
+          },
+          992: {
+            slidesPerView: '2',
+            spaceBetween: 20,
+          },
+          1199: {
+            slidesPerView: '2.4',
+            spaceBetween: 30,
+          },
+          1310: {
+            slidesPerView: '2.6',
+            spaceBetween: 30,
+          },
+          1490: {
+            slidesPerView: '3',
+            spaceBetween: 30,
+          },
+        },
+      });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "shopify",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        { "value": "h4", "label": "Small" },
+        { "value": "h3", "label": "Medium" },
+        { "value": "primary_h2", "label": "Large" },
+        { "value": "h2", "label": "Extra Large" },
+        { "value": "h1", "label": "Extra extra Large" }
+      ],
+      "default": "primary_h2",
+      "label": "Heading Size"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "color",
+      "id": "card_block_color",
+      "label": "Card Container Color"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Padding"
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop Padding Bottom",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Mobile Padding"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Padding Bottom",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonials_list",
+      "name": "Testimonials",
+      "settings": [
+        {
+          "type": "select",
+          "id": "review_rating",
+          "label": "Review Rating",
+          "options": [
+            { "value": "1", "label": "1" },
+            { "value": "2", "label": "2" },
+            { "value": "3", "label": "3" },
+            { "value": "4", "label": "4" },
+            { "value": "5", "label": "5" }
+          ],
+          "default": "5"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author image"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "author",
+          "label": "Author"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "verified_text",
+          "label": "Verified Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "verified_icon",
+          "label": "Verified bagde"
+        },
+        {
+          "type": "product",
+          "id": "featured_product",
+          "label": "Featured product"
+        },
+        {
+          "type": "image_picker",
+          "id": "featured_product_image",
+          "label": "Custom product image"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials"
+    }
+  ]
+}
+{% endschema %}

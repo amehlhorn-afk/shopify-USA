@@ -1,0 +1,219 @@
+{{ 'section-technologies-grid.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      background-color: {{ section.settings.color }};
+  }
+  .section-{{ section.id }} .block__technologies-grid {
+      --items-per-row-desktop: {{ section.settings.items_per_row_desktop }};
+      --items-per-row-tablet: {{ section.settings.items_per_row_tablet }};
+      --items-per-row-mobile: {{ section.settings.items_per_row_mobile }};
+  }
+  @media (max-width: 1199px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top | times: 0.75 }}px;
+          padding-bottom: {{ section.settings.padding_bottom | times: 0.75 }}px;
+      }
+  }
+  @media (max-width: 749px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top_m }}px;
+          padding-bottom: {{ section.settings.padding_bottom_m }}px;
+      }
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }} technologies-grid">
+  <div class="page-width">
+    <div class="block__technologies-grid-header">
+      {% if section.settings.title != blank %}
+        <h2 class="primary_h2">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.text != blank %}
+        <p class="body">{{ section.settings.text }}</p>
+      {% endif %}
+    </div>
+    <div class="block__technologies-grid">
+      {% for block in section.blocks %}
+        {% assign page = block.settings.page %}
+        {% assign page_value = page.metafields.custom.technology_detail.value %}
+        <div class="block__technologies-grid-item" style="background-color: {{ block.settings.color }};">
+          {% if page_value.main_icon != blank %}
+            <div class="block__technologies-icon">
+              <img
+                src="{{ page_value.main_icon |  image_url: width:page_value.alt }}"
+                alt="{{ page_value.main_icon.alt| default: shop.name}}"
+                width=""
+                height=""
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+          <div class="block__technologies-info">
+            {% if page_value.title != blank %}
+                <h5>{{ page_value.title }}</h5>
+            {% endif %}
+            {% if page_value.short_description != blank %}
+                <p class="body">{{ page_value.short_description }}</p>
+            {% endif %}
+          </div>
+          <ul class="block__technologies-icon-text-list">
+            {% for i in (1..3) %} 
+            {% capture icon %}icon{{i}}{% endcapture %} 
+            {% capture text %}text{{i}}{% endcapture %} 
+            {% assign icon = page_value[icon] %} 
+            {% assign text = page_value[text] %} 
+            {% if icon != blank or text != blank %}
+              <li>
+                <img
+                  src="{{ icon |  image_url: width:icon.width }}"
+                  alt="{{ icon.alt | default: shop.name }}"
+                  width=""
+                  height=""
+                   loading="lazy"
+                >
+                <span class="body">{{ text }}</span>
+              </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+
+          <a href="{{ page.url }}">{{ section.settings.btn }}</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Technologies Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Button Text"
+    },
+    {
+      "type": "header",
+      "content": "Grid Layout"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Items per row (Desktop)",
+      "default": 5,
+      "info": "Number of items per row on desktop (1200px+)"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Items per row (Tablet)",
+      "default": 2,
+      "info": "Number of items per row on tablet (750px - 991px)"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Items per row (Mobile)",
+      "default": 1,
+      "info": "Number of items per row on mobile (below 750px)"
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Background Color"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "technologies-grid",
+      "name": "Technologies Grid",
+      "settings": [
+          {
+            "type": "color",
+            "id": "color",
+            "label": "Background Color",
+            "default": "#F5F5F5"
+          },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Select Page",
+          "info": "Data must be added in the 'Technology Detail' metafield "
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Technologies Grid"
+    }
+  ]
+}
+{% endschema %}

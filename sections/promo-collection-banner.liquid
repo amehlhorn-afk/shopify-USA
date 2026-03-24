@@ -1,0 +1,244 @@
+{% style %}
+  .section-{{ section.id }} {
+    background-color: {{ section.settings.color }};
+    padding: 10px;
+    text-align: center;
+    box-sizing: border-box; /* keep interior size consistent when using real borders */
+  }
+
+  /* Stroke (border) options for the whole section wrapper */
+  {% if section.settings.border_enable %}
+    {% case section.settings.stroke_position %}
+      {% when 'center' %}
+        .section-{{ section.id }} {
+          border: {{ section.settings.border_width }}px {{ section.settings.border_style }} {{ section.settings.border_color }};
+          border-radius: {{ section.settings.border_radius }}px;
+          box-shadow: none;
+        }
+      {% when 'inside' %}
+        /* Inside stroke: inset shadow avoids layout shift */
+        .section-{{ section.id }} {
+          border: none;
+          border-radius: {{ section.settings.border_radius }}px;
+          box-shadow: inset 0 0 0 {{ section.settings.border_width }}px {{ section.settings.border_color }};
+        }
+      {% when 'outside' %}
+        /* Outside stroke: outline using outer shadow, preserves interior size */
+        .section-{{ section.id }} {
+          border: none;
+          border-radius: {{ section.settings.border_radius }}px;
+          box-shadow: 0 0 0 {{ section.settings.border_width }}px {{ section.settings.border_color }};
+        }
+    {% endcase %}
+  {% else %}
+    .section-{{ section.id }} {
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+    }
+  {% endif %}
+
+  .section-{{ section.id }} .promo-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px; /* space between icon and text */
+    margin: 0;
+    word-break: break-word;
+    color: {{ section.settings.text_color }};
+  }
+
+  .section-{{ section.id }} .promo-line img {
+    max-height: 20px;
+    width: auto;
+    display: inline-block;
+  }
+
+  .section-{{ section.id }}.is-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .section-{{ section.id }} .promo-line {
+      display: inline-flex;
+      flex-wrap: wrap;
+      max-width: 90%;
+      white-space: normal;
+      text-align: center;
+    }
+  }
+{% endstyle %}
+
+<div 
+  class="section-{{ section.id }} promo-collection-banner {% if section.settings.sticky %}is-sticky{% endif %}"
+  {% if section.settings.sticky %}style="top: {{ section.settings.sticky_offset | default: 0 }}px;"{% endif %}
+>
+  {% for block in section.blocks %}
+    {% if block.settings.text != blank %}
+      <div class="promo-line" style="
+        font-size: {{ block.settings.font_size }}px;
+        font-weight: {{ block.settings.font_weight }};
+        text-decoration: {% if block.settings.underline %}underline{% else %}none{% endif %};
+      ">
+        {% if block.settings.icon != blank %}
+          <img src="{{ block.settings.icon | image_url }}" alt="{{ block.settings.icon.alt | default: 'icon' }}" loading="lazy">
+        {% endif %}
+        <span>{{ block.settings.text }}</span>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Promo Collection Banner",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Enable Sticky Banner",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "sticky_offset",
+      "label": "Sticky Offset (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Stroke (Border)"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_enable",
+      "label": "Enable Stroke",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "stroke_position",
+      "label": "Stroke Position",
+      "default": "center",
+      "options": [
+        { "value": "center", "label": "Center (Border)" },
+        { "value": "inside", "label": "Inside (Inset)" },
+        { "value": "outside", "label": "Outside (Outline)" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Stroke Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Stroke Width (px)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "border_style",
+      "label": "Stroke Style",
+      "default": "solid",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "dashed", "label": "Dashed" },
+        { "value": "dotted", "label": "Dotted" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Corner Radius (px)",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text Line",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "Font Size (px)",
+          "min": 10,
+          "max": 50,
+          "step": 1,
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font Weight",
+          "default": "600",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Regular (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi-bold (600)" },
+            { "value": "700", "label": "Bold (700)" },
+            { "value": "800", "label": "Extra Bold (800)" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "underline",
+          "label": "Underline this line",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Optional Icon"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo Collection Banner",
+      "blocks": [
+        { "type": "text", "settings": { "text": "Line 1 text here" } },
+        { "type": "text", "settings": { "text": "Line 2 text here" } },
+        { "type": "text", "settings": { "text": "Line 3 text here" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

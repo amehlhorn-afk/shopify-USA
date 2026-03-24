@@ -1,0 +1,130 @@
+{% schema %}
+{
+  "name": "Bedgear x NFM Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bedgear_logo",
+      "label": "Bedgear Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "nfm_logo",
+      "label": "NFM Logo"
+    },
+    {
+      "type": "text",
+      "id": "quiz_text",
+      "label": "Quiz Text",
+      "default": "PillowID® Quiz"
+    },
+    {
+      "type": "url",
+      "id": "quiz_link",
+      "label": "Quiz Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bedgear x NFM Banner"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="bedgear-nfm-banner">
+  <div class="left-side">
+    <div class="logos">
+      {% if section.settings.bedgear_logo %}
+        <img src="{{ section.settings.bedgear_logo | img_url: '80x' }}" alt="Bedgear Logo" class="logo" />
+      {% endif %}
+      <span class="x">x</span>
+      {% if section.settings.nfm_logo %}
+        <img src="{{ section.settings.nfm_logo | img_url: '80x' }}" alt="NFM Logo" class="logo" />
+      {% endif %}
+    </div>
+  </div>
+
+  <a class="right-side" href="{{ section.settings.quiz_link }}">
+    <span class="quiz-text">{{ section.settings.quiz_text }}</span>
+  </a>
+</div>
+
+<style>
+.bedgear-nfm-banner {
+  position: relative;
+  height: 80px;
+  width: 100%;
+  background-color: #111; /* Full black base */
+  font-family: sans-serif;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left-side {
+  z-index: 2;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-side {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60%; /* extend into black side */
+  height: 100%;
+  background-color: #00b4ef;
+  clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 40px;
+  text-decoration: none;
+}
+
+.quiz-text {
+  font-size: 28px;
+  color: white;
+  font-weight: bold;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+  right:20%;
+}
+
+.logos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  height: 30px;
+  max-width: 90px;
+}
+
+.x {
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .quiz-text {
+    font-size: 14px;
+  }
+  .logo {
+    max-width: 70px;
+    height: 26px;
+  }
+  .right-side {
+    padding-right: 16px;
+  }
+}
+
+</style>

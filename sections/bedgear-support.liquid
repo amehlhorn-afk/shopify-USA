@@ -1,0 +1,164 @@
+{{ 'section-bedgear-support.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+  .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      background-color: {{ section.settings.bg_color }};
+  }
+  @media (max-width: 1199px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top | times: 0.75 }}px;
+          padding-bottom: {{ section.settings.padding_bottom | times: 0.75 }}px;
+      }
+  }
+  @media (max-width: 749px) {
+      .section-{{ section.id }} {
+          padding-top: {{ section.settings.padding_top_m }}px;
+          padding-bottom: {{ section.settings.padding_bottom_m }}px;
+      }
+  }
+{% endstyle %}
+
+<div class="section-{{ section.id }} section-bedgear-support">
+  <div class="page-width">
+    <div class="block__bedgear-support-row">
+      <div class="block__bedgear_support-text-wrapper">
+        {% if section.settings.title != blank %}
+          <h2 class="primary_h2">{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.text != blank %}
+          <p class="body">{{ section.settings.text }}</p>
+        {% endif %}
+        <div class="block__bedgear_support-list">
+          {% for block in section.blocks %}
+            <div class="block__bedgear_support-item">
+              {% if block.settings.img != blank %}
+                {% render 'custom-image', image: block.settings.img, class: 'img-fluid object-cover' %}
+              {% endif %}
+              <div class="block__bedgear_support-info">
+                {% if block.settings.title != blank %}
+                  <h6>{{ block.settings.title }}</h6>
+                {% endif %}
+                {% if block.settings.text != blank %}
+                  <p class="small_body">{{ block.settings.text }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% if section.settings.img != blank %}
+        <div class="block__bedgear_support-img-wrapper">
+          {% render 'custom-image', image: section.settings.img, class: 'img-fluid object-cover' %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bedgear Support",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Caption"
+    },
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Section Style"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding(Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding(Mobile)",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "support",
+      "name": "Support",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bedgear Support"
+    }
+  ]
+}
+{% endschema %}

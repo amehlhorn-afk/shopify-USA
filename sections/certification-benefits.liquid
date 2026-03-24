@@ -1,0 +1,336 @@
+{% comment %}
+  Section: Certifications Benefits
+  Description: Displays "Why Certifications Matter" with icon-based benefits
+{% endcomment %}
+
+<section class="certifications-benefits" data-section-id="{{ section.id }}">
+  <div class="benefits-container">
+    {%- if section.settings.heading != blank or section.settings.description != blank -%}
+      <div class="benefits-header">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="benefits-heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        
+        {%- if section.settings.description != blank -%}
+          <p class="benefits-description">{{ section.settings.description }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    
+    {%- if section.blocks.size > 0 -%}
+      <div class="benefits-grid">
+        {%- for block in section.blocks -%}
+          <div class="benefit-item" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}
+              <div class="benefit-icon">
+                <div class="icon-circle">
+                  <img 
+                    src="{{ block.settings.icon | image_url: width: 85 }}" 
+                    alt="{{ block.settings.title }}"
+                    width="43"
+                    height="43"
+                    loading="lazy"
+                  >
+                </div>
+              </div>
+            {%- endif -%}
+            
+            {%- if block.settings.title != blank -%}
+              <div class="benefit-text">
+                <p>{{ block.settings.title }}</p>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+.certifications-benefits {
+  width: 100%;
+  background: #ffffff;
+  position: relative;
+  z-index: 1;
+}
+
+.benefits-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: {{ section.settings.padding_top }}px 180px {{ section.settings.padding_bottom }}px 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 46px;
+  position: relative;
+}
+
+.benefits-header {
+  max-width: 722px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+
+.benefits-heading {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 1;
+  color: #000000;
+  margin: 0;
+}
+
+.benefits-description {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+
+.benefits-grid {
+  display: flex;
+  gap: 29px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.benefit-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26.854px;
+  flex: 1;
+  min-width: 0;
+  max-width: 182px;
+}
+
+.benefit-icon {
+  position: relative;
+}
+
+.icon-circle {
+  width: 85px;
+  height: 85px;
+  background: #F5F5F5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-circle img {
+  width: 42.5px;
+  height: 42.5px;
+  object-fit: contain;
+}
+
+.benefit-text {
+  width: 100%;
+}
+
+.benefit-text p {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.4;
+  color: #000000;
+  text-align: center;
+  letter-spacing: 0.18px;
+  margin: 0;
+}
+
+/* Tablet */
+@media screen and (max-width: 990px) {
+  .benefits-container {
+    padding: {{ section.settings.padding_top | times: 0.75 }}px 50px {{ section.settings.padding_bottom | times: 0.75 }}px 50px;
+    gap: 40px;
+  }
+  
+  .benefits-grid {
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  
+  .benefit-item {
+    width: calc(33.333% - 16px);
+    min-width: 160px;
+    flex: 0 0 auto;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 749px) {
+  .benefits-container {
+    padding: {{ section.settings.padding_top_mobile }}px 20px {{ section.settings.padding_bottom_mobile }}px 20px;
+    gap: 32px;
+  }
+  
+  .benefits-heading {
+    font-size: 28px;
+  }
+  
+  .benefits-description {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  .benefits-grid {
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .benefit-item {
+    width: calc(50% - 10px);
+    min-width: 140px;
+  }
+  
+  .icon-circle {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .icon-circle img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .benefit-text p {
+    font-size: 16px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Certifications Benefits",
+  "tag": "section",
+  "class": "section-certifications-benefits",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Certifications Matter"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "BEDGEAR meets rigorous standards for safety, sustainability, and quality. Choosing certified materials means fewer harmful chemicals and allergens, leading to a cleaner, healthier sleep environment."
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding (Mobile)",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Benefit Title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Certifications Benefits",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Safer Sleep Environment"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Reduced Allergies"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Eco-Conscious decisions"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Better Air Quality"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Fewer Chemicals in the Home"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Peace Of Mind"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
