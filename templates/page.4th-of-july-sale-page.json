@@ -1,0 +1,116 @@
+{
+  "sections": {
+    "hero_banner_HDprE3": {
+      "type": "hero-banner",
+      "blocks": {
+        "heading_PQdqAb": {
+          "type": "heading",
+          "settings": {
+            "heading": "SLEEP LIKE A PRO",
+            "heading_size": "h2"
+          }
+        },
+        "text_P4QBmp": {
+          "type": "text",
+          "settings": {
+            "text": "Bundle and Save",
+            "text_style": "primary_h4"
+          }
+        },
+        "buttons_CU8hit": {
+          "type": "buttons",
+          "disabled": true,
+          "settings": {
+            "button_label_1": "Shop all",
+            "button_link_1": "",
+            "button_label_2": "Shop all",
+            "button_link_2": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_PQdqAb",
+        "text_P4QBmp",
+        "buttons_CU8hit"
+      ],
+      "settings": {
+        "show_banner_content": true,
+        "banner_link_option": false,
+        "banner_url": "",
+        "banner_image": "shopify:\/\/shop_images\/banner_pj_v3_035e56b3-c818-4eac-a103-20d3a9d58fc2.jpg",
+        "image_height": "adapt",
+        "vertical_alignment": "top",
+        "horizontal_alignment": "center",
+        "desktop_padding_top": 16,
+        "desktop_padding_bottom": 16,
+        "mobile_padding_top": 16,
+        "mobile_padding_bottom": 16
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "custom_css": [],
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "faq_sec_VBcxyE": {
+      "type": "faq-sec",
+      "blocks": {
+        "faq_TgHty6": {
+          "type": "Faq",
+          "settings": {
+            "question": "Lorem Ipsum dolor emet",
+            "answer": ""
+          }
+        },
+        "faq_pEDFaB": {
+          "type": "Faq",
+          "settings": {
+            "question": "Lorem Ipsum dolor emet",
+            "answer": ""
+          }
+        },
+        "faq_HrdXit": {
+          "type": "Faq",
+          "settings": {
+            "question": "Lorem Ipsum dolor emet",
+            "answer": ""
+          }
+        },
+        "faq_DBBiH6": {
+          "type": "Faq",
+          "settings": {
+            "question": "Lorem Ipsum dolor emet",
+            "answer": ""
+          }
+        }
+      },
+      "block_order": [
+        "faq_TgHty6",
+        "faq_pEDFaB",
+        "faq_HrdXit",
+        "faq_DBBiH6"
+      ],
+      "settings": {
+        "bg_color": "",
+        "title": "Frequently Asked Questions",
+        "text": "Quick Answers to questions you may have.",
+        "content_text": "Can't Find what you're looking for?",
+        "btn_text": "Contact Us",
+        "btn_url": "",
+        "enable_border": false,
+        "desktop_padding_top": 16,
+        "desktop_padding_bottom": 16,
+        "mobile_padding_top": 16,
+        "mobile_padding_bottom": 16
+      }
+    }
+  },
+  "order": [
+    "hero_banner_HDprE3",
+    "main",
+    "faq_sec_VBcxyE"
+  ]
+}

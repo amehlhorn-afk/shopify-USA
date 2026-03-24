@@ -1,0 +1,87 @@
+{
+  "sections": {
+    "bedgear_nfm_banner_ddPUAB": {
+      "type": "bedgear-nfm-banner",
+      "name": "Bedgear x NFM Banner",
+      "settings": {
+        "bedgear_logo": "shopify:\/\/shop_images\/BEDGEAR-Stacked-Logo-White.png",
+        "nfm_logo": "shopify:\/\/shop_images\/C2_signature_email_signatures_2024_nfmbuglogo_cdb960e0-60e2-47b4-b862-3f671c782d6e_1.png",
+        "quiz_text": "PillowID® Quiz",
+        "quiz_link": ""
+      }
+    },
+    "tangent_bedgear_quiz_Lff8Wk": {
+      "type": "tangent-bedgear-quiz",
+      "custom_css": [
+        ".header-wrapper {display: none !important;}"
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "desktop_padding_top": 0,
+        "desktop_padding_bottom": 0,
+        "mobile_padding_top": 20,
+        "mobile_padding_bottom": 0
+      }
+    },
+    "searvice_team_fmyBa9": {
+      "type": "searvice-team",
+      "blocks": {
+        "support_card_6KNFn8": {
+          "type": "support_card",
+          "settings": {
+            "icon_image": "shopify:\/\/shop_images\/fi_3059457.png",
+            "title": "Give Us A Call",
+            "description": "Have a question? We would love to hear from you!",
+            "button_text": "Call Us",
+            "button_url": "tel:631-414-7763"
+          }
+        },
+        "support_card_6mgtWh": {
+          "type": "support_card",
+          "settings": {
+            "icon_image": "shopify:\/\/shop_images\/tech-support_1_2.png",
+            "title": "Chat With Us",
+            "description": "Need advice? Our sleep coaches are here to help!",
+            "button_text": "Chat Us",
+            "button_url": "shopify:\/\/pages\/contact"
+          }
+        },
+        "support_card_dPHJmU": {
+          "type": "support_card",
+          "settings": {
+            "icon_image": "shopify:\/\/shop_images\/statistics_2.png",
+            "title": "Send Us a Message",
+            "description": "Our sleep coaches are here to answer any questions.",
+            "button_text": "Email Us",
+            "button_url": "mailto:wow@bedgear.com"
+          }
+        }
+      },
+      "block_order": [
+        "support_card_6KNFn8",
+        "support_card_6mgtWh",
+        "support_card_dPHJmU"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".header-wrapper {display: none !important;}"
+      ],
+      "settings": {
+        "sec_bg_color": "",
+        "box_bg_color": "#f5f5f5",
+        "icon_bg_color": "#ffffff",
+        "heading": "Contact our customer service team",
+        "subheading": "Need some help?",
+        "desktop_padding_top": 80,
+        "desktop_padding_bottom": 80,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "bedgear_nfm_banner_ddPUAB",
+    "tangent_bedgear_quiz_Lff8Wk",
+    "searvice_team_fmyBa9"
+  ]
+}

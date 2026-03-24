@@ -1,0 +1,79 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "1741243391474c5be3": {
+      "type": "apps",
+      "blocks": {
+        "yotpo_loyalty_rewards_rewards_module_app_block_KX7Fha": {
+          "type": "shopify:\/\/apps\/yotpo-loyalty-rewards\/blocks\/rewards-module-app-block\/2f9660df-5018-4e02-9868-ee1fb88d6ccd",
+          "disabled": true,
+          "settings": {
+            "instance_placeholder_id": "1008738"
+          }
+        }
+      },
+      "block_order": [
+        "yotpo_loyalty_rewards_rewards_module_app_block_KX7Fha"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "account_loyalty_rewards_XaLRUH": {
+      "type": "account-loyalty-rewards",
+      "blocks": {
+        "link_hVtGiK": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Overview",
+            "menu_url": "\/account"
+          }
+        },
+        "link_JimQeM": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Orders",
+            "menu_url": "shopify:\/\/pages\/orders"
+          }
+        },
+        "link_dzbnHJ": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Loyalty Program",
+            "menu_url": "shopify:\/\/pages\/loyalty-program"
+          }
+        },
+        "link_6YbMPP": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Product Registrations",
+            "menu_url": "shopify:\/\/pages\/product-registrations"
+          }
+        }
+      },
+      "block_order": [
+        "link_hVtGiK",
+        "link_6YbMPP",
+        "link_JimQeM",
+        "link_dzbnHJ"
+      ],
+      "settings": {
+        "section_color_scheme": "",
+        "padding_top": 52,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "main",
+    "1741243391474c5be3",
+    "account_loyalty_rewards_XaLRUH"
+  ]
+}

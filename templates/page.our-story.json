@@ -1,0 +1,195 @@
+{
+  "sections": {
+    "breadcrumb_banner_q8ktci": {
+      "type": "breadcrumb-banner",
+      "settings": {
+        "img": "shopify:\/\/shop_images\/our-story-desktop.png",
+        "img_mobile": "shopify:\/\/shop_images\/our-story-mobile.png",
+        "title": "Our Story",
+        "title_font_size": "h2",
+        "text": "Better Sleep. Better Performance.",
+        "text_font_size": "h4",
+        "text_color": "#ffffff",
+        "overlay": true,
+        "overlay_color": "#000000",
+        "overlay_opacity": 60,
+        "padding_top": 120,
+        "padding_bottom": 120,
+        "padding_top_m": 42,
+        "padding_bottom_m": 42
+      }
+    },
+    "img_with_text_Lmqrax": {
+      "type": "img-with-text",
+      "settings": {
+        "img_position": "left",
+        "img": "shopify:\/\/shop_images\/image-3.png",
+        "title": "It's easy to see sleep as just rest.",
+        "caption": "If bedtime means downtime, then your bedding doesn't have much of a job to do.But if you think about sleep the way we do - as your one chance to fuel up for the day ahead - then things change: your bed becomes a major player in the way you live your life. We set out to develop products that are ready to meet that challenge.",
+        "padding_top": 80,
+        "padding_bottom": 40,
+        "padding_top_m": 20,
+        "padding_bottom_m": 22
+      }
+    },
+    "img_with_text_bqAMAc": {
+      "type": "img-with-text",
+      "settings": {
+        "img_position": "right",
+        "img": "shopify:\/\/shop_images\/image-4.png",
+        "title": "Our story starts close to home, with a fed-up father.",
+        "caption": "Our CEO's son had developed allergies, which required him to sleep on special hypoallergenic bedding. But the materials were hot and stuffy, and his nights actually got worse, not better. Frustrated by the lack of options available, Eugene cut up breathable lacrosse shorts and sewed them back together as sheets for his son's bed. Turns out he was onto something - and performance bedding was born.",
+        "padding_top": 0,
+        "padding_bottom": 80,
+        "padding_top_m": 0,
+        "padding_bottom_m": 22
+      }
+    },
+    "team_info_slider_q7bU7j": {
+      "type": "team-info-slider",
+      "blocks": {
+        "team_info_slider_qepgUq": {
+          "type": "team_info_slider",
+          "settings": {
+            "img": "shopify:\/\/shop_images\/EA_Headshot_2__2.jpg",
+            "title": "A Founder’s Story by Eugene Alletto",
+            "description": "My last name is Alletto, which literally means “to bed” in Italian. Sleep has always been in my bloodline—ancestors who built beds, ran inns, and valued rest.\n\nSo when people ask how I started Bedgear, the truth is: I didn’t. My family did generations ago. I just gave it a name.\n\nBedgear is the next chapter in that legacy—turning a heritage of sleep into performance gear designed for airflow, fit, and personalization. From Naples to New York, it’s not just a name. It’s a movement.",
+            "heading": "– Eugene Alletto",
+            "text": "Founder of Bedgear"
+          }
+        }
+      },
+      "block_order": [
+        "team_info_slider_qepgUq"
+      ],
+      "disabled": true,
+      "name": "Team Info Slider",
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_top_m": 36,
+        "padding_bottom_m": 36
+      }
+    },
+    "video_section_iQxxxj": {
+      "type": "video-section",
+      "settings": {
+        "title": "What We Believe",
+        "text": "There are three key tenets at the core of everything we do.",
+        "video_url": "",
+        "video": "shopify:\/\/files\/videos\/BG CareerPg Culture Vid-V2 (1).mp4",
+        "page_width": false,
+        "color": "#f5f5f5",
+        "overlay_opacity": 60,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "padding_top_m": 40,
+        "padding_bottom_m": 40
+      }
+    },
+    "image_with_text_NnYdKj": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_XJmnRj": {
+          "type": "heading",
+          "settings": {
+            "heading": "It Was Always in My Name – A Founder’s Story by Eugene Alletto",
+            "heading_size": "h4"
+          }
+        },
+        "text_tht6x3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Let’s get something out of the way: my last name is Alletto, which, if you speak Italian or know Google Translate, literally means 'to bed.'<\/p><p>You can’t make this stuff up.<\/p><p>Some people are born into family dynasties of gold or oil. Me? I was born into a bloodline of nappers, innkeepers, and mattress-makers. Go back far enough, and you’ll find generations of Alletto ancestors helping people sleep better—whether they were building beds, running Italian inns, or simply dozing off at family dinners.<\/p><p>It’s like my entire DNA is filled with REM cycles and hospitality. Our family crest might as well be a pillow wrapped in espresso beans.<\/p><p>So when people ask how I started Bedgear, the real answer is: I didn’t. My ancestors did. I just finally gave it a name.<\/p><p>Bedgear was the natural next chapter in this centuries-old obsession with sleep. Only instead of handing out skeleton keys to weary travelers, I’m helping people unlock performance sleep—engineered for airflow, fit, and personalization. No fluff. No flat pillows. Just gear built for people who give a damn about how they rest and how they live.<\/p><p>From Naples to New York, this legacy is more than just a name. It’s a movement—from the letto to the legacy.<\/p><p><strong>-Eugene Alletto, Founder of Bedgear<\/strong><br\/><br\/><br\/><br\/><\/p>",
+            "text_style": "body"
+          }
+        },
+        "button_weEUB6": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_XJmnRj",
+        "text_tht6x3",
+        "button_weEUB6"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/EA_Headshot_2__2.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "scheme-2",
+        "color_scheme": "scheme-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "our_story_img_block_R64n9T": {
+      "type": "our-story-img-block",
+      "blocks": {
+        "story_block_UPmHX7": {
+          "type": "story_block",
+          "settings": {
+            "img": "shopify:\/\/shop_images\/image_09497bf8-7a3b-44c1-ad0a-757c103dd3ff.png",
+            "title": "Your sleep is personal",
+            "text": "Run hot, cold, or neutral at night? Not sure which pillow is right for you? Curious how to protect your mattress? We’ll help you find the pieces you need, online or in-store. And if you end up with a product that doesn’thit the spot, we’ll help you swap it for one that does.",
+            "btn_text": "Find My Pillow",
+            "url": "shopify:\/\/pages\/pillowid-quiz"
+          }
+        },
+        "story_block_GP6VzC": {
+          "type": "story_block",
+          "settings": {
+            "img": "shopify:\/\/shop_images\/image-1.png",
+            "title": "Temperature is key to good sleep",
+            "text": "Your body temperature naturally changes while you sleep. If your bedding isn’t prepared to keep you balanced, you’ll get uncomfortably warm or cool. Our patented technologies help adjust your temperature to any environment, so you’re never too hot or cold.",
+            "btn_text": "Explore Our Tech",
+            "url": "shopify:\/\/pages\/technology-listing"
+          }
+        },
+        "story_block_DNUjVc": {
+          "type": "story_block",
+          "settings": {
+            "img": "shopify:\/\/shop_images\/image-2.png",
+            "title": "The best teams work together",
+            "text": "A better mattress, a better pillow, better sheets—each one is just a single piece of the puzzle. Your best sleep starts with bedding that collaborates to regulate your temperature on all fronts, and keep your body resting at just the right angle for ideal spine alignment.",
+            "btn_text": "Shop The System",
+            "url": "shopify:\/\/collections\/performance-elite"
+          }
+        }
+      },
+      "block_order": [
+        "story_block_UPmHX7",
+        "story_block_GP6VzC",
+        "story_block_DNUjVc"
+      ],
+      "settings": {
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "padding_top_m": 40,
+        "padding_bottom_m": 40
+      }
+    }
+  },
+  "order": [
+    "breadcrumb_banner_q8ktci",
+    "img_with_text_Lmqrax",
+    "img_with_text_bqAMAc",
+    "team_info_slider_q7bU7j",
+    "video_section_iQxxxj",
+    "image_with_text_NnYdKj",
+    "our_story_img_block_R64n9T"
+  ]
+}

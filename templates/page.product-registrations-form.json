@@ -1,0 +1,79 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "product_registrations_9T7Gjq": {
+      "type": "product-registrations",
+      "blocks": {
+        "my_product_cares_registration_form_QcFaqz": {
+          "type": "shopify:\/\/apps\/my-product-cares\/blocks\/registration-form\/fd762697-cd8b-4acd-bd03-03c62edf58c9",
+          "settings": {
+            "slug": "test-new-all-merge",
+            "mode": "form",
+            "openRegisteredEntities": false
+          }
+        },
+        "link_J77KgP": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Overview",
+            "menu_url": "\/account"
+          }
+        },
+        "link_zA8AYa": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Product Registrations",
+            "menu_url": "\/pages\/product-registrations"
+          }
+        },
+        "link_jqpHm4": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Orders",
+            "menu_url": "shopify:\/\/pages\/orders"
+          }
+        },
+        "link_DiAYzP": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Loyalty Program",
+            "menu_url": "shopify:\/\/pages\/loyalty-program"
+          }
+        }
+      },
+      "block_order": [
+        "my_product_cares_registration_form_QcFaqz",
+        "link_J77KgP",
+        "link_zA8AYa",
+        "link_jqpHm4",
+        "link_DiAYzP"
+      ],
+      "custom_css": [
+        "#mpr-product-inputs .form-group {text-align: left}"
+      ],
+      "settings": {
+        "bg_color": "#f5f5f5",
+        "bg_color_form": "#ffffff",
+        "color_scheme": "",
+        "title": "Register Your Product",
+        "btn_text": "Back To Account Portal",
+        "btn_url": "\/pages\/product-registrations",
+        "desktop_padding_top": 80,
+        "desktop_padding_bottom": 80,
+        "mobile_padding_top": 0,
+        "mobile_padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product_registrations_9T7Gjq"
+  ]
+}

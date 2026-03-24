@@ -1,0 +1,153 @@
+{
+  "sections": {
+    "page_banner_NiyART": {
+      "type": "page-banner",
+      "settings": {
+        "img": "shopify:\/\/shop_images\/bindlepagehero.jpg",
+        "img_mobile": "shopify:\/\/shop_images\/bundlepagehero_mobile.jpg",
+        "text_align": "left",
+        "title": "Sleep Like P.J.",
+        "text": "Save more when you bundle your personalized picks.",
+        "btn": "",
+        "url": "",
+        "text_position": "top",
+        "color": "",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_top_m": 36,
+        "padding_bottom_m": 36
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "custom_css": [
+        ".revy-bundle-products {display: none !important;}",
+        ".revy-bundle-products.revy-bundle-products-quantity-variants-open {display: flex !important;}",
+        ".revy-bundle-action {width: 100%; display: flex; flex-wrap: wrap; justify-content: center;}",
+        ".revy-bundle-add-button {min-width: 120px !important; margin-right: 20px !important;}",
+        "#revy-bundle-wrapper .revy-bundle-title {text-align: center;}"
+      ],
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "bundle_details_multicolumn_rqWUfz": {
+      "type": "bundle-details-multicolumn",
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "title": "",
+        "caption": "",
+        "color": "",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_top_m": 36,
+        "padding_bottom_m": 36
+      }
+    },
+    "17483807506c6b1334": {
+      "type": "apps",
+      "custom_css": [
+        ".rbu-mc-btn-container {color: white;}"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "1748448701db785e43": {
+      "type": "apps",
+      "custom_css": [
+        ".rbu-mc-btn-container span {text-decoration-colo: white;}"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "faq_sec_83VmGP": {
+      "type": "faq-sec",
+      "blocks": {
+        "faq_RMRyJD": {
+          "type": "Faq",
+          "settings": {
+            "question": "What’s included in the bedding bundle?",
+            "answer": "Our Pro Sleep System bundle includes everything you need for a perfect night’s sleep: your choice of <strong>2 Performance® Pillows<\/strong>, a <strong>Mattress<\/strong>, <strong>Mattress Protector<\/strong>, <strong>Comforter<\/strong>, and a <strong>set of Performance® Sheets<\/strong>."
+          }
+        },
+        "faq_rL46GX": {
+          "type": "Faq",
+          "settings": {
+            "question": "Can I choose the type of pillows included?",
+            "answer": "Yes! You can select from our complete range of full-priced Performance Pillows. Take our Pillow I.D. quiz to see which pillows are right for you."
+          }
+        },
+        "faq_PDLCTF": {
+          "type": "Faq",
+          "settings": {
+            "question": "Do the items in the bundle feature cooling technology?",
+            "answer": "Absolutely. Our mattresses, pillows, sheets and protectors all feature our <strong>advanced cooling technology<\/strong>."
+          }
+        },
+        "faq_hinWcU": {
+          "type": "Faq",
+          "settings": {
+            "question": "Can I buy these items individually?",
+            "answer": "Yes, all items in the bundle are available for purchase separately. However, the bundle offers <strong>exclusive savings<\/strong> that are not available when purchasing items individually unless added to your cart from the P.J. Washington Page"
+          }
+        },
+        "faq_zcUnTL": {
+          "type": "Faq",
+          "settings": {
+            "question": "How is the bundle shipped?",
+            "answer": "Each item in the bundle is shipped <strong>directly to your door<\/strong>. Shipping is <strong>fast and free<\/strong> within the contiguous U.S.. "
+          }
+        },
+        "faq_QyTkhw": {
+          "type": "Faq",
+          "settings": {
+            "question": "Can I finance the bundle purchase?",
+            "answer": "Yes, we offer <strong>easy financing options<\/strong> at checkout so you can pay over time."
+          }
+        },
+        "faq_prxwna": {
+          "type": "Faq",
+          "settings": {
+            "question": "",
+            "answer": ""
+          }
+        }
+      },
+      "block_order": [
+        "faq_RMRyJD",
+        "faq_rL46GX",
+        "faq_PDLCTF",
+        "faq_hinWcU",
+        "faq_zcUnTL",
+        "faq_QyTkhw",
+        "faq_prxwna"
+      ],
+      "settings": {
+        "bg_color": "#f4f4f4",
+        "title": "Frequently Asked Questions",
+        "text": "Quick Answers to questions you may have.",
+        "content_text": "Can't Find what you're looking for?",
+        "btn_text": "Contact Us",
+        "btn_url": "shopify:\/\/pages\/contact",
+        "enable_border": false,
+        "desktop_padding_top": 80,
+        "desktop_padding_bottom": 80,
+        "mobile_padding_top": 16,
+        "mobile_padding_bottom": 16
+      }
+    }
+  },
+  "order": [
+    "page_banner_NiyART",
+    "main",
+    "bundle_details_multicolumn_rqWUfz",
+    "17483807506c6b1334",
+    "1748448701db785e43",
+    "faq_sec_83VmGP"
+  ]
+}

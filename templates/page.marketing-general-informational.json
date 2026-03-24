@@ -1,0 +1,116 @@
+{
+  "sections": {
+    "breadcrumb_banner_PC9Exr": {
+      "type": "breadcrumb-banner",
+      "settings": {
+        "img": "shopify:\/\/shop_images\/marketing-general-informational-desktop.png",
+        "img_mobile": "shopify:\/\/shop_images\/marketing-general-informational-mobile.png",
+        "title": "Cooling Frost Bundle",
+        "title_font_size": "h1",
+        "text": "Up to $999 Retail Value",
+        "text_font_size": "h3",
+        "text_color": "#ffffff",
+        "overlay": true,
+        "overlay_color": "#000000",
+        "overlay_opacity": 60,
+        "padding_top": 168,
+        "padding_bottom": 166,
+        "padding_top_m": 72,
+        "padding_bottom_m": 72
+      }
+    },
+    "marketing_img_text_dMntC6": {
+      "type": "marketing-img-text",
+      "blocks": {
+        "block_nBQxRJ": {
+          "type": "block",
+          "settings": {
+            "color": "#4cc1bb",
+            "benefit_icon": "shopify:\/\/shop_images\/Icon.svg",
+            "benefit_title": "Ver-Tex ™",
+            "benefit_text": "Instant Cooling"
+          }
+        },
+        "block_NKHWBD": {
+          "type": "block",
+          "settings": {
+            "color": "#ee7623",
+            "benefit_icon": "shopify:\/\/shop_images\/Icon-1.svg",
+            "benefit_title": "Dri-Tec® ™",
+            "benefit_text": "Moisture Wicking"
+          }
+        }
+      },
+      "block_order": [
+        "block_nBQxRJ",
+        "block_NKHWBD"
+      ],
+      "settings": {
+        "img": "shopify:\/\/shop_images\/image_86598ee3-ded0-4acc-b305-3b0f7d0b47e7.png",
+        "img_mobile": "shopify:\/\/shop_images\/marketing-img-mo.png",
+        "title": "Cooling Frost Bundle",
+        "caption": "There’s nothing worse than overheating in bed. The Frost Cooling Bundle from BEDGEAR defeats the heat with patented fabric technologies that actively work to keep you cool all night. This bundle includes (2) cooling Frost Performance® Pillows, a moisture-wicking Dri-Tec Performance® Mattress Protector, and a Dri-Tec Performance® Sheet Set.",
+        "benefit_title": "Benefits and features",
+        "text": "<h5>Available in Sizes: <\/h5><p>Twin, Twin XL, Full, Queen, King, Cal King, Split King & Cal King, Split Head King & Cal King<\/p><p><strong>King 2.0 Pillows included in all King - Split King bundles<\/strong><\/p>",
+        "padding_top": 100,
+        "padding_bottom": 100,
+        "padding_top_m": 0,
+        "padding_bottom_m": 40
+      }
+    },
+    "bundle_details_multicolumn_n7q3BL": {
+      "type": "bundle-details-multicolumn",
+      "blocks": {
+        "bundle_detail_block_JYTGze": {
+          "type": "bundle_detail_block",
+          "settings": {
+            "img_position": "left",
+            "image": "shopify:\/\/shop_images\/image_86cfda79-a25a-458f-ae16-416e9c33357d.png",
+            "subhead": "SLEEP COOL ALL NIGHT",
+            "title": "The cool side of the pillow - every time",
+            "text": "Our cooling fabric cover disperses heat away from the body to create\u2028a unique cool to the touch effect, while breathable mesh side panels provide continuous airflow and reduces sweat and heat buildup throughout the night."
+          }
+        },
+        "bundle_detail_block_L4XJBL": {
+          "type": "bundle_detail_block",
+          "settings": {
+            "img_position": "right",
+            "image": "shopify:\/\/shop_images\/image-1_e63c1b34-6f0e-448f-bd9f-4c0e967e6141.png",
+            "subhead": "CLEAN AND HEALTHY SLEEP",
+            "title": "Built for Protection",
+            "text": "Made with soft, breathable layers, our Dri-Tec® Mattress Protector gives your bed superior protection. Our waterproof mattress protector reduces the buildup of common allergens like pet dander and dust mites while guarding against spills, mildew, and more."
+          }
+        },
+        "bundle_detail_block_hqWCmc": {
+          "type": "bundle_detail_block",
+          "settings": {
+            "img_position": "left",
+            "video": "shopify:\/\/files\/videos\/-ab2f-4781-9d66-0f9ee9db8eb8.mp4",
+            "subhead": "Activewear Feel",
+            "title": "Buttery Smooth",
+            "text": "With the same feel as your favorite activewear, our buttery smooth\u2028and flexible Dri-Tec® Sheets effortlessly conform to your body to move with you as you sleep."
+          }
+        }
+      },
+      "block_order": [
+        "bundle_detail_block_JYTGze",
+        "bundle_detail_block_L4XJBL",
+        "bundle_detail_block_hqWCmc"
+      ],
+      "settings": {
+        "title": "Bundle Details",
+        "caption": "",
+        "color": "#f5f5f5",
+        "padding_top": 100,
+        "padding_bottom": 100,
+        "padding_top_m": 36,
+        "padding_bottom_m": 36
+      }
+    }
+  },
+  "order": [
+    "breadcrumb_banner_PC9Exr",
+    "marketing_img_text_dMntC6",
+    "bundle_details_multicolumn_n7q3BL"
+  ]
+}

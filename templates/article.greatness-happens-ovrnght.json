@@ -1,0 +1,100 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "blocks": {
+        "featured_image": {
+          "type": "featured_image",
+          "settings": {
+            "image_height": "small"
+          }
+        },
+        "title": {
+          "type": "title",
+          "disabled": true,
+          "settings": {
+            "blog_show_date": true,
+            "blog_show_author": false
+          }
+        },
+        "content": {
+          "type": "content",
+          "settings": {
+            "blog_show_date": true
+          }
+        }
+      },
+      "block_order": [
+        "featured_image",
+        "title",
+        "content"
+      ],
+      "settings": {
+        "show_tag": true,
+        "search_input_title": "Search the Blog",
+        "recommended__title": "Recommended Products",
+        "postedin__title": "Posted in:",
+        "you_may__title": "You May Also Like",
+        "products_to_show": 2,
+        "image_ratio": "adapt",
+        "show_secondary_image": true,
+        "quick_add": "standard",
+        "desktop_padding_top": 40,
+        "desktop_padding_bottom": 80,
+        "mobile_padding_top": 20,
+        "mobile_padding_bottom": 20
+      }
+    },
+    "featured_blog_AwawQg": {
+      "type": "featured-blog",
+      "settings": {
+        "text_center_mo": false,
+        "heading": "Latest Articles",
+        "heading_size": "h2",
+        "blog": "health-and-wellness",
+        "post_limit": 3,
+        "columns_desktop": 3,
+        "color_scheme": "scheme-1",
+        "show_excerpt": false,
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "show_view_all": true,
+        "desktop_padding_top": 80,
+        "desktop_padding_bottom": 80,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40
+      }
+    },
+    "pdp_review_section_9Cycc3": {
+      "type": "pdp-review-section",
+      "disabled": true,
+      "name": "PDP Review Section",
+      "settings": {
+        "bg_color": "",
+        "title": "",
+        "desktop_padding_top": 16,
+        "desktop_padding_bottom": 16,
+        "mobile_padding_top": 16,
+        "mobile_padding_bottom": 16
+      }
+    },
+    "write_a_review_86XNGM": {
+      "type": "Write-a-review",
+      "name": "Write a Review",
+      "settings": {
+        "heading": "",
+        "desktop_padding_top": 16,
+        "desktop_padding_bottom": 16,
+        "mobile_padding_top": 16,
+        "mobile_padding_bottom": 16
+      }
+    }
+  },
+  "order": [
+    "main",
+    "featured_blog_AwawQg",
+    "pdp_review_section_9Cycc3",
+    "write_a_review_86XNGM"
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "breadcrumb_banner_B9CHwj": {
+      "type": "breadcrumb-banner",
+      "settings": {
+        "img": "shopify:\/\/shop_images\/privacy-policy-desktop.png",
+        "img_mobile": "shopify:\/\/shop_images\/privacy-policy-mobile.png",
+        "title": "Store Locator",
+        "title_font_size": "h2",
+        "text": "We're available in stores across the country.\nFind the locations closest to you.",
+        "text_font_size": "medium_body",
+        "overlay": true,
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "padding_top": 68,
+        "padding_bottom": 68,
+        "padding_top_m": 36,
+        "padding_bottom_m": 36
+      }
+    },
+    "store_locater_kwpb73": {
+      "type": "store-locater",
+      "disabled": true,
+      "settings": {
+        "bg_color": "",
+        "title": "Check out our Locations",
+        "tab_one_text": "M3 Available",
+        "tab_one_icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"16\" viewbox=\"0 0 18 16\" fill=\"none\">\n                        <path d=\"M16.4993 8.83333V14.6667C16.4993 15.1269 16.1263 15.5 15.666 15.5H2.33268C1.87245 15.5 1.49935 15.1269 1.49935 14.6667V8.83333H0.666016V7.16667L1.49935 3H16.4993L17.3327 7.16667V8.83333H16.4993ZM3.16602 8.83333V13.8333H14.8327V8.83333H3.16602ZM2.36569 7.16667H15.633L15.133 4.66667H2.86569L2.36569 7.16667ZM3.99935 9.66667H10.666V12.1667H3.99935V9.66667ZM1.49935 0.5H16.4993V2.16667H1.49935V0.5Z\" fill=\"white\"><\/path>\n                    <\/svg>",
+        "tab_two_text": "M3 Available",
+        "tab_two_icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"18\" height=\"16\" viewbox=\"0 0 18 16\" fill=\"none\">\n                        <path d=\"M17.3327 15.5H0.666016V13.8333H1.49935V1.33333C1.49935 0.8731 1.87245 0.5 2.33268 0.5H13.9993C14.4596 0.5 14.8327 0.8731 14.8327 1.33333V5.5H16.4993V13.8333H17.3327V15.5ZM13.166 13.8333H14.8327V7.16667H9.83268V13.8333H11.4993V8.83333H13.166V13.8333ZM13.166 5.5V2.16667H3.16602V13.8333H8.16602V5.5H13.166ZM4.83268 7.16667H6.49935V8.83333H4.83268V7.16667ZM4.83268 10.5H6.49935V12.1667H4.83268V10.5ZM4.83268 3.83333H6.49935V5.5H4.83268V3.83333Z\" fill=\"#353B45\"><\/path>\n                    <\/svg>",
+        "desktop_padding_top": 16,
+        "desktop_padding_bottom": 16,
+        "mobile_padding_top": 16,
+        "mobile_padding_bottom": 16
+      }
+    },
+    "store_locator_2_HTJmhp": {
+      "type": "store-locator-2",
+      "custom_css": [
+        ".storerocket-filters--item-color {border-radius:0px}"
+      ],
+      "settings": {
+        "bg_color": "#f5f5f5",
+        "desktop_padding_top": 50,
+        "desktop_padding_bottom": 80,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40
+      }
+    },
+    "insta_feed_fD9HQm": {
+      "type": "insta-feed",
+      "blocks": {
+        "image_j3Dkw4": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed.png"
+          }
+        },
+        "image_xaE93e": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed2.png"
+          }
+        },
+        "image_BThPDQ": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed5.png"
+          }
+        },
+        "image_4UJAhn": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed6.png"
+          }
+        },
+        "image_bUyLc9": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed8.png"
+          }
+        },
+        "image_KhfNwa": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed3.png"
+          }
+        },
+        "image_xc4VeB": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed4.png"
+          }
+        },
+        "image_yPkrBq": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed7.png"
+          }
+        },
+        "image_bdeFmx": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed9.png"
+          }
+        },
+        "instafeed_app_block_bPhH8K": {
+          "type": "shopify:\/\/apps\/instafeed\/blocks\/app-block\/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_j3Dkw4",
+        "image_xaE93e",
+        "image_BThPDQ",
+        "image_4UJAhn",
+        "image_bUyLc9",
+        "image_KhfNwa",
+        "image_xc4VeB",
+        "image_yPkrBq",
+        "image_bdeFmx",
+        "instafeed_app_block_bPhH8K"
+      ],
+      "settings": {
+        "show_image_gallery": false,
+        "show_instafeedapp": true,
+        "heading": "Follow @bedgear",
+        "insta_url": "https:\/\/www.instagram.com\/bedgear",
+        "desktop_padding_top": 80,
+        "desktop_padding_bottom": 60,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "main",
+    "breadcrumb_banner_B9CHwj",
+    "store_locater_kwpb73",
+    "store_locator_2_HTJmhp",
+    "insta_feed_fD9HQm"
+  ]
+}

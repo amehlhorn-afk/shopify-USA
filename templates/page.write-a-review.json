@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "write_a_review_L3Hmgx": {
+      "type": "Write-a-review",
+      "settings": {
+        "heading": "Write a Review",
+        "desktop_padding_top": 60,
+        "desktop_padding_bottom": 100,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 100
+      }
+    }
+  },
+  "order": [
+    "main",
+    "write_a_review_L3Hmgx"
+  ]
+}
