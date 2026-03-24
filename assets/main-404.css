@@ -1,0 +1,53 @@
+.block__404-info h2 {
+  font-weight: 700;
+  font-size: 110px;
+  line-height: 1.17;
+  letter-spacing: 0;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  color: var(--selection-color);
+}
+
+.block__404-info h3 {
+  line-height: 1;
+  font-weight: 600;
+  color: var(--selection-color);
+  margin-bottom: 16px;
+}
+
+.block__404-info p {
+  color: var(--selection-color);
+  opacity: 0.7;
+  font-weight: 400;
+  margin-bottom: 32px;
+}
+
+.block__404-info a {
+  display: inline-block;
+  line-height: 1;
+  padding: 17px 36px;
+  border-radius: 50px;
+  font-weight: 700;
+  transition: all 0.4s ease;
+}
+
+@media (min-width:750px) and (max-width:991px) {
+    .block__404-info h2 {
+        font-size: 88px;
+    }
+    .block__404-info h3 {
+        margin-bottom: 14px;
+    }
+    .block__404-info p {
+        margin-bottom: 25px;
+    }
+}
+@media (max-width:749px) {
+    .block__404-info h2 {
+        font-size: 80px;
+    }
+    .block__404-info p {
+        max-width: 300px;
+        margin: 0 auto 32px;
+    }
+}

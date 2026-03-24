@@ -1,0 +1,82 @@
+.block__membership-hero-main img{
+    min-height: auto;
+    max-height: auto;
+    display: block;
+    width: 100%;
+}
+.block__membership-hero-content{
+    top: 50%;
+    left: 80px;
+    transform: translateY(-50%);
+}
+.block__membership-hero-content .banner__heading {
+    margin-bottom: 32px;
+    color: var(--quinary-color);
+}
+.block__membership-hero-content .banner__text{
+    margin-bottom: 32px;
+    color: var(--quinary-color);
+}
+
+/* Yotpo CSS */
+.block__membership-hero-content .yotpo-background{
+    background-color: transparent !important;
+    padding: 0px !important;
+}
+.block__membership-hero-content .yotpo-headline{
+    display: none !important;
+}
+.block__membership-hero-content .yotpo-widget-my-rewards-widget .yotpo-logged-in-view{
+    padding: 0px !important;
+}
+.block__membership-hero-content .yotpo-action-buttons-tile{
+    display: none !important;
+}
+.block__membership-hero-content .button-primary{
+    padding: 20px 62.5px;
+}
+.block__membership-hero-content .yotpo-inner-text{
+    color: var(--primary-color) !important;
+    font-size: 16px !important;
+    padding: 20px 62.5px;
+    /* border: 1px solid; */
+    background-color: var(--quinary-color);    
+    border-radius: var(--senary-border-radius);
+}
+.block__membership-hero-content .yotpo-widget-my-rewards-widget .yotpo-logged-in-view .yotpo-description{
+    justify-content: flex-start !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+@media screen and (min-width: 1025px) {
+    img.block__image-mobile{
+        display: none;
+    }
+}
+@media screen and (max-width: 1024px) {
+     img.block__image-desktop{
+        display: none;
+     }
+      .block__membership-hero-section .page-width{
+        padding: 0px;
+      }  
+      .block__membership-hero-main{
+        border-radius: 0px;
+      }
+      .block__membership-hero-content{
+        left: unset;
+      }
+      .block__membership-hero-content{
+        padding: 0px 20px;
+      }
+
+}
+@media screen and (max-width: 767px) {
+    .block__membership-hero-content .button-primary{
+        width: 100%;
+        padding: 19px;
+    }
+    .block__membership-hero-content .banner__heading, .block__membership-hero-content .banner__text{
+        margin-bottom: 20px;
+    }
+}

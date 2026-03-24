@@ -1,0 +1,118 @@
+.block__membership-collect-main{
+    background-color: var(--quinary-color);
+    border-radius: var(--quaternary-border-radius);
+    padding: 60px;
+}
+.block__membership-collect-wrapper{
+    max-width: 1164px;
+    margin: 60px auto;
+}
+.block__membership-collect-header{
+    max-width: 828px;
+    margin: auto;
+    text-align: center;
+}
+.block__membership-collect-header h2{
+    margin-bottom: 24px;
+}
+.block__membership-collect-header p{
+    color: var(--octonary_color);
+}
+.block__membership-collect-content{
+    text-align: center;
+    max-width: 340px;
+    width: 340px;
+    position: relative;
+}
+.block__membership-collect-content h3{
+    margin-bottom: 22px;
+}
+.block__membership-collect-content p{
+    color: var(--octonary_color);
+}
+.block__membership-collect-content-image{
+    width: 110px;
+    height: 110px;
+    background-color:  var(--primary-color);
+    border-radius: 50%;
+    margin: 0px auto 28px;
+}
+.block__membership-collect-content:not(:last-child):after{
+    content: "";
+    position: absolute;
+    top: 25%;
+    left: auto;
+    right: -40px;
+    width: 17px;
+    height: 17px;
+    border-right: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    transform: rotate(-45deg) translateY(-50%);
+}
+.block__membership-collect-button{
+    text-align: center;
+}
+.block__membership-collect-button a{
+    padding: 18px 40px;
+    margin-bottom: 18px;
+}
+.block__membership-collect-button p{
+    color: var(--octonary_color);
+}
+@media screen and (max-width: 1024px) {
+    .block__membership-collect-content{
+        width: 30%;
+    }
+    .block__membership-collect-wrapper{
+        align-items: unset;
+    }
+    .block__membership-collect-content-image{
+        width: 90px;
+        height: 90px;
+    }
+    .block__membership-collect-content:not(:last-child):after{
+        top: 15%;
+    }
+}
+@media screen and (max-width: 767px) {
+    .block__membership-collect-main{
+        padding: 40px 20px;
+    }
+    .block__membership-collect-content{
+        width: 100%;
+    }
+    .block__membership-collect-content-image{
+        height: 60px;
+        width: 60px;
+        margin: 0px;
+        padding: 18px;
+    }
+    .block__membership-collect-content-image img{
+        width: 20px;
+    }
+    .block__membership-collect-wrapper{
+        flex-wrap: wrap;
+        gap: 33px;
+    }
+    .block__membership-collect-content h3{
+        margin-bottom: 8px;
+    }
+    .block__membership-collect-header p{
+        font-size: 13px;
+    }
+    .block__membership-collect-button a{
+        width: 100%;
+        font-size: 16px;
+    }
+    .block__membership-collect-content:not(:last-child):after{
+        display: none;
+    }
+    .block__membership-collect-content{
+        text-align: left;
+        display: flex;
+            gap: 20px;
+    }
+    .block__membership-collect-wrapper{
+        margin: 32px 0px;
+    }
+}

@@ -1,0 +1,104 @@
+.block__our-story-img-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.block__our-story-image {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 22px;
+  padding-top: 63.43%;
+}
+
+.block__our-story-image img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  transition: all 0.4s ease;
+}
+
+.block__our-story-image-url {
+  display: block !important;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+.block__our-story-image:hover img {
+  transform: scale(1.05);
+}
+
+.block__our-story-image-title {
+  margin-bottom: 10px;
+}
+
+.block__our-story-img-content {
+  padding: 0 6px;
+}
+
+.block__our-story-image-text {
+  margin-bottom: 12px;
+  color: var(--denary_color);
+}
+.block__our-story-image-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-color);
+  font-weight: 500;
+  transition: all 0.4s ease;
+}
+
+.block__our-story-image-btn svg {
+  width: 7px;
+  height: auto;
+  transition: all 0.4s ease;
+}
+
+.block__our-story-image-btn:hover svg {
+  transform: translateX(5px);
+}
+
+@media (min-width:1200px) and (max-width:1439px) {
+    .block__our-story-img-row {
+        gap: 20px;
+    }
+}
+@media (min-width:992px) and (max-width:1199px) {
+    .block__our-story-img-row {
+        gap: 12px;
+    }
+    .block__our-story-image {
+        margin-bottom: 20px;
+    }
+    .block__our-story-image-title {
+        margin-bottom: 15px;
+        font-size: 20px;
+    }
+    .block__our-story-image-text {
+        margin-bottom: 20px;
+    }
+}
+@media (min-width:750px) and (max-width:991px) {
+    .block__our-story-img-row {
+        grid-template-columns: repeat(1,1fr);
+        gap: 30px;
+    }
+}
+@media (max-width:749px) {
+    .block__our-story-img-row {
+        grid-template-columns: repeat(1,1fr);
+        gap: 34px;
+    }
+    .block__our-story-image {
+        padding-top: 58.43%;
+    }
+}

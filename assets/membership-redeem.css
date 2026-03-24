@@ -1,0 +1,90 @@
+.block__membership-redeem-main{
+    padding: 80px;
+    background-color: var(--quinary-color);
+    border-radius: var(--quaternary-border-radius);
+}
+/* Yotpo CSS */
+.block__membership-redeem-section .yotpo-coupons-redemption-widget .yotpo-content-container{
+    max-width: 100% !important;
+}
+.block__membership-redeem-section .yotpo-coupons-redemption-widget .yotpo-description{
+    max-width: 100% !important;
+}
+.block__membership-redeem-section .yotpo-coupons-redemption-widget .yotpo-coupouns-container{
+    max-width: 100% !important;
+}
+.block__membership-redeem-section .yotpo-coupons-redemption-widget .yotpo-redemption-option-container.yotpo-redemption-no-background:not(.yotpo-is-mobile){
+    width: calc(25% - 10px)!important;
+    padding: 32px !important;
+    background-color: var(--tertiary-color) !important;
+    border: 1px solid var(--border_color) !important;
+    height: 218px;
+}
+.block__membership-redeem-section .yotpo-widgets-action-button.yotpo-medium-button[data-v-ecede0fe]{
+    height: 50px !important; 
+    margin-top: 14px;
+}
+.block__membership-redeem-section .yotpo-coupons-redemption-widget .yotpo-coupons-redemption-widget-container{
+    padding: 0px !important;
+}
+.block__membership-redeem-customer .yotpo-coupons-redemption-widget .yotpo-login-button{
+    margin-top: 0px !important;
+}
+.block__membership-redeem-section .yotpo-redemption-option-reward{
+    margin-bottom: 16px;
+}
+.block__membership-redeem-section  .yotpo-widgets-action-button.yotpo-capsule-btn-type[data-v-ecede0fe]{
+    padding: 18px 40px !important;
+    height: 62px !important;
+}
+.block__membership-redeem-section  .yotpo-button-label{
+    font-weight: 700 !important;
+    font-size: 16px !important;
+}
+.block__membership-redeem-main  .yotpo-coupons-redemption-widget :focus{
+    box-shadow: unset !important;
+}
+.yotpo-widgets-action-button.yotpo-rounded-btn-type[data-v-ecede0fe]{
+    border-radius: var(--senary-border-radius) !important;
+}
+@media screen and (max-width: 1024px) {
+    .block__membership-redeem-section .yotpo-redemption-option-reward{
+        font-size: 20px !important;
+    }
+    .block__membership-redeem-main .yotpo-coupons-redemption-widget .swiper-pagination-bullet.swiper-pagination-bullet-active{
+        background-color: var(--primary-color) !important;
+    }
+    .block__membership-redeem-main  .yotpo-coupons-redemption-widget :focus{
+        box-shadow: unset !important;
+    }
+    .block__membership-redeem-main{
+        padding: 40px 20px;
+    }
+    .block__membership-redeem-main .yotpo-coupons-redemption-widget .yotpo-coupouns-container.yotpo-is-mobile{
+        width: 100% !important;
+    }
+    .block__membership-redeem-main .yotpo-coupons-redemption-widget .yotpo-redemption-option-container.yotpo-redemption-no-background.yotpo-is-mobile{
+        max-height: unset !important;
+    }
+    .block__membership-redeem-main  .yotpo-coupons-redemption-widget .yotpo-redemption-option-container.yotpo-redemption-no-background{
+        border: 1px solid var(--border_color) !important; 
+        background-color: var(--tertiary-color) !important;
+    }
+    .block__membership-redeem-main  .yotpo-coupons-redemption-widget .yotpo-headline.yotpo-is-mobile{
+        font-size: 24px !important;
+        margin-bottom: 20px !important;
+    }
+    .block__membership-redeem-main .yotpo-coupons-redemption-widget .yotpo-is-mobile .yotpo-points-balance{
+        padding-top: 20px !important;
+    }
+}
+@media screen and (max-width: 767px) {
+    .yotpo-coupons-redemption-widget .yotpo-redemption-options-mobile-list{
+        width: 100% !important;
+        justify-content: center;
+    }
+    .block__membership-redeem-section .yotpo-widgets-action-button.yotpo-capsule-btn-type[data-v-ecede0fe]{
+        padding: 6px 9px !important;
+        height: 48px !important;
+    }
+}

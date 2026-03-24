@@ -1,0 +1,10 @@
+.block__pdp-banner-conetnts .block__heading p{color: var(--denary_color);margin-top: 14px;}
+@media only screen and (min-width: 750px){
+    .block__pdp-banner-conetnts .block__heading {top: 100px;}
+    .block__pdp-banner-conetnts .image_set_pd{padding-bottom: 47%;}
+}
+@media (max-width: 749px) {
+    .block__pdp-banner-conetnts .block__heading {top: 50px;}
+    .block__pdp-banner-conetnts .image_set_pd{padding-bottom: 79%;}
+}
+

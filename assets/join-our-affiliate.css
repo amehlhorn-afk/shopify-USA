@@ -1,0 +1,192 @@
+.block__join-our-affiliate-heading h2 {
+    margin-bottom: 18px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--selection-color);
+}
+
+.block__join-our-affiliate-caption {
+    color: var(--denary_color);
+}
+
+.block__join-our-affiliate-heading {
+    margin-bottom: 4rem;
+}
+
+.block__join-our-process-cotent-wrapper {
+    background-color: var(--quinary-color);
+    border-radius: var(--quaternary-border-radius);
+    padding: 50px 30px;
+    /* width: 50%; */
+    margin-top: 3rem;
+}
+
+.block__join-process-step-inner {
+    gap: 20px;
+}
+
+.block__join-our-process-wrapper {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* 
+.block__join-process-step-inner .block__join-our-process-wrapper::after{
+   content: "";
+   position: absolute;
+   border-top: 1px solid #DDDDDD;
+   width: 90%;
+   top: 20px;
+   left: 23rem;
+} */
+
+.block__join-our-affiliate-process {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.block__join-process-content span {
+    font-weight: 500;
+}
+
+.block__join-our-process-step {
+    background-color: var(--primary-color);
+    color: var(--quinary-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.block__join-process-content p {
+    color: var(--denary_color);
+    margin-top: 2px;
+}
+
+.block__join-our-affiliate-process-step-wrapper {
+    padding: 0 180px;
+    position: relative;
+}
+
+.block__join-our-affiliate-process-step-wrapper .block__join-our-process-step::after {
+    content: "";
+    position: absolute;
+    border-top: 1px solid #DDDDDD;
+    width: 29%;
+    top: 20px;
+    left: 23rem;
+}
+
+.block__join-our-affiliate-process-step-wrapper .block__join-our-process-step:not(:first-child)::after {
+    content: "";
+    position: absolute;
+    border-top: 1px solid #DDDDDD;
+    width: 29%;
+    top: 20px;
+    left: 65rem;
+}
+
+.block__join-our-affiliate-process-step-wrapper .block__join-our-process-step:last-child::after {
+    display: none;
+}
+
+
+@media screen and (min-width: 1270px) {
+    .block__join-our-process-wrapper .block__join-our-process-step {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1269px) {
+    .block__join-our-affiliate-process-step-wrapper {
+        display: none;
+    }
+
+    .block__join-process-step-inner {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .block__join-our-process-wrapper {
+        width: 100%;
+        height: 100%;
+    }
+
+    .block__join-our-process-cotent-wrapper {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .block__join-process-step-inner .block__join-our-process-wrapper::after {
+        content: "";
+        position: absolute;
+        border-top: 1px solid #DDDDDD;
+        width: 90%;
+        top: 20px;
+        left: 22rem;
+        z-index: 0;
+    }
+
+    .block__join-process-step-inner .block__join-our-process-wrapper:last-child::after {
+        display: none;
+    }
+
+    .block__join-our-process-step-number {
+        z-index: 2;
+    }
+    
+}
+
+@media screen and (max-width: 1199px) {
+    .block__join-process-step-inner .block__join-our-process-wrapper::after {
+        width: 87%;
+    }
+}
+
+@media screen and (max-width: 1135px) {
+    .block__join-process-step-inner .block__join-our-process-wrapper::after {
+        width: 85%;
+        left: 20rem;
+    }
+}
+
+@media screen and (max-width: 1029px) {
+    .block__join-process-step-inner .block__join-our-process-wrapper::after {
+        display: none;
+    }
+
+    .block__join-process-step-inner {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    .block__join-our-process-wrapper {
+        flex-direction: row;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .block__join-our-process-cotent-wrapper {
+        margin-top: 0;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .block__join-our-process-wrapper {
+        gap: 10px;
+    }
+    .block__join-our-process-cotent-wrapper {
+        padding: 20px;
+        border-radius: 10px;
+    }
+    .block__join-process-content p{
+        margin-top: 5px;
+    }
+}

@@ -1,0 +1,32 @@
+.block__image-with-text-wrapper {max-width: 1160px;margin: 0 auto;}
+.block__image-with-text-wrapper .block__image {padding-bottom: 58.7%;}
+.block__image-with-text .block__heading p{margin-top: 10px;}
+.block__image-with-text-wrapper .block__row .block__content > span{color: var(--primary-color);}
+.block__image-with-text-wrapper .block__row .block__content p,.block__image-with-text-wrapper .block__row .block__content ul li{color: var(--nonary_color);}
+.block__image-with-text-wrapper .block__content ul li{position: relative;padding-left: 22px;}
+.block__image-with-text-wrapper .block__content ul li:after{
+    position: absolute;content: "";left: 0;top: 4px;background-size: contain; background-position: center;background-repeat: no-repeat;width: 14px;  height: 13px;
+    display: inline-block;
+}
+
+
+@media only screen and (min-width: 990px){
+    .block__image-with-text .block__heading {margin-bottom: 60px;}
+    .block__image-with-text-wrapper .block__row:nth-of-type(even) {flex-direction: row-reverse;}
+    .block__image-with-text-wrapper .block__row:nth-of-type(odd) .block__content {padding-left: 40px;}
+    .block__image-with-text-wrapper .block__row:nth-of-type(even) .block__content {padding-right: 40px;}
+    .block__image-with-text-wrapper .block__row:not(:first-child){margin-top: 80px;}
+    .block__image-with-text-wrapper .block__row .block__content > span{margin-bottom: 13px;}
+    .block__image-with-text-wrapper .block__row .block__content p{margin-top: 13px;}
+    .block__image-with-text-wrapper .block__content ul li,.block__image-with-text-wrapper .block__row .block__content ul{margin-top: 6px;}
+   
+}
+@media (max-width: 989px) {
+    .block__image-with-text-wrapper .block__row {flex-direction: column;}
+    .block__image-with-text-wrapper .block__row:not(:first-child){margin-top: 40px;}
+    .block__image-with-text .block__heading {margin-bottom: 40px;}
+    .block__image-with-text-wrapper .block__row .block__content > span{margin-bottom: 10px;font-size: var(--body);}
+    .block__image-with-text-wrapper .block__row .block__content p,.block__image-with-text-wrapper .block__content ul li{margin-top: 10px;}
+    .block__image-with-text-wrapper .block__row .block__content{margin-top: 25px;}
+}
+

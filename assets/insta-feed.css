@@ -1,0 +1,33 @@
+.block__insta-feed-wrapper h3 {
+    text-align: center;
+}
+
+.block__insta-feed-image:hover .block__insta-feed-hover-svg {
+    opacity: 1;
+    visibility: visible;
+}
+
+.block__insta-feed-hover-svg {
+    background: #00000080;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .4s;
+}
+
+@media screen and (min-width: 991px) {
+
+    .block__insta-feed-inner .swiper-wrapper {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: auto auto;
+        gap: 20px;
+    }
+
+    .block__insta-feed-inner .swiper-slide:nth-child(3) {
+        grid-column: 3 / 5;
+        grid-row: 1 / 3;
+    }
+}
