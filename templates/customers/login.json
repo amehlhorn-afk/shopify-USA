@@ -1,0 +1,123 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-login",
+      "settings": {
+        "enable_shop_login_button": false,
+        "bg_image": "shopify:\/\/shop_images\/Rectangle_479_a278caca-0ac0-48c4-a920-9ba054a46a5c.png",
+        "bg_color": "#ffffff",
+        "title": "Welcome to Bedgear",
+        "text": "Please login to continue",
+        "image_desktop_padding_top": 100,
+        "image_desktop_padding_bottom": 100,
+        "image_mobile_padding_top": 50,
+        "iamge_mobile_padding_bottom": 50,
+        "desktop_padding_top": 60,
+        "desktop_padding_bottom": 60,
+        "mobile_padding_top": 0,
+        "mobile_padding_bottom": 20
+      }
+    },
+    "insta_feed_zxBV3G": {
+      "type": "insta-feed",
+      "blocks": {
+        "image_peiRGD": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed.png"
+          }
+        },
+        "image_8A6bBe": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed2.png"
+          }
+        },
+        "image_KVAfen": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed5.png"
+          }
+        },
+        "image_4HLt9T": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed6.png"
+          }
+        },
+        "image_nXpFQY": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed8.png"
+          }
+        },
+        "image_N4DzbG": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed3.png"
+          }
+        },
+        "image_nAFkgL": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed4.png"
+          }
+        },
+        "image_bwiprN": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed7.png"
+          }
+        },
+        "image_9mbVUb": {
+          "type": "Image",
+          "settings": {
+            "insta_feed": "shopify:\/\/shop_images\/Instafeed9.png"
+          }
+        },
+        "instafeed_app_block_qDNVcr": {
+          "type": "shopify:\/\/apps\/instafeed\/blocks\/app-block\/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_peiRGD",
+        "image_8A6bBe",
+        "image_KVAfen",
+        "image_4HLt9T",
+        "image_nXpFQY",
+        "image_N4DzbG",
+        "image_nAFkgL",
+        "image_bwiprN",
+        "image_9mbVUb",
+        "instafeed_app_block_qDNVcr"
+      ],
+      "settings": {
+        "heading": "Follow @bedgear",
+        "insta_url": "https:\/\/www.instagram.com\/bedgear\/",
+        "desktop_padding_top": 80,
+        "desktop_padding_bottom": 60,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "main",
+    "insta_feed_zxBV3G"
+  ]
+}

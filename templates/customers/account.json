@@ -1,0 +1,50 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-account",
+      "blocks": {
+        "link_Bkbn8d": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Overview",
+            "menu_url": "\/account"
+          }
+        },
+        "link_xgMhje": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Product Registrations",
+            "menu_url": "shopify:\/\/pages\/product-registrations"
+          }
+        },
+        "link_cAdppj": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Orders",
+            "menu_url": "shopify:\/\/pages\/orders"
+          }
+        },
+        "link_h449Aq": {
+          "type": "Link",
+          "settings": {
+            "menu_text": "Loyalty Program",
+            "menu_url": "shopify:\/\/pages\/loyalty-program"
+          }
+        }
+      },
+      "block_order": [
+        "link_Bkbn8d",
+        "link_xgMhje",
+        "link_cAdppj",
+        "link_h449Aq"
+      ],
+      "settings": {
+        "padding_top": 52,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
