@@ -1,0 +1,623 @@
+{%- comment -%}
+  Horizontal-only product card for collection pages.
+  Safe to edit without touching the standard card.
+{%- endcomment -%}
+<style>
+/* ============================
+   HORIZONTAL CARD – FINAL CSS
+   Scoped so it won't affect vertical layout
+   ============================ */
+
+.horizontal-cards .hp-card {
+  display: grid;
+  grid-template-columns: 45% 1fr;              /* image | content */
+  gap: 28px;
+  align-items: start;
+  width: 100%;
+  background: transparent !important;          /* no card bg */
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* Left media */
+.horizontal-cards .hp-card__media {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+}
+.horizontal-cards .hp-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+/* Right content column */
+.horizontal-cards .hp-card__content {
+  display: block !important;                   /* critical: no flex here */
+  min-width: 0;                                /* avoid grid overflow */
+}
+
+/* Top wrapper MUST NOT be flex or it will push rating to the right */
+.horizontal-cards .hp-card__top {
+  display: block !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Title (Figma) */
+.horizontal-cards .hp-title {
+  margin: 0 0 6px 0;
+  color: #000;
+  font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 26px;                           /* 108.33% */
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere;
+}
+.horizontal-cards .hp-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Reviews under title */
+.horizontal-cards .hp-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  
+}
+
+
+/******** HORIZONTAL CARD – LAYOUT POLISH ********/
+.horizontal-cards .hp-card {
+  display: grid;
+  grid-template-columns: 44% 1fr;   /* image | content */
+  gap: 28px;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Media */
+.horizontal-cards .hp-card__media { border-radius: 16px; overflow: hidden; }
+.horizontal-cards .hp-card__media img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- Media (fixed size per Figma) --- */
+.horizontal-cards .hp-card__media {
+  display: block;
+  width: 515px;
+  height: 388px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.horizontal-cards .hp-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+
+/* Content column becomes a 4-row grid:
+   1) title+rating, 2) blurb, 3) features (grows), 4) bottom row pinned */
+.horizontal-cards .hp-card__content {
+  display: grid !important;
+  grid-template-rows: auto auto 1fr auto;
+  min-height: 420px; /* tune if needed */
+}
+
+/* --- Top (title + rating) --- */
+.horizontal-cards .hp-card__top { display: block !important; margin: 0 0 8px; }
+.horizontal-cards .hp-title { margin: 0 0 6px; }
+.horizontal-cards .hp-rating { margin: 2px 0 0; }
+
+/* --- Blurb (Figma spec) --- */
+.horizontal-cards .hp-blurb {
+  opacity: 0.7;
+  color: #000;
+  font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  font-size: 15.5px;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 0 0 14px 0;
+  max-width: 720px;
+}
+
+/* --- Features FRAME (2×2 grid) --- */
+/* Re-using your existing .hp-chips/.hp-chip classes */
+.horizontal-cards .hp-chips {
+  background: white !important;              /* light gray frame */
+  border-radius: 14px;
+  padding: 15px 20px;
+  display:flex;
+  flex-direction: column;
+  gap: 10px 24px;                   /* row x column gap */
+  align-content: start;
+  margin: 0 0 16px 0;
+  border: 0;
+  box-shadow: none;
+  height:90px
+}
+.horizontal-cards .hp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 !important;
+  background: transparent !important; /* no pill */
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.horizontal-cards .hp-chip img,
+.horizontal-cards .hp-chip svg {
+  width: 22px; height: 22px; flex: 0 0 22px; object-fit: contain;
+}
+.horizontal-cards .hp-chip span {
+color: #676C73;
+leading-trim: both;
+text-edge: cap;
+font-family: Roboto;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: 24px; /* 171.429% */
+  
+}
+/* --- Bottom section with border and shadow --- */
+.horizontal-cards .hp-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 8px;
+  padding: 14px 20px;
+  background: #FFF;
+  box-shadow: 0 2px 10px 0 rgba(245, 245, 245, 0.11);
+}
+
+
+.horizontal-cards .hp-price {
+  color: #00B5E3;
+  font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Button per Figma (white bg, blue border) */
+.horizontal-cards .hp-cta {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 212px;
+  height: 50px;
+  padding: 14px 10px;
+  gap: 10px;
+  background: #FFF;
+  color: #000;
+  font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.horizontal-cards .hp-cta:hover {
+  background: #00B5E3;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .horizontal-cards .hp-card { grid-template-columns: 48% 1fr; gap: 22px; }
+}
+@media (max-width: 749px) {
+  .horizontal-cards .hp-card { grid-template-columns: 1fr; gap: 16px; }
+  .horizontal-cards .hp-chips { grid-template-columns: 1fr 1fr; }
+  .horizontal-cards .hp-cta { width: 100%; }
+}
+
+/* Fix the grid column to the exact media width */
+.horizontal-cards .hp-card {
+  grid-template-columns: 515px 1fr;   /* image | content */
+}
+
+/* Lock the media box and kill Dawn's ratio/padding behavior */
+.horizontal-cards .hp-card__media {
+  width: 515px;
+  height: 388px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  position: relative;                 /* establish a containing block */
+}
+
+/* Override Dawn's .media.ratio inside this card */
+.horizontal-cards .hp-card__media .media {
+  height: 100% !important;
+  width: 100% !important;
+  padding-top: 0 !important;          /* remove ratio padding */
+  position: static !important;        /* stop absolute stacking */
+}
+
+/* And the image itself should be normal, not absolute */
+.horizontal-cards .hp-card__media .media img {
+  position: static !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  border-radius: 16px;
+}
+/* --- Layout hardening + tighter spacing --- */
+
+/* keep: 515px media column */
+.horizontal-cards .hp-card{
+  grid-template-columns: 515px 1fr;   /* image | content */
+  column-gap: 24px;                   /* a bit tighter than 28 */
+}
+
+/* right column matches image height and uses an auto/auto/1fr/auto grid */
+.horizontal-cards .hp-card__content{
+  display: grid !important;
+  grid-template-rows: auto auto 1fr auto;   /* top, blurb, flex space, bottom */
+  min-height: 388px;                        /* same as media height */
+  row-gap: 10px;                            /* tighter */
+}
+
+/* title/rating/blurb spacing */
+.horizontal-cards .hp-card__top{ margin: 0 0 6px; }
+.horizontal-cards .hp-title{ margin: 0 0 4px; }
+.horizontal-cards .hp-rating{ margin: 0 0 8px; }
+.horizontal-cards .hp-blurb{ margin: 0 0 12px; }
+
+/* features block – fixed height & slightly tighter padding */
+.horizontal-cards .hp-chips{
+  height: 90px;              /* fixed (as requested) */
+  padding: 14px 18px;        /* slightly tighter */
+  gap: 10px 20px;            /* row x column */
+}
+
+/* bottom panel: pin to the bottom + full width + compact spacing */
+.horizontal-cards .hp-bottom{
+  margin-top: auto;          /* <— pins the panel to the bottom of the column */
+  width: 100%;
+  padding: 14px 18px;
+  background: #FFF;
+  box-shadow: 0 2px 10px 0 rgba(245,245,245,.11);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* keep the CTA size, but let it shrink a little on narrow viewports */
+.horizontal-cards .hp-cta{ min-width: 212px; height: 50px; }
+
+/* ensure the fixed-size media never overlaps the content */
+.horizontal-cards .hp-card__media{
+  width: 515px; height: 388px; flex-shrink: 0;
+  border-radius: 16px; overflow: hidden; position: relative;
+}
+.horizontal-cards .hp-card__media .media{
+  width: 100% !important; height: 100% !important;
+  padding-top: 0 !important; position: static !important;
+}
+.horizontal-cards .hp-card__media .media img{
+  position: static !important; width: 100% !important; height: 100% !important;
+  object-fit: cover; border-radius: 16px;
+}
+
+/* small screens */
+@media (max-width: 1024px){
+  .horizontal-cards .hp-card{ column-gap: 20px; }
+}
+@media (max-width: 749px){
+  .horizontal-cards .hp-card{ grid-template-columns: 1fr; }
+  .horizontal-cards .hp-card__content{ min-height: auto; }
+  .horizontal-cards .hp-cta{ width: 100%; min-width: 0; }
+}
+/* ============================
+   MOBILE + TABLET RESPONSIVE FIX
+   ============================ */
+
+@media (max-width: 1024px) {
+  .horizontal-cards .hp-card {
+    grid-template-columns: 1fr;       /* stack image + content */
+    gap: 16px;
+  }
+
+  .horizontal-cards .hp-card__media {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .horizontal-cards .hp-card__media .media,
+  .horizontal-cards .hp-card__media .media img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover;
+  }
+
+  .horizontal-cards .hp-card__content {
+    display: flex !important;
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .horizontal-cards .hp-chips {
+    grid-template-columns: repeat(2, 1fr);
+    height: auto;                     /* allow wrapping */
+    padding: 12px 16px;
+    display: grid;
+  }
+
+  .horizontal-cards .hp-bottom {
+    margin-top: 16px;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .horizontal-cards .hp-cta {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .horizontal-cards .hp-price {
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .horizontal-cards .hp-title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .horizontal-cards .hp-blurb {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .horizontal-cards .hp-chip span {
+    font-size: 12px;
+  }
+}
+
+.horizontal-cards .hp-pills {
+  margin: 12px 0 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.horizontal-cards .hp-pill {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid #00B5E3;
+  background: #E8F9FF;
+  color: #00B5E3;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  max-height: 28px
+}
+
+</style>
+
+
+{%- assign p = card_product -%}
+{%- assign ratio = 1 -%}
+{%- if p.featured_media and media_aspect_ratio == 'portrait' -%}{% assign ratio = 0.8 %}{% endif %}
+{%- if p.featured_media and media_aspect_ratio == 'adapt' -%}{% assign ratio = p.featured_media.aspect_ratio %}{% endif %}
+{%- if ratio == 0 or ratio == null -%}{% assign ratio = 1 %}{% endif %}
+
+<div class="hp-card" style="--hp-ratio: {{ 1 | divided_by: ratio | times: 100 }}%;">
+  <!-- media -->
+  <a class="hp-card__media {% if image_shape and image_shape != 'default' %}shape--{{ image_shape }}{% endif %}"
+     href="{{ p.url }}" aria-label="{{ p.title | escape }}">
+    <div class="media ratio" style="--ratio-percent: var(--hp-ratio);">
+      {% comment %} primary image {% endcomment %}
+      {% if p.featured_media %}
+        <img
+          srcset="
+            {%- if p.featured_media.width >= 360 -%}{{ p.featured_media | image_url: width: 360 }} 360w,{%- endif -%}
+            {%- if p.featured_media.width >= 720 -%}{{ p.featured_media | image_url: width: 720 }} 720w,{%- endif -%}
+            {{ p.featured_media | image_url }} {{ p.featured_media.width }}w"
+          src="{{ p.featured_media | image_url: width: 720 }}"
+          alt="{{ p.featured_media.alt | escape | default: p.title }}"
+          {% unless lazy_load == false %}loading="lazy"{% endunless %}
+          width="{{ p.featured_media.width }}" height="{{ p.featured_media.height }}">
+      {% else %}
+        {{ 'product-apparel-2' | placeholder_svg_tag }}
+      {% endif %}
+    </div>
+
+    {%- comment -%} example badge (use your own metafield/logic) {%- endcomment -%}
+    {% if p.tags contains 'New Arrival' %}
+      <span class="hp-badge">NEW ARRIVAL</span>
+    {% endif %}
+  </a>
+
+  <!-- content -->
+  <div class="hp-card__content">
+    <div class="hp-card__top">
+      <h3 class="hp-title"><a class="full-unstyled-link" href="{{ p.url }}">{{ p.title | escape }}</a></h3>
+
+      <div class="hp-rating">
+        {% render 'powerreviews-plp-snippet' with p as product %}
+        {% comment %} Or show your star svg + count here {% endcomment %}
+      </div>
+    </div>
+
+    {% comment %} short blurb (use your existing metafield if available) {% endcomment %}
+    {% if p.metafields.custom.clp_description != blank %}
+      <p class="hp-blurb">{{ p.metafields.custom.clp_description | strip_html }}</p>
+    {% endif %}
+
+    {% comment %} feature chips (re-using the same fields you already parse) {% endcomment %}
+    {%- assign pf_direct = p.metafields.product_features -%}
+    {%- assign pf_ref = p.metafields.product_features.product_features
+      | default: p.metafields.product_features.features
+      | default: p.metafields.custom.product_features
+      | default: p.metafields.custom.features -%}
+    {%- if pf_ref and pf_ref.value -%}{% assign pf = pf_ref.value %}{% else %}{% assign pf = pf_direct %}{% endif %}
+
+    {% if pf %}
+      {% assign f1 = pf.pdp_features_title_1 | default: '' %}
+      {% assign f2 = pf.pdp_features_title_2 | default: '' %}
+      {% assign f3 = pf.pdp_features_title_3 | default: '' %}
+      {% assign f4 = pf.pdp_features_title_4 | default: '' %}
+      {% assign f1i = pf.pdp_features_image_1 %}
+      {% assign f2i = pf.pdp_features_image_2 %}
+      {% assign f3i = pf.pdp_features_image_3 %}
+      {% assign f4i = pf.pdp_features_image_4 %}
+
+      <div class="hp-chips">
+        {% if f1 != '' or f1i %}<div class="hp-chip">{% if f1i %}{{ f1i | image_url: width: 40 | image_tag: alt: f1 }}{% endif %}<span>{{ f1 }}</span></div>{% endif %}
+        {% if f2 != '' or f2i %}<div class="hp-chip">{% if f2i %}{{ f2i | image_url: width: 40 | image_tag: alt: f2 }}{% endif %}<span>{{ f2 }}</span></div>{% endif %}
+        {% if f3 != '' or f3i %}<div class="hp-chip">{% if f3i %}{{ f3i | image_url: width: 40 | image_tag: alt: f3 }}{% endif %}<span>{{ f3 }}</span></div>{% endif %}
+        {% if f4 != '' or f4i %}<div class="hp-chip">{% if f4i %}{{ f4i | image_url: width: 40 | image_tag: alt: f4 }}{% endif %}<span>{{ f4 }}</span></div>{% endif %}
+      </div>
+    {% endif %}
+    {%- if card_product.metafields.custom.product_grid_tag != blank -%}
+  <div class="hp-pills">
+    <span class="hp-pill">
+      {{ card_product.metafields.custom.product_grid_tag.value }}
+    </span>
+  </div>
+{%- endif -%}
+
+
+    <div class="hp-bottom">
+      <div class="hp-price">
+        {% render 'price', product: p, show_compare_at_price: true %}
+        {% if p.metafields.custom.price_tag != blank %}
+          <span class="hp-tag">{{ p.metafields.custom.price_tag }}</span>
+        {% endif %}
+      </div>
+{%- assign product_form_id = 'quick-add-' | append: section.id | append: card_product.id -%}
+
+{%- case section.settings.quick_add -%}
+{%- when 'standard' -%}
+  {%- liquid
+    assign qty_rules = false
+    if card_product.selected_or_first_available_variant.quantity_rule.min > 1
+      assign qty_rules = true
+    endif
+    if card_product.selected_or_first_available_variant.quantity_rule.max != null
+      assign qty_rules = true
+    endif
+    if card_product.selected_or_first_available_variant.quantity_rule.increment > 1
+      assign qty_rules = true
+    endif
+  -%}
+
+  {%- comment -%} Determine if we should show the modal (avoid using "or") {%- endcomment -%}
+  {%- assign needs_modal = false -%}
+  {%- if card_product.variants.size > 0 -%}{% assign needs_modal = true %}{%- endif -%}
+  {%- if qty_rules -%}{% assign needs_modal = true %}{%- endif -%}
+
+  {%- if needs_modal -%}
+    {%- comment -%} “Choose Options” button that opens the modal {%- endcomment -%}
+    <modal-opener data-modal="#QuickAdd-{{ card_product.id }}">
+      <button
+        id="{{ product_form_id }}-submit"
+        type="button"
+        class="quick-add__submit button button--full-width button-primary card--horizontal__quick-add senary-border-radius"
+        aria-haspopup="dialog"
+        aria-labelledby="{{ product_form_id }}-submit title-{{ section.id }}-{{ card_product.id }}"
+        data-product-url="{{ card_product.url }}"
+      >
+        {{ 'products.product.choose_options' | t }}
+        {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
+        {%- render 'loading-spinner' -%}
+      </button>
+    </modal-opener>
+
+    {%- comment -%} Modal shell (same IDs/classes as your original card) {%- endcomment -%}
+    <quick-add-modal id="QuickAdd-{{ card_product.id }}" class="quick-add-modal">
+      <div
+        role="dialog"
+        aria-label="{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}"
+        aria-modal="true"
+        class="quick-add-modal__content global-settings-popup"
+        tabindex="-1"
+      >
+        <button
+          id="ModalClose-{{ card_product.id }}"
+          type="button"
+          class="quick-add-modal__toggle"
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          {{- 'icon-close.svg' | inline_asset_content -}}
+        </button>
+        <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
+      </div>
+    </quick-add-modal>
+
+  {%- else -%}
+    {%- comment -%} Simple add (no modal) {%- endcomment -%}
+    <product-form data-section-id="{{ section.id }}">
+      {%- form 'product',
+        card_product,
+        id: product_form_id,
+        class: 'form',
+        novalidate: 'novalidate',
+        data-type: 'add-to-cart-form'
+      -%}
+        <input
+          type="hidden"
+          name="id"
+          value="{{ card_product.selected_or_first_available_variant.id }}"
+          class="product-variant-id"
+          {% if card_product.selected_or_first_available_variant.available == false %}disabled{% endif %}
+        >
+        <button
+          id="{{ product_form_id }}-submit"
+          type="submit"
+          name="add"
+          class="quick-add__submit button button--full-width button-primary card--horizontal__quick-add senary-border-radius"
+          aria-live="polite"
+          data-sold-out-message="true"
+          {% if card_product.selected_or_first_available_variant.available == false %}disabled{% endif %}
+        >
+          {{ 'products.product.add_to_cart' | t }}
+          {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
+          <span class="sold-out-message hidden">{{ 'products.product.sold_out' | t }}</span>
+          {%- render 'loading-spinner' -%}
+        </button>
+      {%- endform -%}
+    </product-form>
+  {%- endif -%}
+
+{%- when 'bulk' -%}
+  <modal-opener
+    id="QuickBulk-{{ card_product.id }}-{{ section.id }}"
+    data-modal="#QuickAddBulk-{{ card_product.id }}-{{ section.id }}"
+  >
+    <button
+      type="button"
+      class="quick-add__submit button button--full-width button-primary senary-border-radius"
+      aria-haspopup="dialog"
+    >
+      {{ 'products.product.choose_options' | t }}
+      {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
+      {%- render 'loading-spinner' -%}
+    </button>
+  </modal-opener>
+
+{%- else -%} {# quick_add == 'none' #}
+  <a href="{{ card_product.url }}" class="button button--full-width button-primary senary-border-radius">
+    {{ 'products.product.choose_options' | t }}
+  </a>
+{%- endcase -%}
+
+    </div>
+  </div>
+</div>

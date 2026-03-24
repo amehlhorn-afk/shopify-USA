@@ -1,0 +1,469 @@
+{% comment %}
+  Renders a header drawer menu for mobile and desktop.
+
+  Usage:
+  {% render 'header-drawer' %}
+{% endcomment %}
+
+<header-drawer data-breakpoint="{% if section.settings.menu_type_desktop == 'drawer' %}desktop{% else %}tablet{% endif %}">
+  <details id="Details-menu-drawer-container" class="menu-drawer-container">
+    <summary
+      class="header__icon header__icon--menu header__icon--summary link focus-inset"
+      aria-label="{{ 'sections.header.menu' | t }}"
+    >
+      <span>
+        {{- 'icon-hamburger.svg' | inline_asset_content -}}
+        {{- 'icon-close.svg' | inline_asset_content -}}
+      </span> 
+    </summary>
+    <div id="menu-drawer" class="gradient menu-drawer motion-reduce color-{{ section.settings.menu_color_scheme }}">
+      <div class="menu-drawer__inner-container">
+        <div class="menu-drawer__navigation-container">
+          <nav class="menu-drawer__navigation">
+            <ul class="menu-drawer__menu has-submenu list-menu" role="list">
+              {%- for link in section.settings.menu.links -%}
+                <li>
+                  {%  assign link_title = link.title |  handleize %} 
+                  {% assign megamenu = false %}
+                  {% for block in section.blocks %}
+                    {%  assign megamenu_title = block.settings.title |  handleize  %}
+                    {% if megamenu_title == link_title %}
+                      {% assign megamenu = true %}
+                    {% endif %}
+                  {% endfor %}
+                  {% if megamenu %}
+                    <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
+                      <summary
+                        id="HeaderDrawer-{{ link.handle }}"
+                        class="menu-drawer__menu-item available_menu list-menu__item link link--text focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}"
+                      >
+                        {{ link.title | escape }}
+                        <span class="svg-wrapper">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" class="icon_plus">
+                            <path d="M4.33301 4.33325V0.333252H5.66634V4.33325H9.66634V5.66658H5.66634V9.66658H4.33301V5.66658H0.333008V4.33325H4.33301Z" fill="black"/>
+                          </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="2" viewBox="0 0 10 2" fill="none" class="icon_minus">
+                            <path d="M0.333008 0.333496V1.66683H9.66634V0.333496H0.333008Z" fill="black"/>
+                          </svg>
+                        </span>
+                      </summary>
+                      <div
+                        id="link-{{ link.handle | escape }}"
+                        class="menu-drawer__submenu has-submenu gradient motion-reduce"
+                        tabindex="-1"
+                      >
+                        <div class="menu-drawer__inner-submenu">
+                          {% for block in section.blocks %}
+                            {%  assign megamenu_title = block.settings.title |  handleize  %}
+                            {% if megamenu_title == link_title %}
+                            {% case block.type %}  
+                              {% when  'mega_menu'%}
+                                <div class="block_row {{block.id}}">
+                                  <div class="block__col block_left">
+                                    {% if block.settings.collection_list != blank %}
+                                      <div class="block__collection-list flex flex-direction-column gap-25">
+                                        {% if block.settings.megamenu_heaing != blank %}
+                                        <div class="center font-weight-500 h4">{{ block.settings.megamenu_heaing }}</div>
+                                        {% endif %}
+                                        <ul class="block__megamenu-collection flex  gap-10 flex-wrap justify-between">
+                                          {% for collection in block.settings.collection_list %}
+                                          <li class="block__collection-item">
+                                            <a href="{{- collection.url -}}" class="inline-flex flex-direction-column w-full center h-full">
+                                              <div class="image_set_pd tertiary-border-radius Zoomhover">
+                                                {% render 'custom-image', image: collection.featured_image , class: 'img-fluid tertiary-border-radius object-cover' %}
+                                              </div>
+                                              <span class="font-weight-700 h6">{{- collection.title -}}</span>
+                                            </a>
+                                          </li>
+                                          {% endfor %}
+                                        </ul>
+                                      </div>
+                                    {% endif %}
+                                  </div>
+                                  <div class="block__col block_right {% if block.settings.quiz_redirect %} block_two_col{% endif %}">
+                                    {% if block.settings.quiz_redirect %}
+                                      <div class="block_row h-full">
+                                        {% if block.settings.collection_product != blank %}
+                                        <div class="block__col">
+                                          <div class="block__product-list center">
+                                            {% if block.settings.top_selling_heaing != blank %}
+                                            <div class="center h4">{{ block.settings.top_selling_heaing }}</div>
+                                            {% endif %}
+                                            <ul class="block__megamenu-product flex-wrap flex justify-center gap-10">
+                                              {% for product_item in block.settings.collection_product.products limit:block.settings.product_show %}
+                                              <li class="block__product-item tertiary-border-radius">
+                                                <a href="{{- product_item.url -}}" class="flex gap-10 flex-direction-column items-center w-full h-full">
+                                                  {% render 'custom-image', image: product_item.featured_image , class: 'img-fluid object-cover secondary-border-radius' %}
+                                                  <div class="block__product-content">
+                                                    <span class="extra_body font-weight-400 h6">{{- product_item.title -}}</span>
+                                                    {% render 'price', product: product_item, price_class: '', show_compare_at_price: true %}
+                                                  </div>
+                                                </a>
+                                              </li>
+                                              {% endfor %}
+                                            </ul>
+                                            {% if block.settings.select_button_item == 'button' %}
+                                              {% if block.settings.button_text != blank %}
+                                                <a href="{{ block.settings.button_url }}" class="button button-quaternary extra_body">
+                                                  {{- block.settings.button_text -}}
+                                                </a>
+                                              {% endif %}
+                                            {%  else %}
+                                              {% if block.settings.button_text != blank %}
+                                                <a href="{{ block.settings.button_url }}" class="link-btn extra_body">
+                                                  {{- block.settings.button_text -}}
+                                                </a>
+                                              {% endif %}
+                                            {% endif %}
+                                          </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if block.settings.image_title != blank or block.settings.image != blank %}
+                                        <div class="block__col">
+                                          <div class="block__image-text-btn center line-height">
+                                            <div class="image_set_pd quaternary-border-radius Zoomhover">
+                                              {% if block.settings.image != blank %}
+                                                {% render 'custom-image', image: block.settings.image , class: 'img-fluid quaternary-border-radius object-cover' %}
+                                              {% endif %}
+                                              {% if block.settings.video != blank %}
+                                                  {{ block.settings.video  | video_tag: autoplay: true, loop: true, controls: false, muted: true, playsinline: true, class: 'quaternary-border-radius', preload: 'auto', poster: '' }} 
+                                              {% endif %}  
+                                            </div>
+                                            
+                                            
+                                            <div class="font-weight-500 primary_h4 h4">{{- block.settings.image_title -}}</div>
+                                            {% if block.settings.text != blank %}
+                                              <p class="body">{{ block.settings.text }}</p>
+                                            {% endif %}
+                                            {% if block.settings.button_text_img != blank %}
+                                              <a href="{{ block.settings.button_quiz_url }}" class="button button-quaternary extra_body">
+                                                {{- block.settings.button_text_img -}}
+                                              </a>
+                                            {% endif %}
+                                          </div>
+                                        </div>
+                                        {% endif %}
+                                      </div>
+                                    {% else %}
+                                      {% if block.settings.collection_product != blank %}
+                                        <div class="block__product-list center">
+                                          {% if block.settings.top_selling_heaing != blank %}
+                                          <div class="center h4">{{ block.settings.top_selling_heaing }}</div>
+                                          {% endif %}
+                                            <ul class="block__megamenu-product flex-wrap flex justify-center gap-10">
+                                              {% for product_item in block.settings.collection_product.products limit: block.settings.product_show
+                                              %}
+                                              <li class="block__product-item tertiary-border-radius">
+                                                <a href="{{- product_item.url -}}" class="flex gap-10 flex-direction-column items-center w-full h-full">
+                                                  {% render 'custom-image', image: product_item.featured_image , class: 'img-fluid object-cover
+                                                  secondary-border-radius' %}
+                                                  <div class="block__product-content">
+                                                    <span class="extra_body font-weight-400 h6">{{- product_item.title -}}</span>
+                                                    {% render 'price', product: product_item, price_class: '', show_compare_at_price: true %}
+                                                  </div>
+                                                </a>
+                                              </li>
+                                              {% endfor %}
+                                            </ul>
+                                            {% if block.settings.select_button_item == 'button' %}
+                                              {% if block.settings.button_text != blank %}
+                                                <a href="{{ block.settings.button_url }}" class="button button-quaternary extra_body">
+                                                  {{- block.settings.button_text -}}
+                                                </a>
+                                              {% endif %}
+                                            {%  else %}
+                                              {% if block.settings.button_text != blank %}
+                                                <a href="{{ block.settings.button_url }}" class="link-btn extra_body">
+                                                  {{- block.settings.button_text -}}
+                                                </a>
+                                              {% endif %}
+                                            {% endif %}
+                                        </div>
+                                      {% endif %}
+                                    {% endif %}
+                                  </div>
+                                </div>
+                              {% when  'mega_link_and_location'%}
+                                <div class="block_row  block__link-list-location  {{block.id}}">
+                                  {% if block.settings.megamenu_heaing != blank or block.settings.menu != blank %}
+                                  <div class="block__column block_left">
+                                    <div class="block__menu_list explore_item">
+                                      {% if block.settings.menu != blank %}
+                                      <ul class="w-full">
+                                        {% for link in block.settings.menu.links %}
+                                          <li class=" {% if forloop.first %}active{% endif %}"><a href="{{ link.url }}" class="w-full tertiary-border-radius inline-block">{{ link.title }}</a></li>
+                                        {% endfor %}
+                                      </ul>
+                                      {% endif %} 
+                                    </div>
+                                  </div>
+                                  {% endif %}
+                                  <div class="block__column">
+                                    <div class="block__location">
+                                      {%  render 'header_list', heading: block.settings.heading, button_text: block.settings.button_text, button_url: block.settings.button_url, select_button_item: block.settings.select_button_item  %}
+                                    </div>  
+                                  </div>
+                                </div>
+                            {% endcase %} 
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </details>
+                  {%- else -%}
+                    <a
+                      id="HeaderDrawer-{{ link.handle }}"
+                      href="{{ link.url }}"
+                      class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.current %} menu-drawer__menu-item--active{% endif %}"
+                      {% if link.current %}
+                        aria-current="page"
+                      {% endif %}
+                    >
+                      {{ link.title | escape }}
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+              {% if section.settings.store_locator != blank %}
+                <li>
+                  <a href="{{ section.settings.store_location_url }}" class="block__static-item list-menu__item link link--text focus-inset justify-between">
+                    {{ section.settings.store_locator }}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16" fill="none">
+                      <path d="M6.00033 15.1111C6.00033 15.1111 11.3337 10.8445 11.3337 6.22225C11.3337 3.27672 8.94586 0.888916 6.00033 0.888916C3.0548 0.888916 0.666992 3.27672 0.666992 6.22225C0.666992 10.8445 6.00033 15.1111 6.00033 15.1111Z" stroke="black" stroke-width="1.33333" stroke-linejoin="round"/>
+                      <path d="M6.00052 8.35553C7.17873 8.35553 8.13385 7.40041 8.13385 6.2222C8.13385 5.044 7.17873 4.08887 6.00052 4.08887C4.82232 4.08887 3.86719 5.044 3.86719 6.2222C3.86719 7.40041 4.82232 8.35553 6.00052 8.35553Z" stroke="black" stroke-width="1.33333" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </li>
+              {% endif %}
+              {% if section.settings.contact_number != blank %}
+                <li >
+                  <a href="{{ section.settings.contact_url }}" class="block__static-item list-menu__item link link--text focus-inset justify-between">
+                    {{ section.settings.contact_number }}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M5.16326 1.77783C5.43978 1.77783 5.69454 1.92779 5.82877 2.16954L6.75981 3.84667C6.88171 4.06627 6.88746 4.33187 6.77511 4.55653L5.87817 6.35045C5.87817 6.35045 6.1381 7.68681 7.22595 8.77465C8.31379 9.86249 9.64569 10.1179 9.64569 10.1179L11.4393 9.22114C11.6641 9.10872 11.9299 9.11454 12.1496 9.23667L13.8315 10.1717C14.073 10.3061 14.2228 10.5607 14.2228 10.837V12.7679C14.2228 13.7512 13.3094 14.4613 12.3777 14.147C10.4642 13.5013 7.49395 12.272 5.61131 10.3893C3.72863 8.50665 2.4993 5.53636 1.85363 3.62286C1.53927 2.69117 2.24946 1.77783 3.23274 1.77783H5.16326Z" stroke="black" stroke-width="1.33333" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </li>
+              {% endif %}
+              {%- if localization.available_countries or localization.available_languages -%}
+                <li>
+                  <div class="menu-drawer__localization header-localization">
+                    {%- if localization.available_countries and localization.available_countries.size > 1 -%}
+                      <localization-form>
+                        {%- form 'localization', id: 'HeaderCountryMobileForm', class: 'localization-form' -%}
+                          <div>
+                            <span class="visually-hidden h2" id="HeaderCountryMobileLabel">
+                              {{ 'localization.country_label' | t }}
+                            </span>
+                            {%- render 'country-localization', localPosition: 'HeaderCountryMobile' -%}
+                          </div>
+                        {%- endform -%}
+                      </localization-form>
+                    {% endif %}
+    
+                    {%- if localization.available_languages and localization.available_languages.size > 1 -%}
+                      <localization-form>
+                        {%- form 'localization', id: 'HeaderLanguageMobileForm', class: 'localization-form' -%}
+                          <div>
+                            <h2 class="visually-hidden" id="HeaderLanguageMobileLabel">
+                              {{ 'localization.language_label' | t }}
+                            </h2>
+                            {%- render 'language-localization', localPosition: 'HeaderLanguageMobile' -%}
+                          </div>
+                        {%- endform -%}
+                      </localization-form>
+                    {%- endif -%}
+                  </div>
+                </li>
+              {%- endif -%}
+            </ul>
+
+          </nav>
+          <div class="menu-drawer__utility-links small-hide medium-hide large-up-hide">
+            {%- if shop.customer_accounts_enabled -%}
+              <a
+                href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+                class="menu-drawer__account link focus-inset h5 medium-hide large-up-hide"
+              >
+                {%- if section.settings.enable_customer_avatar -%}
+                  <account-icon>
+                    {%- if customer and customer.has_avatar? -%}
+                      {{ customer | avatar }}
+                    {%- else -%}
+                      <span class="svg-wrapper">
+                        {{- 'icon-account.svg' | inline_asset_content -}}
+                      </span>
+                    {%- endif -%}
+                  </account-icon>
+                {%- else -%}
+                  <span class="svg-wrapper">
+                    {{- 'icon-account.svg' | inline_asset_content -}}
+                  </span>
+                {%- endif -%}
+                {%- liquid
+                  if customer
+                    echo 'customer.account_fallback' | t
+                  else
+                    echo 'customer.log_in' | t
+                  endif
+                -%}
+              </a>
+            {%- endif -%}
+            {%- if localization.available_countries or localization.available_languages -%}
+              <div class="menu-drawer__localization header-localization">
+                {%- if localization.available_countries and localization.available_countries.size > 1 -%}
+                  <localization-form>
+                    {%- form 'localization', id: 'HeaderCountryMobileForm', class: 'localization-form' -%}
+                      <div>
+                        <span class="visually-hidden h2" id="HeaderCountryMobileLabel">
+                          {{ 'localization.country_label' | t }}
+                        </span>
+                        {%- render 'country-localization', localPosition: 'HeaderCountryMobile' -%}
+                      </div>
+                    {%- endform -%}
+                  </localization-form>
+                {% endif %}
+
+                {%- if localization.available_languages and localization.available_languages.size > 1 -%}
+                  <localization-form>
+                    {%- form 'localization', id: 'HeaderLanguageMobileForm', class: 'localization-form' -%}
+                      <div>
+                        <h2 class="visually-hidden" id="HeaderLanguageMobileLabel">
+                          {{ 'localization.language_label' | t }}
+                        </h2>
+                        {%- render 'language-localization', localPosition: 'HeaderLanguageMobile' -%}
+                      </div>
+                    {%- endform -%}
+                  </localization-form>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            <ul class="list list-social list-unstyled" role="list">
+              {%- if settings.social_twitter_link != blank -%}
+                <li class="list-social__item">
+                  <a href="{{ settings.social_twitter_link }}" class="list-social__link link">
+                    <span class="svg-wrapper">
+                      {{- 'icon-twitter.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_facebook_link != blank -%}
+                <li class="list-social__item">
+                  <a href="{{ settings.social_facebook_link }}" class="list-social__link link">
+                    <span class="svg-wrapper">
+                      {{- 'icon-facebook.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_pinterest_link != blank -%}
+                <li class="list-social__item">
+                  <a href="{{ settings.social_pinterest_link }}" class="list-social__link link">
+                    <span class="svg-wrapper">
+                      {{- 'icon-pinterest.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_instagram_link != blank -%}
+                <li class="list-social__item">
+                  <a href="{{ settings.social_instagram_link }}" class="list-social__link link">
+                    <span class="svg-wrapper">
+                      {{- 'icon-instagram.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_tiktok_link != blank -%}
+                <li class="list-social__item">
+                  <a href="{{ settings.social_tiktok_link }}" class="list-social__link link">
+                    <span class="svg-wrapper">
+                      {{- 'icon-tiktok.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_tumblr_link != blank -%}
+                <li class="list-social__item">
+                  <a href="{{ settings.social_tumblr_link }}" class="list-social__link link">
+                    <span class="svg-wrapper">
+                      {{- 'icon-tumblr.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="visually-hidden">{{ 'general.social.links.tumblr' | t }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_snapchat_link != blank -%}
+                <li class="list-social__item">
+                  <a href="{{ settings.social_snapchat_link }}" class="list-social__link link">
+                    <span class="svg-wrapper">
+                      {{- 'icon-snapchat.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="visually-hidden">{{ 'general.social.links.snapchat' | t }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_youtube_link != blank -%}
+                <li class="list-social__item">
+                  <a href="{{ settings.social_youtube_link }}" class="list-social__link link">
+                    <span class="svg-wrapper">
+                      {{- 'icon-youtube.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+              {%- if settings.social_vimeo_link != blank -%}
+                <li class="list-social__item">
+                  <a href="{{ settings.social_vimeo_link }}" class="list-social__link link">
+                    <span class="svg-wrapper">
+                      {{- 'icon-vimeo.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="visually-hidden">{{ 'general.social.links.vimeo' | t }}</span>
+                  </a>
+                </li>
+              {%- endif -%}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+  {% render 'header-search', input_id: 'Search-In-Modal' %}
+</header-drawer>
+<script>
+  document.querySelectorAll('.menu-drawer__menu-item.available_menu').forEach(item => {
+    item.addEventListener('click', function (event) {
+      event.preventDefault();
+      const parentDetails = this.closest('details');
+      if(parentDetails){
+        const siblingDetails = parentDetails.closest('ul').querySelectorAll('details');
+        siblingDetails.forEach(sibling => {
+          if (sibling !== parentDetails) {
+            sibling.classList.remove('menu-opening');
+            sibling.removeAttribute('open');
+            sibling.closest('.menu-drawer__menu').classList.remove('submenu-open');
+          }
+        });      
+      }
+      
+      const isOpen = parentDetails.hasAttribute('open');
+      if (isOpen) {
+        parentDetails.classList.remove('menu-opening');
+        parentDetails.removeAttribute('open');
+        parentDetails.closest('.menu-drawer__menu').classList.remove('submenu-open');
+      } else {
+        parentDetails.classList.add('menu-opening');
+        parentDetails.setAttribute('open', '');
+        parentDetails.closest('.menu-drawer__menu').classList.add('submenu-open');
+      }
+    });
+  });
+
+</script>

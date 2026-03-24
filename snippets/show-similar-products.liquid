@@ -1,0 +1,103 @@
+{{ 'custom_upsell_products.css' | asset_url | stylesheet_tag }}
+{% if product.collections != blank %}
+    <div class="block__you-may-also-like--wrapper secondary-border-radius">
+        <div class="block__you-may-also-like--header flex items-center gap-10 justify-between">
+            <h4>{{ Heading }}</h4>
+            {% assign complementary = product.metafields.shopify--discovery--product_recommendation.complementary_products.value %}
+            {% assign related = product.metafields.shopify--discovery--product_recommendation.related_products.value %}
+            <div class="block__you-may-also-like-arrow-main flex gap-10 justify-between  ">
+                <div class="block__you-may-also-like-arrow you-like-arrow-left slider-button ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13" viewBox="0 0 8 13" fill="none">
+                        <path d="M5.92188 0.721875L0.775006 6.12187C0.643756 6.25312 0.578131 6.40312 0.578131 6.57187C0.578131 6.74062 0.643756 6.9 0.775006 7.05L5.92188 12.4219C6.22188 12.6844 6.54063 12.6938 6.87813 12.45C7.14063 12.1313 7.14063 11.8125 6.87813 11.4937L2.15313 6.54375L6.87813 1.67812C7.14063 1.34062 7.14063 1.02187 6.87813 0.721875C6.54063 0.459375 6.22188 0.459375 5.92188 0.721875Z" fill="black"/>
+                    </svg>
+                </div>
+                <div class="block__you-may-also-like-arrow you-like-arrow-right slider-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="13" viewBox="0 0 8 13" fill="none">
+                        <path d="M2.07812 0.721875L7.22499 6.12187C7.35624 6.25312 7.42187 6.40312 7.42187 6.57187C7.42187 6.74062 7.35624 6.9 7.22499 7.05L2.07812 12.4219C1.77812 12.6844 1.45937 12.6938 1.12187 12.45C0.859369 12.1313 0.859369 11.8125 1.12187 11.4937L5.84687 6.54375L1.12187 1.67812C0.859369 1.34062 0.859369 1.02187 1.12187 0.721875C1.45937 0.459375 1.77812 0.459375 2.07812 0.721875Z" fill="black"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="block__you-may-also-like--products swiper" data-on-mobile-columns="{{ columns_mobile }}" data-on-desktop-columns="{{ columns_desktop}}">
+            <ul class="swiper-wrapper">
+                {% assign complementary = product.metafields.shopify--discovery--product_recommendation.complementary_products.value %}
+                {% assign related = product.metafields.shopify--discovery--product_recommendation.related_products.value %}
+
+                {% if complementary_products and complementary != blank %}
+                    {% assign collection_name = complementary %}
+                {% elsif related_product and related != blank %}
+                    {% assign collection_name = related %}
+                {% else %}
+                    {% for collection in product.collections %}
+                        {% assign collection = collection %}
+                    {% endfor %}
+                    {% assign collection_name = collection.products %}
+                {% endif %}
+                
+                {% for product in collection_name limit: products_to_show %} 
+                {% if product.id != cart_pro.product.id %}
+                    <li class="swiper-slide">
+                        {% assign no_variant = false %}
+                     {% if complementary_products  and complementary != blank %}
+                                {% if product.variants.size == 1 %}
+                                    {% assign no_variant = true %}
+                                {% endif %}
+                      {% elsif related_product and related != blank %}
+                                {% if product.variants.size == 1 %}
+                                    {% assign no_variant = true %}
+                                {% endif %}
+                       {% else %}
+                                {% if product.variants.size == 1 %}
+                                    {% assign no_variant = true %}
+                                {% endif %}
+                        {% endif %}
+                    {% render 'card-product',
+                        card_product: product,
+                        media_aspect_ratio: image_ratio,
+                        show_secondary_image: show_secondary_images,
+                        quick_add: add_product,
+                        no_variant: no_variant
+                    %}
+                    </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const drawerSliders = document.querySelectorAll('.block__you-may-also-like--products');
+            drawerSliders.forEach(youMayLike => {
+                const mobileColumns = parseInt(youMayLike.getAttribute('data-on-mobile-columns'));
+                const desktopColumns = parseInt(youMayLike.getAttribute('data-on-desktop-columns'));
+                const productsCount = parseInt(youMayLike.querySelector('.swiper-wrapper').getAttribute('data-products-count'));
+
+                const showArrows = productsCount > desktopColumns;
+
+                const parent = youMayLike.closest('.block__you-may-also-like--wrapper');
+                const arrows = parent.querySelector('.block__you-may-also-like-arrow-main');
+
+                if (!showArrows && window.innerWidth >= 992) {
+                    arrows.style.display = "none";
+                } else {
+                    arrows.style.display = "flex";
+                }
+                new Swiper(youMayLike, {
+                    preventClicks :true,
+                    a11y: false,
+                    loop: true,
+                    navigation: {
+                        nextEl: '.you-like-arrow-right',
+                        prevEl: '.you-like-arrow-left',
+                    },
+                    breakpoints: {
+                        200: { slidesPerView: mobileColumns, spaceBetween: 12 },
+                        768: { slidesPerView: mobileColumns },
+                        992: { slidesPerView: 3 },
+                        1199: { slidesPerView: desktopColumns, spaceBetween: 10 },
+                    },
+                });
+            });
+        });
+    </script>
+{% endif %}

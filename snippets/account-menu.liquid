@@ -1,0 +1,95 @@
+<div class="block__customer-account-titles">
+  <div class="block__account-logo-with-text flex items-center gap-15">
+    <h4 class="block__customer-account-avatar flex items-center justify-center">
+      {%- if customer -%}    
+        {{ customer.first_name | split: ' ' | first | slice: 0, 1 -}}
+        {{- customer.last_name | split: ' ' | last | slice: 0, 1 }}
+      {%- else -%}
+      {{ 'icon-account.svg' | inline_asset_content }}
+      {% comment %} <span class="svg-wrapper"></span> {% endcomment %}
+      {%- endif -%}
+    </h4>
+    <div>
+      <h4 class="customer__title primary_h4">
+        {%- if customer -%}    
+          {{ customer.first_name }}
+          {{ customer.last_name }}!
+          {%- else -%}
+          {{ 'Log In' | customer_login_link }}
+        {%- endif -%}
+      </h4>    
+      {%- if customer -%}       
+        <div class="block__customer-account-menu-edit-profile">
+          <a href="{{ routes.account_addresses_url }}" class="small_body items-center gap-5">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M11.3322 5.92689L10.0731 4.66775L1.78069 12.9602V14.2193H3.03982L11.3322 5.92689ZM12.5913 4.66775L13.8505 3.40862L12.5913 2.14948L11.3322 3.40862L12.5913 4.66775ZM3.77741 16H0V12.2225L11.9618 0.260773C12.3095 -0.0869243 12.8732 -0.0869243 13.2209 0.260773L15.7392 2.77905C16.0869 3.12675 16.0869 3.69049 15.7392 4.03818L3.77741 16Z" fill="white" />
+            </svg>
+            {{ 'customer.account.edit_profile' | t -}}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {% comment %}
+    {% assign link_title = 'account' %}
+    {% assign template_name = template.name %}
+    <a class="block__account-menu-list{% if link_title contains template_name %} active{% endif %}" href="/account">
+      {{- 'my-account-icon.svg' | inline_asset_content -}}
+      {{ 'customer.account.my_account' | t }}
+    </a>
+  {% endcomment %}
+  {% for block in section.blocks %}
+    {% assign link_title = block.settings.menu_url | downcase | remove: 'pages' | remove: '/' %}
+    {%- assign menu_text = block.settings.menu_text |  handleize -%}
+    {% if block.settings.menu_text != blank %}
+      {% if link_title contains template.name or page.title contains block.settings.menu_text or  page.template_suffix contains menu_text %}
+        <div
+          class="block__account-menu-list font-weight-500 medium_body"
+        >
+          {% if block.settings.menu_logo != blank %}
+            <img src="{{ block.settings.menu_logo |  image_url }}" width="24px" height="24px">
+          {% endif %}
+          {{- block.settings.menu_text -}}
+          <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1L7 7L13 1" stroke="#353B45"/>
+          </svg>
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  <ul class="block__menu-list-wrapper">
+    {% for block in section.blocks %}
+      {% assign link_title = block.settings.menu_url | downcase | remove: 'pages' | remove: '/' %}
+      {%- assign menu_text = block.settings.menu_text |  handleize -%}
+      {% if block.settings.menu_text != blank %}
+        <li class="{% if link_title contains template.name %}active {% elsif page.title contains block.settings.menu_text %} active {% elsif page.template_suffix contains menu_text %}active {% endif %}">
+          <a
+            {% if block.settings.menu_url %}
+              href="{{ block.settings.menu_url }}"
+            {% endif %}
+            class="medium_body font-weight-500"
+          >
+            {% if block.settings.menu_logo != blank %}
+              <img src="{{ block.settings.menu_logo |  image_url }}" width="24px" height="24px">
+            {% endif %}
+            {{- block.settings.menu_text -}}
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    {%- if customer -%}
+      <li>
+        <a href="{{ routes.account_logout_url }}" class="medium_body font-weight-500">
+          {{- 'icon-logout.svg' | inline_asset_content -}}
+          {{ 'customer.log_out' | t }}
+        </a>
+      </li>
+    {%- endif -%}
+  </ul>
+</div>

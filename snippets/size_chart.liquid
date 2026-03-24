@@ -1,0 +1,182 @@
+ {% if pdp_size_chart.size_chart_list_item != blank %}
+    <div class="block__size_chart fixed items-center justify-center">
+        <div class="block__size_chart-wrapper relative">
+            <div class="block__chart-close absolute secondary-border-radius flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M2 20L0 18L8 10L0 2L2 0L10 8L18 0L20 2L12 10L20 18L18 20L10 12L2 20Z" fill="black"/>
+                </svg>
+            </div>
+            <div class="block__chart-wrapper">
+                <div class="block__size-chart-content">
+                    {{ pdp_size_chart.size_chart_list_item }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {%  style  %} 
+        .block__size_chart {display: none;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);z-index: 1010;}
+        .block__size_chart-wrapper {background: var(--quinary-color);max-width: 90%;border-radius: var(--tertiary-border-radius);}
+        .block__chart-wrapper{overflow-y: auto;}
+        .block__chart-close {cursor: pointer;background: var(--quinary-color);z-index: 1;border: 1px solid var(--border_color);padding: 7px;}
+        .block__size-chart-content table {width: 100%;border-collapse: collapse;}
+        .block__size-chart-content table {box-shadow: none;}
+        .block__size-chart-content table tbody {box-shadow: 0 0 0 .1rem var(--border_color);}
+        .block__size-chart-content table th,.block__size-chart-content table td {border: 1px solid var(--border_color);padding: 15px;text-align: center;}
+        .block__size-chart-content table thead {box-shadow: 0 -1px 0 0.1rem var(--primary-color);}
+        .block__size-chart-content th {background-color: var(--primary-color);color: white;}
+        .block__size-chart-content tr:nth-child(even) {background-color: var(--tertiary-color);}
+
+        .block__size-chart-content table::-webkit-scrollbar {height: 6px;}
+        .block__size-chart-content table::-webkit-scrollbar-track {background: var(--tertiary-color);border-radius: 10px;}
+        .block__size-chart-content table::-webkit-scrollbar-thumb {background:var(--primary-color);border-radius: 10px;margin-top:6px;}
+        .block__size-chart-content table::-webkit-scrollbar-thumb:hover {background: var(--primary-color); margin-top:6px;}
+
+        .block__pillow-choose{background-color: var(--quinary-color);}
+        .block__pillow-choose-result{background-color: var(--tertiary-color);}
+        .pillow-quiz {max-width: 1208px;}
+        .block__pillow_heading p {color: var(--nonary_color);margin: 15px 0 30px;border-bottom: 1px solid var(--border_color);padding-bottom: 15px;}
+        .block__pillow-choose .quiz-form {background-color: var(--tertiary-color);display: grid;}
+        .block__pillow-choose .quiz-form legend{font-weight: 500;display: block;width: 100%;}
+        .block__pillow-choose .quiz-form label {
+            background-color: rgb(var(--color-background));border-radius: var(--variant-pills-radius);cursor: pointer;position: relative;padding: 8px 8px;font-weight: 500;
+            display: inline-block;width: 100%;text-align: center;margin-top: 10px;border: var(--variant-pills-border-width) solid transparent;
+        }
+        .block__pillow-choose .quiz-form  input[type=radio]:checked+label {border-color: var(--primary-color);}
+        .block__pillow-choose .quiz-form input {clip: rect(0, 0, 0, 0);overflow: hidden;position: absolute;height: 1px;width: 1px;}
+        
+        .block__filter-result {background-color: var(--primary-color);}
+        .block__filter-result input{
+            border: none;width: 100%;min-width: auto;height: 100%;padding: 0;background-color: transparent;color: var(--quinary-color);font-size: var(--h1);
+            font-weight: 600;
+        }
+        .block__filter-result h3 {color: var(--quinary-color);margin-bottom: 10px;}
+        .block__pillow-recommendation > p {max-width: 208px;margin: 0 auto 30px;}
+        .block__pillow-recommendation .add-to-cart {min-height: calc(53px + var(--buttons-border-width)* 2);}
+        .block__pillow-choose .quiz-form .form-group{margin-bottom: 0;}
+
+
+        @media screen and (min-width: 1200px){
+            .pillow-quiz .block__col {padding: 50px;}
+            .block__pillow-choose .quiz-form {padding: 24px;gap:25px}
+        }
+
+        @media screen and (max-width: 1199px){
+            .pillow-quiz .block__col {padding: 30px 20px 25px;}
+            .block__pillow-choose .quiz-form {padding:24px 20px;column-gap: 15px;row-gap: 20px;}
+        }
+
+
+        @media screen and (min-width: 768px){
+            .block__chart-wrapper{overflow-y: auto; max-height: 85vh}
+            .block__chart-close {top: -21px;right: -19px;width: 40px;height: 40px;}
+            .block__row .block__pillow-choose{width: 58%;max-width: 58%;border-radius: var(--tertiary-border-radius) 0 0 var(--tertiary-border-radius);}
+            .block__row .block__pillow-choose-result{width: 42%;max-width: 42%;border-radius: 0 var(--tertiary-border-radius) var(--tertiary-border-radius) 0;}
+            .block__filter-result {max-width: 310px;margin: 30px auto 8px;padding: 28px 10px;}
+            
+        }
+
+        @media screen and (max-width: 767px) {
+            .block__chart-wrapper {padding: 20px;max-height: 93vh;border-radius: var(--tertiary-border-radius);}
+            .block__chart-close {top: -15px;right: -15px;width: 30px;height: 30px;}
+            .block__size-chart-content table {display: block;overflow-x: auto;white-space: nowrap;-webkit-overflow-scrolling: touch; }
+            .block__filter-result {max-width: 340px;margin: 20px auto 8px;padding: 20px 10px;}
+            .block__row .block__pillow-choose{border-radius: var(--tertiary-border-radius) var(--tertiary-border-radius) 0 0;}
+            .block__row .block__pillow-choose-result{border-radius: 0 0 var(--tertiary-border-radius) var(--tertiary-border-radius);}
+            .block__chart-wrapper .block__row{margin: -20px;}
+        }
+        @media screen and (min-width: 576px){
+            .block__pillow-choose .quiz-form {grid-template-columns: repeat(3, 1fr);}
+            .block__pillow-recommendation {margin-top: 20px;display: none;}
+        }
+        
+        @media screen and (max-width: 575px){
+            .block__pillow-choose .quiz-form {grid-template-columns: repeat(1, 1fr);}
+            .block__pillow-choose .quiz-form .form-group{grid-template-columns: repeat(2, 1fr);display: grid;}
+            
+        }
+    {% endstyle %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sizeChartTrigger = document.querySelector(".block__size-chart");
+            const sizeChartPopup = document.querySelector(".block__size_chart");
+            const closeButton = document.querySelector(".block__chart-close");
+            sizeChartTrigger.addEventListener("click", function () {
+                sizeChartPopup.style.display = "flex"; 
+            });
+            closeButton.addEventListener("click", function () {
+                sizeChartPopup.style.display = "none"; // Hide popup
+            });
+            sizeChartPopup.addEventListener("click", function (event) {
+                if (event.target === sizeChartPopup) {
+                    sizeChartPopup.style.display = "none";
+                }
+            });
+            function updateRecommendation() {
+                const gender = document.querySelector('input[name="gender"]:checked')?.value;
+                const tshirtSize = document.querySelector('input[name="tshirtSize"]:checked')?.value;
+                const sleepPosition = document.querySelector('input[name="sleepPosition"]:checked')?.value;
+
+                if (!gender || !tshirtSize || !sleepPosition) {
+                    console.error("Missing one of the input values");
+                    return;
+                }
+
+                const recommendations = {
+                    stomach: { xs: 0, s: 0, m: 0, l: 1, xl: 1 },
+                    back:    { xs: 0, s: 1, m: 1, l: 2, xl: 2 },
+                    side:    { xs: 1, s: 1, m: 2, l: 2, xl: 3 },
+                    all:     { xs: 0, s: 1, m: 1, l: 2, xl: 2 }
+                };
+
+                const pillowID = recommendations[sleepPosition]?.[tshirtSize];
+                if (pillowID === undefined) return;
+
+                let height = "Medium Low", size = "1.0", considered = "2.0";
+                switch (pillowID) {
+                    case 0: height = "Low";         size = "0.0"; considered = "1.0"; break;
+                    case 1: height = "Medium Low";  size = "1.0"; considered = "2.0"; break;
+                    case 2: height = "Medium High"; size = "2.0"; considered = "3.0"; break;
+                    case 3: height = "High";        size = "3.0"; considered = "3.0"; break;
+                }
+
+                document.getElementById('pillowHeight').textContent = height;
+                document.getElementById('pillowSizeInput').value = size;
+                document.getElementById('alsoConsidered').textContent = `Sleepers with your profile also considered ${considered}`;
+                document.getElementById('recommendation').style.display = 'block';
+                triggerMatchingRadio(size);
+            }
+
+            let firstRecommendation = true;
+            function triggerMatchingRadio(selectedSize) {
+                const productOptions = document.querySelectorAll('.product-form__input input[type="radio"]');
+                productOptions.forEach(option => {
+                    if (option.value === selectedSize) {
+                        option.checked = true;
+                    if (!firstRecommendation) { 
+                        option.dispatchEvent(new Event("change", { bubbles: true }));
+                    }
+                    }
+                });
+                firstRecommendation = false;
+            }
+            function triggerAddToCart() {
+                const productForm = document.querySelector('product-form form[action*="/cart/add"]');
+                if (productForm) {
+                    productForm.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+                }
+            }
+            const addToCartButton = document.querySelector('.block__pillow-recommendation .add-to-cart');
+            if (addToCartButton) {
+                addToCartButton.addEventListener('click', function (event) {
+                    updateRecommendation(); 
+                    triggerAddToCart();
+                    sizeChartPopup.style.display = "none";
+                });
+            }
+            document.querySelectorAll('.quiz-form input[type="radio"]').forEach(input => {
+                input.addEventListener('change', updateRecommendation);
+            });
+            updateRecommendation();
+        });
+    </script>
+{% endif %}

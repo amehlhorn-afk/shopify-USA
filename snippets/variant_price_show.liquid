@@ -1,0 +1,5 @@
+{% for variant in variants %}
+    {%  if value_item == variant.title %}
+            <span class="body" style="color:#4D4D4D">{{ variant.price | money }}</span>
+    {%  endif %} 
+{%  endfor %}

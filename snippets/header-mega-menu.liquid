@@ -1,0 +1,216 @@
+{% comment %}
+Renders a megamenu for the header.
+
+Usage:
+{% render 'header-mega-menu' %}
+{% endcomment %}
+
+<nav class="header__inline-menu">
+  <ul class="list-menu list-menu--inline" role="list">
+    {%- for link in section.settings.menu.links -%}
+    <li>
+      {%  assign link_title = link.title |  handleize %} 
+      {% assign megamenu = false %}
+      {% for block in section.blocks %}
+        {%  assign megamenu_title = block.settings.title |  handleize  %}
+        {% if megamenu_title == link_title %}
+          {% assign megamenu = true %}
+        {% endif %}
+      {% endfor %}
+      {% if megamenu %}
+        <header-menu>
+          <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
+            <summary id="HeaderMenu-{{ link.handle }}" class="header__menu-item list-menu__item link focus-inset">
+              <span {%- if link.child_active %} class="header__active-menu-item" {% endif %}>
+                <a href="{{ link.url }}" class="font-weight-500">{{- link.title | escape -}}</a>
+              </span>
+              {% comment %} {{- 'icon-caret.svg' | inline_asset_content -}} {% endcomment %}
+            </summary>
+            <div id="MegaMenu-Content-{{ forloop.index }}"
+              class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+              tabindex="-1">
+              {% for block in section.blocks %}
+                {%  assign megamenu_title = block.settings.title |  handleize  %}
+                {% if megamenu_title == link_title %}
+                {% case block.type %}  
+                  {% when  'mega_menu'%}
+                    <div class="block_row {{block.id}}">
+                      <div class="block__col block_left">
+                        {% if block.settings.collection_list != blank %}
+                          <div class="block__collection-list flex flex-direction-column gap-25">
+                            {% if block.settings.megamenu_heaing != blank %}
+                            <div class="center font-weight-500 h4">{{ block.settings.megamenu_heaing }}</div>
+                            {% endif %}
+                            {%  assign row_first_count = block.settings.row_first_count %}
+                            {%  assign row_second_count  = block.settings.row_second_count %}
+                            <ul class="block__megamenu-collection flex  gap-25 justify-between">
+                              {% for collection in block.settings.collection_list limit: row_first_count %}
+                              <li class="block__collection-item  w-full">
+                                <a href="{{- collection.url -}}" class="inline-flex flex-direction-column w-full center h-full">
+                                  <div class="image_set_pd tertiary-border-radius Zoomhover">
+                                    {% render 'custom-image', image: collection.featured_image , class: 'img-fluid tertiary-border-radius object-cover' %}
+                                  </div>
+                                  <span class="font-weight-700 h6">{{- collection.title -}}</span>
+                                </a>
+                              </li>
+                              {% endfor %}
+                            </ul>
+                            <ul class="block__megamenu-collection flex  gap-25 justify-between">
+                              {% for collection in block.settings.collection_list offset: row_first_count limit: row_second_count %}
+                              <li class="block__collection-item w-full">
+                                <a href="{{- collection.url -}}" class="inline-flex flex-direction-column w-full center h-full">
+                                  <div class="image_set_pd tertiary-border-radius Zoomhover">
+                                    {% render 'custom-image', image: collection.featured_image , class: 'img-fluid tertiary-border-radius object-cover' %}
+                                  </div>
+                                  <span class="font-weight-700 h6">{{- collection.title -}}</span>
+                                </a>
+                              </li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        {% endif %}
+                      </div>
+                      <div class="block__col block_right {% if block.settings.quiz_redirect %} block_two_col{% endif %}">
+                        {% if block.settings.quiz_redirect %}
+                          <div class="block_row h-full">
+                            {% if block.settings.collection_product != blank %}
+                            <div class="block__col">
+                              <div class="block__product-list center">
+                                {% if block.settings.top_selling_heaing != blank %}
+                                <div class="center font-weight-500 h4">{{ block.settings.top_selling_heaing }}</div>
+                                {% endif %}
+                                <ul class="block__megamenu-product flex-direction-column flex gap-20">
+                                  {% for product_item in block.settings.collection_product.products limit:block.settings.product_show %}
+                                  <li class="block__product-item tertiary-border-radius">
+                                    <a href="{{- product_item.url -}}" class="flex gap-15 items-center w-full h-full">
+                                      {% render 'custom-image', image: product_item.featured_image , class: 'img-fluid object-cover secondary-border-radius' %}
+                                      <div class="block__product-content text-left">
+                                        <span class="extra_body font-weight-400 h6">{{- product_item.title -}}</span>
+                                        {% render 'price', product: product_item, price_class: '', show_compare_at_price: true %}
+                                      </div>
+                                    </a>
+                                  </li>
+                                  {% endfor %}
+                                </ul>
+                                {% if block.settings.select_button_item == 'button' %}
+                                  {% if block.settings.button_text != blank %}
+                                    <a href="{{ block.settings.button_url }}" class="button button-quaternary extra_body">
+                                      {{- block.settings.button_text -}}
+                                    </a>
+                                  {% endif %}
+                                {%  else %}
+                                  {% if block.settings.button_text != blank %}
+                                    <a href="{{ block.settings.button_url }}" class="link-btn extra_body">
+                                      {{- block.settings.button_text -}}
+                                    </a>
+                                  {% endif %}
+                                {% endif %}
+                              </div>
+                            </div>
+                            {% endif %}
+                            {% if block.settings.image_title != blank or block.settings.image != blank or block.settings.video != blank %}
+                            <div class="block__col">
+                              <div class="block__image-text-btn center line-height">
+                                <div class="image_set_pd quaternary-border-radius Zoomhover">
+                                  {% if block.settings.image != blank %}
+                                    {% render 'custom-image', image: block.settings.image , class: 'img-fluid quaternary-border-radius object-cover' %}
+                                  {% endif %}
+                                  {% if block.settings.video != blank %}
+                                      {{ block.settings.video  | video_tag: autoplay: true, loop: true, controls: false, muted: true, playsinline: true, class: 'quaternary-border-radius', preload: 'auto', poster: '' }} 
+                                  {% endif %}    
+                                </div>
+                                
+                                <div class="font-weight-500 primary_h4 h4">{{- block.settings.image_title -}}</div>
+                                {% if block.settings.text != blank %}
+                                  <p class="body">{{ block.settings.text }}</p>
+                                {% endif %}
+                                {% if block.settings.button_text_img != blank %}
+                                  <a href="{{ block.settings.button_quiz_url }}" class="button button-quaternary extra_body">
+                                    {{- block.settings.button_text_img -}}
+                                  </a>
+                                {% endif %}
+                              </div>
+                            </div>
+                            {% endif %}
+                          </div>
+                        {% else %}
+                          {% if block.settings.collection_product != blank %}
+                            <div class="block__product-list center">
+                              {% if block.settings.top_selling_heaing != blank %}
+                              <div class="center font-weight-500 h4">{{ block.settings.top_selling_heaing }}</div>
+                              {% endif %}
+                                <ul class="block__megamenu-product flex-wrap flex justify-center gap-20">
+                                  {% for product_item in block.settings.collection_product.products limit: block.settings.product_show
+                                  %}
+                                  <li class="block__product-item tertiary-border-radius">
+                                    <a href="{{- product_item.url -}}" class="flex gap-15 items-center w-full h-full">
+                                      {% render 'custom-image', image: product_item.featured_image , class: 'img-fluid object-cover
+                                      secondary-border-radius' %}
+                                      <div class="block__product-content text-left">
+                                        <span class="extra_body font-weight-400">{{- product_item.title -}}</span>
+                                        {% render 'price', product: product_item, price_class: '', show_compare_at_price: true %}
+                                      </div>
+                                    </a>
+                                  </li>
+                                  {% endfor %}
+                                </ul>
+                                {% if block.settings.select_button_item == 'button' %}
+                                  {% if block.settings.button_text != blank %}
+                                    <a href="{{ block.settings.button_url }}" class="button button-quaternary extra_body">
+                                      {{- block.settings.button_text -}}
+                                    </a>
+                                  {% endif %}
+                                {%  else %}
+                                  {% if block.settings.button_text != blank %}
+                                    <a href="{{ block.settings.button_url }}" class="link-btn extra_body">
+                                      {{- block.settings.button_text -}}
+                                    </a>
+                                  {% endif %}
+                                {% endif %}
+                            </div>
+                          {% endif %}
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% when  'mega_link_and_location'%}
+                    <div class="block_row  block__link-list-location  {{block.id}}">
+                      {% if block.settings.megamenu_heaing != blank or block.settings.menu != blank %}
+                      <div class="block__column block_left">
+                        <div class="block__menu_list explore_item">
+                          {% if block.settings.menu != blank %}
+                          <ul>
+                            {% for link in block.settings.menu.links %}
+                              <li class=" {% if forloop.first %}active{% endif %}"><a href="{{ link.url }}" class="w-full tertiary-border-radius inline-block">{{ link.title }}</a></li>
+                            {% endfor %}
+                          </ul>
+                          {% endif %} 
+                        </div>
+                      </div>
+                      {% endif %}
+                      <div class="block__column">
+                        <div class="block__location small-hide medium-hide">
+                          {%  render 'header_list', heading: block.settings.heading, button_text: block.settings.button_text, button_url: block.settings.button_url, select_button_item: block.settings.select_button_item  %}
+                        </div>
+                      </div>
+                    </div>
+                {% endcase %} 
+                {% endif %}
+              {% endfor %}
+            </div>
+          </details>
+        </header-menu>
+      {%- else -%}
+      <a id="HeaderMenu-{{ link.handle }}" href="{{ link.url }}"
+        class="header__menu-item list-menu__item link link--text focus-inset" {% if link.current %} aria-current="page"
+        {% endif %}>
+        <span {%- if link.current %} class="header__active-menu-item" {% endif %}>
+          {{- link.title | escape -}}
+        </span>
+      </a>
+      {%- endif -%}
+    </li>
+    {%- endfor -%}
+  </ul>
+</nav>
+
+

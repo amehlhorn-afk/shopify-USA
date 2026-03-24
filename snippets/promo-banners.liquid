@@ -1,0 +1,31 @@
+{% for block in section.blocks %}
+    {% if block.type == 'promo-banner' %}
+        <div class="promo-banner w-full center flex items-center justify-center" 
+        {% if block.settings.image  !=blank %}style="background-image: url('{{ block.settings.image  | image_url }}');"{% endif %}>
+            {% if block.settings.title != blank %}
+                <h3 style="font-weight-600">{{ block.settings.title }}</h3>
+            {% endif %}
+        </div>
+    {% endif %}
+    {%  style  %} 
+            @media (min-width:990px){
+                .promo-banner{
+                    padding-top:{{ block.settings.desktop_padding_top }}px;
+                    padding-bottom:{{ block.settings.desktop_padding_bottom }}px;
+                }
+            }
+            @media (max-width:989px){
+                .promo-banner{
+                    padding-top:{{ block.settings.mobile_padding_top }}px;
+                    padding-bottom:{{ block.settings.mobile_padding_bottom }}px;
+                }
+            }
+    {% endstyle %} 
+{% endfor %}
+{%  style  %} 
+    .promo-banner{width: 100%; background-size: cover;}
+    .promo-banner h3{color: var(--quinary-color);}
+    @media (min-width:990px){
+        .promo-banner{border-radius: var(--tertiary-border-radius);}
+    }
+{% endstyle %} 

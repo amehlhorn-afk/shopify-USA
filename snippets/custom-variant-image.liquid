@@ -1,0 +1,43 @@
+{% assign varaint_image_1 = settings.variant_image_1.alt %}
+{% assign varaint_image_2 = settings.variant_image_2.alt %}
+{% assign varaint_image_3 = settings.variant_image_3.alt %}
+{% assign varaint_image_4 = settings.variant_image_4.alt %}
+{% assign varaint_image_5 = settings.variant_image_5.alt %}
+{% assign varaint_image_6 = settings.variant_image_6.alt %}
+{% if value == varaint_image_1 %}
+  <img
+    src="{{ settings.variant_image_1 | img_url: 'medium' }}"
+    alt="{{  settings.variant_image_1.alt }}"
+    class="block__variant-image object-contain none"
+  >
+{% elsif value == varaint_image_2 %}
+  <img
+    src="{{ settings.variant_image_2 | img_url: 'medium' }}"
+    alt="{{  settings.variant_image_2.alt }}"
+    class="block__variant-image object-contain none"
+  >
+{% elsif value == varaint_image_3 %}
+  <img
+    src="{{ settings.variant_image_3 | img_url: 'medium' }}"
+    alt="{{  settings.variant_image_3.alt }}"
+    class="block__variant-image object-contain none"
+  >
+{% elsif value == varaint_image_4 %}
+  <img
+    src="{{ settings.variant_image_4 | img_url: 'medium' }}"
+    alt="{{  settings.variant_image_4.alt }}"
+    class="block__variant-image object-contain none"
+  >
+{% elsif value == varaint_image_5 %}
+  <img
+    src="{{ settings.variant_image_5 | img_url: 'medium' }}"
+    alt="{{  settings.variant_image_5.alt }}"
+    class="block__variant-image object-contain none"
+  >
+{% elsif value == varaint_image_6 %}
+  <img
+    src="{{ settings.variant_image_6 | img_url: 'medium' }}"
+    alt="{{  settings.variant_image_6.alt }}"
+    class="block__variant-image object-contain none"
+  >
+{% endif %}

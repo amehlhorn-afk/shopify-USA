@@ -1,0 +1,135 @@
+{% comment %}
+  Renders social icons.
+  Accepts:
+  - class: {String} a class to be added to the <ul> element (optional).
+
+  Usage:
+  {% render 'social-icons',
+    class: 'my-class'
+  %}
+{% endcomment %}
+{%- capture cartItems -%}
+{%- for item in cart.items -%}
+    {{ item.variant.id }}:{{ item.quantity }}{% unless forloop.last %},{% endunless %}
+{%- endfor -%}
+{%- endcapture -%}
+
+{%- assign sharURL = settings.share_your_cart_url | append: 'cart/' | append: cartItems |  append: '?storefront=true'| url_encode  -%} 
+
+<ul class="list-unstyled list-social{% if class %} {{ class}}{% endif %}" role="list">
+    <li class="list-social__item">
+        <a href="https://mail.google.com/mail/u/0/?to&su&body={{ sharURL }}&fs=1&tf=cm" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-email.svg' | inline_asset_content -}}
+          </span>
+        </a>
+      </li>
+    <li class="list-social__item">
+        <a href="https://api.whatsapp.com/send/?text={{ sharURL }}" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-whatsapp.svg' | inline_asset_content -}}
+          </span>
+        </a>
+      </li>
+    {% comment %} {%- if settings.social_instagram_link != blank -%}
+      <li class="list-social__item">
+        <a href="{{ settings.social_instagram_link }}" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-instagram.svg' | inline_asset_content -}}
+          </span>
+          <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%} {% endcomment %}
+    {%- if settings.social_twitter_link != blank -%}
+      <li class="list-social__item">
+        <a href="https://twitter.com/intent/tweet?url={{ sharURL }}&text=Check%20out%20my%20cart" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-twitter.svg' | inline_asset_content -}}
+          </span>
+          <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+    {%- if settings.social_facebook_link != blank -%}
+      <li class="list-social__item">
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{sharURL}}&storefront=true" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-facebook.svg' | inline_asset_content -}}
+          </span>
+          <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+    {% comment %} {%- if settings.social_youtube_link != blank -%}
+      <li class="list-social__item">
+        <a href="{{ settings.social_youtube_link }}" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-youtube.svg' | inline_asset_content -}}
+          </span>
+          <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%} {% endcomment %}
+      {%- if settings.social_linkedin_link != blank -%}
+        <li class="list-social__item">
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://www.linkedin.com/sharing/share-offsite/?url={{ sharURL }}&storefront=true" target="_blank" class="link list-social__link">
+            <span class="svg-wrapper">
+              {{- 'icon-linkedIn.svg' | inline_asset_content -}}
+            </span>
+            <span class="visually-hidden">{{ 'general.social.links.linkedin' | t }}</span>
+          </a>
+        </li>
+    {%- endif -%}
+    {%- if settings.social_tiktok_link != blank -%}
+      <li class="list-social__item">
+        <a href="{{ settings.social_tiktok_link }}" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-tiktok.svg' | inline_asset_content -}}
+          </span>
+          <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+    {%- if settings.social_pinterest_link != blank -%}
+      <li class="list-social__item">
+        <a href="{{ settings.social_pinterest_link }}" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-pinterest.svg' | inline_asset_content -}}
+          </span>
+          <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+    {%- if settings.social_snapchat_link != blank -%}
+      <li class="list-social__item">
+        <a href="{{ settings.social_snapchat_link }}" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-snapchat.svg' | inline_asset_content -}}
+          </span>
+          <span class="visually-hidden">{{ 'general.social.links.snapchat' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+    {%- if settings.social_tumblr_link != blank -%}
+      <li class="list-social__item">
+        <a href="{{ settings.social_tumblr_link }}" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-tumblr.svg' | inline_asset_content -}}
+          </span>
+          <span class="visually-hidden">{{ 'general.social.links.tumblr' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+    {%- if settings.social_vimeo_link != blank -%}
+      <li class="list-social__item">
+        <a href="{{ settings.social_vimeo_link }}" target="_blank" class="link list-social__link">
+          <span class="svg-wrapper">
+            {{- 'icon-vimeo.svg' | inline_asset_content -}}
+          </span>
+          <span class="visually-hidden">{{ 'general.social.links.vimeo' | t }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+  </ul>
+  

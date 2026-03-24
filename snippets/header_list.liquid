@@ -1,0 +1,128 @@
+{%  capture all_categories %} 
+  {% assign locations = shop.metaobjects.retail_locations.values %}
+  {% assign all_categories = '' %}
+
+  {% for location in locations %}
+    {% if location.categories != blank %}
+      {% assign raw = location.categories | remove: '[' | remove: ']' | remove: '"' %}
+      {% assign split_categories = raw | split: ',' %}
+      {% for category in split_categories %}
+        {% assign cleaned = category | strip %}
+        {% assign all_categories = all_categories | append: cleaned | append: ',' %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+
+  {% assign categories_array = all_categories | split: ',' | uniq | sort %}
+{% endcapture %}
+
+<div class="block__top-part  main-d-grid">
+  {% if heading != blank %}
+  <div class="block__heading grid-4 items-center flex gap-15">
+    <div class="font-weight-500 h4">{{ heading }}</div>
+    {% if select_button_item == 'button' %}
+      {% if button_text != blank %}
+      <a href="{{ button_url }}" class="button button-quaternary extra_body">
+        {{- button_text -}}
+      </a>
+      {% endif %}
+    {% else %}
+    {% if button_text != blank %}
+      <a href="{{ button_url }}" class="link-btn extra_body">
+        {{- button_text -}}
+      </a>
+      {% endif %}
+    {% endif %}
+  </div>
+  {% endif %}
+  <div class="block__heading grid-8">
+    <div class="block__location-search justify-end flex items-center gap-15">
+      <div class="block__search-item relative">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"
+          class="block__menu-search absolute">
+          <path
+            d="M8.75033 15.8337C12.6623 15.8337 15.8337 12.6623 15.8337 8.75033C15.8337 4.83833 12.6623 1.66699 8.75033 1.66699C4.83833 1.66699 1.66699 4.83833 1.66699 8.75033C1.66699 12.6623 4.83833 15.8337 8.75033 15.8337Z"
+            stroke="black" stroke-width="1.5" stroke-linejoin="round" />
+          <path d="M13.8428 13.8428L17.3783 17.3783" stroke="black" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+       <input type="text" placeholder="Enter city, state or zip code"
+       class="border-none w-full senary-border-radius searchInput" />
+      </div>
+      <div class="w-full controls">
+       {{ all_categories }}
+        <select class="border-none senary-border-radius w-full category-select">
+          <option value="">All</option>
+          {% for category in categories_array %}
+            {% unless category == blank %}
+              <option value="{{ category }}">{{ category }}</option>
+            {% endunless %}
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="sidebar block__location">
+    <div class="main-d-grid gap-20 store-list">
+      {% assign locations = shop.metaobjects.retail_locations.values %}
+        {% for location in locations %}
+          <div class="store-item">
+            <h6>{{ location.name }}</h6>
+            <p>{{ location.address }}</p>
+            <p>{{ location.city }}, {{ location.state }} {{ location.zip }}</p>
+            <p><a href="tel:{{ location.phone | strip }}">{{ location.phone }}</a></p>
+            {% if location.categories %}
+              {% assign raw = location.categories | remove: '[' | remove: ']' | remove: '"' %}
+              <p class="hidden category-text">{{ raw }}</p>
+            {% endif %}
+
+          {% if location.product_items %}
+            <p class="hidden">Products: {{ location.product_items | join: ', ' }}</p>
+          {% endif %}
+          </div>
+        {% endfor %}
+    </div>
+  </div>
+  
+</div>
+<style>
+  .block__location-search select {
+    background-image: url('{{' select_arrow.svg' | asset_url }}');
+  }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const storeItems = document.querySelectorAll('.store-item');
+  const searchInputs = document.querySelectorAll('.searchInput');
+  const categorySelects = document.querySelectorAll('.category-select');
+
+  function filterStores() {
+    let query = '';
+    searchInputs.forEach(input => {
+      if (input.value.trim() !== '') query = input.value.toLowerCase();
+    });
+
+    let selectedCategory = '';
+    categorySelects.forEach(select => {
+      if (select.value.trim() !== '') selectedCategory = select.value.toLowerCase();
+    });
+
+    storeItems.forEach(store => {
+      const text = store.textContent.toLowerCase();
+      const categoryText = store.querySelector('.category-text')?.textContent.toLowerCase() || '';
+      const categories = categoryText.split(',').map(cat => cat.trim());
+
+      const matchesSearch = query === '' || text.includes(query);
+      const matchesCategory = selectedCategory === '' || categories.includes(selectedCategory);
+ 
+      store.style.display = (matchesSearch && matchesCategory) ? 'block' : 'none';
+    });
+  }
+
+  searchInputs.forEach(input => input.addEventListener('input', filterStores));
+  categorySelects.forEach(select => select.addEventListener('change', filterStores));
+});
+
+</script>

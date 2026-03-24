@@ -1,0 +1,63 @@
+{{ 'custom-banner-columns.css' | asset_url | stylesheet_tag }}
+{% if section.blocks.size > 0 %}
+  <div class="w-full block__column-banner-main">
+    <div class="swiper block__column-banner-slider">
+      <div class="block__column-wrapper swiper-wrapper line-height flex">
+        {% for block in section.blocks %}
+          {% if block.type == 'custom-banner-column' %}
+            <div class="banner-item swiper-slide relative block_id-{{ block.id }}" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                {% render 'custom-image', image: block.settings.image, class: 'w-full h-full tertiary-border-radius object-cover' %}
+              {% endif %}
+              <div class="banner-text absolute" style="top: {{ block.settings.text_position_top }}%;">
+                {% if block.settings.subheading != blank %}
+                  <h4 class="">{{ block.settings.subheading }}</h4>
+                {% endif %}
+                {% if block.settings.title != blank %}
+                <h3>{{ block.settings.title }}</h3>
+                {% endif %}
+                {% if block.settings.button_text != blank %}
+                  <a href="{{ block.settings.link }}" class="button-offset button w-full">{{ block.settings.button_text }}</a>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div> 
+    {% render 'promo-banners' %}
+  </div> 
+  {% endif %}
+  {% style %}
+    {% for block in section.blocks %}
+      {% if block.type == 'custom-banner-column' %}
+        .banner-item.block_id-{{ block.id }} .banner-text,
+        .banner-item.block_id-{{ block.id }} .banner-text h4,
+        .banner-item.block_id-{{ block.id }} .banner-text h3 {
+          color: {{ block.settings.text_color }};
+        }
+      {% endif %}
+    {% endfor %}
+  {% endstyle %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let swiper;
+    function initSwiper() {
+      if (window.innerWidth < 750) {
+        if (!swiper) {
+          swiper = new Swiper(".block__column-banner-slider", {
+            slidesPerView: 1.1,
+            centeredSlides: true,  
+            loop: true,
+            slideToClickedSlide: true,
+            spaceBetween: 10,  
+          });
+        }
+      }
+    }
+    initSwiper();
+    window.addEventListener("resize", () => {
+      initSwiper();
+    });
+  });
+</script>

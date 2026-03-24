@@ -1,0 +1,111 @@
+{{ 'section-holiday-collection-grid.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-holiday-collection-grid.js' | asset_url }}" defer="defer"></script>
+{% if section.blocks.size > 0 %}
+<div class="block__holiday-grid-wrapper w-full">
+    <div class="block__holiday-collection-grid-slider swiper">
+        <div class="block__holiday-collection-grid swiper-wrapper">
+            {% for block in section.blocks %}
+            {% case block.type %}
+            {% when 'block_1' %}
+            <div class="swiper-slide block__holiday-collection-grid-item block__holiday-collection-grid-item-1"
+                style="background-color: {{ block.settings.color }};">
+                <div class="block__wrapper-inner">
+                    {% if block.settings.bg != blank %}
+                    <img src="{{ block.settings.bg | image_url: width:block.settings.bg.width }}"
+                        alt="{{ block.settings.bg.alt }}" width="" height="" class="block__holiday-collection-grid-item-bg">
+                    {% endif %}
+                    <div class="block__holiday-collection-grid-content text-{{ block.settings.text_align }}">
+                        {% if block.settings.heading != blank %}
+                        <h4 class="block__holiday-collection-grid-heading">{{ block.settings.heading }}</h4>
+                        {% endif %}
+                        {% if block.settings.title != blank %}
+                        <h2 class="block__holiday-collection-grid-title primary_h2">{{ block.settings.title }}</h2>
+                        {% endif %}
+                        {% if block.settings.text != blank %}
+                        <p class="block__holiday-collection-grid-text h4">{{ block.settings.text }}</p>
+                        {% endif %}
+                        {% if block.settings.btn != blank %}
+                        <a href="{{ block.settings.url }}" class="block__holiday-collection-grid-btn button-offset">
+                            {{- block.settings.btn -}}
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% if block.settings.img != blank %}
+                    <div class="block__holiday-collection-grid-item-img">
+                        <img src="{{ block.settings.img |  image_url: width:block.settings.img.width }}"
+                            alt="{{ block.settings.img.alt }}" width="" height="">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% when 'block_2' %}
+            <div class="swiper-slide block__holiday-collection-grid-item block__holiday-collection-grid-item-2"
+                style="background-color: {{ block.settings.color }};">
+                <div class="block__wrapper-inner">
+                    {% if block.settings.bg != blank %}
+                    <img src="{{ block.settings.bg |  image_url: width:block.settings.bg.width }}"
+                        alt="{{ block.settings.bg.alt }}" width="" height="" class="block__holiday-collection-grid-item-bg">
+                    {% endif %}
+                    <div class="block__holiday-collection-grid-content text-{{ block.settings.text_align }}">
+                        {% if block.settings.heading != blank %}
+                        <h4 class="block__holiday-collection-grid-heading">{{ block.settings.heading }}</h4>
+                        {% endif %}
+                        {% if block.settings.title != blank %}
+                        <h2 class="block__holiday-collection-grid-title primary_h2">{{ block.settings.title }}</h2>
+                        {% endif %}
+                        {% if block.settings.text != blank %}
+                        <p class="block__holiday-collection-grid-text h4">{{ block.settings.text }}</p>
+                        {% endif %}
+                        {% if block.settings.btn != blank %}
+                        <a href="{{ block.settings.url }}" class="block__holiday-collection-grid-btn button-offset">
+                            {{- block.settings.btn -}}
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% if block.settings.img != blank %}
+                    <div class="block__holiday-collection-grid-item-img">
+                        <img src="{{ block.settings.img |  image_url: width:block.settings.img.width }}"
+                            alt="{{ block.settings.img.alt }}" width="" height="">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% when 'block_3' %}
+            <div class="swiper-slide block__holiday-collection-grid-item block__holiday-collection-grid-item-3 block__holiday-collection-grid-img-{{ block.settings.img_position }}"
+                style="background-color: {{ block.settings.color }};">
+                <div class="block__wrapper-inner">
+                    {% if block.settings.bg != blank %}
+                    <img src="{{ block.settings.bg |  image_url: width:block.settings.bg.width }}"
+                        alt="{{ block.settings.bg.alt }}" width="" height="" class="block__holiday-collection-grid-item-bg">
+                    {% endif %}
+                    <div class="block__holiday-collection-grid-content text-{{ block.settings.text_align }}">
+                        {% if block.settings.heading != blank %}
+                        <h4 class="block__holiday-collection-grid-heading">{{ block.settings.heading }}</h4>
+                        {% endif %}
+                        {% if block.settings.title != blank %}
+                        <h2 class="block__holiday-collection-grid-title primary_h2">{{ block.settings.title }}</h2>
+                        {% endif %}
+                        {% if block.settings.text != blank %}
+                        <p class="block__holiday-collection-grid-text">{{ block.settings.text }}</p>
+                        {% endif %}
+                        {% if block.settings.btn != blank %}
+                        <a href="{{ block.settings.url }}" class="block__holiday-collection-grid-btn button-offset">
+                            {{- block.settings.btn -}}
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% if block.settings.img != blank %}
+                    <div class="block__holiday-collection-grid-item-img">
+                        <img src="{{ block.settings.img |  image_url: width:block.settings.img.width }}"
+                            alt="{{ block.settings.img.alt }}" width="" height="">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endcase %}
+            {% endfor %}
+        </div>
+    </div>
+    {% render 'promo-banners' %}
+</div>
+{% endif %}

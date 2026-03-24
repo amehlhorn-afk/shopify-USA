@@ -1,0 +1,67 @@
+{% comment %}
+  klaviyo-tracking.liquid
+  Captures Google/Facebook IDs & Shopify Customer ID into Klaviyo profile custom properties.
+  Properties used (short names): gclid, fbp, fbc, gaid, shopify_id
+{% endcomment %}
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+  // Store GCLID from URL on first visit
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gclid = urlParams.get('gclid');
+    if (gclid) { sessionStorage.setItem('klaviyo_gclid', gclid); }
+  } catch (e) { console.log("Error capturing GCLID", e); }
+
+  // Helper to read cookies
+  function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
+    }
+    return null;
+  }
+
+  // Wait for Klaviyo to be available
+  const klaviyoInterval = setInterval(function() {
+    if (window.klaviyo) {
+      clearInterval(klaviyoInterval);
+      const props = {};
+
+      // Google Analytics Client ID
+      const gaCookie = getCookie('_ga');
+      if (gaCookie) {
+        try { props.gaid = gaCookie.split('.').slice(2).join('.'); } catch (e) {}
+      }
+
+      // Facebook cookies
+      const fbpCookie = getCookie('_fbp');
+      if (fbpCookie) { props.fbp = fbpCookie; }
+
+      const fbcCookie = getCookie('_fbc');
+      if (fbcCookie) { props.fbc = fbcCookie; }
+
+      // Google Ads Click ID
+      const storedGclid = sessionStorage.getItem('klaviyo_gclid');
+      if (storedGclid) { props.gclid = storedGclid; }
+
+      // Shopify Customer ID (if logged in)
+      {% if customer %}
+      props.shopify_id = {{ customer.id | json }};
+      {% endif %}
+
+      // Send to Klaviyo if identified
+      try {
+        if (Object.keys(props).length > 0 && window.klaviyo.isIdentified()) {
+          window.klaviyo.identify(props);
+        }
+      } catch (e) {
+        // Some themes use different Klaviyo versions; fail silently.
+        console.log("Klaviyo identify error", e);
+      }
+    }
+  }, 500);
+});
+</script>

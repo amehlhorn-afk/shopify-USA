@@ -1,0 +1,83 @@
+<style>
+    #search-results {background: var(--quinary-color);border: 1px solid var(--border_color);max-height: 400px;margin: 10px -10px 0;
+        overflow-y: auto;box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    #search-results::-webkit-scrollbar {width: 6px;}
+    #search-results::-webkit-scrollbar-thumb {background: var(--border_color);border-radius: 4px;}
+    #search-results::-webkit-scrollbar-track {background: transparent;}
+    .predictive-search-list {list-style: none;margin: 0;padding: 0;}
+    .predictive-search-list li {padding: 10px;border-bottom: 1px solid var(--border_color);}
+    .predictive-search-list li a {display: flex;align-items: center;text-decoration: none;color: var(--selection-color)}
+    .predictive-search-list li a img {width: 40px;height: 40px;margin-right: 10px;border-radius: 5px;object-fit: cover;}
+    .predictive-search-list li:hover {background: var(--tertiary-color)}
+</style>
+
+<form action="/search" method="get" role="search" class="flex primary-border-radius flex-direction-column">
+    <div class="block__search_item flex items-center gap-10 justify-between">
+        <input type="hidden" name="type" value="article">
+        <input type="text" id="search-input" name="q" placeholder="{{ section.settings.search_input_title }}" autocomplete="off" class="medium_body border-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" class="block__blog-search">
+            <path d="M15.4258 14.1001L19.4435 18.1178L18.1168 19.4445L14.0991 15.4268C12.6545 16.5826 10.8224 17.274 8.82986 17.274C4.16924 17.274 0.386719 13.4914 0.386719 8.83083C0.386719 4.17022 4.16924 0.387695 8.82986 0.387695C13.4905 0.387695 17.273 4.17022 17.273 8.83083C17.273 10.8234 16.5816 12.6555 15.4258 14.1001ZM13.5437 13.404C14.6908 12.2218 15.3967 10.6091 15.3967 8.83083C15.3967 5.20263 12.4581 2.26395 8.82986 2.26395C5.20165 2.26395 2.26297 5.20263 2.26297 8.83083C2.26297 12.459 5.20165 15.3977 8.82986 15.3977C10.6082 15.3977 12.2208 14.6918 13.403 13.5446L13.5437 13.404Z" fill="#707070"/>
+        </svg>
+    </div>
+    <div id="search-results" class="primary-border-radius"></div>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.querySelector("#search-input");
+    const searchResults = document.querySelector("#search-results");
+
+    searchInput.addEventListener("input", function () {
+        let query = searchInput.value.trim();
+        if (query.length > 0) {
+            fetch(`/search/suggest.json?q=${query}&resources[type]=article`)
+                .then(response => response.json())
+                .then(data => {
+                    displayResults(data.resources.results.articles);
+                })
+                .catch(error => console.error("Error fetching search results:", error));
+        } else {
+            searchResults.innerHTML = "";
+            searchResults.style.display = "none";
+        }
+    });
+
+    function displayResults(articles) {
+        searchResults.innerHTML = "";
+        if (articles.length > 0) {
+            let resultHTML = "<ul class='predictive-search-list'>";
+            articles.forEach(article => {
+                resultHTML += `
+                    <li>
+                        <a href="${article.url}">
+                            <img src="${article.image ? article.image : 'default-image.jpg'}" alt="${article.title}">
+                            <span>${article.title}</span>
+                        </a>
+                    </li>
+                `;
+            });
+            resultHTML += "</ul>";
+            searchResults.innerHTML = resultHTML;
+            searchResults.style.display = "block"; // Show results
+        } else {
+            searchResults.style.display = "none"; // Hide if no results
+        }
+    }
+
+    // Close search results when clicking outside
+    document.addEventListener("click", function (event) {
+        if (!searchInput.contains(event.target) && !searchResults.contains(event.target)) {
+            searchResults.style.display = "none";
+        }
+    });
+
+    // Keep search results open when clicking inside the search input
+    searchInput.addEventListener("click", function () {
+        if (searchResults.innerHTML.trim() !== "") {
+            searchResults.style.display = "block";
+        }
+    });
+});
+
+</script>

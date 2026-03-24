@@ -1,0 +1,184 @@
+{%- if customer.orders.size > 0 -%}
+  <h4 class="block__account-title primary_h4">{{ 'customer.orders.title' | t }}</h4>
+  <div class="block_customers-order-inner">
+    {% paginate customer.orders by 999 %}
+      <div class="block_customers-order-data">
+        {%- for order in customer.orders -%}
+          <div class="block_customers-order-info {% if forloop.index == 1 %}open{% endif %}">
+            <div class="block_customers-order-info-wrapper">
+              <div class="block_customers-order-info-top flex items-center justify-between">
+                <div class="block_customers-order-info-top-left flex items-center flex-wrap gap-15">
+                  <p class="block_order-name">
+                    {{ 'customer.orders.order_number' | t }}
+                    <span class="font-weight-700">{{ order.name }}</span>
+                  </p>
+                  <span class="block_order-date small_body font-weight-500">
+                    {% comment %} {{- order.created_at | time_tag: format: 'date' -}} {% endcomment %}
+                    {{ order.created_at | date: "%b %d, %Y" }}
+                  </span>
+                </div>
+                <div class="block_customers-order-info-top-right flex">
+                  <div class="block_total-order-info total-price">
+                    <p class="medium_body">
+                      <span>{{ 'customer.order.total_order' | t }}:</span>
+                      <span class="font-weight-500">{{ order.total_price | money }}</span>
+                    </p>
+                  </div>
+                  <div
+                    class="block_order-mange-order flex items-center gap-15 {% if forloop.index == 1 %}active{% endif %}"
+                  >
+                    <p>{{ 'customer.order.manage_order' | t }}</p>
+                    {% comment %} <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="arrow-svg"
+                    >
+                    
+                      <path d="M15 12.5L10 7.5L5 12.5" stroke="#0F1433" stroke-width="1.5"
+                          stroke-linecap="round" stroke-linejoin="round" />
+                    </svg> {% endcomment %}
+                    
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"  class="arrow-svg">
+                  <path d="M6 9.5L12 15.5L18 9.5" stroke="#353B45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  </div>
+                </div>
+              </div>
+              {% comment %}
+                <div class="block_customers-order-info-payment-method">
+                    <p class="block__order-total-items">
+                        <span class="medium_body block__order-total-items-text">{{ 'customer.account.total_items' | t
+                            }}</span>
+                        <span class="medium_body block__order-total-items-number text-bold">{{ order.item_count
+                            }}</span>
+                    </p>
+                    <p class="block__order-total-items">
+                        <span class="medium_body block__order-payment-method-text">Payment Method: </span>
+                        <span class="medium_body block__order-payment-method-name">
+                            {% for transaction in order.transactions %}
+                            {% if transaction.payment_details.credit_card_company == "Visa" %}
+                            <span class="text-bold">{{ transaction.payment_details.credit_card_company }} {{
+                                transaction.payment_details.credit_card_last_four_digits }}</span>
+                            {% elsif transaction.gateway != "shopify_payments" %}
+                            <span class="text-bold">{{ transaction.gateway_display_name }}</span>
+                            {% endif %}
+                            {% endfor %}
+                        </span>
+                    </p>
+                </div>
+              {% endcomment %}
+            </div>
+            <div class="block_customers-order-info-bottom {% if forloop.index == 1 %}active{% endif %}">
+              {% for item in order.line_items %}
+                <div class="block_customers-order-info-bottom-inner">
+                  <div class="block_customers-order-info-history">
+                    <div class="block_customers-order-image">
+                      <img
+                        class="block_order_image"
+                        src="{{ item.image | image_url: width: 128, height: 128 }}"
+                        loading="lazy"
+                        width="100px"
+                        height="80px"
+                      >
+                    </div>
+                    <div class="block_customers-order-image-info block__desktop-view">
+                      <div class="block__order-items-detail">
+                        <p class="block_data_order_items_title extra_body">
+                          <a href="{{ item.url }}">{{ item.product.title }}</a>
+                        </p>
+                      </div>
+                      <div class="block_data_order_items_quantity">
+                        <p class="extra_body"><span>Qty:</span> {{ item.quantity }}</p>
+                      </div>
+                      <div class="block_data_order_price">
+                        <p class="extra_body font-weight-500">{{ item.price | money }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="block__customer-order-product-info">
+                    <div class="block_customers-order-image-info block__mobile-view">
+                      <div class="block_customers-order-image-info">
+                        <div class="block__order-items-detail">
+                          <p class="block_data_order_items_title extra_body">
+                            <a href="{{ item.url }}">{{ item.product.title }}</a>
+                          </p>
+                        </div>
+                        <div class="block_data_order_items_quantity">
+                          <p class="extra_body"><span>Qty:</span> {{ item.quantity }}</p>
+                        </div>
+                        <div class="block_data_order_price">
+                          <p class="extra_body font-weight-500">{{ item.price | money }}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="block_data_order_items_status flex gap-15 items-center">
+                      <div class="block__order-status-items-text order-default-text extra_body">
+                        <span>{{ 'customer.orders.date' | t }}: </span>
+                        <span>{{ 'customer.orders.payment_status' | t }}:</span>
+                        <span>{{ 'customer.orders.fulfillment_status' | t }}:</span>
+                      </div>
+                      <div class="block__order-status-items-text extra_body font-weight-500">
+                        <span>
+                          {{- order.created_at | time_tag: format: 'date' -}}
+                        </span>
+                        <span>
+                          {{ order.financial_status_label }}
+                        </span>
+                        <span>
+                          {{ order.fulfillment_status_label }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              {% comment %}
+                {% for item in order.line_items %}
+                {% assign tracking_url = item.fulfillment.tracking_url %}
+                {% endfor %}
+                <div class="block_customers-order-image-trackorder">
+
+                    <p class="block_order-total-price">{{ 'customer.account.total' | t }} <span class="text-bold">{{
+                            order.total_price | money }}</span></p>
+                    {% if tracking_url != blank %}
+                    <a href="{{ tracking_url }}" class="block_trackorder-button" target="_blank">
+                        {{ 'customer.account.track_order' | t }}
+                    </a>
+                    {% endif %}
+
+                </div>
+              {% endcomment %}
+            </div>
+            <div class="block_total-order-info-bottom">
+              <div class="flex items-center justify-between">
+                <p class="medium_body block__order-total-price  w-full">
+                  <span>{{ 'customer.order.total_order' | t }}:</span>
+                  <span class="font-weight-500">{{ order.total_price | money }}</span>
+                </p>
+                <div class="block__track-order-wrapper w-full flex items-center justify-end gap-15">
+                  <a
+                    href=""
+                    class="block__order-return-exchange w-full flex items-center justify-center button-primary small_body"
+                    target="_blank"
+                  >
+                    {{ 'customer.order.return_order' | t }}
+                  </a>
+                  <a
+                    href="{{ order.item.fulfillment.tracking_url }}"
+                    class="block__order-tracking-button button-quaternary w-full flex items-center justify-center small_body"
+                    target="_blank"
+                  >
+                    {{ 'customer.order.tracking_order' | t }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endpaginate %}
+  </div>
+{% endif %}

@@ -1,0 +1,29 @@
+
+{%- unless request.page_type == 'product' or request.page_type == 'index' or request.page_type == 'collection' -%}
+  {%- if settings.quick_add == 'standard' -%}
+    {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+{%- endunless -%}
+<div class="block__cart-drawer-collection-slider swiper-container overflow-hidden">
+  <div class="swiper-wrapper" sdsd>
+    {% for product in card_collection %}
+      {%- assign button_text = false -%}
+        {% if  cart != empty %}
+            {%- assign button_text = true -%}
+        {% endif %}
+            <div class="swiper-slide secondary-border-radius">
+                <div class="block__cart-drawer-collection-item-block-inner">
+                    {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: "square",
+                    show_secondary_image: false,
+                    quick_add: settings.quick_add,
+                    button_text: button_text
+                   %}
+                </div>   
+           </div>
+    {% endfor %}
+  </div>
+</div>
