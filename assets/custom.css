@@ -1,0 +1,646 @@
+body{letter-spacing: 0;color: var(--selection-color);font-style:normal;font-weight:400;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;scroll-behavior: smooth;}
+html, body {
+  scroll-behavior: auto; /* Avoid smooth scroll jump during swiper nav */
+}
+a{text-decoration:none; color: var(--selection-color);cursor: pointer;}
+.cursor-pointer{cursor: pointer;}
+ul li{list-style:none}
+h1,h2,h3,h4,h5,h6,label,ul,li,figure,p,ol,ol li,span,.h1,.h3{margin: 0;padding: 0;}
+
+.line-height{line-height: 0;}
+
+.grid-1{grid-column:span 1;}
+.grid-2{grid-column:span 2;}
+.grid-3{grid-column:span 3}
+.grid-4{grid-column:span 4;}
+.grid-5{grid-column:span 5}
+.grid-6{grid-column:span 6}
+.grid-7{grid-column:span 7}
+.grid-8{grid-column:span 8}
+.grid-9{grid-column:span 9}
+.grid-10{grid-column:span 10}
+.grid-11{grid-column:span 11}
+.grid-12{grid-column:span 12}
+.grid-3-s-2{grid-column: 2 / span 3;}
+.grid-4-s-2{grid-column: 2 / span 4;}
+.grid-3-s-9{grid-column: 9 / span 3}
+.grid-4-s-8{grid-column: 8 / span 4}
+.gap-5{gap: 5px;}
+.gap-8{gap: 8px;}
+.gap-10{gap: 10px;}
+.gap-15{gap: 15px;}
+.gap-20{gap: 20px;}
+.gap-25{gap: 25px;}
+.gap-30{gap: 30px;}
+
+.block__row{display:flex;flex-wrap: wrap;}
+.block__heading-with-button { margin-bottom: 4rem; text-align: center; gap: 40px; }
+
+.border-none{border: none;}
+.h-full {height: 100%;}
+.w-full {width: 100%;}
+.blue-text-color{color: var(--primary-color);}
+
+.font-weight-400{font-weight:400;}
+.font-weight-500{font-weight:500;}
+.font-weight-600{font-weight:600;}
+.font-weight-700{font-weight:700;}
+
+.img-fluid{max-width: 100%;height: auto;}
+
+.block_row {display: flex;flex-wrap: wrap;}
+
+
+.image_set_pd{position:relative;width:100%;}
+.image_set_pd img,.image_set_pd video{position:absolute;width:100%;height:100%;top:0;left:0;right:0;bottom:0;object-fit:cover;}
+
+
+.primary-border-radius{border-radius: var(--primary-border-radius);}
+.secondary-border-radius{border-radius: var(--secondary-border-radius);}
+.tertiary-border-radius{border-radius: var(--tertiary-border-radius);}
+.quaternary-border-radius{border-radius: var(--quaternary-border-radius);}
+.senary-border-radius{border-radius: var(--senary-border-radius);}
+
+.z-index-0{z-index: 0;}
+.z-index-1{z-index: 1;}
+.z-index--1{z-index: -1;}
+.z-index--999{z-index: 999}
+
+.text-underline{text-decoration: underline;}
+.text-uppercase{text-transform: uppercase;}
+.text-capitalize{text-transform: capitalize;}
+.text-lowercase{text-transform: lowercase;}
+.text-left{text-align: left;}
+.text-right{text-align: right;}
+.text-center{text-align: center;}
+
+.link-btn{color: var(--primary-color);display: inline-block;}
+.link-btn:hover{color: var(--secondary-color);}
+.link-btn:hover svg path{fill: var(--secondary-color);}
+
+
+.Zoomhover{overflow: hidden;}
+.Zoomhover img{transition: all 0.3s ease-out;}
+.Zoomhover:hover img {transform: scale(1.05);}
+
+.whitespace-nowrap {white-space: nowrap;}
+
+.object-cover {object-fit: cover;}
+.object-contain {object-fit: contain;}
+
+.static {position: static;}
+.fixed {position: fixed;}
+.absolute {position: absolute;}
+.relative {position: relative;}
+.sticky {position: sticky;}
+.inset-0 {top: 0px;right: 0px;bottom: 0px;left: 0px;}
+
+.block {display: block;}
+.none {display: none;}
+.inline-block {display: inline-block;}
+.flex { display: flex;}
+.inline-flex {display: inline-flex;}
+.table {display: table;}
+.display-grid { display: grid;}
+.contents {display: contents;}
+.box-sizing-box{box-sizing: border-box;}
+
+.flex-row-reverse {flex-direction: row-reverse;}
+.flex-direction-column {flex-direction: column;}
+.flex-col-reverse {flex-direction: column-reverse;}
+.flex-wrap {flex-wrap: wrap;}
+.flex-nowrap {flex-wrap: nowrap;}
+
+.items-start {align-items: flex-start;}
+.items-end {align-items: flex-end;}
+.items-center {align-items: center;}
+.items-stretch {align-items: stretch;}
+.items-self-start{align-items: self-start;}
+
+.justify-start {justify-content: flex-start;}
+.justify-end {justify-content: flex-end;}
+.justify-center {justify-content: center;}
+.justify-between {justify-content: space-between;}
+.justify-items-end {justify-items: end;}
+
+.self-start {align-self: flex-start;}
+.self-center {align-self: center;}
+
+.justify-self-end {justify-self: end;}
+.justify-self-center {justify-self: center;}
+.reg-mark {vertical-align: baseline;margin-left: 2px;position: relative;}
+.toggle-password{position: absolute;right: 20px;top: 50%;cursor: pointer;transform: translateY(-50%); display: flex;}
+
+predictive-search .predictive-search__loading-state{display: none;}
+/*  This Twin Select SHow Option Firmness Start  */
+[data-selected-value="Twin"] + [data-optionname="Left Side"] {display: none !important;}
+[data-selected-value="Twin"] + [data-optionname="Left Side"] + [data-optionname="Right Side"] {
+  display: none !important;
+}
+/*  This Twin Select SHow Option Firmness End  */
+@media(min-width:990px){
+    .main-d-grid{display: grid;grid-template-columns: repeat(12, minmax(0, 1fr));}
+    .block__col-50{width: 50%;max-width: 50%;}
+    .block_row .block__col,.block__row .block__col {width: 50%;max-width: 50%;}
+}
+@media(max-width:989px){
+    .block__col-50 {width: 100%;max-width: 100%;}
+    .swiper-button-next, .swiper-button-prev { width: 30px; height: 30px;background-color: var(--tertiary-color);}
+    .main-d-grid{display: grid;grid-template-columns: repeat(12, minmax(0, 1fr));}
+    .block_row .block__col,.block__row .block__col {width: 100%;max-width: 100%;}
+    .image_set_pd_mb{position:relative;width:100%;}
+    .image_set_pd_mb img,.image_set_pd_mb video{position:absolute;width:100%;height:100%;top:0;left:0;right:0;bottom:0;object-fit:cover;}
+}
+@media screen and (max-width: 1024px){
+    .needsclick.kl-private-reset-css-Xuajs1 form{z-index: 2 !important;}
+    .needsclick.kl-private-reset-css-Xuajs1 {z-index: 2 !important;position: relative;}
+    .needsclick.kl-private-reset-css-Xuajs1.kl-teaser-RfjG22 {width: calc(50% - 40px) !important;}
+    .needsclick.kl-private-reset-css-Xuajs1 button.klaviyo-close-form.go2324193863 {z-index: 3 !important;}
+}
+
+/* ================== Global Css ================== */
+
+.region-australia .product-addcart-block {
+  display: none !important;
+}
+
+/* ================== olark Css ================== */
+body .olark-launch-button-wrapper {z-index: 1 !important;}
+body #olark-container .olark-survey-form .olark-survey-form-text,
+body #olark-container .olark-survey-form .olark-survey-form-textarea {
+    border: 2px solid #abacad !important;
+}
+body #olark-container .olark-survey-form .olark-button {background-color: var(--primary-color) !important;}
+body #olark-container:focus:not(.olark-inline) {border: 2px solid var(--primary-color) !important;} 
+/* ================== User way  Css ================== */
+body .uwy {z-index: 2 !important;}
+body .uwy.uon {z-index: 3!important;}
+
+@media screen and (max-width: 768px) {
+    .uwy .userway_buttons_wrapper {display: block !important;}
+}
+
+
+/*courtney added 03-02-26*/
+
+.shopify-section.shopify-section-group-header-group.section-header {
+  position: sticky;
+   
+  top: 0;
+}
+.header-wrapper {
+    border-radius:unset;
+}
+.header-wrapper.no-radius {
+     box-shadow: 1px 1px 10px #ccc ;
+}
+
+
+.list-menu li span > a,
+.list-menu > li  > a{
+    text-transform: uppercase !important;
+    font-family: var(--font-heading-family);
+ 
+}
+
+@media screen and (min-width: 1400px) {
+    .header__inline-menu>ul.list-menu>li .header__menu-item>span,
+    .list-menu li span > a,
+    .list-menu > li  > a{
+        font-size: 15px;
+    }
+     .header__heading-logo-wrapper img {
+        max-width: 200px;
+    }
+}
+
+@media (min-width: 1301px) and (max-width: 1399px) {
+    .header__inline-menu>ul.list-menu>li .header__menu-item>span {
+        font-size: 14px !important;
+    }
+    .list-menu li span>a, .list-menu>li>a {
+    font-size: 14px !important;
+    }
+    .header__heading-logo-wrapper img {
+        max-width: 150px;
+        margin-right: .5em;
+    }
+}
+
+
+
+
+.list-menu li span>a, .list-menu>li>a, .header__menu-item  {
+   border: solid 1px transparent !important; /* to fix the wierd offset of the beauty link */
+}
+.block__announcement-bar__announcement a p {
+        font-family: var(--font-heading-family);
+    letter-spacing: unset;
+}
+.block__left-side-announcement {
+    grid-column: 1 / 3 !important;
+}
+.block__announcement-bar  {
+    grid-column: 4/ 10 !important;
+}
+.block__right-side-announcement {
+    grid-column: 11 / 13 !important;
+
+}
+button span{
+    text-transform: uppercase;
+    font-family: var(--font-heading-family);
+}
+@media only screen and (min-width: 750px) {
+    .primary_h2 {
+        font-size: 35px;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+       .product__title .primary_h2 {
+        text-transform: unset;
+    }
+
+    .primary_h2 sup {font-size: 15px !important}
+}
+@media screen and (min-width: 1500px) {
+    .list-menu--inline {
+        column-gap: 3rem;
+    }
+}
+/*Making home slideshow banner section have squared corners*/
+
+@media (min-width: 990px) {
+    .slideshow__media, .slideshow__media img, .slideshow__media video,
+    .slideshow__media iframe {
+        border-radius: 0px !important;
+    }
+}
+
+
+/*home */
+.quaternary-border-radius {
+    border-radius: 0 !important;
+}
+@media screen and (min-width: 991px) {
+    .block__shop-our-product-slider .swiper-slide.swiper-slide-next {      
+        border-radius: 0px !important;
+    }
+}
+
+.block__shop-our-product-wrapper {
+    border-top-left-radius: unset !important;
+    border-top-right-radius: unset !important;
+    border-bottom-left-radius: unset !important;
+    border-bottom-right-radius: unset !important;
+}
+
+
+.banner__buttons a{
+  // font-family: var(--font-bold);
+    font-size: 1.8rem;
+}
+ .button.button-primary {
+  //  border: solid 1px transparent !important;
+}
+ .button.button-primary:hover, .button.button-primary:focus-visible {
+    border: solid 1px #fff !important;
+}
+
+
+
+@media only screen and (min-width: 750px) {
+    .primary_h4 {
+        font-size: 18px;
+        font-weight: bold;
+    }
+}
+
+.block__column-heading-wrapper {
+
+    padding-right: 1em;
+}
+
+.block__column-heading-wrapper h4 {
+    text-align:right;
+}
+
+@media screen and (min-width: 991px) {
+    .block__shop-our-product-slider .swiper-slide.swiper-slide-next {
+        background-color: unset;
+       
+    }
+    .block__shop-our-product-slider .swiper-slide:nth-child(odd){
+        background: white;
+    }
+}
+
+.block__shop-our-product-slider .button-primary {
+    background-color: #000;
+    color: #fff;
+  line-height: 1.3em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.block__shop-our-product-slider .button-primary:hover {
+    background: var(--primary-color);
+}
+.block__product-card-information span {
+    margin-top: 0 !important
+}
+.block__product-richtext-metadata ul {
+    margin: 0 !important;
+    padding: 0 !important
+}
+.block__product-richtext-metadata ul li{
+    list-style: none !important;
+  
+}
+.block__product-content .block__product-richtext-metadata {
+    margin: 10px 0 15px;
+}
+/* sleep awareness video home hero */
+@media screen and (max-width: 768px){
+   #home_hero .slideshow__text-wrapper,
+    #home_hero_protector .slideshow__text-wrapper
+    {
+        justify-content: center !important;
+     align-items: flex-end
+    }home_hero
+
+    #shopify-section-template--20900416225420__slideshow_D6tr7f .banner__heading + .banner__text  {
+       margin-top: 0 !important
+    }
+}
+
+@media (min-width: 1800px) {
+  #home_hero_protector, #home_hero {
+  background: #000 !important;
+  }
+    .section-template--20900416225420__slideshow_D6tr7f-padding {
+        padding-top: 0px;
+        padding-bottom: 0px;
+      
+    }
+    .section-template--20900416225420__slideshow_D6tr7f-padding
+ {
+       max-width: 1800px !important;
+        margin: 0 auto;
+    
+  
+    }
+   
+    #home_hero .slideshow {
+       // max-height: auto;
+    }
+
+    
+}
+/* mattress protector slide under #home_hero id */
+#Slide-template--20900416225420__slideshow_D6tr7f-1 .button.button-primary {
+  background-color: #009fc7;
+}
+#Slide-template--20900416225420__slideshow_D6tr7f-1 .banner__box em {
+  display: block;
+  font-size: 13px;
+  margin-top: 10px;
+  margin-bottom: 1em;
+}
+#Slide-template--20900416225420__slideshow_D6tr7f-1 .slideshow__text {
+  background: rgba(255, 255, 255, 0.4);
+  margin: 2em;
+}
+
+/*mavs*/     
+#home_hero #Slide-template--20900416225420__slideshow_D6tr7f-2 .slideshow__text-wrapper .banner__box {
+       
+        --content-offset-x: 0px !important;
+          border: solid 1px transparent;
+      
+    }
+    
+@media (min-width: 1400px){
+    #home_hero #Slide-template--20900416225420__slideshow_D6tr7f-2 .slideshow__text-wrapper .banner__box {
+          //transition: all, .5s, ease-out;
+        --content-offset-x: -150px !important;
+    }
+}
+
+/*night ice pillow oprah*/
+/*#Slide-template--20900416225420__slideshow_D6tr7f-1 .banner__text::before{
+    display:table;
+    content:"★★★★★";
+    color: gold;
+    margin: 0 auto .5em;
+    font-size: 15px;
+}*/
+/* #Slide-template--20900416225420__slideshow_D6tr7f-1 .slideshow__text-wrapper {
+     background: url("https://cdn.shopify.com/s/files/1/0672/6890/3052/files/OprahSleepOwards-seal.png?v=1773486551") no-repeat top right;
+    background-size: 300px;
+}*/
+ /* #Slide-template--20900416225420__slideshow_D6tr7f-1 .banner__eyebrow::before {
+      
+         background: url("https://cdn.shopify.com/s/files/1/0672/6890/3052/files/OprahSleepOwards-seal.png?v=1773486551") no-repeat center;
+    background-size: contain;
+    display:block;
+        content:"";
+    height: 100px
+    }
+*/
+#home_hero .banner__heading {position: relative;}
+/* this is to add the TM after sleep just got personal 
+#home_hero #Slide-template--20900416225420__slideshow_D6tr7f-2 .banner__heading::after {
+    content:"\2122";
+    font-size: 14px;
+   position: absolute;
+    margin-top: 10px;
+}*/
+
+/*new quiz styles 3-3-26 */
+/* courtney add 3-3-26 */
+@media (max-width: 989px) {
+    .section-template--20785333174412__tangent_bedgear_quiz_Lff8Wk-padding {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+}
+@media (min-width: 990px) {
+    .section-template--20785333174412__tangent_bedgear_quiz_Lff8Wk-padding {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+}
+@media screen and (min-width: 1599px) {
+    #quiz-container.page-width,  #quiz-container.header:not(.drawer-menu).page-width {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+
+ #quiz-container #video-container>video {
+    border-radius:unset;
+}
+
+
+#quiz-container.page-width {
+    max-width: 100%;
+    width: 100%;
+    background: #000000;
+    margin: 0 auto;
+    padding: 0;
+}
+@media (min-width: 640px) {
+     #quiz-container .sm\:tngnt-w-\[100\%\] {
+       max-width: 600px;
+
+    }
+}
+#tangent-main-container {
+    //margin-top: 0px;
+    padding: 0 2em 2em;
+}
+
+ #quiz-container .tangent_welcome_button_custom,
+ .tangent_survey_next_button_custom 
+ {
+
+    border-radius: var(--primary-border-radius) !important;
+}
+
+#quiz-block {
+    display: flex !important;
+   
+    align-items: flex-start !important;
+}
+#tangent-main-container {
+   // border: solid 1px red;
+    margin-top: 0
+    
+}
+
+.tangent_option_highlight_custom {
+    outline: 1px solid #00b2e3;
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.tangent_primary_button {
+    color: #ffffff;
+    background: unset;
+
+    border-radius: 4px;
+    border: solid 1px #fff;
+}
+.tngnt-bg-white p {color: #000;}
+
+@media (max-width: 768px) {
+    .tangent_welcome_button_mob_custom {
+        width: 100% !important;
+     
+    }
+}
+#shopify-section-template--20785333174412__multicolumn_QUAqjg h6 {
+    font-style:italic !important;
+    font-size: 13px;
+}
+
+
+#shopify-section-template--20785333174412__multicolumn_QUAqjg h3:before{
+    display:table;
+    content:"★★★★★";
+    color: gold;
+    margin: 0 auto .5em;
+    font-size: 15px;
+}
+
+/*pdp sticky bar*/
+#sticky-bar .block__pay-with-shoppay.quick-add-hidden {display:none;}
+
+/* 03-07-26  mobile styles for homepage */
+
+
+@media screen and (max-width: 768px) {
+
+        #rebuy-accordion-template--20900416225420__rebuy_accordion_widgets_jRTGdW.rebuy-accordion {
+            padding: 60px 0 !important
+        }
+
+        .rebuy-product-grid .rebuy-product-block {
+        border-right: solid 6px #fff !important;
+            padding: 20px 0 !important;
+             
+        }
+        #rebuy-accordion-template--20900416225420__rebuy_accordion_widgets_jRTGdW.rebuy-accordion {
+            padding: 40px 0 !important;
+        }
+
+        .section-template--20900416225420__rich_text_w98tmU-padding {
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        .rich-text__blocks h3{
+            margin-bottom: .5em;
+        }
+        .block__product-image {
+            padding-bottom:10rem;
+        }
+}
+@media screen and (max-width: 567px) {
+    .block__featured-product-add-to-cart .quick-add__submit {
+        padding: 0;
+        min-width: 100px !important;
+        gap: 2px;
+        text-transform:none;
+        letter-spacing: 0;
+    }
+}
+
+
+/*pillow quiz blowouts section*/
+
+
+@media screen and (min-width: 750px) {
+  #shopify-section-template--20785333174412__image_with_text_eUtmKW .grid--3-col-tablet .grid__item {
+    width: calc(40% - var(--grid-desktop-horizontal-spacing) * 2 / 3);
+  }
+  #shopify-section-template--20785333174412__image_with_text_eUtmKW .image-with-text__content {
+    margin-left: 0;
+    margin-right: 0rem;
+  }
+}
+#shopify-section-template--20785333174412__image_with_text_eUtmKW .image-with-text__content ul {
+    background: #fff;
+
+    max-width: 400px;
+    padding: .5em 1em;
+    border-radius: 10px;
+}
+
+/*night ice PDP SleepOward*/
+
+#Slide-template--20785333829772__main-28402544279692 .product__modal-opener::after {
+    display: block;
+    content: "";
+background: url("https://cdn.shopify.com/s/files/1/0672/6890/3052/files/PDP-nightice-seal-OD.png?v=1773489557") no-repeat center;
+    height: 200px;
+    position: absolute;
+
+    z-index: 100;
+    background-size: contain;
+    bottom: 20px;
+    width: 100%;
+   
+   
+   
+}
+
+@media screen and (max-width: 640px){
+#Slide-template--20785333829772__main-28402544279692 .product__modal-opener::after {
+      height: 100px;
+   bottom: 10px;
+    background-image: url("https://cdn.shopify.com/s/files/1/0672/6890/3052/files/SleepOwards-seal.png?v=1773491452");
+   background-position: bottom right;
+    }
+}

@@ -1,0 +1,101 @@
+.block__hero-banner-media video {
+    min-height: 560px;
+    max-height: 560px;
+}
+
+.block__hero-banner-content {
+    position: absolute;
+    top: 50%;
+    /* left: 80px; */
+    left: 0;
+    transform: translateY(-50%);
+    background: transparent;
+}
+ 
+
+
+.block__hero-content-inner {
+    max-width: 648px;
+}
+
+.block__hero-banner-main .banner__text {
+    margin-bottom: 48px;
+    color: var(--quinary-color);
+}
+
+.block__hero-banner-main .banner__heading {
+    margin-bottom: 36px;
+    color: var(--quinary-color);
+}
+
+.block__hero-content-inner .banner__buttons .button-secondary {
+    width: 100%;
+    max-width: 207px;
+}
+
+
+@media screen and (max-width: 1024px) {
+    .block__hero-banner-media video,.block__hero-banner-media img {
+        min-height: 385px;
+        max-height: 385px;
+        border-radius: 0;
+        object-position: 75% 100%;
+    }
+
+    .block__hero-banner-main .page-width {
+        padding: 0;
+    }
+
+    .block__hero-banner-content {
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        padding: 80px 20px 46px;
+        height: 100%;
+        /* background: rgba(0, 0, 0, 0.5); */
+    }
+
+    .block__hero-content-inner {
+        /* max-width: 420px; */
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .block__hero-banner-main .banner__heading {
+        font-size: var(--h2);
+        margin-bottom: 20px;
+        letter-spacing: normal;
+    }
+
+    .block__hero-banner-main .banner__text {
+        margin-bottom: 30px;
+    }
+
+    .block__hero-banner-main .banner__text{
+        font-size: var(--h4);
+    }
+}
+
+@media screen and (max-width: 567px) {
+
+    .block__hero-content-inner .banner__buttons .button-secondary {
+        padding: 14.5px 20px;
+    }
+    .block__hero-banner-content {
+        padding: 130px 20px 46px;
+    }
+}
+
+
+@media screen and (max-width: 415px) {
+    .block__hero-banner-main .banner__text {
+        margin-bottom: 20px;
+    }
+
+    .block__hero-banner-main .banner__heading { 
+        font-size: calc(var(--h2) - 8px);
+    }
+}
+
+

@@ -1,0 +1,51 @@
+.block__hear-from-affiliates-heading h2 {
+    margin-bottom: 18px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--selection-color);
+}
+
+.block__hear-from-affiliates-caption {
+    color: var(--denary_color);
+}
+
+.block__hear-from-affiliates-heading {
+   margin-bottom: 4rem;
+}
+
+.block__hear-from-affiliates-content {
+    background-color: var(--tertiary-color);
+    border-radius: var(--quaternary-border-radius);
+    padding: 26px 33px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.block__hear-from-affiliates-testimonials-inner { 
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.block__join-process-content span{
+   font-weight: 500;
+}
+
+.block__hear-from-affiliates-testimonials-inner .block__hear-from-affiliates-content:last-child .block__affiliates-user-info {
+    margin-top: 1.6rem;
+}
+
+@media screen and (max-width: 990px){
+    .block__hear-from-affiliates-testimonials-inner {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .block__affiliates-user-info {
+        margin-top: 2rem;
+    }
+    .block__hear-from-affiliates-content {
+        border-radius: 5px;
+        padding: 22px 20px;    
+    }
+}

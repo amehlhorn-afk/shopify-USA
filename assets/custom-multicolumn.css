@@ -1,0 +1,90 @@
+.block__custom-multicolumn-inner {
+    flex-grow: 1;
+    /* max-width: 290px;  */
+    height: auto;
+}
+
+.block__custom-multicolumn-media-inner {
+    margin-bottom: 2.2rem;
+    height: 376px;
+}
+
+.block__custom-multicolumn-media-inner .block__media {
+    transition: transform 0.5s ease-out;
+}
+
+.block__custom-multicolumn-inner:hover .block__media {
+    transform: scale(1.05);
+}
+
+.block__custom-multicolumn-btn {
+    z-index: 1;
+    /* left: 55px;
+    right: 55px; */
+    bottom: -100px;
+    opacity: 0;
+    transition: all 0.5s ease-out;
+    padding: 10px 0;
+    letter-spacing: 0.02em;
+    width: 100%;
+    max-width: 180px;
+}
+
+ @media (min-width: 769px) {
+  .block__custom-multicolumn-inner:hover .block__custom-multicolumn-btn {
+      bottom: 25px;
+      opacity: 1;
+  }
+} 
+/*.block__custom-multicolumn-inner:hover .block__custom-multicolumn-btn {
+    bottom: 25px;
+    opacity: 1;
+} */
+.block__custom-multicolumn-content-inner {
+    color: var(--primary-color);
+    padding-bottom: 10px;
+    letter-spacing: 0.03em;
+}
+
+.block__custom-multicolumn-content-inner::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--septenary-color);
+    transition: width 0.5s ease-out;
+    transform: translateX(-50%);
+}
+
+.block__custom-multicolumn-inner:hover .block__custom-multicolumn-content-inner::after {
+    width: 32px;
+}
+
+@media screen and (max-width: 768px) {
+    .block__custom-multicolumn-media-inner {
+        margin-bottom: 1.6rem;
+        height: 232px;
+        border-radius: var(--secondary-border-radius);
+    }
+
+    .block__custom-multicolumn-inner {
+        max-width: 180px;
+        width: 100%;
+    }
+
+    .block__custom-multicolumn-content-inner {
+        font-size: var(--medium_body);
+        letter-spacing: normal;
+        font-weight: 600;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    .block__custom-multicolumn-btn {
+        max-width: 90px;
+        padding: 5px 15px;
+        font-size: var(--body);
+    }
+}
