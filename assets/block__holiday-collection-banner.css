@@ -1,0 +1,14 @@
+.block__holiday-content > span {
+    background-color: var(--undenary_color);padding: 12px 24px;border-radius: 30px;color: var(--selection-color);
+}
+.block__holiday-content,.block__holiday-content h2,.block__holiday-content .h4{color: var(--quinary-color);}
+.block__holiday-content h2 {max-width: 519px;margin: 10px auto 0;}
+.block__holiday-content h2 span {color: var(--primary-color);}
+.block__holiday-content .h4{margin-bottom: 15px;}
+
+@media screen and (max-width: 749px){
+    .mobile-position.text-center{text-align: center;}
+    .mobile-position.text-left{text-align: left;}
+    .mobile-position.text-right{text-align: right;}
+    .block__holiday-content > span {width: 100%;justify-content: center;}
+}

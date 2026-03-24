@@ -1,0 +1,56 @@
+
+.block__warranty-item-field .field__input{border: 1px solid var(--border_color);padding: 9px 15px;min-height: auto;height: auto;opacity: 1;letter-spacing: 0;margin: 0;}
+.block__warranty-item-field .field__input::placeholder{opacity: 1;}
+.block__warranty-landing .block__form-wrapper p,.block__warranty-item-field label{color:var(--quaternary-color);}
+
+.block__form-wrapper .block__left .pdf-section a,.block__formcopyright p a{text-decoration: underline;}
+.block_form_heading li a,.block__warranty-item-field .block__input-item sup{color: var(--primary-color);}
+.block__warranty-item-field .select .svg-wrapper{right: 15px;}
+.block__warranty-item-field .block__input-item sup{font-size: var(--medium_body);line-height: 0;position: absolute;top: 11px;right: -11px;}
+.block__warranty-item-field label {position: relative;display: inline-block;width: max-content;}
+hr + .block__warranty-item-field{margin-top: 0;}
+.block__warranty-item-field + h4{margin-top: 30px;}
+.block__warranty-item-field {margin-top: 18px;}
+.block__personal-Information button {padding: 12px 15px;;max-width: 200px;margin-top: 30px;}
+.block__form-wrapper .block__right .block__form-main {border-radius: 16px 16px 0 0;}
+.block__warranty-landing .block__form-wrapper .block__formcopyright p,.block__formcopyright p a {color: var(--quinary-color);opacity: 0.7;}
+.block__formcopyright {border-radius: 0 0 16px 16px;background-color: var(--selection-color);padding: 12px 20px;}
+.block__warranty-item-field .field__input::placeholder{color: var(--octonary_color);}
+.block__warranty-item-field .field__input:focus,.block__warranty-item-field .field__input:not(:placeholder-shown){border-radius: var(--primary-border-radius);}
+.block_form_heading ul li {font-weight: 500;}
+@media(min-width:1200px){
+    .block__form-wrapper .block__left .pdf-section { padding: 30px;}
+    .block__form-wrapper .block__right .block__form-main,.block__personal-Information {padding: 40px;}
+}
+@media(max-width:1199px){
+    .block__form-wrapper .block__left .pdf-section { padding: 24px;}
+    .block__form-wrapper .block__right .block__form-main,.block__personal-Information {padding: 25px 20px;}
+}
+
+@media(min-width:990px){
+    .block__form-wrapper .block__left {width: calc(31% - 30px*1/2);}
+    .block__form-wrapper .block__right {width: calc(69% - 30px*1/2);}
+    .block__form-wrapper .block__left .pdf-section p:not(:first-child){margin-top: 15px;}
+    .thank-you-container>a {padding: 17px 10px;max-width: 260px;}
+    .thank-you-container{padding: 100px 15px;}
+    .thank-you-container p{margin: 15px 0 45px;}
+}
+@media(max-width:989px){
+    .block__form-wrapper .block__left {width: 100%;}
+    .block__form-wrapper .block__right {width: 100%;}
+    .block__form-wrapper .block__left .pdf-section p:not(:first-child){margin-top: 10px;}
+    .block__form-wrapper hr{margin: 18px 0;}
+    .thank-you-container>a {padding: 14px 10px;max-width: 207px;}
+    .thank-you-container{padding: 62px 15px;}
+    .thank-you-container p{margin: 10px 0 25px;}
+}
+
+@media(max-width:749px){
+    .block__form-main .block_form_heading,.block__warranty-item-field {flex-direction: column;}
+    .block__form-wrapper{row-gap: 20px;}
+    .block__warranty-item-field textarea.field__input {height: 98px;}
+    .block__personal-Information button {padding-top: 13px;padding-bottom: 13px;}
+}
+
+
+
