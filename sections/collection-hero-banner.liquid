@@ -1,0 +1,578 @@
+{{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  collection-hero-banner.liquid
+  ─────────────────────────────
+  A purpose-built hero banner for collection pages with a three-tier
+  content priority system:
+
+    1. Collection metafields  (custom.hero_desktop_image, custom.hero_mobile_image,
+                               custom.hero_eyebrow, custom.hero_heading,
+                               custom.hero_subheading, custom.hero_button_label,
+                               custom.hero_button_link)
+    2. Section settings       (set per-collection via template JSON)
+    3. Collection defaults    (collection.image → collection.title)
+
+  This enables a SINGLE collection.json template to serve every collection
+  dynamically via metafields, while per-collection template overrides
+  continue to work via section settings.
+{%- endcomment -%}
+
+{%- liquid
+  assign hero_image        = section.settings.image
+  assign hero_mobile_image = section.settings.mobile_image
+  assign hero_eyebrow      = section.settings.eyebrow
+  assign hero_heading      = section.settings.heading
+  assign hero_subheading   = section.settings.subheading
+  assign hero_button_label = section.settings.button_label
+  assign hero_button_link  = section.settings.button_link
+
+  comment
+    Metafield overrides — only applied when the metafield is non-blank.
+    Metafield namespace: custom
+    Expected metafield types:
+      hero_desktop_image  → file_reference (image)
+      hero_mobile_image   → file_reference (image)
+      hero_eyebrow        → single_line_text_field
+      hero_heading        → single_line_text_field
+      hero_subheading     → single_line_text_field
+      hero_button_label   → single_line_text_field
+      hero_button_link    → url
+  endcomment
+
+  if collection.metafields.custom.hero_desktop_image != blank
+    assign hero_image = collection.metafields.custom.hero_desktop_image
+  endif
+  if collection.metafields.custom.hero_mobile_image != blank
+    assign hero_mobile_image = collection.metafields.custom.hero_mobile_image
+  endif
+  if collection.metafields.custom.hero_eyebrow != blank
+    assign hero_eyebrow = collection.metafields.custom.hero_eyebrow
+  endif
+  if collection.metafields.custom.hero_heading != blank
+    assign hero_heading = collection.metafields.custom.hero_heading
+  endif
+  if collection.metafields.custom.hero_subheading != blank
+    assign hero_subheading = collection.metafields.custom.hero_subheading
+  endif
+  if collection.metafields.custom.hero_button_label != blank
+    assign hero_button_label = collection.metafields.custom.hero_button_label
+  endif
+  if collection.metafields.custom.hero_button_link != blank
+    assign hero_button_link = collection.metafields.custom.hero_button_link
+  endif
+
+  comment
+    Collection-level defaults (last resort fallbacks)
+  endcomment
+  if hero_image == blank and collection.image != blank
+    assign hero_image = collection.image
+  endif
+  if hero_heading == blank
+    assign hero_heading = collection.title
+  endif
+
+  comment
+    Adapt-height flag — used in CSS padding-bottom trick
+  endcomment
+  assign banner_has_adapt = false
+  if section.settings.image_height == 'adapt'
+    if hero_mobile_image != blank or hero_image != blank
+      assign banner_has_adapt = true
+    endif
+  endif
+
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+  assign full_width = '100vw'
+  assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+-%}
+
+{%- if section.settings.image_height == 'adapt' -%}
+  {%- style -%}
+    @media screen and (max-width: 749px) {
+      {%- if hero_mobile_image != blank -%}
+        #CollHero-{{ section.id }}::before,
+        #CollHero-{{ section.id }} .banner__media.block__mobile-image::before,
+        #CollHero-{{ section.id }}:not(.banner--mobile-bottom) .banner__content::before {
+          padding-bottom: {{ 1 | divided_by: hero_mobile_image.aspect_ratio | times: 100 }}%;
+          content: '';
+          display: block;
+        }
+      {%- elsif hero_image != blank -%}
+        #CollHero-{{ section.id }}::before,
+        #CollHero-{{ section.id }} .banner__media::before,
+        #CollHero-{{ section.id }}:not(.banner--mobile-bottom) .banner__content::before {
+          padding-bottom: {{ 1 | divided_by: hero_image.aspect_ratio | times: 100 }}%;
+          content: '';
+          display: block;
+        }
+      {%- endif -%}
+    }
+    @media screen and (min-width: 750px) {
+      {%- if hero_image != blank -%}
+        #CollHero-{{ section.id }}::before,
+        #CollHero-{{ section.id }} .banner__media::before {
+          padding-bottom: {{ 1 | divided_by: hero_image.aspect_ratio | times: 100 }}%;
+          content: '';
+          display: block;
+        }
+      {%- endif -%}
+    }
+  {%- endstyle -%}
+{%- endif -%}
+
+{%- style -%}
+  {% if section.settings.overlay_color != blank %}
+    #CollHero-{{ section.id }}::after {
+      opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+      background-color: {{ section.settings.overlay_color }};
+    }
+  {% endif %}
+
+  {% if section.settings.text_color != blank %}
+    #CollHero-{{ section.id }} .banner__box.content-container .h2,
+    #CollHero-{{ section.id }} .banner__box.content-container p {
+      color: {{ section.settings.text_color }};
+    }
+  {% endif %}
+
+  /* Hide desktop image on mobile when a mobile image exists */
+  @media (max-width: 749px) {
+    {% if hero_mobile_image != blank %}
+      #CollHero-{{ section.id }} .banner__media.block__desktop-image { display: none !important; }
+      #CollHero-{{ section.id }} .banner__media.block__mobile-image { display: block !important; }
+    {% endif %}
+  }
+
+  /* Force text color */
+  #CollHero-{{ section.id }}.banner--force-white { --banner-forced-text-color: #fff; }
+  #CollHero-{{ section.id }}.banner--force-black { --banner-forced-text-color: #000; }
+  #CollHero-{{ section.id }}.banner--force-text .banner__box.content-container,
+  #CollHero-{{ section.id }}.banner--force-text .banner__box.content-container .banner__heading,
+  #CollHero-{{ section.id }}.banner--force-text .banner__box.content-container .banner__text,
+  #CollHero-{{ section.id }}.banner--force-text .banner__box.content-container .banner__text p,
+  #CollHero-{{ section.id }}.banner--force-text .banner__box.content-container .rte p,
+  #CollHero-{{ section.id }}.banner--force-text .banner__box.content-container .h0,
+  #CollHero-{{ section.id }}.banner--force-text .banner__box.content-container .h1,
+  #CollHero-{{ section.id }}.banner--force-text .banner__box.content-container .h2,
+  #CollHero-{{ section.id }}.banner--force-text .banner__box.content-container .subtitle,
+  #CollHero-{{ section.id }}.banner--force-text .banner__box.content-container .caption-with-letter-spacing {
+    color: var(--banner-forced-text-color) !important;
+  }
+
+  /* Heading size controls */
+  #CollHeroHeading-{{ section.id }} {
+    font-size: {{ section.settings.heading_size_desktop }}px;
+    line-height: 1.1;
+    font-weight: 800;
+  }
+  @media (max-width: 749px) {
+    #CollHeroHeading-{{ section.id }} {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+    }
+  }
+
+  /* Eyebrow size */
+  #CollHero-{{ section.id }} .coll-hero__eyebrow {
+    font-size: {{ section.settings.eyebrow_size }}px;
+    font-weight: {{ section.settings.eyebrow_weight }};
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+
+  /* Subheading size */
+  #CollHero-{{ section.id }} .coll-hero__subheading {
+    font-size: {{ section.settings.subheading_size_desktop }}px;
+    margin: 8px 0 0;
+  }
+  @media (max-width: 749px) {
+    #CollHero-{{ section.id }} .coll-hero__subheading {
+      font-size: {{ section.settings.subheading_size_mobile }}px;
+    }
+  }
+
+  /* Content max-width */
+  #CollHero-{{ section.id }} .coll-hero__content-inner {
+    max-width: {{ section.settings.content_max_width }}px;
+    width: 100%;
+  }
+  @media (max-width: 749px) {
+    #CollHero-{{ section.id }} .coll-hero__content-inner {
+      max-width: {{ section.settings.content_max_width_mobile }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div
+  id="CollHero-{{ section.id }}"
+  class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if banner_has_adapt %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}{% if section.settings.force_text_mode != 'none' %} banner--force-text banner--force-{{ section.settings.force_text_mode }}{% endif %}"
+>
+
+  {%- comment -%} Desktop image {%- endcomment -%}
+  {%- if hero_image != blank -%}
+    <div class="banner__media block__desktop-image media{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      {{
+        hero_image
+        | image_url: width: 3840
+        | image_tag:
+          width: hero_image.width,
+          height: hero_image.width | divided_by: hero_image.aspect_ratio,
+          sizes: full_width,
+          alt: hero_heading | strip_html | truncate: 100,
+          widths: widths,
+          fetchpriority: fetch_priority
+      }}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Mobile image (only renders when set) {%- endcomment -%}
+  {%- if hero_mobile_image != blank -%}
+    <div class="banner__media block__mobile-image media{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      {{
+        hero_mobile_image
+        | image_url: width: 1920
+        | image_tag:
+          width: hero_mobile_image.width,
+          height: hero_mobile_image.width | divided_by: hero_mobile_image.aspect_ratio,
+          sizes: full_width,
+          alt: hero_heading | strip_html | truncate: 100,
+          widths: '375, 550, 750, 1100, 1500',
+          fetchpriority: fetch_priority
+      }}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Content overlay {%- endcomment -%}
+  <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
+      <div class="coll-hero__content-inner">
+
+        {%- if hero_eyebrow != blank -%}
+          <p class="coll-hero__eyebrow">{{ hero_eyebrow | escape }}</p>
+        {%- endif -%}
+
+        {%- if hero_heading != blank -%}
+          <h1
+            id="CollHeroHeading-{{ section.id }}"
+            class="banner__heading inline-richtext h1"
+          >
+            {{- hero_heading | strip_html -}}
+          </h1>
+        {%- endif -%}
+
+        {%- if hero_subheading != blank -%}
+          <p class="coll-hero__subheading banner__text">{{ hero_subheading | strip_html | escape }}</p>
+        {%- endif -%}
+
+        {%- if hero_button_label != blank -%}
+          <div class="banner__buttons" style="margin-top: 16px;">
+            <a
+              {% if hero_button_link != blank %}
+                href="{{ hero_button_link }}"
+              {% else %}
+                role="link" aria-disabled="true"
+              {% endif %}
+              class="button{% if section.settings.button_style == 'secondary' %} button--secondary{% else %} button--primary{% endif %}"
+            >
+              {{- hero_button_label | escape -}}
+            </a>
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Collection Hero Banner",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Content priority: collection metafields (custom.hero_*) → section settings below → collection.image / collection.title. Set metafields on individual collections in Shopify Admin → Collections → [collection] → Metafields to drive the single base template dynamically."
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop Image",
+      "info": "Overridden by collection metafield: custom.hero_desktop_image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image",
+      "info": "Optional. Falls back to desktop image. Overridden by custom.hero_mobile_image"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "info": "Small text above heading (e.g. 'Performance® Pillows'). Overridden by custom.hero_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Main headline. Falls back to collection title. Overridden by custom.hero_heading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "info": "Short body text below the heading. Overridden by custom.hero_subheading"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "info": "Leave blank to hide button. Overridden by custom.hero_button_label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link",
+      "info": "Overridden by custom.hero_button_link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary (outline)" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "Heading Size – Desktop (px)",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading Size – Mobile (px)",
+      "min": 16,
+      "max": 72,
+      "step": 2,
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "label": "Eyebrow Size (px)",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_weight",
+      "label": "Eyebrow Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size_desktop",
+      "label": "Subheading Size – Desktop (px)",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "subheading_size_mobile",
+      "label": "Subheading Size – Mobile (px)",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content Max Width – Desktop (px)",
+      "min": 200,
+      "max": 1400,
+      "step": 50,
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "content_max_width_mobile",
+      "label": "Content Max Width – Mobile (px)",
+      "min": 100,
+      "max": 600,
+      "step": 20,
+      "default": 400
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "select",
+      "id": "force_text_mode",
+      "label": "Force Text Color",
+      "info": "Override all text in this banner to white or black.",
+      "options": [
+        { "value": "none",  "label": "Default" },
+        { "value": "white", "label": "White" },
+        { "value": "black", "label": "Black" }
+      ],
+      "default": "white"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 20
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Text Box Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_box",
+      "label": "Show Text Box Background",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Banner Height",
+      "options": [
+        { "value": "adapt", "label": "Adapt to Image" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "label": "Content Position (Desktop)",
+      "options": [
+        { "value": "top-left",      "label": "Top Left" },
+        { "value": "top-center",    "label": "Top Center" },
+        { "value": "top-right",     "label": "Top Right" },
+        { "value": "middle-left",   "label": "Middle Left" },
+        { "value": "middle-center", "label": "Middle Center" },
+        { "value": "middle-right",  "label": "Middle Right" },
+        { "value": "bottom-left",   "label": "Bottom Left" },
+        { "value": "bottom-center", "label": "Bottom Center" },
+        { "value": "bottom-right",  "label": "Bottom Right" }
+      ],
+      "default": "middle-center"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "label": "Content Alignment (Desktop)",
+      "options": [
+        { "value": "left",   "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right",  "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "label": "Content Alignment (Mobile)",
+      "options": [
+        { "value": "left",   "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right",  "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_below",
+      "label": "Show Text Below Image on Mobile",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "image_behavior",
+      "label": "Image Animation",
+      "options": [
+        { "value": "none",    "label": "None" },
+        { "value": "ambient", "label": "Ambient Scroll" },
+        { "value": "fixed",   "label": "Fixed (Parallax)" },
+        { "value": "zoom-in", "label": "Zoom In" }
+      ],
+      "default": "none"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Hero Banner",
+      "settings": {
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "force_text_mode": "white",
+        "image_overlay_opacity": 20,
+        "show_text_box": false
+      }
+    }
+  ]
+}
+{% endschema %}
