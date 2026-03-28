@@ -1,39 +1,40 @@
 {%- comment -%}
-  PowerReviews reviews section — custom-styled to match BEDGEAR design reference.
-  Support bar is now a standalone section (sections/customer-service-bar.liquid).
+  Product Reviews — BEDGEAR custom layout.
 
-  Structure:
-    1. Section header — eyebrow + live review count + cyan tagline
-    2. PowerReviews ReviewDisplay — 3-column card grid via CSS overrides
+  Architecture:
+    1. Section header  — eyebrow + live review count + cyan tagline
+    2. Rating snapshot — avg score + stars + rating count (from PR Read Services API)
+    3. 3-column custom review card grid (first 9 reviews with content)
+    4. "See All Reviews" button → expands the full PR ReviewDisplay widget below it
 
-  Live count: fetched from PowerReviews Read Services API on page load.
-    Endpoint: readservices-b2c.powerreviews.com/m/{merchant_id}/l/en_US/product/{page_id}/reviews
-    Response: top-level paging.total_results
+  PR SDK is initialised for:
+    • ReviewSnippet   — inline stars near the product title (rendered by powerreviews-rating snippet)
+    • ReviewDisplay   — full widget (hidden until "See All Reviews" clicked)
+    • QuestionDisplay — Q&A tab inside the full widget
 
   Credentials:
-    api_key: 47fff520-f385-4739-afdf-0e90788492b6
-    merchant_group_id: 2014345704  |  merchant_id: 1806575603
-    page_id: product.id
+    api_key:           47fff520-f385-4739-afdf-0e90788492b6
+    merchant_group_id: 2014345704
+    merchant_id:       1806575603
+    page_id:           product.id (Shopify product ID)
 {%- endcomment -%}
 
 {%- liquid
   assign pr_domain = shop.url
 -%}
 
-{%- comment -%} ── Reviews section ── {%- endcomment -%}
-<div class="product-reviews" id="product-reviews">
+<section class="product-reviews" id="product-reviews">
   <div class="page-width">
 
+    {%- comment -%} ── Section header ── {%- endcomment -%}
     <div class="product-reviews__header">
       {%- if section.settings.eyebrow != blank -%}
         <p class="product-reviews__eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
       <h2 class="product-reviews__headline">
-        {%- comment -%}
-          Seeded with the theme-editor value as a fallback.
-          JS below replaces the inner text with the live count from the PR API.
-        {%- endcomment -%}
-        <span class="product-reviews__headline-count" id="pr-live-count"
+        <span
+          class="product-reviews__headline-count"
+          id="pr-live-count"
           data-fallback="{{ section.settings.headline_count }}"
         >{{ section.settings.headline_count }}</span>
         {%- if section.settings.headline_cyan != blank -%}
@@ -42,162 +43,286 @@
       </h2>
     </div>
 
-    {%- comment -%} PowerReviews renders rating histogram + review cards here {%- endcomment -%}
-    <div id="pr-reviewdisplay" class="product-reviews__display"></div>
-    <div id="pr-questiondisplay" class="product-reviews__questions"></div>
+    {%- comment -%} ── Rating snapshot bar (JS-populated) ── {%- endcomment -%}
+    <div class="product-reviews__snapshot" id="pr-custom-snapshot" hidden>
+      <div class="product-reviews__snapshot-left">
+        <span class="product-reviews__avg-num" id="pr-avg-rating"></span>
+        <div  class="product-reviews__avg-stars" id="pr-avg-stars" aria-hidden="true"></div>
+        <span class="product-reviews__avg-label" id="pr-rating-count"></span>
+      </div>
+      <div class="product-reviews__snapshot-right">
+        <a
+          href="{{ pr_domain }}/pages/write-a-review?pr_page_id={{ product.id }}"
+          class="product-reviews__write-btn"
+        >Write a Review</a>
+      </div>
+    </div>
+
+    {%- comment -%} ── Custom 3-column card grid (JS-populated) ── {%- endcomment -%}
+    <div class="product-reviews__cards" id="pr-custom-cards" hidden aria-label="Customer reviews"></div>
+
+    {%- comment -%} ── "See All Reviews" trigger (shown when there are more than 9) ── {%- endcomment -%}
+    <div class="product-reviews__see-all" id="pr-see-all-wrap" hidden>
+      <button class="product-reviews__see-all-btn" id="pr-see-all-btn" type="button">
+        See All Reviews
+      </button>
+    </div>
+
+    {%- comment -%}
+      Full PR ReviewDisplay — hidden until the user clicks "See All Reviews".
+      PR still init's it so write-review + Q&A work correctly.
+    {%- endcomment -%}
+    <div id="pr-reviewdisplay"   class="product-reviews__full-display" hidden></div>
+    <div id="pr-questiondisplay" class="product-reviews__full-questions"></div>
 
   </div>
-</div>
+</section>
 
-{%- comment -%} ── PowerReviews init ── {%- endcomment -%}
+{%- comment -%} ── PowerReviews SDK + custom renderer ── {%- endcomment -%}
 <script src="https://ui.powerreviews.com/stable/4.1/ui.js" defer="defer"></script>
 <script>
-  window.pwr = window.pwr || function () {
-    (window.pwr.q = window.pwr.q || []).push(arguments);
+window.pwr = window.pwr || function () {
+  (window.pwr.q = window.pwr.q || []).push(arguments);
+};
+
+(function () {
+  /* ─── Credentials ─────────────────────────────────────────────────────── */
+  var API_KEY      = '47fff520-f385-4739-afdf-0e90788492b6';
+  var MERCHANT_ID  = '1806575603';
+  var GROUP_ID     = '2014345704';
+  var PAGE_ID      = '{{ product.id }}';
+  var LOCALE       = 'en_US';
+  var PR_DOMAIN    = '{{ pr_domain }}';
+  var CARDS_PER_PAGE = 9;
+
+  var PR_CREDS = {
+    api_key:           API_KEY,
+    locale:            LOCALE,
+    merchant_group_id: GROUP_ID,
+    merchant_id:       MERCHANT_ID
   };
 
-  (function () {
-    var PR_CREDENTIALS = {
-      api_key:           '47fff520-f385-4739-afdf-0e90788492b6',
-      locale:            'en_US',
-      merchant_group_id: '2014345704',
-      merchant_id:       '1806575603'
-    };
+  /* ─── Product data for PR SDK ──────────────────────────────────────────── */
+  var PR_PRODUCT = {
+    name:          {{ product.title | json }},
+    url:           {{ pr_domain | append: product.url | json }},
+    image_url:     {{ product.featured_image | image_url: width: 600 | prepend: 'https:' | json }},
+    description:   {{ product.description | strip_html | strip_newlines | json }},
+    category_name: {{ product.type | default: 'Default' | json }},
+    brand_name:    {{ product.vendor | json }},
+    price:         {{ product.price | money_without_currency | json }},
+    variants: [
+      {%- for variant in product.variants -%}
+        {
+          page_id_variant: {{ variant.sku | default: variant.id | json }},
+          upc: {{ variant.barcode | remove: ' ' | remove: '-' | json }},
+          asin: ''
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  };
 
-    var PR_PRODUCT = {
-      name:          {{ product.title | json }},
-      url:           {{ pr_domain | append: product.url | json }},
-      image_url:     {{ product.featured_image | image_url: width: 600 | prepend: 'https:' | json }},
-      description:   {{ product.description | strip_html | strip_newlines | json }},
-      category_name: {{ product.type | default: 'Default' | json }},
-      upc:           {{ product.barcode | remove: ' ' | remove: '-' | json }},
-      brand_name:    {{ product.vendor | json }},
-      price:         {{ product.price | money_without_currency | json }},
-      variants: [
-        {%- for variant in product.variants -%}
-          {
-            page_id_variant: {{ variant.sku | default: variant.id | json }},
-            upc: {{ variant.barcode | remove: ' ' | remove: '-' | json }},
-            asin: ''
-          }{%- unless forloop.last -%},{%- endunless -%}
-        {%- endfor -%}
-      ]
-    };
+  var PR_SUBJECT = {
+    '@context': 'https://schema.org',
+    '@type':    'Product',
+    name:       {{ product.title | json }},
+    brand:      { '@type': 'Brand', name: {{ product.vendor | json }} },
+    description: {{ product.description | strip_html | json }},
+    image: [
+      {%- for image in product.images limit: 5 -%}
+        {{ image | image_url: width: 600 | prepend: 'https:' | json }}{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ],
+    offers: [
+      {%- for variant in product.variants -%}
+        {
+          '@type': 'Offer',
+          price: {{ variant.price | money_without_currency | json }},
+          priceCurrency: {{ cart.currency.iso_code | json }},
+          itemCondition: 'https://schema.org/NewCondition',
+          availability: 'https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}',
+          url: {{ pr_domain | append: variant.url | json }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  };
 
-    var PR_SUBJECT = {
-      '@context': 'https://schema.org',
-      '@type':    'Product',
-      name:       {{ product.title | json }},
-      brand:      { '@type': 'Brand', name: {{ product.vendor | json }} },
-      description: {{ product.description | strip_html | json }},
-      image: [
-        {%- for image in product.images limit: 5 -%}
-          {{ image | image_url: width: 600 | prepend: 'https:' | json }}{%- unless forloop.last -%},{%- endunless -%}
-        {%- endfor -%}
-      ],
-      offers: [
-        {%- for variant in product.variants -%}
-          {
-            '@type': 'Offer',
-            price: {{ variant.price | money_without_currency | json }},
-            priceCurrency: {{ cart.currency.iso_code | json }},
-            itemCondition: 'https://schema.org/NewCondition',
-            availability: 'https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}',
-            url: {{ pr_domain | append: variant.url | json }},
-            itemOffered: {
-              '@type': 'IndividualProduct',
-              name: {{ product.title | append: ': ' | append: variant.title | json }}
-              {%- if variant.barcode -%}, gtin: {{ variant.barcode | json }}{%- endif -%}
-            },
-            seller: { '@type': 'Organization', name: {{ shop.name | json }} }
-          }{%- unless forloop.last -%},{%- endunless -%}
-        {%- endfor -%}
-      ]
-    };
+  /* ─── Init PR SDK ──────────────────────────────────────────────────────── */
+  function initPowerReviews() {
+    var components = {};
+    if (document.getElementById('pr-reviewsnippet'))   components.ReviewSnippet   = 'pr-reviewsnippet';
+    if (document.getElementById('pr-reviewdisplay'))   components.ReviewDisplay   = 'pr-reviewdisplay';
+    if (document.getElementById('pr-questiondisplay')) components.QuestionDisplay = 'pr-questiondisplay';
+    if (!Object.keys(components).length) return;
 
-    function initPowerReviews() {
-      var components = {};
-      if (document.getElementById('pr-reviewsnippet'))   components.ReviewSnippet   = 'pr-reviewsnippet';
-      if (document.getElementById('pr-reviewdisplay'))   components.ReviewDisplay   = 'pr-reviewdisplay';
-      if (document.getElementById('pr-questiondisplay')) components.QuestionDisplay = 'pr-questiondisplay';
-      if (Object.keys(components).length === 0) return;
+    pwr('render', [Object.assign({}, PR_CREDS, {
+      page_id:            PAGE_ID,
+      review_wrapper_url: PR_DOMAIN + '/pages/write-a-review?pr_page_id=' + PAGE_ID,
+      product:            PR_PRODUCT,
+      subject:            PR_SUBJECT,
+      components:         components
+    })]);
+  }
 
-      var elements = [Object.assign({}, PR_CREDENTIALS, {
-        page_id:            '{{ product.id }}',
-        review_wrapper_url: '{{ pr_domain }}/pages/write-a-review?pr_page_id={{ product.id }}',
-        product:            PR_PRODUCT,
-        subject:            PR_SUBJECT,
-        components:         components
-      })];
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPowerReviews);
+  } else {
+    initPowerReviews();
+  }
 
-      // CategorySnippets on collection pages
-      document.querySelectorAll('[data-pr-component="CategorySnippet"]').forEach(function (el) {
-        if (el.dataset.prMounted) return;
-        el.id = 'pr-cat-' + Math.floor(Math.random() * 1e8);
-        elements.push(Object.assign({}, PR_CREDENTIALS, {
-          page_id: el.dataset.prPageId,
-          ENABLE_CLIENT_SIDE_STRUCTURED_DATA: false,
-          components: { CategorySnippet: el.id }
-        }));
-      });
+  /* ─── "See All Reviews" toggle ─────────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.getElementById('pr-see-all-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var display = document.getElementById('pr-reviewdisplay');
+      var wrap    = document.getElementById('pr-see-all-wrap');
+      if (display) {
+        display.hidden = false;
+        setTimeout(function () {
+          display.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }
+      if (wrap) wrap.hidden = true;
+    });
+  });
 
-      pwr('render', elements);
-    }
+  /* ─── Custom card renderer helpers ─────────────────────────────────────── */
+  function escHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initPowerReviews);
-    } else {
-      initPowerReviews();
-    }
+  // Filled/empty star SVG path
+  var STAR_PATH = 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z';
 
-    // ── Live review count from PowerReviews Read Services API ──
-    // Endpoint confirmed: GET /m/{merchant_id}/l/en_US/product/{page_id}/reviews
-    // Response: top-level paging.total_results = total review count
-    (function fetchLiveReviewCount() {
+  function starSVG(filled) {
+    var fill = filled ? '#f59e0b' : '#e2e8f0';
+    return '<svg width="14" height="14" viewBox="0 0 24 24" fill="' + fill + '" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="' + STAR_PATH + '"/></svg>';
+  }
+
+  function starsHTML(rating) {
+    var html = '<span class="pr-card__stars">';
+    for (var i = 1; i <= 5; i++) html += starSVG(i <= Math.round(rating));
+    return html + '</span>';
+  }
+
+  function timeAgo(epochMs) {
+    if (!epochMs) return '';
+    var days = Math.floor((Date.now() - epochMs) / 86400000);
+    if (days < 1)  return 'Today';
+    if (days < 30) return days + (days === 1 ? ' day' : ' days') + ' ago';
+    var mo = Math.floor(days / 30);
+    if (mo < 12)   return mo + (mo === 1 ? ' month' : ' months') + ' ago';
+    var yr = Math.floor(mo / 12);
+    return yr + (yr === 1 ? ' year' : ' years') + ' ago';
+  }
+
+  function buildCard(review) {
+    var d        = review.details || {};
+    var badges   = review.badges  || {};
+    var rating   = d.rating   || 0;
+    var headline = escHtml(d.headline || '');
+    var text     = escHtml(d.comments || '');
+    var author   = escHtml(d.nickname || 'Verified Buyer');
+    var location = escHtml(d.location || '');
+    var date     = timeAgo(d.created_date);
+    var verified = !!badges.is_verified_buyer;
+
+    // Truncate body text at 220 chars
+    if (text.length > 220) text = text.slice(0, 220).trimEnd() + '&hellip;';
+
+    return '<article class="pr-card">' +
+      '<div class="pr-card__top">' +
+        starsHTML(rating) +
+        (verified ? '<span class="pr-card__verified">&#x2713; Verified Buyer</span>' : '') +
+      '</div>' +
+      (headline ? '<p class="pr-card__headline">&ldquo;' + headline + '&rdquo;</p>' : '') +
+      (text     ? '<p class="pr-card__text">' + text + '</p>' : '') +
+      '<footer class="pr-card__footer">' +
+        '<span class="pr-card__author">' + author + (location ? ' &middot; ' + location : '') + '</span>' +
+        (date ? '<span class="pr-card__date">' + date + '</span>' : '') +
+      '</footer>' +
+    '</article>';
+  }
+
+  /* ─── Fetch + render ───────────────────────────────────────────────────── */
+  var API_BASE = 'https://readservices-b2c.powerreviews.com/m/' + MERCHANT_ID +
+                 '/l/' + LOCALE + '/product/' + PAGE_ID + '/reviews' +
+                 '?apikey=' + API_KEY +
+                 '&paging.size=' + CARDS_PER_PAGE +
+                 '&paging.from=0' +
+                 '&filters.only_with_content=true';
+
+  fetch(API_BASE)
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var result  = data && data.results && data.results[0];
+      if (!result) return;
+
+      var rollup  = result.rollup  || {};
+      var reviews = result.reviews || [];
+      var paging  = data.paging    || {};
+      var total   = paging.total_results;
+
+      /* headline count */
       var countEl = document.getElementById('pr-live-count');
-      if (!countEl) return;
+      if (countEl && typeof total === 'number' && total > 0) {
+        countEl.textContent = total.toLocaleString('en-US') + ' reviews.';
+      }
 
-      var apiUrl = [
-        'https://readservices-b2c.powerreviews.com',
-        '/m/1806575603',
-        '/l/en_US',
-        '/product/{{ product.id }}/reviews',
-        '?apikey=47fff520-f385-4739-afdf-0e90788492b6',
-        '&paging.size=1'
-      ].join('');
+      /* rating snapshot */
+      var avg    = rollup.average_rating;
+      var rCount = rollup.rating_count || total || 0;
+      var snapEl = document.getElementById('pr-custom-snapshot');
+      if (snapEl && avg) {
+        var avgNumEl   = document.getElementById('pr-avg-rating');
+        var avgStarsEl = document.getElementById('pr-avg-stars');
+        var avgCntEl   = document.getElementById('pr-rating-count');
+        if (avgNumEl)   avgNumEl.textContent = avg.toFixed(1);
+        if (avgStarsEl) avgStarsEl.innerHTML = starsHTML(avg);
+        if (avgCntEl)   avgCntEl.textContent = rCount.toLocaleString('en-US') + ' ratings';
+        snapEl.hidden = false;
+      }
 
-      fetch(apiUrl)
-        .then(function (res) { return res.json(); })
-        .then(function (data) {
-          var total = data && data.paging && data.paging.total_results;
-          if (typeof total === 'number' && total > 0) {
-            // Format with locale commas e.g. 6,406
-            var formatted = total.toLocaleString('en-US');
-            countEl.textContent = formatted + ' reviews.';
+      /* card grid */
+      var cardsEl = document.getElementById('pr-custom-cards');
+      if (cardsEl && reviews.length > 0) {
+        cardsEl.innerHTML = reviews.map(buildCard).join('');
+        cardsEl.hidden = false;
+      }
 
-            // Also update the inline rating snippet count if PR hasn't yet
-            var snippetCount = document.querySelector('#pr-reviewsnippet .pr-snippet-review-count');
-            if (snippetCount && snippetCount.textContent === '') {
-              snippetCount.textContent = formatted;
-            }
-          }
-        })
-        .catch(function () {
-          // Silently fall back to the theme-editor value already in the DOM
-        });
-    })();
+      /* "See All" button */
+      var seeAll = document.getElementById('pr-see-all-wrap');
+      if (seeAll && typeof total === 'number' && total > reviews.length) {
+        seeAll.hidden = false;
+      }
+    })
+    .catch(function () {
+      /* silently fall back — PR ReviewDisplay is still available below */
+    });
 
-  })();
+})();
 </script>
 
 {% style %}
 
-  /* ═══════════════════════════════════════════
-     SECTION HEADER
-  ═══════════════════════════════════════════ */
+  /* ══════════════════════════════════════════════════════
+     SECTION WRAPPER
+  ══════════════════════════════════════════════════════ */
   .product-reviews {
-    padding: 0 0 80px;
+    padding: 80px 0;
     background: var(--brand-white);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     SECTION HEADER
+  ══════════════════════════════════════════════════════ */
+  .product-reviews__header {
+    margin-bottom: 36px;
   }
 
   .product-reviews__eyebrow {
@@ -212,7 +337,7 @@
   .product-reviews__headline {
     display: flex;
     flex-direction: column;
-    margin: 0 0 36px;
+    margin: 0;
     gap: 0;
     line-height: 1.0;
   }
@@ -233,196 +358,250 @@
     color: var(--brand-cyan);
   }
 
-  /* ═══════════════════════════════════════════
-     POWERREVIEWS GLOBAL OVERRIDES
-  ═══════════════════════════════════════════ */
-  .product-reviews .p-w-r,
-  .product-reviews .p-w-r * {
+  /* ══════════════════════════════════════════════════════
+     RATING SNAPSHOT BAR
+  ══════════════════════════════════════════════════════ */
+  .product-reviews__snapshot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: var(--brand-gray-50);
+    border: 1.5px solid var(--brand-gray-200);
+    border-radius: var(--brand-radius-lg);
+    padding: 20px 28px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+
+  .product-reviews__snapshot-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .product-reviews__avg-num {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--brand-gray-900);
+    line-height: 1;
+  }
+
+  .product-reviews__avg-stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .product-reviews__avg-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brand-gray-500);
+  }
+
+  .product-reviews__write-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 24px;
+    background: var(--brand-navy);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: var(--brand-radius);
+    text-decoration: none;
+    transition: background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .product-reviews__write-btn:hover {
+    background: var(--brand-cyan);
+    color: var(--brand-navy);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     CUSTOM REVIEW CARD GRID
+  ══════════════════════════════════════════════════════ */
+  .product-reviews__cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  /* Individual card */
+  .pr-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--brand-white);
+    border: 1.5px solid var(--brand-gray-200);
+    border-radius: var(--brand-radius-lg);
+    padding: 24px;
+    transition: box-shadow 0.15s ease;
+  }
+
+  .pr-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  }
+
+  .pr-card__top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .pr-card__stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .pr-card__verified {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--brand-cyan);
+  }
+
+  .pr-card__headline {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--brand-gray-900);
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .pr-card__text {
+    font-size: 14px;
+    color: var(--brand-gray-600);
+    line-height: 1.65;
+    margin: 0;
+    flex-grow: 1;
+    font-style: italic;
+  }
+
+  .pr-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--brand-gray-100);
+    flex-wrap: wrap;
+  }
+
+  .pr-card__author {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brand-gray-700);
+  }
+
+  .pr-card__date {
+    font-size: 12px;
+    color: var(--brand-gray-400);
+    white-space: nowrap;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     "SEE ALL REVIEWS" BUTTON
+  ══════════════════════════════════════════════════════ */
+  .product-reviews__see-all {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+
+  .product-reviews__see-all-btn {
+    padding: 14px 40px;
+    background: transparent;
+    border: 2px solid var(--brand-navy);
+    border-radius: var(--brand-radius);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--brand-navy);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .product-reviews__see-all-btn:hover {
+    background: var(--brand-navy);
+    color: #fff;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     FULL PR REVIEWDISPLAY WIDGET (expanded state)
+     Override PR styles to stay on-brand
+  ══════════════════════════════════════════════════════ */
+  .product-reviews__full-display .p-w-r,
+  .product-reviews__full-display .p-w-r * {
     font-family: var(--font-body-family) !important;
     box-sizing: border-box !important;
   }
 
-  /* ── Rating summary card ── */
-  .product-reviews .pr-review-snapshot {
-    background: var(--brand-gray-50) !important;
-    border: 1.5px solid var(--brand-gray-200) !important;
-    border-radius: var(--brand-radius-lg) !important;
-    padding: 28px 32px !important;
-    margin-bottom: 40px !important;
-  }
-
-  .product-reviews .pr-review-snapshot-simple .pr-snapshot-rating {
-    font-size: 56px !important;
-    font-weight: 900 !important;
-    color: var(--brand-gray-900) !important;
-    line-height: 1 !important;
-  }
-
-  /* Histogram bars */
-  .product-reviews .pr-ratings-histogram-bar-container .pr-histogram-count {
-    background: var(--brand-gray-200) !important;
-    border-radius: 999px !important;
-    height: 8px !important;
-  }
-
-  .product-reviews .pr-ratings-histogram-bar-container .pr-histogram-fill {
-    background: #f59e0b !important;
-    border-radius: 999px !important;
-    height: 8px !important;
-  }
-
-  /* Summary stats labels */
-  .product-reviews .pr-snapshot-consensus-value,
-  .product-reviews .pr-snapshot-rating-decimal {
-    font-size: 24px !important;
-    font-weight: 800 !important;
-    color: var(--brand-gray-900) !important;
-  }
-
-  .product-reviews .pr-snapshot-label {
-    font-size: 10px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.1em !important;
-    text-transform: uppercase !important;
-    color: var(--brand-gray-500) !important;
-  }
-
-  /* ── Stars ── */
-  .product-reviews .pr-star-v4-100-filled,
-  .product-reviews .pr-star-v4-75-filled,
-  .product-reviews .pr-star-v4-50-filled,
-  .product-reviews .pr-star-v4 {
-    color: #f59e0b !important;
-  }
-
-  /* ── 3-column review card grid ── */
-  .product-reviews .pr-review-list {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 20px !important;
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* Individual review card */
-  .product-reviews .pr-review {
-    background: var(--brand-white) !important;
-    border: 1.5px solid var(--brand-gray-200) !important;
-    border-radius: var(--brand-radius-lg) !important;
-    padding: 24px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    break-inside: avoid !important;
-  }
-
-  /* Stars row */
-  .product-reviews .pr-review .pr-review-rating {
-    margin-bottom: 4px !important;
-  }
-
-  /* Author name + verified */
-  .product-reviews .pr-review-author-name {
-    font-size: 14px !important;
-    font-weight: 700 !important;
-    color: var(--brand-gray-900) !important;
-  }
-
-  .product-reviews .pr-badging-icon,
-  .product-reviews .pr-verified-purchaser {
-    color: var(--brand-cyan) !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-  }
-
-  .product-reviews .pr-review-author {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    flex-wrap: wrap !important;
-  }
-
-  /* Review headline */
-  .product-reviews .pr-review-rating-headline {
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    color: var(--brand-gray-900) !important;
-    line-height: 1.3 !important;
-    margin: 0 !important;
-  }
-
-  /* Review body — italic in quotes */
-  .product-reviews .pr-review-text {
-    font-size: 14px !important;
-    color: var(--brand-gray-600) !important;
-    line-height: 1.65 !important;
-    font-style: italic !important;
-    flex-grow: 1 !important;
-  }
-
-  /* Tag chips (attributes like HOT SLEEPER, SIDE SLEEPER) */
-  .product-reviews .pr-attribute-value,
-  .product-reviews .pr-attribute-key-value .pr-attribute-value-list li,
-  .product-reviews .pr-rd-def-list dd {
-    display: inline-block !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.08em !important;
-    text-transform: uppercase !important;
-    color: var(--brand-gray-700) !important;
-    border: 1.5px solid var(--brand-gray-300) !important;
-    border-radius: var(--brand-radius) !important;
-    padding: 4px 10px !important;
-    background: transparent !important;
-    margin-top: 8px !important;
-  }
-
-  /* Action buttons */
-  .product-reviews .pr-btn-primary,
-  .product-reviews .pr-snippet-write-review-link {
+  .product-reviews__full-display .pr-btn-primary,
+  .product-reviews__full-display .pr-snippet-write-review-link {
     background: var(--brand-navy) !important;
     border-color: var(--brand-navy) !important;
     border-radius: var(--brand-radius) !important;
     font-weight: 700 !important;
     color: #fff !important;
-    transition: background 0.15s ease !important;
   }
 
-  .product-reviews .pr-btn-primary:hover,
-  .product-reviews .pr-snippet-write-review-link:hover {
+  .product-reviews__full-display .pr-btn-primary:hover,
+  .product-reviews__full-display .pr-snippet-write-review-link:hover {
     background: var(--brand-cyan) !important;
     border-color: var(--brand-cyan) !important;
     color: var(--brand-navy) !important;
   }
 
-  .product-reviews .p-w-r a { color: var(--brand-cyan) !important; }
-
-  /* Pagination */
-  .product-reviews .pr-pagination .pr-page-btn[aria-current="true"] {
-    background: var(--brand-navy) !important;
-    border-color: var(--brand-navy) !important;
-    color: #fff !important;
-    border-radius: var(--brand-radius) !important;
+  .product-reviews__full-display .p-w-r a {
+    color: var(--brand-cyan) !important;
   }
 
-  /* ── Mobile ── */
+  .product-reviews__full-display .pr-star-v4-100-filled,
+  .product-reviews__full-display .pr-star-v4-75-filled,
+  .product-reviews__full-display .pr-star-v4-50-filled,
+  .product-reviews__full-display .pr-star-v4 {
+    color: #f59e0b !important;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════════════════════ */
   @media screen and (max-width: 989px) {
-    .product-reviews .pr-review-list {
-      grid-template-columns: repeat(2, 1fr) !important;
+    .product-reviews__cards {
+      grid-template-columns: repeat(2, 1fr);
     }
 
-    .pr-support-bar__inner { flex-direction: column; gap: 12px; }
-    .pr-support-bar__inner .pr-support-bar__avail { display: none; }
+    .product-reviews__snapshot {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
   }
 
   @media screen and (max-width: 749px) {
-    .product-reviews .pr-review-list {
-      grid-template-columns: 1fr !important;
+    .product-reviews {
+      padding: 48px 0;
     }
 
-    .pr-support-bar { margin-bottom: 40px; }
-    .product-reviews { padding-bottom: 48px; }
+    .product-reviews__cards {
+      grid-template-columns: 1fr;
+    }
+
+    .product-reviews__snapshot {
+      padding: 16px 20px;
+    }
+
+    .product-reviews__avg-num {
+      font-size: 36px;
+    }
   }
 
 {% endstyle %}
@@ -444,7 +623,8 @@
     {
       "type": "text",
       "id": "headline_count",
-      "label": "Headline line 1 (black) — review count + label",
+      "label": "Headline line 1 (dark) — review count fallback",
+      "info": "Replaced automatically with the live count from PowerReviews on page load.",
       "default": "6,406 reviews."
     },
     {
