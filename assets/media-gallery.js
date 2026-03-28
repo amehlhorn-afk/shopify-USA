@@ -19,6 +19,12 @@ if (!customElements.get('media-gallery')) {
             .addEventListener('click', this.setActiveMedia.bind(this, mediaToSwitch.dataset.target, false));
         });
         if (this.dataset.desktopLayout.includes('thumbnail') && this.mql.matches) this.removeListSemantic();
+
+        // Subscribe to variant changes to filter gallery images
+        subscribe(PUB_SUB_EVENTS.variantChange, (event) => {
+          const variant = event.data?.variant;
+          if (variant) this.filterByVariant(variant);
+        });
       }
 
       onSlideChanged(event) {
@@ -111,6 +117,36 @@ if (!customElements.get('media-gallery')) {
         if (!this.elements.viewer.slider) return;
         this.elements.viewer.slider.setAttribute('role', 'presentation');
         this.elements.viewer.sliderItems.forEach((slide) => slide.setAttribute('role', 'presentation'));
+      }
+
+      filterByVariant(variant) {
+        const variantId = String(variant.id);
+        const featuredMediaId = variant.featured_media?.id
+          ? `${this.dataset.productId ? '' : ''}${variant.featured_media.id}`
+          : null;
+
+        // Filter main viewer slides
+        this.elements.viewer.querySelectorAll('[data-media-id]').forEach((slide) => {
+          const ids = slide.dataset.variantIds || '';
+          // Show if: no variant association (shared media) OR this variant is listed
+          const visible = ids === '' || ids.split(',').filter(Boolean).includes(variantId);
+          slide.style.display = visible ? '' : 'none';
+        });
+
+        // Filter thumbnails
+        if (this.elements.thumbnails) {
+          this.elements.thumbnails.querySelectorAll('[data-target]').forEach((thumb) => {
+            const ids = thumb.dataset.variantIds || '';
+            const visible = ids === '' || ids.split(',').filter(Boolean).includes(variantId);
+            thumb.style.display = visible ? '' : 'none';
+          });
+        }
+
+        // Activate the featured media for this variant
+        if (featuredMediaId) {
+          const sectionId = this.id.replace('MediaGallery-', '');
+          this.setActiveMedia(`${sectionId}-${featuredMediaId}`, false);
+        }
       }
     }
   );
