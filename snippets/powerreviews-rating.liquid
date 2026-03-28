@@ -1,0 +1,32 @@
+{%- comment -%}
+  Renders the PowerReviews inline star rating snippet (ReviewSnippet).
+  Placed as a custom_liquid block directly after the product title block
+  in templates/product.json so stars + count appear under the heading.
+  The actual PowerReviews render() call lives in sections/product-reviews.liquid.
+{%- endcomment -%}
+<div id="pr-reviewsnippet" class="pr-rating-snippet"></div>
+
+{% style %}
+  /* Inline star snippet — sits between title and short description */
+  .pr-rating-snippet {
+    min-height: 28px;
+    margin-bottom: 8px;
+  }
+
+  /* PowerReviews overrides — keep brand fonts & colors */
+  #pr-reviewsnippet .p-w-r,
+  #pr-reviewsnippet .p-w-r * {
+    font-family: var(--font-body-family) !important;
+  }
+
+  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-snippet-read-and-write a,
+  #pr-reviewsnippet .pr-snippet-review-count {
+    color: var(--brand-cyan) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+  }
+
+  #pr-reviewsnippet .pr-star-v4 {
+    color: #f59e0b !important; /* amber stars */
+  }
+{% endstyle %}
