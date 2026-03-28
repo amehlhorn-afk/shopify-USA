@@ -67,6 +67,7 @@
       },
       "block_order": [
         "vendor",
+        "features",
         "title",
         "short_description",
         "price",
@@ -74,7 +75,6 @@
         "quantity_selector",
         "buy_buttons",
         "trust_strip",
-        "features",
         "description",
         "accordions"
       ],

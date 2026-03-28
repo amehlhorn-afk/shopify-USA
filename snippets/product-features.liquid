@@ -2,118 +2,46 @@
   Metafield: custom.product_features [metaobject_reference]
   Metaobject fields (flat numbered pattern):
     - pdp_feature_heading           [single_line_text_field]
-    - pdp_features_title_1..5       [single_line_text_field]
-    - pdp_features_image_1..5       [file_reference]
-    - pdp_features_pop_up_text_1..5 [single_line_text_field]  (tooltip / sub-label)
+    - pdp_features_title_1..5       [single_line_text_field]   pill label
+    - pdp_features_image_1..5       [file_reference]           (not shown in pill view)
+    - pdp_features_pop_up_text_1..5 [single_line_text_field]   (not shown in pill view)
+
+  Rendered as: horizontal row of rounded pill chips above the product title.
 {%- endcomment -%}
 
 {%- assign feat = product.metafields.custom.product_features.value -%}
 
 {%- if feat != blank -%}
-  <div class="product-features">
-    {%- if feat.pdp_feature_heading != blank -%}
-      <p class="product-features__heading">{{ feat.pdp_feature_heading }}</p>
-    {%- endif -%}
-
-    <ul class="product-features__list" role="list">
-      {%- for i in (1..5) -%}
-        {%- liquid
-          assign title_key = 'pdp_features_title_' | append: i
-          assign image_key = 'pdp_features_image_' | append: i
-          assign popup_key = 'pdp_features_pop_up_text_' | append: i
-          assign feat_title = feat[title_key]
-          assign feat_image = feat[image_key]
-          assign feat_popup = feat[popup_key]
-        -%}
-        {%- if feat_title != blank -%}
-          <li class="product-features__item">
-            {%- if feat_image != blank -%}
-              <span class="product-features__icon" aria-hidden="true">
-                {{- feat_image | image_url: width: 56 | image_tag: loading: 'lazy', alt: '' -}}
-              </span>
-            {%- endif -%}
-            <div class="product-features__text">
-              <strong class="product-features__label">{{ feat_title }}</strong>
-              {%- if feat_popup != blank -%}
-                <span class="product-features__sub">{{ feat_popup }}</span>
-              {%- endif -%}
-            </div>
-          </li>
-        {%- endif -%}
-      {%- endfor -%}
-    </ul>
-  </div>
+  <ul class="product-feature-pills" role="list" aria-label="Product features">
+    {%- for i in (1..5) -%}
+      {%- assign title_key = 'pdp_features_title_' | append: i -%}
+      {%- assign feat_title = feat[title_key] -%}
+      {%- if feat_title != blank -%}
+        <li class="product-feature-pills__item">{{ feat_title }}</li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
 {%- endif -%}
 
 {% style %}
-  .product-features {
-    margin: 20px 0;
-    padding: 20px 0;
-    border-top: 1px solid var(--brand-gray-200);
-  }
-
-  .product-features__heading {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--brand-cyan);
-    margin-bottom: 14px;
-  }
-
-  .product-features__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .product-feature-pills {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
   }
 
-  .product-features__item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 0 0 calc(50% - 6px);
-  }
-
-  .product-features__icon {
-    flex-shrink: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .product-features__icon img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-  }
-
-  .product-features__text {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-
-  .product-features__label {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--brand-gray-900);
-    line-height: 1.3;
-  }
-
-  .product-features__sub {
-    font-size: 11px;
-    color: var(--brand-gray-500);
+  .product-feature-pills__item {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--brand-gray-700);
+    border: 1.5px solid var(--brand-gray-300);
+    border-radius: 999px;
+    padding: 4px 12px;
+    white-space: nowrap;
+    background: transparent;
     line-height: 1.4;
-  }
-
-  @media screen and (max-width: 749px) {
-    .product-features__item {
-      flex: 0 0 100%;
-    }
   }
 {% endstyle %}

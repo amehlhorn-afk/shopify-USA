@@ -1,87 +1,88 @@
 {%- comment -%}
   Metafield: custom.pdp_trust_icon_with_text [metaobject_reference]
   Metaobject fields (flat numbered pattern, 4 items):
-    - pdp_trust_text_1..4   [single_line_text_field]
-    - pdp_trust_image_1..4  [file_reference]
+    - pdp_trust_text_1..4   [single_line_text_field]   benefit statement
+    - pdp_trust_image_1..4  [file_reference]            icon
+
+  Rendered as: vertical stack of bordered rows — icon in a circle on the left,
+  benefit text on the right. Positioned below the ATC button.
 {%- endcomment -%}
 
 {%- assign trust = product.metafields.custom.pdp_trust_icon_with_text.value -%}
 
 {%- if trust != blank -%}
-  {%- comment -%} Count how many items have content {%- endcomment -%}
-  {%- liquid
-    assign trust_count = 0
-    for i in (1..4)
-      assign text_key  = 'pdp_trust_text_'  | append: i
-      assign image_key = 'pdp_trust_image_' | append: i
-      if trust[text_key] != blank or trust[image_key] != blank
-        assign trust_count = trust_count | plus: 1
-      endif
-    endfor
-  -%}
-
-  {%- if trust_count > 0 -%}
-    <div class="product-trust-strip" aria-label="Trust signals" style="grid-template-columns: repeat({{ trust_count }}, 1fr);">
-      {%- for i in (1..4) -%}
-        {%- liquid
-          assign text_key  = 'pdp_trust_text_'  | append: i
-          assign image_key = 'pdp_trust_image_' | append: i
-          assign trust_text  = trust[text_key]
-          assign trust_image = trust[image_key]
-        -%}
-        {%- if trust_text != blank or trust_image != blank -%}
-          <div class="product-trust__item">
-            {%- if trust_image != blank -%}
-              <span class="product-trust__icon" aria-hidden="true">
-                {{- trust_image | image_url: width: 40 | image_tag: loading: 'lazy', alt: '' -}}
-              </span>
-            {%- endif -%}
-            {%- if trust_text != blank -%}
-              <span class="product-trust__label">{{ trust_text }}</span>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  {%- endif -%}
+  <ul class="product-trust-rows" role="list" aria-label="Why buy">
+    {%- for i in (1..4) -%}
+      {%- liquid
+        assign text_key  = 'pdp_trust_text_'  | append: i
+        assign image_key = 'pdp_trust_image_' | append: i
+        assign trust_text  = trust[text_key]
+        assign trust_image = trust[image_key]
+      -%}
+      {%- if trust_text != blank -%}
+        <li class="product-trust-rows__item">
+          {%- if trust_image != blank -%}
+            <span class="product-trust-rows__icon" aria-hidden="true">
+              {{- trust_image | image_url: width: 40 | image_tag: loading: 'lazy', alt: '' -}}
+            </span>
+          {%- else -%}
+            <span class="product-trust-rows__icon product-trust-rows__icon--placeholder" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+          {%- endif -%}
+          <span class="product-trust-rows__text">{{ trust_text }}</span>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
 {%- endif -%}
 
 {% style %}
-  .product-trust-strip {
-    display: grid;
-    background: var(--brand-navy);
-    border-radius: var(--brand-radius);
-    margin: 16px 0;
-    overflow: hidden;
-  }
-
-  .product-trust__item {
+  .product-trust-rows {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 14px 8px;
-    border-right: 1px solid rgba(255,255,255,0.08);
-    color: var(--brand-white);
-    gap: 6px;
+    gap: 8px;
   }
 
-  .product-trust__item:last-child { border-right: none; }
+  .product-trust-rows__item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--brand-gray-200);
+    border-radius: var(--brand-radius);
+    background: var(--brand-white);
+  }
 
-  .product-trust__icon { display: block; opacity: 0.8; }
+  .product-trust-rows__icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 181, 227, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand-cyan);
+  }
 
-  .product-trust__icon img {
+  .product-trust-rows__icon img {
     width: 22px;
     height: 22px;
     object-fit: contain;
-    filter: brightness(0) invert(1);
   }
 
-  .product-trust__label {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 1.3;
-    color: var(--brand-white);
+  .product-trust-rows__icon--placeholder {
+    color: var(--brand-cyan);
+  }
+
+  .product-trust-rows__text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--brand-gray-800);
+    line-height: 1.45;
   }
 {% endstyle %}
