@@ -12,15 +12,25 @@
     • ReviewDisplay   — full widget (hidden until "See All Reviews" clicked)
     • QuestionDisplay — Q&A tab inside the full widget
 
-  Credentials:
-    api_key:           47fff520-f385-4739-afdf-0e90788492b6
-    merchant_group_id: 2014345704
-    merchant_id:       1806575603
-    page_id:           product.id (Shopify product ID)
+  PowerReviews credentials are stored in section settings (configurable via theme editor).
+  Cyan tagline: falls back to section setting; per-product override via
+    product.metafields.custom.review_tagline [single_line_text_field]
 {%- endcomment -%}
 
 {%- liquid
-  assign pr_domain = shop.url
+  assign pr_domain    = shop.url
+  assign pr_api_key   = section.settings.pr_api_key
+  assign pr_merch_id  = section.settings.pr_merchant_id
+  assign pr_group_id  = section.settings.pr_merchant_group_id
+
+  comment
+    Per-product cyan tagline — metafield takes priority over section setting.
+    Metafield: custom.review_tagline [single_line_text_field]
+  endcomment
+  assign review_tagline = product.metafields.custom.review_tagline
+  if review_tagline == blank
+    assign review_tagline = section.settings.headline_cyan
+  endif
 -%}
 
 <section class="product-reviews" id="product-reviews">
@@ -37,8 +47,8 @@
           id="pr-live-count"
           data-fallback="{{ section.settings.headline_count }}"
         >{{ section.settings.headline_count }}</span>
-        {%- if section.settings.headline_cyan != blank -%}
-          <span class="product-reviews__headline-cyan">{{ section.settings.headline_cyan }}</span>
+        {%- if review_tagline != blank -%}
+          <span class="product-reviews__headline-cyan">{{ review_tagline }}</span>
         {%- endif -%}
       </h2>
     </div>
@@ -86,10 +96,10 @@ window.pwr = window.pwr || function () {
 };
 
 (function () {
-  /* ─── Credentials ─────────────────────────────────────────────────────── */
-  var API_KEY      = '47fff520-f385-4739-afdf-0e90788492b6';
-  var MERCHANT_ID  = '1806575603';
-  var GROUP_ID     = '2014345704';
+  /* ─── Credentials (set in theme editor → Product Reviews section) ──────── */
+  var API_KEY      = {{ pr_api_key | json }};
+  var MERCHANT_ID  = {{ pr_merch_id | json }};
+  var GROUP_ID     = {{ pr_group_id | json }};
   var PAGE_ID      = '{{ product.id }}';
   var LOCALE       = 'en_US';
   var PR_DOMAIN    = '{{ pr_domain }}';
@@ -630,8 +640,31 @@ window.pwr = window.pwr || function () {
     {
       "type": "text",
       "id": "headline_cyan",
-      "label": "Headline line 2 (cyan)",
+      "label": "Headline line 2 (cyan) — section default",
+      "info": "Per-product override: set product metafield custom.review_tagline [single_line_text_field].",
       "default": "One pattern."
+    },
+    {
+      "type": "header",
+      "content": "PowerReviews Credentials"
+    },
+    {
+      "type": "text",
+      "id": "pr_api_key",
+      "label": "API Key",
+      "default": "47fff520-f385-4739-afdf-0e90788492b6"
+    },
+    {
+      "type": "text",
+      "id": "pr_merchant_id",
+      "label": "Merchant ID",
+      "default": "1806575603"
+    },
+    {
+      "type": "text",
+      "id": "pr_merchant_group_id",
+      "label": "Merchant Group ID",
+      "default": "2014345704"
     }
   ],
   "presets": [

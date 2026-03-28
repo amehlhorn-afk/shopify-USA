@@ -147,7 +147,10 @@
       "settings": {
         "eyebrow": "Verified Buyers",
         "headline_count": "6,406 reviews.",
-        "headline_cyan": "One pattern."
+        "headline_cyan": "One pattern.",
+        "pr_api_key": "47fff520-f385-4739-afdf-0e90788492b6",
+        "pr_merchant_id": "1806575603",
+        "pr_merchant_group_id": "2014345704"
       }
     },
     "closing_cta": {
