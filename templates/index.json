@@ -28,7 +28,11 @@
           }
         }
       },
-      "block_order": ["heading", "subheading", "buttons"],
+      "block_order": [
+        "heading",
+        "subheading",
+        "buttons"
+      ],
       "settings": {
         "image_height": "large",
         "desktop_content_position": "bottom-left",
@@ -39,7 +43,8 @@
         "image_overlay_opacity": 45,
         "image_behavior": "none",
         "stack_images_on_mobile": false,
-        "show_text_below": false
+        "show_text_below": false,
+        "banner_video": "shopify://files/videos/spring allergies home page banner cut_1920x768_updated-compress.mp4"
       }
     },
     "trust_strip": {
@@ -49,7 +54,7 @@
           "type": "column",
           "settings": {
             "title": "365-Night Trial",
-            "text": "<p>Sleep on it for a full year. If it\u2019s not right, we make it right\u2014no questions asked.</p>",
+            "text": "<p>Sleep on it for a full year. If it’s not right, we make it right—no questions asked.</p>",
             "link_label": "",
             "link_url": ""
           }
@@ -58,7 +63,7 @@
           "type": "column",
           "settings": {
             "title": "Performance Science",
-            "text": "<p>Every product is engineered with athletes\u2019 sleep data and tested by professionals.</p>",
+            "text": "<p>Every product is engineered with athletes’ sleep data and tested by professionals.</p>",
             "link_label": "",
             "link_url": ""
           }
@@ -67,7 +72,7 @@
           "type": "column",
           "settings": {
             "title": "Free Shipping Over $50",
-            "text": "<p>Fast, free delivery on qualifying orders. Ships in 1\u20132 business days.</p>",
+            "text": "<p>Fast, free delivery on qualifying orders. Ships in 1–2 business days.</p>",
             "link_label": "",
             "link_url": ""
           }
@@ -75,14 +80,19 @@
         "col_4": {
           "type": "column",
           "settings": {
-            "title": "HSA \/ FSA Eligible",
+            "title": "HSA / FSA Eligible",
             "text": "<p>Select products qualify for pre-tax health savings account spending.</p>",
             "link_label": "",
             "link_url": ""
           }
         }
       },
-      "block_order": ["col_1", "col_2", "col_3", "col_4"],
+      "block_order": [
+        "col_1",
+        "col_2",
+        "col_3",
+        "col_4"
+      ],
       "settings": {
         "title": "",
         "heading_size": "h2",
@@ -139,7 +149,7 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>BEDGEAR partners with elite athletes and teams across the NBA, NFL, and MLB to understand what peak performance sleep really means. That science\u2014applied to every pillow, sheet, and mattress we make\u2014is now available to you.</p>",
+            "text": "<p>BEDGEAR partners with elite athletes and teams across the NBA, NFL, and MLB to understand what peak performance sleep really means. That science—applied to every pillow, sheet, and mattress we make—is now available to you.</p>",
             "text_style": "body"
           }
         },
@@ -152,7 +162,11 @@
           }
         }
       },
-      "block_order": ["heading", "text", "button"],
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
       "settings": {
         "image_position": "right",
         "color_scheme": "scheme-3",
@@ -162,7 +176,6 @@
         "desktop_content_position": "middle",
         "desktop_content_alignment": "left",
         "content_layout": "no-overlap",
-        "color_scheme": "scheme-3",
         "image_behavior": "none",
         "mobile_content_alignment": "left",
         "padding_top": 0,
@@ -174,7 +187,7 @@
       "settings": {
         "title": "Performance Mattresses",
         "heading_size": "h2",
-        "description": "Temperature regulation, pressure relief, and support\u2014dialed in for how you sleep.",
+        "description": "Temperature regulation, pressure relief, and support—dialed in for how you sleep.",
         "show_description": true,
         "description_style": "body",
         "collection": "mattresses",
@@ -217,7 +230,11 @@
           "settings": {}
         }
       },
-      "block_order": ["heading", "subheading", "email_form"],
+      "block_order": [
+        "heading",
+        "subheading",
+        "email_form"
+      ],
       "settings": {
         "color_scheme": "scheme-3",
         "full_width": true,
