@@ -88,6 +88,7 @@
   endif
   assign full_width = '100vw'
   assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+  assign hero_alt = hero_heading | strip_html | truncate: 100
 -%}
 
 {%- if section.settings.image_height == 'adapt' -%}
@@ -222,7 +223,7 @@
           width: hero_image.width,
           height: hero_image.width | divided_by: hero_image.aspect_ratio,
           sizes: full_width,
-          alt: hero_heading | strip_html | truncate: 100,
+          alt: hero_alt,
           widths: widths,
           fetchpriority: fetch_priority
       }}
@@ -239,7 +240,7 @@
           width: hero_mobile_image.width,
           height: hero_mobile_image.width | divided_by: hero_mobile_image.aspect_ratio,
           sizes: full_width,
-          alt: hero_heading | strip_html | truncate: 100,
+          alt: hero_alt,
           widths: '375, 550, 750, 1100, 1500',
           fetchpriority: fetch_priority
       }}
