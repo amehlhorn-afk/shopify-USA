@@ -1,0 +1,40 @@
+/* =============================================================================
+   BEDGEAR Brand Tokens
+   Source: Night Ice PDP design system (night-ice-pdp_1.html)
+   These variables are available globally across the entire theme.
+   ============================================================================= */
+
+:root {
+  /* --- Primary Brand Colors --- */
+  --brand-navy:       #0d1b2e;   /* Primary dark — CTAs, dark section backgrounds */
+  --brand-navy-2:     #162436;   /* Secondary dark — card & alternate dark backgrounds */
+  --brand-cyan:       #00b5e3;   /* Brand accent — highlights, eyebrows, key stats, links */
+  --brand-cyan-dark:  #0099c4;   /* Cyan hover/active state */
+  --brand-white:      #ffffff;
+
+  /* --- Gray Scale --- */
+  --brand-gray-50:    #f9fafb;   /* Subtle section backgrounds */
+  --brand-gray-100:   #f3f4f6;   /* Image placeholders, inputs */
+  --brand-gray-200:   #e5e7eb;   /* Borders, dividers */
+  --brand-gray-300:   #d1d5db;   /* Inactive borders */
+  --brand-gray-400:   #9ca3af;   /* Placeholder text, icons */
+  --brand-gray-500:   #6b7280;   /* Secondary body text */
+  --brand-gray-600:   #4b5563;   /* Body text */
+  --brand-gray-700:   #374151;   /* Strong body text */
+  --brand-gray-900:   #111827;   /* Near-black text */
+
+  /* --- Semantic / UI Colors --- */
+  --brand-green:      #16a34a;   /* Verified badges, success states */
+  --brand-amber:      #f59e0b;   /* Star ratings */
+  --brand-red:        #f87171;   /* Negative indicators in comparison tables */
+
+  /* --- Border Radius --- */
+  --brand-radius:     8px;       /* Buttons, cards, inputs */
+  --brand-radius-lg:  16px;      /* Larger containers, image wrappers */
+
+  /* --- Font Override ---
+     Inter is loaded via Google Fonts in theme.liquid.
+     These override Dawn's font-family CSS variables globally. */
+  --font-body-family:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
