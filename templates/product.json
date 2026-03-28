@@ -109,6 +109,10 @@
       "type": "product-faq",
       "settings": {}
     },
+    "customer_service_bar": {
+      "type": "customer-service-bar",
+      "settings": {}
+    },
     "reviews": {
       "type": "product-reviews",
       "settings": {}
@@ -145,6 +149,7 @@
     "main",
     "whats_inside",
     "faq",
+    "customer_service_bar",
     "reviews",
     "closing_cta",
     "related-products"

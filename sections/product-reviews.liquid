@@ -1,14 +1,16 @@
 {%- comment -%}
   PowerReviews reviews section — custom-styled to match BEDGEAR design reference.
+  Support bar is now a standalone section (sections/customer-service-bar.liquid).
 
   Structure:
-    1. Support bar  — "Need Help?" with Live Chat / Phone / Email links
-    2. Section header — eyebrow + large count headline + cyan line
-    3. PowerReviews ReviewDisplay — PR renders rating histogram + review cards;
-       CSS below transforms the default output into the 3-column card grid
-       shown in the design reference.
+    1. Section header — eyebrow + live review count + cyan tagline
+    2. PowerReviews ReviewDisplay — 3-column card grid via CSS overrides
 
-  Credentials (from shopify-USA):
+  Live count: fetched from PowerReviews Read Services API on page load.
+    Endpoint: readservices-b2c.powerreviews.com/m/{merchant_id}/l/en_US/product/{page_id}/reviews
+    Response: top-level paging.total_results
+
+  Credentials:
     api_key: 47fff520-f385-4739-afdf-0e90788492b6
     merchant_group_id: 2014345704  |  merchant_id: 1806575603
     page_id: product.id
@@ -18,52 +20,7 @@
   assign pr_domain = shop.url
 -%}
 
-{%- comment -%} ── 1. Support Bar ── {%- endcomment -%}
-<div class="pr-support-bar">
-  <div class="page-width">
-    <div class="pr-support-bar__inner">
-      <div class="pr-support-bar__left">
-        <span class="pr-support-bar__icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
-            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/>
-            <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
-          </svg>
-        </span>
-        <div class="pr-support-bar__copy">
-          <strong class="pr-support-bar__heading">{{ section.settings.support_heading }}</strong>
-          <p class="pr-support-bar__text">{{ section.settings.support_text }}</p>
-        </div>
-      </div>
-      <p class="pr-support-bar__avail small-hide">{{ section.settings.support_availability }}</p>
-    </div>
-
-    <div class="pr-support-bar__actions">
-      {%- if section.settings.chat_label != blank -%}
-        <a href="{{ section.settings.chat_url }}" class="pr-support-bar__action">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          {{ section.settings.chat_label }}
-        </a>
-      {%- endif -%}
-      {%- if section.settings.phone_label != blank -%}
-        <span class="pr-support-bar__divider" aria-hidden="true">|</span>
-        <a href="tel:{{ section.settings.phone_url }}" class="pr-support-bar__action">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          {{ section.settings.phone_label }}
-        </a>
-      {%- endif -%}
-      {%- if section.settings.email_label != blank -%}
-        <span class="pr-support-bar__divider" aria-hidden="true">|</span>
-        <a href="mailto:{{ section.settings.email_url }}" class="pr-support-bar__action">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-          {{ section.settings.email_label }}
-        </a>
-      {%- endif -%}
-    </div>
-  </div>
-</div>
-
-{%- comment -%} ── 2. Reviews section ── {%- endcomment -%}
+{%- comment -%} ── Reviews section ── {%- endcomment -%}
 <div class="product-reviews" id="product-reviews">
   <div class="page-width">
 
@@ -72,7 +29,13 @@
         <p class="product-reviews__eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
       <h2 class="product-reviews__headline">
-        <span class="product-reviews__headline-count">{{ section.settings.headline_count }}</span>
+        {%- comment -%}
+          Seeded with the theme-editor value as a fallback.
+          JS below replaces the inner text with the live count from the PR API.
+        {%- endcomment -%}
+        <span class="product-reviews__headline-count" id="pr-live-count"
+          data-fallback="{{ section.settings.headline_count }}"
+        >{{ section.settings.headline_count }}</span>
         {%- if section.settings.headline_cyan != blank -%}
           <span class="product-reviews__headline-cyan">{{ section.settings.headline_cyan }}</span>
         {%- endif -%}
@@ -186,95 +149,48 @@
     } else {
       initPowerReviews();
     }
+
+    // ── Live review count from PowerReviews Read Services API ──
+    // Endpoint confirmed: GET /m/{merchant_id}/l/en_US/product/{page_id}/reviews
+    // Response: top-level paging.total_results = total review count
+    (function fetchLiveReviewCount() {
+      var countEl = document.getElementById('pr-live-count');
+      if (!countEl) return;
+
+      var apiUrl = [
+        'https://readservices-b2c.powerreviews.com',
+        '/m/1806575603',
+        '/l/en_US',
+        '/product/{{ product.id }}/reviews',
+        '?apikey=47fff520-f385-4739-afdf-0e90788492b6',
+        '&paging.size=1'
+      ].join('');
+
+      fetch(apiUrl)
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          var total = data && data.paging && data.paging.total_results;
+          if (typeof total === 'number' && total > 0) {
+            // Format with locale commas e.g. 6,406
+            var formatted = total.toLocaleString('en-US');
+            countEl.textContent = formatted + ' reviews.';
+
+            // Also update the inline rating snippet count if PR hasn't yet
+            var snippetCount = document.querySelector('#pr-reviewsnippet .pr-snippet-review-count');
+            if (snippetCount && snippetCount.textContent === '') {
+              snippetCount.textContent = formatted;
+            }
+          }
+        })
+        .catch(function () {
+          // Silently fall back to the theme-editor value already in the DOM
+        });
+    })();
+
   })();
 </script>
 
 {% style %}
-
-  /* ═══════════════════════════════════════════
-     SUPPORT BAR
-  ═══════════════════════════════════════════ */
-  .pr-support-bar {
-    border: 1.5px solid var(--brand-gray-200);
-    border-radius: var(--brand-radius-lg);
-    margin: 0 0 64px;
-    overflow: hidden;
-  }
-
-  .pr-support-bar .page-width { padding: 0; }
-
-  .pr-support-bar__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 28px;
-    gap: 20px;
-  }
-
-  .pr-support-bar__left {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .pr-support-bar__icon {
-    flex-shrink: 0;
-    color: var(--brand-gray-500);
-    margin-top: 2px;
-  }
-
-  .pr-support-bar__heading {
-    display: block;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--brand-gray-900);
-    margin-bottom: 4px;
-  }
-
-  .pr-support-bar__text {
-    font-size: 14px;
-    color: var(--brand-gray-600);
-    line-height: 1.55;
-    margin: 0;
-    max-width: 420px;
-  }
-
-  .pr-support-bar__avail {
-    font-size: 14px;
-    color: var(--brand-gray-500);
-    white-space: nowrap;
-    margin: 0;
-    flex-shrink: 0;
-  }
-
-  .pr-support-bar__actions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    padding: 14px 28px;
-    border-top: 1px solid var(--brand-gray-200);
-    background: var(--brand-gray-50);
-  }
-
-  .pr-support-bar__action {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--brand-gray-800);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .pr-support-bar__action:hover { color: var(--brand-cyan); }
-
-  .pr-support-bar__divider {
-    color: var(--brand-gray-300);
-    font-size: 18px;
-    line-height: 1;
-  }
 
   /* ═══════════════════════════════════════════
      SECTION HEADER
@@ -515,63 +431,6 @@
 {
   "name": "Product Reviews",
   "settings": [
-    {
-      "type": "header",
-      "content": "Support Bar"
-    },
-    {
-      "type": "text",
-      "id": "support_heading",
-      "label": "Heading",
-      "default": "Need Help?"
-    },
-    {
-      "type": "textarea",
-      "id": "support_text",
-      "label": "Body text",
-      "default": "Our sleep specialists are here 7 days a week \u2014 Mon\u2013Fri 9am\u20136pm ET, weekends 10am\u20134pm ET."
-    },
-    {
-      "type": "text",
-      "id": "support_availability",
-      "label": "Availability label (desktop right)",
-      "default": "Available 7 days a week"
-    },
-    {
-      "type": "text",
-      "id": "chat_label",
-      "label": "Live chat label",
-      "default": "Live Chat"
-    },
-    {
-      "type": "url",
-      "id": "chat_url",
-      "label": "Live chat URL"
-    },
-    {
-      "type": "text",
-      "id": "phone_label",
-      "label": "Phone label",
-      "default": "1-866-BED-GEAR"
-    },
-    {
-      "type": "text",
-      "id": "phone_url",
-      "label": "Phone number (for tel: link)",
-      "default": "18662334327"
-    },
-    {
-      "type": "text",
-      "id": "email_label",
-      "label": "Email label",
-      "default": "Email Us"
-    },
-    {
-      "type": "text",
-      "id": "email_url",
-      "label": "Email address",
-      "default": "support@bedgear.com"
-    },
     {
       "type": "header",
       "content": "Section Header"
