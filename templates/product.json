@@ -46,6 +46,12 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "build_system": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-build-system', section: section %}"
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -79,6 +85,7 @@
         "truemed",
         "variant_picker",
         "quantity_selector",
+        "build_system",
         "buy_buttons",
         "short_description",
         "description",

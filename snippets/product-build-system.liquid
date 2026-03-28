@@ -1,0 +1,181 @@
+{%- comment -%}
+  "Build Your Sleep System" — Rebuy inline widget for product page cross-sell.
+
+  Renders a styled section header followed by a Rebuy widget container.
+  Rebuy's app-embed script (injected automatically when the Rebuy Shopify app
+  is installed) discovers the container and renders the configured widget.
+
+  Usage (as a custom_liquid block inside main-product):
+    {% render 'product-build-system', section: section %}
+
+  Required section settings (add to main-product schema):
+    rebuy_widget_id  — Rebuy widget ID from Rebuy Admin → Widgets
+                       Leave blank to hide this block entirely.
+
+  Rebuy widget setup:
+    1. In Rebuy Admin create a "Frequently Bought Together" or
+       "Product Add-ons" widget with the desired recommendation rules.
+    2. Copy the Widget ID (numeric, e.g. 123456) from the widget settings.
+    3. Paste it into the "Rebuy Widget ID" field in the Shopify theme editor
+       under Main Product → Build Your Sleep System.
+
+  The Rebuy app-embed script is responsible for loading; no additional
+  <script> tag is needed here.
+{%- endcomment -%}
+
+{%- assign rebuy_id = section.settings.rebuy_widget_id | strip -%}
+{%- if rebuy_id != blank -%}
+
+<div class="build-system" id="build-your-sleep-system">
+
+  <div class="build-system__header">
+    <span class="build-system__label">Build Your Sleep System</span>
+  </div>
+
+  {%- comment -%}
+    Rebuy widget container.
+    Rebuy's SDK scans for [data-rebuy-id] on page load and replaces this
+    div with the fully rendered widget (product cards, checkboxes, add-ons).
+    The data-rebuy-product-id attribute passes the current product so Rebuy
+    can apply product-specific recommendation rules.
+  {%- endcomment -%}
+  <div
+    data-rebuy-id="{{ rebuy_id }}"
+    data-rebuy-product-id="{{ product.id }}"
+    data-rebuy-variant-id="{{ product.selected_or_first_available_variant.id }}"
+  ></div>
+
+</div>
+
+{% style %}
+  /* ── Build Your Sleep System wrapper ───────────────────────────────── */
+  .build-system {
+    margin: 20px 0;
+  }
+
+  .build-system__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .build-system__label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand-gray-700);
+  }
+
+  /* ── Rebuy widget overrides — keep brand fonts & colours ───────────── */
+  .build-system .rebuy-widget,
+  .build-system .rebuy-widget * {
+    font-family: var(--font-body-family) !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Product add-on card */
+  .build-system .rebuy-product-addons__product {
+    border: 1.5px solid var(--brand-gray-200) !important;
+    border-radius: var(--brand-radius-lg) !important;
+    background: var(--brand-white) !important;
+    padding: 14px 16px !important;
+    margin-bottom: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    transition: border-color 0.15s ease !important;
+  }
+
+  .build-system .rebuy-product-addons__product:hover {
+    border-color: var(--brand-gray-400) !important;
+  }
+
+  .build-system .rebuy-product-addons__product.is-selected,
+  .build-system .rebuy-product-addons__product[data-selected="true"] {
+    border-color: var(--brand-navy) !important;
+    background: #f0f4fb !important;
+  }
+
+  /* Checkbox */
+  .build-system .rebuy-product-addons__checkbox input[type="checkbox"]:checked,
+  .build-system .rebuy-checkbox:checked {
+    accent-color: var(--brand-navy) !important;
+  }
+
+  /* Product title */
+  .build-system .rebuy-product-addons__product-title,
+  .build-system .rebuy-product__title {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: var(--brand-gray-900) !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Product subtitle / short description */
+  .build-system .rebuy-product-addons__product-subtitle,
+  .build-system .rebuy-product__subtitle {
+    font-size: 12px !important;
+    color: var(--brand-gray-500) !important;
+    margin-top: 2px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Price badge (+$25, +$60, etc.) */
+  .build-system .rebuy-product-addons__product-price,
+  .build-system .rebuy-product__price {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: var(--brand-gray-900) !important;
+    white-space: nowrap !important;
+    margin-left: auto !important;
+  }
+
+  /* "MOST ADDED" / "UNLOCKS FREE SHIPPING" badge pills */
+  .build-system .rebuy-badge,
+  .build-system [class*="badge"] {
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    padding: 3px 8px !important;
+    border-radius: 999px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* "MOST ADDED" — cyan background */
+  .build-system .rebuy-badge--popular,
+  .build-system [class*="most-added"],
+  .build-system [class*="popular"] {
+    background: var(--brand-cyan) !important;
+    color: var(--brand-navy) !important;
+  }
+
+  /* "UNLOCKS FREE SHIPPING" — navy background */
+  .build-system .rebuy-badge--shipping,
+  .build-system [class*="free-shipping"],
+  .build-system [class*="shipping"] {
+    background: var(--brand-navy) !important;
+    color: #fff !important;
+  }
+
+  /* Product image thumbnail */
+  .build-system .rebuy-product-addons__product-image img,
+  .build-system .rebuy-product__image img {
+    width: 52px !important;
+    height: 52px !important;
+    object-fit: cover !important;
+    border-radius: var(--brand-radius) !important;
+    border: 1px solid var(--brand-gray-100) !important;
+    flex-shrink: 0 !important;
+  }
+
+  @media screen and (max-width: 749px) {
+    .build-system {
+      margin: 16px 0;
+    }
+  }
+{% endstyle %}
+
+{%- endif -%}
