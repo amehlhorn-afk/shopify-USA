@@ -22,7 +22,10 @@
   <div class="product-whats-inside">
     <div class="page-width">
 
-      <p class="product-whats-inside__eyebrow">What's Inside</p>
+      {%- assign wi_eyebrow = wi.pdp_section_eyebrow | default: section.settings.eyebrow -%}
+      {%- if wi_eyebrow != blank -%}
+        <p class="product-whats-inside__eyebrow">{{ wi_eyebrow }}</p>
+      {%- endif -%}
 
       <div class="product-whats-inside__grid">
 
@@ -194,7 +197,15 @@
 {% schema %}
 {
   "name": "What's Inside",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "info": "Overridden by the metaobject 'pdp_section_eyebrow' field when set.",
+      "default": "What's Inside"
+    }
+  ],
   "presets": [{ "name": "What's Inside" }]
 }
 {% endschema %}
