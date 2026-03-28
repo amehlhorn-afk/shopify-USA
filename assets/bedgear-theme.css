@@ -1010,28 +1010,63 @@ details.accordion .accordion__content {
 }
 
 /* ─────────────────────────────────────────────
-   15. PDP Gallery — variant-filtered thumbnail layout
+   15. PDP Gallery — single main image + thumbnail row below
    ───────────────────────────────────────────── */
 
-/* Main image: constrain height on desktop */
-.product__media-item .global-media-settings {
-  border-radius: var(--brand-radius);
-  overflow: hidden;
+/* ── Main viewer: show ONE image at a time on desktop ── */
+@media screen and (min-width: 990px) {
+  /* Override Dawn's stacked grid — collapse all items to one slot */
+  [id^="GalleryViewer"] .product__media-list {
+    display: block;
+  }
+
+  /* Hide every slide except the active one */
+  [id^="GalleryViewer"] .product__media-item {
+    display: none;
+  }
+
+  [id^="GalleryViewer"] .product__media-item.is-active {
+    display: block;
+  }
 }
 
-/* Thumbnail strip — horizontal row below main image */
+/* Main image wrapper: rounded corners, light bg, 4:3 aspect */
+[id^="GalleryViewer"] .product__media-item.is-active .global-media-settings {
+  border-radius: var(--brand-radius-lg);
+  overflow: hidden;
+  background: var(--brand-gray-50);
+  aspect-ratio: 4 / 3;
+}
+
+[id^="GalleryViewer"] .product__media-item.is-active img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── Thumbnail strip ── */
 .thumbnail-slider--below {
-  margin-top: 12px;
+  margin-top: 10px;
   width: 100%;
 }
 
+/* Remove slider-component's default styling */
+.thumbnail-slider--below .slider-component,
+.thumbnail-slider--below {
+  overflow: visible;
+}
+
+/* 5-column grid — scrollable if more than 5 thumbnails */
 .thumbnail-slider--below .thumbnail-list {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /* allow horizontal scroll when > 5 visible thumbs */
   overflow-x: auto;
-  padding-bottom: 4px;
   scrollbar-width: none;
 }
 
@@ -1039,23 +1074,24 @@ details.accordion .accordion__content {
   display: none;
 }
 
+/* Each thumbnail cell — square aspect ratio */
 .thumbnail-list__item {
-  flex: 0 0 auto;
-  width: 72px;
-  height: 72px;
+  aspect-ratio: 1;
+  min-width: 0;
 }
 
-/* Thumbnail button */
+/* Thumbnail button fills cell */
 .thumbnail-list__item .thumbnail {
   display: block;
-  width: 72px;
-  height: 72px;
-  border-radius: var(--brand-radius);
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 6px;
   overflow: hidden;
   border: 2px solid transparent;
   transition: border-color 0.15s ease;
   padding: 0;
-  background: transparent;
+  background: var(--brand-gray-50);
+  cursor: pointer;
 }
 
 .thumbnail-list__item .thumbnail img {
@@ -1065,29 +1101,37 @@ details.accordion .accordion__content {
   display: block;
 }
 
-/* Active thumbnail */
+/* Active thumbnail — cyan border matching reference */
 .thumbnail-list__item .thumbnail[aria-current="true"] {
   border-color: var(--brand-cyan);
 }
 
-.thumbnail-list__item .thumbnail:hover {
-  border-color: var(--brand-navy);
+.thumbnail-list__item .thumbnail:hover:not([aria-current="true"]) {
+  border-color: var(--brand-gray-400);
 }
 
-/* Hide filtered-out slides/thumbs cleanly */
+/* ── Variant filtering: hide non-matching slides/thumbs ── */
 .product__media-item[style*="display: none"],
 .thumbnail-list__item[style*="display: none"] {
   display: none !important;
 }
 
-@media screen and (max-width: 749px) {
+/* ── Mobile: horizontal scroll strip instead of grid ── */
+@media screen and (max-width: 989px) {
+  .thumbnail-slider--below .thumbnail-list {
+    grid-template-columns: repeat(auto-fill, 60px);
+    gap: 6px;
+  }
+
   .thumbnail-list__item {
     width: 60px;
     height: 60px;
+    aspect-ratio: unset;
   }
 
   .thumbnail-list__item .thumbnail {
     width: 60px;
     height: 60px;
+    aspect-ratio: unset;
   }
 }
