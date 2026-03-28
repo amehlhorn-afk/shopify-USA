@@ -210,12 +210,13 @@
             data-media-position="{{ thumb_media_index }}"
             data-variant-ids="{{ thumb_featured_ids }}"
           >
+            {%- assign thumb_featured_img_id = 'Thumbnail-' | append: section.id | append: '-0' -%}
             <button
               class="thumbnail global-media-settings global-media-settings--no-shadow"
               aria-label="{{ 'products.product.media.load_image' | t: index: thumb_media_index }}"
               aria-current="true"
               aria-controls="GalleryViewer-{{ section.id }}"
-              aria-describedby="Thumbnail-{{ section.id }}-0"
+              aria-describedby="{{ thumb_featured_img_id }}"
             >
               {{
                 featured_media.preview_image
@@ -224,7 +225,7 @@
                   loading: 'lazy',
                   sizes: thumbnail_sizes,
                   widths: '54, 74, 104, 162, 208',
-                  id: "Thumbnail-{{ section.id }}-0",
+                  id: thumb_featured_img_id,
                   alt: featured_media.alt
                 | escape
               }}
@@ -279,6 +280,7 @@
                 aria-controls="GalleryViewer-{{ section.id }}"
                 aria-describedby="Thumbnail-{{ section.id }}-{{ forloop.index }}"
               >
+                {%- assign thumb_img_id = 'Thumbnail-' | append: section.id | append: '-' | append: forloop.index -%}
                 {{
                   media.preview_image
                   | image_url: width: 416
@@ -286,7 +288,7 @@
                     loading: 'lazy',
                     sizes: thumbnail_sizes,
                     widths: '54, 74, 104, 162, 208',
-                    id: "Thumbnail-{{ section.id }}-{{ forloop.index }}",
+                    id: thumb_img_id,
                     alt: media.alt
                   | escape
                 }}
