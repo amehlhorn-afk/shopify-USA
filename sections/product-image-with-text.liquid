@@ -1,0 +1,229 @@
+{%- comment -%}
+  Metafield: custom.pdp_image_with_text [metaobject_reference]
+  Metaobject fields:
+    - section_heading_title  [single_line_text_field]  section-level heading
+    - section_heading_text   [single_line_text_field]  section-level subtext
+    For each panel 1..4:
+    - video_{i}              [file_reference]           video (preferred media)
+    - image_{i}              [file_reference]           image (fallback media)
+    - subheading_{i}         [single_line_text_field]  eyebrow label
+    - heading_{i}            [single_line_text_field]  panel heading
+    - content_item_{i}       [multi_line_text_field]   panel body copy
+  Layout: panels alternate — odd panels media-left, even panels media-right.
+{%- endcomment -%}
+
+{%- liquid
+  assign iwt = product.metafields.custom.pdp_image_with_text.value
+  assign show = false
+  if iwt != blank
+    for i in (1..4)
+      assign video_key   = 'video_'        | append: i
+      assign image_key   = 'image_'        | append: i
+      assign sub_key     = 'subheading_'   | append: i
+      assign head_key    = 'heading_'      | append: i
+      assign content_key = 'content_item_' | append: i
+      if iwt[video_key] != blank or iwt[image_key] != blank or iwt[sub_key] != blank or iwt[head_key] != blank or iwt[content_key] != blank
+        assign show = true
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if show -%}
+  <div class="pdp-iwt">
+    <div class="page-width">
+
+      {%- if iwt.section_heading_title != blank -%}
+        <div class="pdp-iwt__header">
+          <h2 class="pdp-iwt__title">{{ iwt.section_heading_title }}</h2>
+          {%- if iwt.section_heading_text != blank -%}
+            <p class="pdp-iwt__subtitle">{{ iwt.section_heading_text }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- for i in (1..4) -%}
+        {%- liquid
+          assign video_key   = 'video_'        | append: i
+          assign image_key   = 'image_'        | append: i
+          assign sub_key     = 'subheading_'   | append: i
+          assign head_key    = 'heading_'      | append: i
+          assign content_key = 'content_item_' | append: i
+          assign panel_video   = iwt[video_key]
+          assign panel_image   = iwt[image_key]
+          assign panel_sub     = iwt[sub_key]
+          assign panel_heading = iwt[head_key]
+          assign panel_content = iwt[content_key]
+          assign has_media = false
+          if panel_video != blank or panel_image != blank
+            assign has_media = true
+          endif
+          assign has_text = false
+          if panel_sub != blank or panel_heading != blank or panel_content != blank
+            assign has_text = true
+          endif
+        -%}
+
+        {%- if has_media or has_text -%}
+          {%- comment -%} Even panels reverse the column order {%- endcomment -%}
+          {%- assign reversed = false -%}
+          {%- if i == 2 or i == 4 -%}{%- assign reversed = true -%}{%- endif -%}
+
+          <div class="pdp-iwt__panel{% if reversed %} pdp-iwt__panel--reversed{% endif %}">
+
+            {%- if has_media -%}
+              <div class="pdp-iwt__media">
+                {%- liquid
+                  assign media_src  = panel_video
+                  if media_src == blank
+                    assign media_src = panel_image
+                  endif
+                -%}
+                {%- if media_src.media_type == 'video' -%}
+                  {{-
+                    media_src
+                    | video_tag:
+                      autoplay: true,
+                      loop: true,
+                      muted: true,
+                      controls: false,
+                      playsinline: true,
+                      class: 'pdp-iwt__video'
+                  -}}
+                {%- else -%}
+                  {{-
+                    media_src
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '400, 600, 800',
+                      sizes: '(min-width: 990px) 45vw, 100vw',
+                      class: 'pdp-iwt__image'
+                  -}}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- if has_text -%}
+              <div class="pdp-iwt__content">
+                {%- if panel_sub != blank -%}
+                  <p class="pdp-iwt__eyebrow">{{ panel_sub }}</p>
+                {%- endif -%}
+                {%- if panel_heading != blank -%}
+                  <h3 class="pdp-iwt__heading">{{ panel_heading }}</h3>
+                {%- endif -%}
+                {%- if panel_content != blank -%}
+                  <div class="pdp-iwt__body">{{ panel_content }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+    </div>
+  </div>
+{%- endif -%}
+
+{% style %}
+  .pdp-iwt {
+    padding: 80px 0;
+    background: var(--brand-white);
+    border-top: 1px solid var(--brand-gray-200);
+  }
+
+  .pdp-iwt__header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .pdp-iwt__title {
+    font-size: clamp(26px, 3vw, 42px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    color: var(--brand-gray-900);
+    margin: 0 0 12px;
+  }
+
+  .pdp-iwt__subtitle {
+    font-size: 16px;
+    color: var(--brand-gray-600);
+    line-height: 1.6;
+    margin: 0;
+    max-width: 560px;
+    margin-inline: auto;
+  }
+
+  .pdp-iwt__panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+    padding: 48px 0;
+    border-top: 1px solid var(--brand-gray-100);
+  }
+
+  .pdp-iwt__panel:first-of-type { border-top: none; }
+
+  .pdp-iwt__panel--reversed .pdp-iwt__media { order: 2; }
+  .pdp-iwt__panel--reversed .pdp-iwt__content { order: 1; }
+
+  .pdp-iwt__image,
+  .pdp-iwt__video {
+    width: 100%;
+    display: block;
+    border-radius: var(--brand-radius-lg);
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+  }
+
+  .pdp-iwt__eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--brand-cyan);
+    margin: 0 0 12px;
+  }
+
+  .pdp-iwt__heading {
+    font-size: clamp(22px, 2.5vw, 34px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--brand-gray-900);
+    margin: 0 0 16px;
+  }
+
+  .pdp-iwt__body {
+    font-size: 15px;
+    color: var(--brand-gray-600);
+    line-height: 1.75;
+  }
+
+  .pdp-iwt__body p { margin: 0 0 10px; }
+  .pdp-iwt__body p:last-child { margin-bottom: 0; }
+
+  @media screen and (max-width: 749px) {
+    .pdp-iwt { padding: 48px 0; }
+    .pdp-iwt__header { margin-bottom: 40px; }
+    .pdp-iwt__panel {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 36px 0;
+    }
+    .pdp-iwt__panel--reversed .pdp-iwt__media { order: unset; }
+    .pdp-iwt__panel--reversed .pdp-iwt__content { order: unset; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "PDP Image With Text",
+  "settings": [],
+  "presets": [{ "name": "PDP Image With Text" }]
+}
+{% endschema %}

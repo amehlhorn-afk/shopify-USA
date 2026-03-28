@@ -28,6 +28,12 @@
             "custom_liquid": "{% render 'powerreviews-rating' %}"
           }
         },
+        "firmness_level": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-firmness-level' %}"
+          }
+        },
         "trust_strip": {
           "type": "custom_liquid",
           "settings": {
@@ -37,6 +43,12 @@
         "price": {
           "type": "price",
           "settings": {}
+        },
+        "offer_label": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-offer-label' %}"
+          }
         },
         "truemed": {
           "type": "custom_liquid",
@@ -89,8 +101,10 @@
         "features",
         "title",
         "rating",
+        "firmness_level",
         "trust_strip",
         "price",
+        "offer_label",
         "truemed",
         "variant_picker",
         "quantity_selector",
@@ -121,6 +135,10 @@
     },
     "whats_inside": {
       "type": "product-whats-inside",
+      "settings": {}
+    },
+    "image_with_text": {
+      "type": "product-image-with-text",
       "settings": {}
     },
     "faq": {
@@ -204,6 +222,7 @@
   "order": [
     "main",
     "whats_inside",
+    "image_with_text",
     "faq",
     "customer_service_bar",
     "reviews",

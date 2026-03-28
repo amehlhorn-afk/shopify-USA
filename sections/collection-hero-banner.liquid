@@ -208,6 +208,19 @@
       max-width: {{ section.settings.content_max_width_mobile }}px;
     }
   }
+
+  /* Keep banner sized to image aspect ratio — content overlays the image */
+  #CollHero-{{ section.id }} .banner__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  /* Minimum banner height so content never clips */
+  #CollHero-{{ section.id }} {
+    min-height: 280px;
+  }
 {%- endstyle -%}
 
 <div

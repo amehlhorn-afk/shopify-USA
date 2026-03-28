@@ -1,0 +1,27 @@
+{%- comment -%}
+  Metafield: custom.offer_label [single_line_text_field]
+  Rendered as: a small promotional badge/label near the price.
+  Only shown when the metafield has a value.
+{%- endcomment -%}
+
+{%- assign offer_label = product.metafields.custom.offer_label -%}
+
+{%- if offer_label != blank -%}
+  <p class="product-offer-label">{{ offer_label }}</p>
+{%- endif -%}
+
+{% style %}
+  .product-offer-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand-white);
+    background: var(--brand-cyan);
+    border-radius: 4px;
+    padding: 4px 10px;
+    margin: 0 0 10px;
+    line-height: 1;
+  }
+{% endstyle %}
