@@ -1,0 +1,202 @@
+{%- comment -%}
+  Renders: custom.take_inside_content [metaobject_reference]
+           custom.what_goes_inside_text [single_line_text_field]
+           custom.what_goes_inside_image [file_reference]
+  Coverage: 73 / 6 / 6 active products
+  Position: Full-width section below the 2-col product grid — "What's Inside" explainer
+
+  Metaobject type: take_inside_content
+  Expected fields (verify in Shopify Admin > Content > Metaobjects):
+    - heading    [single_line_text_field]
+    - image      [file_reference]
+    - body       [rich_text_field or multi_line_text_field]
+    - items      [list.metaobject_reference] — optional list of layer/component items
+{%- endcomment -%}
+
+{%- liquid
+  assign inside_obj = product.metafields.custom.take_inside_content.value
+  assign inside_text = product.metafields.custom.what_goes_inside_text.value
+  assign inside_image = product.metafields.custom.what_goes_inside_image.value
+  assign show_section = false
+  if inside_obj != blank or inside_text != blank or inside_image != blank
+    assign show_section = true
+  endif
+-%}
+
+{%- if show_section -%}
+  <div class="product-whats-inside color-scheme-2">
+    <div class="page-width">
+
+      <p class="product-whats-inside__eyebrow">What's Inside</p>
+
+      {%- if inside_obj != blank -%}
+        <div class="product-whats-inside__grid">
+
+          {%- comment -%} Left: image {%- endcomment -%}
+          {%- liquid
+            assign inside_img = inside_obj.image.value | default: inside_image
+          -%}
+          {%- if inside_img != blank -%}
+            <div class="product-whats-inside__media">
+              {{- inside_img | image_url: width: 700 | image_tag:
+                loading: 'lazy',
+                widths: '375, 550, 700',
+                sizes: '(min-width: 990px) 50vw, 100vw',
+                class: 'product-whats-inside__image'
+              -}}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Right: heading + body + layer list {%- endcomment -%}
+          <div class="product-whats-inside__content">
+            {%- liquid
+              assign inside_heading = inside_obj.heading.value | default: inside_obj.title.value
+              assign inside_body = inside_obj.body.value | default: inside_obj.content.value | default: inside_obj.description.value
+              assign inside_items = inside_obj.items.value | default: inside_obj.layers.value | default: inside_obj.components.value
+            -%}
+
+            {%- if inside_heading != blank -%}
+              <h2 class="product-whats-inside__heading">{{ inside_heading }}</h2>
+            {%- endif -%}
+
+            {%- if inside_body != blank -%}
+              <div class="product-whats-inside__body rte">{{ inside_body }}</div>
+            {%- elsif inside_text != blank -%}
+              <div class="product-whats-inside__body rte">{{ inside_text }}</div>
+            {%- endif -%}
+
+            {%- if inside_items != blank -%}
+              <ul class="product-whats-inside__layers" role="list">
+                {%- for layer in inside_items -%}
+                  <li class="product-whats-inside__layer">
+                    <span class="product-whats-inside__layer-num">{{ forloop.index }}</span>
+                    <div>
+                      {%- if layer.heading != blank -%}
+                        <strong>{{ layer.heading }}</strong>
+                      {%- endif -%}
+                      {%- if layer.body != blank -%}
+                        <span>{{ layer.body }}</span>
+                      {%- endif -%}
+                    </div>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+
+        </div>
+      {%- elsif inside_image != blank or inside_text != blank -%}
+        {%- comment -%} Simpler fallback using flat metafields {%- endcomment -%}
+        <div class="product-whats-inside__grid">
+          {%- if inside_image != blank -%}
+            <div class="product-whats-inside__media">
+              {{- inside_image | image_url: width: 700 | image_tag: loading: 'lazy', class: 'product-whats-inside__image' -}}
+            </div>
+          {%- endif -%}
+          {%- if inside_text != blank -%}
+            <div class="product-whats-inside__content">
+              <div class="product-whats-inside__body rte">{{ inside_text }}</div>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+{%- endif -%}
+
+{% style %}
+  .product-whats-inside {
+    background: var(--brand-gray-50);
+    padding: 72px 0;
+    margin-top: 0;
+  }
+
+  .product-whats-inside__eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--brand-cyan);
+    margin-bottom: 14px;
+  }
+
+  .product-whats-inside__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .product-whats-inside__image {
+    width: 100%;
+    border-radius: var(--brand-radius-lg);
+    display: block;
+  }
+
+  .product-whats-inside__heading {
+    font-size: clamp(24px, 3vw, 40px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    color: var(--brand-gray-900);
+    margin-bottom: 16px;
+  }
+
+  .product-whats-inside__body {
+    font-size: 15px;
+    color: var(--brand-gray-600);
+    line-height: 1.78;
+    margin-bottom: 24px;
+  }
+
+  .product-whats-inside__layers {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .product-whats-inside__layer {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    font-size: 14px;
+    color: var(--brand-gray-600);
+    line-height: 1.55;
+  }
+
+  .product-whats-inside__layer strong {
+    display: block;
+    font-weight: 700;
+    color: var(--brand-gray-900);
+    margin-bottom: 2px;
+  }
+
+  .product-whats-inside__layer-num {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    background: var(--brand-navy);
+    color: var(--brand-white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    margin-top: 1px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-whats-inside__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .product-whats-inside {
+      padding: 48px 0;
+    }
+  }
+{% endstyle %}

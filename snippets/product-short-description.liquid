@@ -1,0 +1,33 @@
+{%- comment -%}
+  Renders: custom.short_description [multi_line_text_field]
+  Coverage: 76 of 98 active products
+  Position: Directly below product title, above price — used as the "hook" line
+{%- endcomment -%}
+
+{%- assign short_desc = product.metafields.custom.short_description.value -%}
+
+{%- if short_desc != blank -%}
+  <div class="product-short-description">
+    {{ short_desc }}
+  </div>
+{%- endif -%}
+
+{% style %}
+  .product-short-description {
+    font-size: 15px;
+    color: var(--brand-gray-600);
+    line-height: 1.65;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--brand-gray-200);
+    padding-bottom: 16px;
+  }
+  .product-short-description p {
+    margin: 0;
+  }
+  /* Strip leftover inline styles from Teams/Word paste */
+  .product-short-description span[data-teams],
+  .product-short-description span[class*="ui-provider"] {
+    font-style: inherit !important;
+    font-weight: inherit !important;
+  }
+{% endstyle %}

@@ -1,0 +1,148 @@
+{%- comment -%}
+  Renders: custom.pdp_detail_accordions_one / _two / _three / _four [metaobject_reference]
+  Coverage: 94 of 98 active products (one/two/three), 5 products (four)
+  Position: Below product description — replaces Dawn's static collapsible_tab blocks
+
+  Metaobject types: pdp_detail_accordions_one, pdp_detail_accordions_two,
+                    pdp_detail_accordions_three, pdp_detail_accordions (shared for three)
+  Expected fields (verify in Shopify Admin > Content > Metaobjects):
+    - heading  [single_line_text_field]  — accordion label
+    - content  [rich_text_field or multi_line_text_field]  — accordion body
+    - icon     [single_line_text_field]  — optional icon name/emoji
+{%- endcomment -%}
+
+{%- liquid
+  assign acc_1 = product.metafields.custom.pdp_detail_accordions_one.value
+  assign acc_2 = product.metafields.custom.pdp_detail_accordions_two.value
+  assign acc_3 = product.metafields.custom.pdp_detail_accordions_three.value
+  assign acc_4 = product.metafields.custom.pdp_detail_accordions_four.value
+  assign has_accordions = false
+  if acc_1 != blank or acc_2 != blank or acc_3 != blank
+    assign has_accordions = true
+  endif
+-%}
+
+{%- if has_accordions -%}
+  <div class="product-accordions">
+
+    {%- for accordion in (1..4) -%}
+      {%- liquid
+        case accordion
+          when 1
+            assign acc = acc_1
+          when 2
+            assign acc = acc_2
+          when 3
+            assign acc = acc_3
+          when 4
+            assign acc = acc_4
+        endcase
+      -%}
+      {%- if acc != blank -%}
+        <details class="product-accordion">
+          <summary class="product-accordion__trigger">
+            <span class="product-accordion__heading">
+              {%- if acc.heading != blank -%}
+                {{ acc.heading }}
+              {%- elsif acc.title != blank -%}
+                {{ acc.title }}
+              {%- else -%}
+                Details
+              {%- endif -%}
+            </span>
+            <span class="product-accordion__icon" aria-hidden="true">
+              {%- render 'icon-caret' -%}
+            </span>
+          </summary>
+          <div class="product-accordion__body">
+            {%- if acc.content != blank -%}
+              {{ acc.content }}
+            {%- elsif acc.body != blank -%}
+              {{ acc.body }}
+            {%- elsif acc.description != blank -%}
+              {{ acc.description }}
+            {%- endif -%}
+          </div>
+        </details>
+      {%- endif -%}
+    {%- endfor -%}
+
+  </div>
+{%- endif -%}
+
+{% style %}
+  .product-accordions {
+    margin-top: 24px;
+  }
+
+  .product-accordion {
+    border-bottom: 1px solid var(--brand-gray-200);
+  }
+
+  .product-accordion:first-child {
+    border-top: 1px solid var(--brand-gray-200);
+  }
+
+  .product-accordion__trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    cursor: pointer;
+    list-style: none;
+    background: none;
+    border: none;
+    text-align: left;
+  }
+
+  .product-accordion__trigger::-webkit-details-marker {
+    display: none;
+  }
+
+  .product-accordion__heading {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--brand-gray-900);
+  }
+
+  .product-accordion__icon {
+    flex-shrink: 0;
+    color: var(--brand-gray-400);
+    transition: transform 0.2s ease;
+  }
+
+  details[open] .product-accordion__icon {
+    transform: rotate(180deg);
+  }
+
+  .product-accordion__body {
+    font-size: 14px;
+    color: var(--brand-gray-600);
+    line-height: 1.75;
+    padding-bottom: 20px;
+  }
+
+  .product-accordion__body p {
+    margin: 0 0 10px;
+  }
+
+  .product-accordion__body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .product-accordion__body ul,
+  .product-accordion__body ol {
+    padding-left: 20px;
+    margin: 10px 0;
+  }
+
+  .product-accordion__body li {
+    margin-bottom: 6px;
+  }
+
+  .product-accordion__body strong {
+    color: var(--brand-gray-800, #1f2937);
+    font-weight: 600;
+  }
+{% endstyle %}

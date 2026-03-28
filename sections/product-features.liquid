@@ -1,0 +1,130 @@
+{%- comment -%}
+  Renders: custom.product_features [metaobject_reference]
+  Coverage: 93 of 98 active products
+  Position: Below the ATC button — icon grid of product selling points
+
+  Metaobject type: product_features
+  Expected fields (verify in Shopify Admin > Content > Metaobjects):
+    - heading  [single_line_text_field]
+    - icon     [file_reference]  (optional)
+    - body     [multi_line_text_field or rich_text_field]
+    - items    [list.metaobject_reference] pointing to individual feature items
+
+  NOTE: If product_features is a parent object containing a list of child items,
+  adjust the loop below. If it's a single object with repeating fields, use direct access.
+{%- endcomment -%}
+
+{%- liquid
+  assign features_obj = product.metafields.custom.product_features.value
+-%}
+
+{%- if features_obj != blank -%}
+  <div class="product-features">
+
+    {%- comment -%} — Case A: features_obj has a list field called "items" or "features" {%- endcomment -%}
+    {%- assign feature_items = features_obj.items.value | default: features_obj.features.value -%}
+
+    {%- if feature_items != blank -%}
+      <ul class="product-features__list" role="list">
+        {%- for item in feature_items -%}
+          <li class="product-features__item">
+            {%- if item.icon != blank -%}
+              <span class="product-features__icon">
+                {{- item.icon | image_url: width: 48 | image_tag: loading: 'lazy', alt: item.heading -}}
+              </span>
+            {%- endif -%}
+            <div class="product-features__text">
+              {%- if item.heading != blank -%}
+                <strong class="product-features__heading">{{ item.heading }}</strong>
+              {%- endif -%}
+              {%- if item.body != blank -%}
+                <span class="product-features__body">{{ item.body }}</span>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+    {%- else -%}
+      {%- comment -%} — Case B: features_obj is a flat object with heading + body fields {%- endcomment -%}
+      {%- if features_obj.heading != blank or features_obj.body != blank -%}
+        <ul class="product-features__list" role="list">
+          <li class="product-features__item">
+            {%- if features_obj.icon != blank -%}
+              <span class="product-features__icon">
+                {{- features_obj.icon | image_url: width: 48 | image_tag: loading: 'lazy' -}}
+              </span>
+            {%- endif -%}
+            <div class="product-features__text">
+              {%- if features_obj.heading != blank -%}
+                <strong class="product-features__heading">{{ features_obj.heading }}</strong>
+              {%- endif -%}
+              {%- if features_obj.body != blank -%}
+                <span class="product-features__body">{{ features_obj.body }}</span>
+              {%- endif -%}
+            </div>
+          </li>
+        </ul>
+      {%- endif -%}
+    {%- endif -%}
+
+  </div>
+{%- endif -%}
+
+{% style %}
+  .product-features {
+    margin: 20px 0;
+    padding: 20px 0;
+    border-top: 1px solid var(--brand-gray-200);
+    border-bottom: 1px solid var(--brand-gray-200);
+  }
+
+  .product-features__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .product-features__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .product-features__icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.85;
+  }
+
+  .product-features__icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  .product-features__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .product-features__heading {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--brand-gray-900);
+  }
+
+  .product-features__body {
+    font-size: 13px;
+    color: var(--brand-gray-500);
+    line-height: 1.55;
+  }
+{% endstyle %}
