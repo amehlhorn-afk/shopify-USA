@@ -343,10 +343,10 @@ h1, h2, h3, h4, h5, h6,
   display: block;
 }
 
-/* Product title */
+/* Product title — tighter size so it stays single-line at desktop widths */
 .product__title h1,
 .product__title .h1 {
-  font-size: clamp(22px, 3vw, 30px);
+  font-size: clamp(20px, 2.4vw, 26px);
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -385,6 +385,99 @@ h1, h2, h3, h4, h5, h6,
 /* Trust strip — now lives above price; reset the top-only margin */
 .product-trust-rows {
   margin: 0 0 12px !important;
+}
+
+/* ── Hide "Shipping calculated at checkout" under price ── */
+.product__tax { display: none !important; }
+
+/* ── Currency code — hide " USD" suffix next to price ──────────────────
+   When currency_code_enabled:true the price renders as "$299.99 USD".
+   We visually clip the code portion so only the formatted price shows.
+   (Also turned off in settings_data.json → currency_code_enabled:false)
+───────────────────────────────────────────────────────────────────────── */
+.price-item {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Shop Pay installments — cleaner single-line treatment ── */
+.installment .shopify-cleanslate {
+  display: block;
+}
+
+/* ── PowerReviews inline rating snippet — compact single-line row ─────── */
+/* Target the snippet container */
+#pr-reviewsnippet .p-w-r {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Stars + score + count all inline */
+#pr-reviewsnippet .pr-snippet-stars-reco-inline {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-wrap: nowrap !important;
+}
+
+#pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-snippet-stars-container {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+/* Score number */
+#pr-reviewsnippet .pr-snippet-rating-decimal {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: var(--brand-gray-900) !important;
+  margin: 0 2px !important;
+}
+
+/* "· N Reviews" count link */
+#pr-reviewsnippet .pr-snippet-review-count {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--brand-gray-500) !important;
+  text-decoration: none !important;
+}
+
+#pr-reviewsnippet .pr-snippet-review-count:hover {
+  color: var(--brand-cyan) !important;
+}
+
+/* Hide "Write a Review" link from the inline snippet (available in reviews section) */
+#pr-reviewsnippet .pr-snippet-write-review-link,
+#pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-snippet-read-and-write {
+  display: none !important;
+}
+
+/* Stars amber */
+#pr-reviewsnippet .pr-star-v4 {
+  color: #f59e0b !important;
+}
+
+/* ── Feature pills — single row, no wrapping ── */
+.product-feature-pills {
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.product-feature-pills::-webkit-scrollbar { display: none; }
+
+/* ── Trust strip — tighter item padding ── */
+.product-trust-rows__item {
+  padding: 10px 14px !important;
+}
+
+/* ── Truemed callout — prevent 3-line text wrap ── */
+.product-truemed__text {
+  font-size: 12px !important;
+}
+
+.product-truemed {
+  gap: 10px !important;
+  padding: 11px 14px !important;
 }
 
 /* Variant picker — button style */
