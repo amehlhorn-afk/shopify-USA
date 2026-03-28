@@ -3,11 +3,10 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": {
-          "type": "text",
+        "features": {
+          "type": "custom_liquid",
           "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
+            "custom_liquid": "{% render 'product-features' %}"
           }
         },
         "title": {
@@ -20,15 +19,21 @@
             "custom_liquid": "{% render 'powerreviews-rating' %}"
           }
         },
-        "short_description": {
+        "trust_strip": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "{% render 'product-short-description' %}"
+            "custom_liquid": "{% render 'product-trust-strip' %}"
           }
         },
         "price": {
           "type": "price",
           "settings": {}
+        },
+        "truemed": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-truemed', section: section %}"
+          }
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -48,16 +53,10 @@
             "show_gift_card_recipient": false
           }
         },
-        "trust_strip": {
+        "short_description": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "{% render 'product-trust-strip' %}"
-          }
-        },
-        "features": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "{% render 'product-features' %}"
+            "custom_liquid": "{% render 'product-short-description' %}"
           }
         },
         "description": {
@@ -72,16 +71,16 @@
         }
       },
       "block_order": [
-        "vendor",
         "features",
         "title",
         "rating",
-        "short_description",
+        "trust_strip",
         "price",
+        "truemed",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "trust_strip",
+        "short_description",
         "description",
         "accordions"
       ],

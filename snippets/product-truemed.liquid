@@ -1,0 +1,119 @@
+{%- comment -%}
+  Truemed HSA / FSA eligibility callout.
+
+  Renders the styled callout row matching the BEDGEAR PDP reference:
+    [HSA / FSA badge]  May be eligible for pre-tax spending — save up to 30% via Truemed   Learn more →
+
+  If a Truemed Public ID is provided in the section settings this snippet also
+  loads Truemed's qualifier widget script, which replaces the static callout
+  with their live eligibility check UI. Leave the Public ID blank to show the
+  static styled callout only.
+
+  Usage:
+    {% render 'product-truemed', section: section %}
+
+  Required section settings ids:
+    truemed_public_id  — Truemed merchant public ID (optional)
+    truemed_link       — override "Learn more" destination (optional)
+{%- endcomment -%}
+
+{%- liquid
+  assign tm_public_id = section.settings.truemed_public_id | default: ''
+  assign tm_link      = section.settings.truemed_link | default: 'https://truemed.com/what-is-hsa-fsa'
+  assign tm_variant   = product.selected_or_first_available_variant
+-%}
+
+{%- if tm_public_id != blank -%}
+  {%- comment -%}
+    Truemed qualifier widget — replaces this div with their live eligibility UI.
+    https://docs.truemed.com/docs/qualifier-widget
+  {%- endcomment -%}
+  <div
+    id="truemed-qualifier-widget"
+    data-public-id="{{ tm_public_id }}"
+    data-amount="{{ tm_variant.price }}"
+    data-currency="{{ cart.currency.iso_code }}"
+  ></div>
+  <script
+    src="https://truemed-public.s3.amazonaws.com/truemed-ads/truemed-qualifier-widget.min.js"
+    async
+  ></script>
+{%- else -%}
+  {%- comment -%} Static styled callout (no Truemed Public ID configured) {%- endcomment -%}
+  <div class="product-truemed" id="product-truemed">
+    <span class="product-truemed__badge" aria-label="HSA and FSA eligible">HSA / FSA</span>
+    <p class="product-truemed__text">
+      May be eligible for pre-tax spending &mdash; save up to <strong>30%</strong> via Truemed
+    </p>
+    <a
+      href="{{ tm_link }}"
+      class="product-truemed__link"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Learn more about HSA and FSA eligibility via Truemed"
+    >Learn more</a>
+  </div>
+{%- endif -%}
+
+{% style %}
+  /* ── Truemed callout row ─────────────────────────────────────────────── */
+  .product-truemed {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    border: 1.5px solid var(--brand-gray-200);
+    border-radius: var(--brand-radius-lg);
+    background: var(--brand-white);
+  }
+
+  .product-truemed__badge {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    background: var(--brand-navy);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    border-radius: 6px;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  .product-truemed__text {
+    flex: 1;
+    font-size: 13px;
+    color: var(--brand-gray-700);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .product-truemed__text strong {
+    font-weight: 700;
+    color: var(--brand-gray-900);
+  }
+
+  .product-truemed__link {
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brand-gray-500);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+  }
+
+  .product-truemed__link:hover {
+    color: var(--brand-cyan);
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-truemed {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  }
+{% endstyle %}
