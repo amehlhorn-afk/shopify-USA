@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -94,7 +103,6 @@
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
-        "rebuy_widget_id": "270427",
         "media_size": "large",
         "constrain_to_viewport": true,
         "media_fit": "contain",
@@ -105,7 +113,10 @@
         "hide_variants": true,
         "enable_video_looping": false,
         "padding_top": 40,
-        "padding_bottom": 20
+        "padding_bottom": 20,
+        "rebuy_widget_id": "270427",
+        "truemed_public_id": "",
+        "truemed_link": ""
       }
     },
     "whats_inside": {
@@ -118,11 +129,26 @@
     },
     "customer_service_bar": {
       "type": "customer-service-bar",
-      "settings": {}
+      "settings": {
+        "heading": "Need Help?",
+        "body_text": "Our sleep specialists are here 7 days a week — Mon–Fri 9am–6pm ET, weekends 10am–4pm ET.",
+        "availability_label": "Available 7 days a week",
+        "chat_label": "Live Chat",
+        "chat_url": "",
+        "phone_label": "1-866-BED-GEAR",
+        "phone_number": "18662334327",
+        "email_label": "Email Us",
+        "email_address": "support@bedgear.com",
+        "margin_bottom": 64
+      }
     },
     "reviews": {
       "type": "product-reviews",
-      "settings": {}
+      "settings": {
+        "eyebrow": "Verified Buyers",
+        "headline_count": "6,406 reviews.",
+        "headline_cyan": "One pattern."
+      }
     },
     "closing_cta": {
       "type": "product-cta-closing",
@@ -130,7 +156,7 @@
         "eyebrow": "Tired is a waste of time",
         "heading_line_1": "Sleep fuels everything.",
         "heading_line_2": "Start tonight.",
-        "body_text": "365-Night Guarantee. If it\u2019s not right, we make it right. One size does not fit all \u2014 find your fit."
+        "body_text": "365-Night Guarantee. If it’s not right, we make it right. One size does not fit all — find your fit."
       }
     },
     "related-products": {
@@ -150,6 +176,26 @@
         "padding_top": 48,
         "padding_bottom": 60
       }
+    },
+    "1774722121de97adfe": {
+      "type": "apps",
+      "blocks": {
+        "rebuy_personalization_engine_rebuy_widget_HVampJ": {
+          "type": "shopify://apps/rebuy-personalization-engine/blocks/rebuy-widget/a26ae9b9-933b-40bf-bbc6-bf1220bbc4dc",
+          "settings": {
+            "enabled": true,
+            "id": "270427",
+            "product_id_enabled": true,
+            "collection_id_enabled": true
+          }
+        }
+      },
+      "block_order": [
+        "rebuy_personalization_engine_rebuy_widget_HVampJ"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
@@ -159,6 +205,7 @@
     "customer_service_bar",
     "reviews",
     "closing_cta",
-    "related-products"
+    "related-products",
+    "1774722121de97adfe"
   ]
 }
