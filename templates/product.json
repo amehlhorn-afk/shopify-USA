@@ -102,6 +102,15 @@
       "type": "product-faq",
       "settings": {}
     },
+    "closing_cta": {
+      "type": "product-cta-closing",
+      "settings": {
+        "eyebrow": "Tired is a waste of time",
+        "heading_line_1": "Sleep fuels everything.",
+        "heading_line_2": "Start tonight.",
+        "body_text": "365-Night Guarantee. If it\u2019s not right, we make it right. One size does not fit all \u2014 find your fit."
+      }
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -125,6 +134,7 @@
     "main",
     "whats_inside",
     "faq",
+    "closing_cta",
     "related-products"
   ]
 }

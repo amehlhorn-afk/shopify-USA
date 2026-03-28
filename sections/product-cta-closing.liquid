@@ -1,0 +1,294 @@
+{%- comment -%}
+  Full-width closing CTA section at the bottom of every PDP.
+
+  Design (from reference):
+    - Dark navy gradient background
+    - Eyebrow line (small caps, muted)
+    - Heading line 1 — white, bold
+    - Heading line 2 — cyan, bold
+    - Body copy — muted gray, centred
+    - Wide cyan Add-to-Cart button whose label reads:
+        "GET {PRODUCT TITLE} — {VARIANT PRICE}"
+      Both the variant ID (submitted to /cart/add) and the price label
+      update in real time when the shopper changes the variant selector
+      above, via Dawn's PUB_SUB_EVENTS.variantChange event.
+
+  Section settings let the merchant customise all copy per-PDP or leave
+  the brand defaults in place.
+{%- endcomment -%}
+
+{%- liquid
+  assign selected_variant = product.selected_or_first_available_variant
+  assign cta_price        = selected_variant.price | money_without_trailing_zeros
+  assign cta_title        = product.title | upcase
+  assign btn_label        = 'GET ' | append: cta_title | append: ' — ' | append: cta_price
+-%}
+
+<div class="pdp-closing-cta">
+  <div class="pdp-closing-cta__inner">
+
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="pdp-closing-cta__eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+
+    <h2 class="pdp-closing-cta__heading">
+      {%- if section.settings.heading_line_1 != blank -%}
+        <span class="pdp-closing-cta__heading-white">{{ section.settings.heading_line_1 }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading_line_2 != blank -%}
+        <span class="pdp-closing-cta__heading-cyan">{{ section.settings.heading_line_2 }}</span>
+      {%- endif -%}
+    </h2>
+
+    {%- if section.settings.body_text != blank -%}
+      <p class="pdp-closing-cta__body">{{ section.settings.body_text }}</p>
+    {%- endif -%}
+
+    {%- comment -%}
+      ATC form — sits outside the main product form so we manage the
+      variant_id input ourselves and keep it in sync via JS below.
+    {%- endcomment -%}
+    {%- if selected_variant.available -%}
+      <form
+        id="pdp-closing-cta-form"
+        action="/cart/add"
+        method="post"
+        class="pdp-closing-cta__form"
+      >
+        <input type="hidden" name="id"       id="pdp-closing-cta-variant-id" value="{{ selected_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button
+          type="submit"
+          class="pdp-closing-cta__btn"
+          id="pdp-closing-cta-btn"
+          aria-label="Add {{ product.title | escape }} to cart"
+        >
+          <span id="pdp-closing-cta-label">{{ btn_label }}</span>
+        </button>
+      </form>
+    {%- else -%}
+      <button class="pdp-closing-cta__btn pdp-closing-cta__btn--sold-out" disabled>
+        Sold Out
+      </button>
+    {%- endif -%}
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    const form      = document.getElementById('pdp-closing-cta-form');
+    const varInput  = document.getElementById('pdp-closing-cta-variant-id');
+    const btnLabel  = document.getElementById('pdp-closing-cta-label');
+    const btn       = document.getElementById('pdp-closing-cta-btn');
+    if (!form || !varInput || !btnLabel) return;
+
+    // Format price the same way Shopify does (no trailing .00)
+    function formatMoney(cents) {
+      const dollars = cents / 100;
+      return dollars % 1 === 0
+        ? '$' + dollars.toLocaleString('en-US')
+        : '$' + dollars.toLocaleString('en-US', { minimumFractionDigits: 2 });
+    }
+
+    // Update button label + hidden variant input when variant changes
+    function onVariantChange(event) {
+      const variant = event?.data?.variant;
+      if (!variant) return;
+
+      varInput.value = variant.id;
+
+      if (variant.available) {
+        const price = formatMoney(variant.price);
+        btnLabel.textContent = `GET {{ product.title | upcase | escape }} \u2014 ${price}`;
+        btn.disabled = false;
+        btn.classList.remove('pdp-closing-cta__btn--sold-out');
+      } else {
+        btnLabel.textContent = 'Sold Out';
+        btn.disabled = true;
+        btn.classList.add('pdp-closing-cta__btn--sold-out');
+      }
+    }
+
+    // Hook into Dawn's pub/sub (available globally after global.js loads)
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof subscribe !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
+        subscribe(PUB_SUB_EVENTS.variantChange, onVariantChange);
+      }
+    });
+
+    // ATC via fetch so the cart drawer opens rather than a full page reload
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const id = varInput.value;
+      if (!id) return;
+
+      btn.disabled = true;
+      const originalText = btnLabel.textContent;
+      btnLabel.textContent = 'Adding…';
+
+      fetch('/cart/add.js', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ id: parseInt(id, 10), quantity: 1 }),
+      })
+      .then(function (res) { return res.json(); })
+      .then(function () {
+        // Trigger Dawn's cart drawer open via its pub/sub
+        if (typeof publish !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
+          publish(PUB_SUB_EVENTS.cartUpdate, { source: 'pdp-closing-cta' });
+        }
+        // Also fire the cart drawer open event Dawn listens for
+        document.dispatchEvent(new CustomEvent('cart:open'));
+        btnLabel.textContent = 'Added!';
+        setTimeout(function () {
+          btnLabel.textContent = originalText;
+          btn.disabled = false;
+        }, 1800);
+      })
+      .catch(function () {
+        btnLabel.textContent = originalText;
+        btn.disabled = false;
+      });
+    });
+  })();
+</script>
+
+{% style %}
+  .pdp-closing-cta {
+    background: linear-gradient(160deg, #0a1929 0%, #0d1b2e 60%, #162436 100%);
+    padding: 96px 24px;
+    text-align: center;
+  }
+
+  .pdp-closing-cta__inner {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .pdp-closing-cta__eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+  }
+
+  .pdp-closing-cta__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .pdp-closing-cta__heading-white {
+    display: block;
+    color: #ffffff;
+  }
+
+  .pdp-closing-cta__heading-cyan {
+    display: block;
+    color: var(--brand-cyan);
+  }
+
+  .pdp-closing-cta__body {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 520px;
+  }
+
+  .pdp-closing-cta__form {
+    width: 100%;
+    max-width: 480px;
+    margin-top: 8px;
+  }
+
+  .pdp-closing-cta__btn {
+    display: block;
+    width: 100%;
+    padding: 18px 32px;
+    background: var(--brand-cyan);
+    color: var(--brand-navy);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: var(--brand-radius);
+    cursor: pointer;
+    transition: background 0.15s ease, opacity 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pdp-closing-cta__btn:hover:not(:disabled) {
+    background: var(--brand-cyan-dark);
+  }
+
+  .pdp-closing-cta__btn--sold-out,
+  .pdp-closing-cta__btn:disabled {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.4);
+    cursor: not-allowed;
+  }
+
+  @media screen and (max-width: 749px) {
+    .pdp-closing-cta {
+      padding: 64px 20px;
+    }
+
+    .pdp-closing-cta__btn {
+      font-size: 13px;
+      padding: 16px 20px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "PDP Closing CTA",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Tired is a waste of time"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Heading line 1 (white)",
+      "default": "Sleep fuels everything."
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading line 2 (cyan)",
+      "default": "Start tonight."
+    },
+    {
+      "type": "textarea",
+      "id": "body_text",
+      "label": "Body text",
+      "default": "365-Night Guarantee. If it\u2019s not right, we make it right. One size does not fit all \u2014 find your fit."
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP Closing CTA"
+    }
+  ]
+}
+{% endschema %}
