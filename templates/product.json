@@ -94,6 +94,7 @@
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
+        "rebuy_widget_id": "270427",
         "media_size": "large",
         "constrain_to_viewport": true,
         "media_fit": "contain",
