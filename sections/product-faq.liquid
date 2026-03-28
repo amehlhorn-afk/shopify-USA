@@ -1,25 +1,26 @@
 {%- comment -%}
-  Renders: custom.pdp_faq_list_items [metaobject_reference]
-  Coverage: 87 of 98 active products
-  Position: Full-width section near bottom of PDP
-
-  Metaobject type: pdp_faq_content (handle: pdp_faq_content.{product-handle})
-  Expected fields (verify in Shopify Admin > Content > Metaobjects):
-    - items  [list.metaobject_reference]  — each item has:
-        - question  [single_line_text_field]
-        - answer    [rich_text_field or multi_line_text_field]
+  Metafield: custom.pdp_faq_list_items [metaobject_reference]
+  Metaobject fields (flat numbered pattern, up to 14 items):
+    - title_1..14    [single_line_text_field]   question
+    - content_1..14  [multi_line_text_field]    answer
 {%- endcomment -%}
 
-{%- liquid
-  assign faq_obj = product.metafields.custom.pdp_faq_list_items.value
--%}
+{%- assign faq = product.metafields.custom.pdp_faq_list_items.value -%}
 
-{%- if faq_obj != blank -%}
+{%- if faq != blank -%}
+  {%- comment -%} Check that at least one item has content {%- endcomment -%}
   {%- liquid
-    assign faq_items = faq_obj.items.value | default: faq_obj.faq_items.value | default: faq_obj.questions.value
+    assign faq_has_items = false
+    for i in (1..14)
+      assign title_key = 'title_'   | append: i
+      if faq[title_key] != blank
+        assign faq_has_items = true
+        break
+      endif
+    endfor
   -%}
 
-  {%- if faq_items != blank -%}
+  {%- if faq_has_items -%}
     <div class="product-faq">
       <div class="page-width">
         <div class="product-faq__inner">
@@ -30,23 +31,21 @@
           </div>
 
           <div class="product-faq__list">
-            {%- for item in faq_items -%}
+            {%- for i in (1..14) -%}
               {%- liquid
-                assign question = item.question.value | default: item.q.value | default: item.heading.value | default: item.title.value
-                assign answer = item.answer.value | default: item.a.value | default: item.body.value | default: item.content.value
+                assign title_key   = 'title_'   | append: i
+                assign content_key = 'content_' | append: i
+                assign q = faq[title_key]
+                assign a = faq[content_key]
               -%}
-              {%- if question != blank -%}
+              {%- if q != blank -%}
                 <details class="product-faq__item">
                   <summary class="product-faq__question">
-                    <span>{{ question }}</span>
-                    <span class="product-faq__caret" aria-hidden="true">
-                      {%- render 'icon-caret' -%}
-                    </span>
+                    <span>{{ q }}</span>
+                    <span class="product-faq__caret" aria-hidden="true">{%- render 'icon-caret' -%}</span>
                   </summary>
-                  {%- if answer != blank -%}
-                    <div class="product-faq__answer">
-                      {{ answer }}
-                    </div>
+                  {%- if a != blank -%}
+                    <div class="product-faq__answer">{{ a }}</div>
                   {%- endif -%}
                 </details>
               {%- endif -%}
@@ -112,9 +111,7 @@
     gap: 16px;
   }
 
-  .product-faq__question::-webkit-details-marker {
-    display: none;
-  }
+  .product-faq__question::-webkit-details-marker { display: none; }
 
   .product-faq__caret {
     flex-shrink: 0;
@@ -122,9 +119,7 @@
     transition: transform 0.2s ease;
   }
 
-  details[open] .product-faq__caret {
-    transform: rotate(180deg);
-  }
+  details[open] .product-faq__caret { transform: rotate(180deg); }
 
   .product-faq__answer {
     font-size: 14px;
@@ -141,8 +136,14 @@
       grid-template-columns: 1fr;
       gap: 28px;
     }
-    .product-faq {
-      padding: 48px 0;
-    }
+    .product-faq { padding: 48px 0; }
   }
 {% endstyle %}
+
+{% schema %}
+{
+  "name": "Product FAQ",
+  "settings": [],
+  "presets": [{ "name": "Product FAQ" }]
+}
+{% endschema %}

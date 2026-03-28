@@ -1,73 +1,47 @@
 {%- comment -%}
-  Renders: custom.product_features [metaobject_reference]
-  Coverage: 93 of 98 active products
-  Position: Below the ATC button — icon grid of product selling points
-
-  Metaobject type: product_features
-  Expected fields (verify in Shopify Admin > Content > Metaobjects):
-    - heading  [single_line_text_field]
-    - icon     [file_reference]  (optional)
-    - body     [multi_line_text_field or rich_text_field]
-    - items    [list.metaobject_reference] pointing to individual feature items
-
-  NOTE: If product_features is a parent object containing a list of child items,
-  adjust the loop below. If it's a single object with repeating fields, use direct access.
+  Metafield: custom.product_features [metaobject_reference]
+  Metaobject fields (flat numbered pattern):
+    - pdp_feature_heading           [single_line_text_field]
+    - pdp_features_title_1..5       [single_line_text_field]
+    - pdp_features_image_1..5       [file_reference]
+    - pdp_features_pop_up_text_1..5 [single_line_text_field]  (tooltip / sub-label)
 {%- endcomment -%}
 
-{%- liquid
-  assign features_obj = product.metafields.custom.product_features.value
--%}
+{%- assign feat = product.metafields.custom.product_features.value -%}
 
-{%- if features_obj != blank -%}
+{%- if feat != blank -%}
   <div class="product-features">
-
-    {%- comment -%} — Case A: features_obj has a list field called "items" or "features" {%- endcomment -%}
-    {%- assign feature_items = features_obj.items.value | default: features_obj.features.value -%}
-
-    {%- if feature_items != blank -%}
-      <ul class="product-features__list" role="list">
-        {%- for item in feature_items -%}
-          <li class="product-features__item">
-            {%- if item.icon != blank -%}
-              <span class="product-features__icon">
-                {{- item.icon | image_url: width: 48 | image_tag: loading: 'lazy', alt: item.heading -}}
-              </span>
-            {%- endif -%}
-            <div class="product-features__text">
-              {%- if item.heading != blank -%}
-                <strong class="product-features__heading">{{ item.heading }}</strong>
-              {%- endif -%}
-              {%- if item.body != blank -%}
-                <span class="product-features__body">{{ item.body }}</span>
-              {%- endif -%}
-            </div>
-          </li>
-        {%- endfor -%}
-      </ul>
-
-    {%- else -%}
-      {%- comment -%} — Case B: features_obj is a flat object with heading + body fields {%- endcomment -%}
-      {%- if features_obj.heading != blank or features_obj.body != blank -%}
-        <ul class="product-features__list" role="list">
-          <li class="product-features__item">
-            {%- if features_obj.icon != blank -%}
-              <span class="product-features__icon">
-                {{- features_obj.icon | image_url: width: 48 | image_tag: loading: 'lazy' -}}
-              </span>
-            {%- endif -%}
-            <div class="product-features__text">
-              {%- if features_obj.heading != blank -%}
-                <strong class="product-features__heading">{{ features_obj.heading }}</strong>
-              {%- endif -%}
-              {%- if features_obj.body != blank -%}
-                <span class="product-features__body">{{ features_obj.body }}</span>
-              {%- endif -%}
-            </div>
-          </li>
-        </ul>
-      {%- endif -%}
+    {%- if feat.pdp_feature_heading != blank -%}
+      <p class="product-features__heading">{{ feat.pdp_feature_heading }}</p>
     {%- endif -%}
 
+    <ul class="product-features__list" role="list">
+      {%- for i in (1..5) -%}
+        {%- liquid
+          assign title_key = 'pdp_features_title_' | append: i
+          assign image_key = 'pdp_features_image_' | append: i
+          assign popup_key = 'pdp_features_pop_up_text_' | append: i
+          assign feat_title = feat[title_key]
+          assign feat_image = feat[image_key]
+          assign feat_popup = feat[popup_key]
+        -%}
+        {%- if feat_title != blank -%}
+          <li class="product-features__item">
+            {%- if feat_image != blank -%}
+              <span class="product-features__icon" aria-hidden="true">
+                {{- feat_image | image_url: width: 56 | image_tag: loading: 'lazy', alt: '' -}}
+              </span>
+            {%- endif -%}
+            <div class="product-features__text">
+              <strong class="product-features__label">{{ feat_title }}</strong>
+              {%- if feat_popup != blank -%}
+                <span class="product-features__sub">{{ feat_popup }}</span>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
   </div>
 {%- endif -%}
 
@@ -76,7 +50,15 @@
     margin: 20px 0;
     padding: 20px 0;
     border-top: 1px solid var(--brand-gray-200);
-    border-bottom: 1px solid var(--brand-gray-200);
+  }
+
+  .product-features__heading {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brand-cyan);
+    margin-bottom: 14px;
   }
 
   .product-features__list {
@@ -84,47 +66,54 @@
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .product-features__item {
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 calc(50% - 6px);
   }
 
   .product-features__icon {
     flex-shrink: 0;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.85;
   }
 
   .product-features__icon img {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
   }
 
   .product-features__text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
   }
 
-  .product-features__heading {
-    font-size: 14px;
+  .product-features__label {
+    font-size: 13px;
     font-weight: 700;
     color: var(--brand-gray-900);
+    line-height: 1.3;
   }
 
-  .product-features__body {
-    font-size: 13px;
+  .product-features__sub {
+    font-size: 11px;
     color: var(--brand-gray-500);
-    line-height: 1.55;
+    line-height: 1.4;
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-features__item {
+      flex: 0 0 100%;
+    }
   }
 {% endstyle %}

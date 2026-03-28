@@ -1,106 +1,85 @@
 {%- comment -%}
-  Renders: custom.take_inside_content [metaobject_reference]
-           custom.what_goes_inside_text [single_line_text_field]
-           custom.what_goes_inside_image [file_reference]
-  Coverage: 73 / 6 / 6 active products
-  Position: Full-width section below the 2-col product grid — "What's Inside" explainer
-
-  Metaobject type: take_inside_content
-  Expected fields (verify in Shopify Admin > Content > Metaobjects):
-    - heading    [single_line_text_field]
-    - image      [file_reference]
-    - body       [rich_text_field or multi_line_text_field]
-    - items      [list.metaobject_reference] — optional list of layer/component items
+  Metafield: custom.take_inside_content [metaobject_reference]
+  Metaobject fields (flat numbered pattern):
+    - inside_image                    [file_reference]      main product cross-section image
+    - pdp_section_heading             [single_line_text_field]
+    - content_heading_1..4            [single_line_text_field]
+    - content_description_1..4        [multi_line_text_field]
+    - content_icon_1..4               [file_reference]      (optional icon per layer)
+    - content_position_top_side_1..4  [number]              ignored — was used for overlay positioning
+    - content_position_left_side_1..4 [number]              ignored — was used for overlay positioning
 {%- endcomment -%}
 
 {%- liquid
-  assign inside_obj = product.metafields.custom.take_inside_content.value
-  assign inside_text = product.metafields.custom.what_goes_inside_text.value
-  assign inside_image = product.metafields.custom.what_goes_inside_image.value
-  assign show_section = false
-  if inside_obj != blank or inside_text != blank or inside_image != blank
-    assign show_section = true
+  assign wi = product.metafields.custom.take_inside_content.value
+  assign show = false
+  if wi != blank and wi.inside_image != blank
+    assign show = true
   endif
 -%}
 
-{%- if show_section -%}
-  <div class="product-whats-inside color-scheme-2">
+{%- if show -%}
+  <div class="product-whats-inside">
     <div class="page-width">
 
       <p class="product-whats-inside__eyebrow">What's Inside</p>
 
-      {%- if inside_obj != blank -%}
-        <div class="product-whats-inside__grid">
+      <div class="product-whats-inside__grid">
 
-          {%- comment -%} Left: image {%- endcomment -%}
-          {%- liquid
-            assign inside_img = inside_obj.image.value | default: inside_image
-          -%}
-          {%- if inside_img != blank -%}
-            <div class="product-whats-inside__media">
-              {{- inside_img | image_url: width: 700 | image_tag:
-                loading: 'lazy',
-                widths: '375, 550, 700',
-                sizes: '(min-width: 990px) 50vw, 100vw',
-                class: 'product-whats-inside__image'
-              -}}
-            </div>
+        {%- comment -%} Left: product image {%- endcomment -%}
+        <div class="product-whats-inside__media">
+          {{-
+            wi.inside_image
+            | image_url: width: 700
+            | image_tag:
+              loading: 'lazy',
+              widths: '375, 550, 700',
+              sizes: '(min-width: 990px) 50vw, 100vw',
+              class: 'product-whats-inside__image'
+          -}}
+        </div>
+
+        {%- comment -%} Right: heading + numbered layer list {%- endcomment -%}
+        <div class="product-whats-inside__content">
+
+          {%- if wi.pdp_section_heading != blank -%}
+            <h2 class="product-whats-inside__heading">{{ wi.pdp_section_heading }}</h2>
           {%- endif -%}
 
-          {%- comment -%} Right: heading + body + layer list {%- endcomment -%}
-          <div class="product-whats-inside__content">
-            {%- liquid
-              assign inside_heading = inside_obj.heading.value | default: inside_obj.title.value
-              assign inside_body = inside_obj.body.value | default: inside_obj.content.value | default: inside_obj.description.value
-              assign inside_items = inside_obj.items.value | default: inside_obj.layers.value | default: inside_obj.components.value
-            -%}
-
-            {%- if inside_heading != blank -%}
-              <h2 class="product-whats-inside__heading">{{ inside_heading }}</h2>
-            {%- endif -%}
-
-            {%- if inside_body != blank -%}
-              <div class="product-whats-inside__body rte">{{ inside_body }}</div>
-            {%- elsif inside_text != blank -%}
-              <div class="product-whats-inside__body rte">{{ inside_text }}</div>
-            {%- endif -%}
-
-            {%- if inside_items != blank -%}
-              <ul class="product-whats-inside__layers" role="list">
-                {%- for layer in inside_items -%}
-                  <li class="product-whats-inside__layer">
-                    <span class="product-whats-inside__layer-num">{{ forloop.index }}</span>
-                    <div>
-                      {%- if layer.heading != blank -%}
-                        <strong>{{ layer.heading }}</strong>
-                      {%- endif -%}
-                      {%- if layer.body != blank -%}
-                        <span>{{ layer.body }}</span>
-                      {%- endif -%}
-                    </div>
-                  </li>
-                {%- endfor -%}
-              </ul>
-            {%- endif -%}
-          </div>
+          <ul class="product-whats-inside__layers" role="list">
+            {%- for i in (1..4) -%}
+              {%- liquid
+                assign heading_key = 'content_heading_'     | append: i
+                assign desc_key    = 'content_description_' | append: i
+                assign icon_key    = 'content_icon_'        | append: i
+                assign layer_heading = wi[heading_key]
+                assign layer_desc    = wi[desc_key]
+                assign layer_icon    = wi[icon_key]
+              -%}
+              {%- if layer_heading != blank or layer_desc != blank -%}
+                <li class="product-whats-inside__layer">
+                  {%- if layer_icon != blank -%}
+                    <span class="product-whats-inside__layer-icon" aria-hidden="true">
+                      {{- layer_icon | image_url: width: 40 | image_tag: loading: 'lazy', alt: '' -}}
+                    </span>
+                  {%- else -%}
+                    <span class="product-whats-inside__layer-num" aria-hidden="true">{{ i }}</span>
+                  {%- endif -%}
+                  <div class="product-whats-inside__layer-text">
+                    {%- if layer_heading != blank -%}
+                      <strong>{{ layer_heading }}</strong>
+                    {%- endif -%}
+                    {%- if layer_desc != blank -%}
+                      <span>{{ layer_desc }}</span>
+                    {%- endif -%}
+                  </div>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
 
         </div>
-      {%- elsif inside_image != blank or inside_text != blank -%}
-        {%- comment -%} Simpler fallback using flat metafields {%- endcomment -%}
-        <div class="product-whats-inside__grid">
-          {%- if inside_image != blank -%}
-            <div class="product-whats-inside__media">
-              {{- inside_image | image_url: width: 700 | image_tag: loading: 'lazy', class: 'product-whats-inside__image' -}}
-            </div>
-          {%- endif -%}
-          {%- if inside_text != blank -%}
-            <div class="product-whats-inside__content">
-              <div class="product-whats-inside__body rte">{{ inside_text }}</div>
-            </div>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
-
+      </div>
     </div>
   </div>
 {%- endif -%}
@@ -109,7 +88,6 @@
   .product-whats-inside {
     background: var(--brand-gray-50);
     padding: 72px 0;
-    margin-top: 0;
   }
 
   .product-whats-inside__eyebrow {
@@ -140,13 +118,6 @@
     letter-spacing: -0.02em;
     line-height: 1.08;
     color: var(--brand-gray-900);
-    margin-bottom: 16px;
-  }
-
-  .product-whats-inside__body {
-    font-size: 15px;
-    color: var(--brand-gray-600);
-    line-height: 1.78;
     margin-bottom: 24px;
   }
 
@@ -156,7 +127,7 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
   }
 
   .product-whats-inside__layer {
@@ -168,17 +139,10 @@
     line-height: 1.55;
   }
 
-  .product-whats-inside__layer strong {
-    display: block;
-    font-weight: 700;
-    color: var(--brand-gray-900);
-    margin-bottom: 2px;
-  }
-
   .product-whats-inside__layer-num {
     flex-shrink: 0;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     background: var(--brand-navy);
     color: var(--brand-white);
     border-radius: 50%;
@@ -190,13 +154,47 @@
     margin-top: 1px;
   }
 
+  .product-whats-inside__layer-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-whats-inside__layer-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  .product-whats-inside__layer-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .product-whats-inside__layer-text strong {
+    display: block;
+    font-weight: 700;
+    color: var(--brand-gray-900);
+    margin-bottom: 2px;
+  }
+
   @media screen and (max-width: 749px) {
+    .product-whats-inside { padding: 48px 0; }
     .product-whats-inside__grid {
       grid-template-columns: 1fr;
       gap: 32px;
     }
-    .product-whats-inside {
-      padding: 48px 0;
-    }
   }
 {% endstyle %}
+
+{% schema %}
+{
+  "name": "What's Inside",
+  "settings": [],
+  "presets": [{ "name": "What's Inside" }]
+}
+{% endschema %}
