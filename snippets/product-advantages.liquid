@@ -1,0 +1,65 @@
+{%- comment -%}
+  Metafield: custom.product_advantages [list.metaobject_reference]
+  A list of shared advantage entries — each product picks which apply.
+  Metaobject fields (product_advantages type):
+    - image  [file_reference]         advantage icon
+    - text   [single_line_text_field] advantage label
+
+  Rendered as: icon + label rows, similar to the trust strip.
+  Position: after short description, before the main description.
+{%- endcomment -%}
+
+{%- assign advantages = product.metafields.custom.product_advantages.value -%}
+
+{%- if advantages != blank and advantages.size > 0 -%}
+  <ul class="product-advantages" role="list" aria-label="Product advantages">
+    {%- for adv in advantages -%}
+      {%- if adv.text != blank -%}
+        <li class="product-advantages__item">
+          {%- if adv.image != blank -%}
+            <span class="product-advantages__icon" aria-hidden="true">
+              {{- adv.image | image_url: width: 48 | image_tag: loading: 'lazy', alt: '' -}}
+            </span>
+          {%- endif -%}
+          <span class="product-advantages__text">{{ adv.text }}</span>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+{%- endif -%}
+
+{% style %}
+  .product-advantages {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .product-advantages__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--brand-gray-800);
+    line-height: 1.4;
+  }
+
+  .product-advantages__icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-advantages__icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+{% endstyle %}
