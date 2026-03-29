@@ -1,5 +1,6 @@
 {%- comment -%}
   Metafields: custom.pdp_detail_accordions_one / _two / _three / _four
+              custom.pdp_details_accordions_certifications
   Each is a metaobject_reference. Field names vary per accordion:
 
   Accordion 1 (pdp_detail_accordions_one):
@@ -23,15 +24,25 @@
     - accordions_heading                    [single_line_text_field]  (unique key)
     - text                                  [single_line_text_field]
     - pdf_file                              [file_reference]
+
+  Accordion 5 — Certifications (pdp_details_accordions_certifications):
+    Wrapper metaobject with one field:
+    - pdp_details_accordion_certifications  [metaobject_reference]  → pdp_detail_accordions_one
+    The inner metaobject uses the same shape as Accordion 1.
 {%- endcomment -%}
 
 {%- liquid
-  assign acc_1 = product.metafields.custom.pdp_detail_accordions_one.value
-  assign acc_2 = product.metafields.custom.pdp_detail_accordions_two.value
-  assign acc_3 = product.metafields.custom.pdp_detail_accordions_three.value
-  assign acc_4 = product.metafields.custom.pdp_detail_accordions_four.value
+  assign acc_1   = product.metafields.custom.pdp_detail_accordions_one.value
+  assign acc_2   = product.metafields.custom.pdp_detail_accordions_two.value
+  assign acc_3   = product.metafields.custom.pdp_detail_accordions_three.value
+  assign acc_4   = product.metafields.custom.pdp_detail_accordions_four.value
+  assign cert_wrapper = product.metafields.custom.pdp_details_accordions_certifications.value
+  assign acc_cert = nil
+  if cert_wrapper != blank
+    assign acc_cert = cert_wrapper.pdp_details_accordion_certifications
+  endif
   assign has_accordions = false
-  if acc_1 != blank or acc_2 != blank or acc_3 != blank or acc_4 != blank
+  if acc_1 != blank or acc_2 != blank or acc_3 != blank or acc_4 != blank or acc_cert != blank
     assign has_accordions = true
   endif
 -%}
@@ -177,6 +188,36 @@
               aria-label="View PDF — opens in a new tab"
             >View PDF</a>
           {%- endif -%}
+        </div>
+      </details>
+    {%- endif -%}
+
+    {%- comment -%} ── Accordion 5 — Certifications ── {%- endcomment -%}
+    {%- if acc_cert != blank and acc_cert.pdp_detail_accordions_heading != blank -%}
+      <details class="product-accordion">
+        <summary class="product-accordion__trigger">
+          <span class="product-accordion__heading">{{ acc_cert.pdp_detail_accordions_heading }}</span>
+          <span class="product-accordion__caret" aria-hidden="true">{%- render 'icon-caret' -%}</span>
+        </summary>
+        <div class="product-accordion__body">
+          {%- for i in (1..3) -%}
+            {%- liquid
+              assign sub_key     = 'accordions_one_sub_heading_'    | append: i
+              assign content_key = 'accordions_one_detail_content_' | append: i
+              assign sub_val     = acc_cert[sub_key]
+              assign content_val = acc_cert[content_key]
+            -%}
+            {%- if sub_val != blank or content_val != blank -%}
+              <div class="product-accordion__row">
+                {%- if sub_val != blank -%}
+                  <strong class="product-accordion__sub-heading">{{ sub_val }}</strong>
+                {%- endif -%}
+                {%- if content_val != blank -%}
+                  <div class="product-accordion__content">{{ content_val }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
         </div>
       </details>
     {%- endif -%}

@@ -1,0 +1,127 @@
+{%- comment -%}
+  Metafield: custom.pdp_size_chart [metaobject_reference]
+  Metaobject fields (size_chart type):
+    - product_type         [single_line_text_field]  e.g. "Pillow", "Sheet"
+    - size_chart           [single_line_text_field]  button label / guide title
+    - size_chart_icon      [file_reference]          optional icon
+    - size_chart_list_item [multi_line_text_field]   size guide body content
+
+  Rendered as: a "Size Guide" details/summary disclosure near the variant picker.
+  Only shown when the metafield is set and has content.
+{%- endcomment -%}
+
+{%- assign sc = product.metafields.custom.pdp_size_chart.value -%}
+
+{%- if sc != blank and sc.size_chart_list_item != blank -%}
+  {%- assign sc_label = sc.size_chart | default: 'Size Guide' -%}
+  <details class="product-size-chart">
+    <summary class="product-size-chart__trigger">
+      {%- if sc.size_chart_icon != blank -%}
+        <span class="product-size-chart__icon" aria-hidden="true">
+          {{- sc.size_chart_icon | image_url: width: 32 | image_tag: loading: 'lazy', alt: '' -}}
+        </span>
+      {%- else -%}
+        <span class="product-size-chart__icon product-size-chart__icon--default" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10H3"/><path d="M21 6H3"/><path d="M21 14H3"/><path d="M21 18H3"/></svg>
+        </span>
+      {%- endif -%}
+      <span>{{ sc_label }}</span>
+      <span class="product-size-chart__caret" aria-hidden="true">{%- render 'icon-caret' -%}</span>
+    </summary>
+    <div class="product-size-chart__body">
+      {%- if sc.product_type != blank -%}
+        <p class="product-size-chart__product-type">{{ sc.product_type }}</p>
+      {%- endif -%}
+      <div class="product-size-chart__content">{{ sc.size_chart_list_item }}</div>
+    </div>
+  </details>
+{%- endif -%}
+
+{% style %}
+  .product-size-chart {
+    border: 1.5px solid var(--brand-gray-200);
+    border-radius: var(--brand-radius);
+    margin: 12px 0 0;
+    overflow: hidden;
+  }
+
+  .product-size-chart__trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    list-style: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--brand-gray-900);
+    background: var(--brand-gray-50);
+  }
+
+  .product-size-chart__trigger::-webkit-details-marker { display: none; }
+
+  .product-size-chart__icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand-cyan);
+  }
+
+  .product-size-chart__icon img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+
+  .product-size-chart__caret {
+    flex-shrink: 0;
+    margin-left: auto;
+    color: var(--brand-gray-400);
+    transition: transform 0.2s ease;
+  }
+
+  details[open].product-size-chart .product-size-chart__caret { transform: rotate(180deg); }
+
+  .product-size-chart__body {
+    padding: 16px;
+    border-top: 1px solid var(--brand-gray-200);
+    background: var(--brand-white);
+  }
+
+  .product-size-chart__product-type {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brand-gray-500);
+    margin: 0 0 10px;
+  }
+
+  .product-size-chart__content {
+    font-size: 13px;
+    color: var(--brand-gray-700);
+    line-height: 1.7;
+  }
+
+  .product-size-chart__content p { margin: 0 0 8px; }
+  .product-size-chart__content p:last-child { margin-bottom: 0; }
+  .product-size-chart__content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .product-size-chart__content th,
+  .product-size-chart__content td {
+    padding: 8px 10px;
+    text-align: left;
+    border: 1px solid var(--brand-gray-200);
+  }
+  .product-size-chart__content th {
+    background: var(--brand-gray-50);
+    font-weight: 700;
+    color: var(--brand-gray-700);
+  }
+{% endstyle %}
