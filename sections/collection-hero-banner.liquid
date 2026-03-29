@@ -221,6 +221,15 @@
   #CollHero-{{ section.id }} {
     min-height: 280px;
   }
+  /* Tight eyebrow-to-headline grouping: kill Dawn's default h2 top margin */
+  #CollHero-{{ section.id }} .banner__heading {
+    margin-top: 4px;
+  }
+  /* Reduce box padding so content group stays compact and centered */
+  #CollHero-{{ section.id }} .banner__box {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 {%- endstyle -%}
 
 <div
