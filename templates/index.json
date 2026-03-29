@@ -10,7 +10,7 @@
 {
   "sections": {
     "image_banner": {
-      "type": "image-banner",
+      "type": "hero-banner",
       "blocks": {
         "heading": {
           "type": "heading",
