@@ -27,6 +27,22 @@
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
   {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
+
+  <style>
+    .card__product-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .card__product-badge img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      display: block;
+    }
+  </style>
 {%- endunless -%}
 {%- if card_product and card_product != empty -%}
   {%- liquid
@@ -106,6 +122,15 @@
             </div>
           </div>
         {%- endif -%}
+
+        {%- comment -%} Product tile badge — custom.product_badge_image [file_reference] {%- endcomment -%}
+        {%- assign badge_img = card_product.metafields.custom.product_badge_image -%}
+        {%- if badge_img != blank -%}
+          <span class="card__product-badge" aria-hidden="true">
+            {{- badge_img | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' -}}
+          </span>
+        {%- endif -%}
+
         <div class="card__content">
           <div class="card__information">
             <h3
