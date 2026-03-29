@@ -23,6 +23,8 @@
   assign hero_mobile_image = section.settings.mobile_image
   assign hero_video        = section.settings.video
   assign hero_mobile_video = section.settings.mobile_video
+  assign hero_video_url        = section.settings.video_url
+  assign hero_mobile_video_url = section.settings.mobile_video_url
   assign hero_eyebrow      = section.settings.eyebrow
   assign hero_heading      = section.settings.heading
   assign hero_subheading   = section.settings.subheading
@@ -247,21 +249,18 @@
   class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if banner_has_adapt %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}{% if section.settings.force_text_mode != 'none' %} banner--force-text banner--force-{{ section.settings.force_text_mode }}{% endif %}"
 >
 
-  {%- comment -%} Desktop media — video takes priority over image {%- endcomment -%}
-  {%- if hero_video != blank or hero_image != blank -%}
+  {%- comment -%} Desktop media — video (picker) → video_url (direct CDN) → image {%- endcomment -%}
+  {%- if hero_video != blank or hero_video_url != blank or hero_image != blank -%}
     <div class="banner__media block__desktop-image media{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       {%- if hero_video != blank -%}
-        <video
-          class="banner__video"
-          autoplay
-          loop
-          muted
-          playsinline
-          aria-label="{{ hero_alt | escape }}"
-        >
+        <video class="banner__video" autoplay loop muted playsinline aria-label="{{ hero_alt | escape }}">
           {%- for source in hero_video.sources -%}
             <source src="{{ source.url }}" type="{{ source.mime_type }}">
           {%- endfor -%}
+        </video>
+      {%- elsif hero_video_url != blank -%}
+        <video class="banner__video" autoplay loop muted playsinline aria-label="{{ hero_alt | escape }}">
+          <source src="{{ hero_video_url }}" type="video/mp4">
         </video>
       {%- else -%}
         {{
@@ -279,21 +278,18 @@
     </div>
   {%- endif -%}
 
-  {%- comment -%} Mobile media — video takes priority over image {%- endcomment -%}
-  {%- if hero_mobile_video != blank or hero_mobile_image != blank -%}
+  {%- comment -%} Mobile media — video (picker) → video_url (direct CDN) → image {%- endcomment -%}
+  {%- if hero_mobile_video != blank or hero_mobile_video_url != blank or hero_mobile_image != blank -%}
     <div class="banner__media block__mobile-image media{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       {%- if hero_mobile_video != blank -%}
-        <video
-          class="banner__video"
-          autoplay
-          loop
-          muted
-          playsinline
-          aria-label="{{ hero_alt | escape }}"
-        >
+        <video class="banner__video" autoplay loop muted playsinline aria-label="{{ hero_alt | escape }}">
           {%- for source in hero_mobile_video.sources -%}
             <source src="{{ source.url }}" type="{{ source.mime_type }}">
           {%- endfor -%}
+        </video>
+      {%- elsif hero_mobile_video_url != blank -%}
+        <video class="banner__video" autoplay loop muted playsinline aria-label="{{ hero_alt | escape }}">
+          <source src="{{ hero_mobile_video_url }}" type="video/mp4">
         </video>
       {%- else -%}
         {{
@@ -372,13 +368,26 @@
     {
       "type": "video",
       "id": "video",
-      "label": "Desktop Video"
+      "label": "Desktop Video",
+      "info": "Select from Shopify Files via the Customizer"
     },
     {
       "type": "video",
       "id": "mobile_video",
       "label": "Mobile Video",
-      "info": "Optional. Falls back to desktop video on mobile if not set."
+      "info": "Select from Shopify Files via the Customizer"
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "Desktop Video URL",
+      "info": "Direct CDN URL fallback (e.g. https://bedgear.com/cdn/shop/videos/…mp4)"
+    },
+    {
+      "type": "url",
+      "id": "mobile_video_url",
+      "label": "Mobile Video URL",
+      "info": "Direct CDN URL fallback for mobile"
     },
     {
       "type": "header",
