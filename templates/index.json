@@ -1,254 +1,85 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "hero": {
+    "image_banner": {
       "type": "image-banner",
       "blocks": {
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Sleep Like a Champion",
+            "heading": "Browse our latest products",
             "heading_size": "h0"
           }
         },
-        "subheading": {
-          "type": "text",
-          "settings": {
-            "text": "Performance sleep systems engineered for athletes and built for everyone."
-          }
-        },
-        "buttons": {
+        "button": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop Pillows",
-            "button_link_1": "shopify://collections/pillows",
-            "button_style_secondary_1": false,
-            "button_label_2": "Shop All",
-            "button_link_2": "shopify://collections/all",
-            "button_style_secondary_2": true
+            "button_label_1": "Shop all",
+            "button_link_1": "shopify://collections/all",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
           }
         }
       },
       "block_order": [
         "heading",
-        "subheading",
-        "buttons"
-      ],
-      "settings": {
-        "image_height": "large",
-        "desktop_content_position": "bottom-left",
-        "show_text_box": false,
-        "desktop_content_alignment": "left",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "left",
-        "image_overlay_opacity": 45,
-        "image_behavior": "none",
-        "stack_images_on_mobile": false,
-        "show_text_below": false,
-        "banner_video": "shopify://files/videos/spring allergies home page banner cut_1920x768_updated-compress.mp4"
-      }
-    },
-    "trust_strip": {
-      "type": "multicolumn",
-      "blocks": {
-        "col_1": {
-          "type": "column",
-          "settings": {
-            "title": "365-Night Trial",
-            "text": "<p>Sleep on it for a full year. If it’s not right, we make it right—no questions asked.</p>",
-            "link_label": "",
-            "link_url": ""
-          }
-        },
-        "col_2": {
-          "type": "column",
-          "settings": {
-            "title": "Performance Science",
-            "text": "<p>Every product is engineered with athletes’ sleep data and tested by professionals.</p>",
-            "link_label": "",
-            "link_url": ""
-          }
-        },
-        "col_3": {
-          "type": "column",
-          "settings": {
-            "title": "Free Shipping Over $50",
-            "text": "<p>Fast, free delivery on qualifying orders. Ships in 1–2 business days.</p>",
-            "link_label": "",
-            "link_url": ""
-          }
-        },
-        "col_4": {
-          "type": "column",
-          "settings": {
-            "title": "HSA / FSA Eligible",
-            "text": "<p>Select products qualify for pre-tax health savings account spending.</p>",
-            "link_label": "",
-            "link_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "col_1",
-        "col_2",
-        "col_3",
-        "col_4"
-      ],
-      "settings": {
-        "title": "",
-        "heading_size": "h2",
-        "image_width": "third",
-        "image_alignment": "center",
-        "background_style": "none",
-        "button_label": "",
-        "button_link": "",
-        "color_scheme": "scheme-2",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 48,
-        "padding_bottom": 48
-      }
-    },
-    "featured_pillows": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Top-Rated Pillows",
-        "heading_size": "h2",
-        "description": "Engineered for your sleep position. Choose your height, feel the difference.",
-        "show_description": true,
-        "description_style": "body",
-        "collection": "pillows",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": true,
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": true,
-        "quick_add": "standard",
-        "columns_mobile": "2",
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "brand_story": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Built for Athletes. Engineered for Everyone.",
-            "heading_size": "h2"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>BEDGEAR partners with elite athletes and teams across the NBA, NFL, and MLB to understand what peak performance sleep really means. That science—applied to every pillow, sheet, and mattress we make—is now available to you.</p>",
-            "text_style": "body"
-          }
-        },
-        "button": {
-          "type": "button",
-          "settings": {
-            "button_label": "Our Story",
-            "button_link": "shopify://pages/about",
-            "button_style_secondary": true
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text",
         "button"
       ],
       "settings": {
-        "image_position": "right",
-        "color_scheme": "scheme-3",
-        "height": "adapt",
-        "desktop_image_width": "medium",
-        "layout": "image_first",
-        "desktop_content_position": "middle",
-        "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
+        "banner_video": "shopify://files/videos/spring allergies home page banner cut_1920x768_updated-compress.mp4",
+        "image_overlay_opacity": 40,
+        "image_height": "large",
         "image_behavior": "none",
-        "mobile_content_alignment": "left",
-        "padding_top": 0,
-        "padding_bottom": 0
+        "desktop_content_position": "bottom-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
       }
     },
-    "featured_mattresses": {
+    "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Performance Mattresses",
+        "collection": "all",
+        "products_to_show": 8,
+        "title": "Featured products",
         "heading_size": "h2",
-        "description": "Temperature regulation, pressure relief, and support—dialed in for how you sleep.",
-        "show_description": true,
+        "description": "",
+        "show_description": false,
         "description_style": "body",
-        "collection": "mattresses",
-        "products_to_show": 4,
         "columns_desktop": 4,
-        "color_scheme": "scheme-2",
+        "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": true,
-        "image_ratio": "square",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
-        "show_rating": true,
-        "quick_add": "standard",
+        "show_rating": false,
+        "quick_add": "none",
         "columns_mobile": "2",
-        "padding_top": 60,
-        "padding_bottom": 60
-      }
-    },
-    "email_signup": {
-      "type": "newsletter",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Sleep Better, Starting Tonight"
-          }
-        },
-        "subheading": {
-          "type": "subheading",
-          "settings": {
-            "text": "Get performance sleep tips, exclusive offers, and early access to new products."
-          }
-        },
-        "email_form": {
-          "type": "email_form",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "heading",
-        "subheading",
-        "email_form"
-      ],
-      "settings": {
-        "color_scheme": "scheme-3",
-        "full_width": true,
-        "padding_top": 64,
-        "padding_bottom": 64
+        "swipe_on_mobile": false,
+        "padding_top": 44,
+        "padding_bottom": 36
       }
     }
   },
   "order": [
-    "hero",
-    "trust_strip",
-    "featured_pillows",
-    "brand_story",
-    "featured_mattresses",
-    "email_signup"
+    "image_banner",
+    "featured_collection"
   ]
 }
