@@ -147,6 +147,10 @@
         "truemed_link": ""
       }
     },
+    "pdp_banner": {
+      "type": "product-pdp-banner",
+      "settings": {}
+    },
     "whats_inside": {
       "type": "product-whats-inside",
       "settings": {}
@@ -235,6 +239,7 @@
   },
   "order": [
     "main",
+    "pdp_banner",
     "whats_inside",
     "image_with_text",
     "faq",

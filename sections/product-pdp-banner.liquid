@@ -1,0 +1,120 @@
+{%- comment -%}
+  Metafield: custom.pdp_banner_items [metaobject_reference]
+  Metaobject fields (pdp_banner_items type):
+    - image    [file_reference]         full-width background image or video
+    - heading  [single_line_text_field] overlay headline
+    - text     [single_line_text_field] overlay subtext
+
+  Rendered as: a full-width lifestyle banner — media fills the background,
+  heading + text are centred on top. Only 6 products use this.
+  Position: between the main product section and What's Inside.
+{%- endcomment -%}
+
+{%- assign banner = product.metafields.custom.pdp_banner_items.value -%}
+
+{%- if banner != blank and banner.image != blank -%}
+  <div class="pdp-banner">
+
+    {%- comment -%} Background media {%- endcomment -%}
+    <div class="pdp-banner__media" aria-hidden="true">
+      {%- if banner.image.media_type == 'video' -%}
+        {{-
+          banner.image
+          | video_tag:
+            autoplay: true,
+            loop: true,
+            muted: true,
+            controls: false,
+            playsinline: true,
+            class: 'pdp-banner__video'
+        -}}
+      {%- else -%}
+        {{-
+          banner.image
+          | image_url: width: 1800
+          | image_tag:
+            loading: 'lazy',
+            widths: '750, 1100, 1500, 1800',
+            sizes: '100vw',
+            class: 'pdp-banner__image'
+        -}}
+      {%- endif -%}
+    </div>
+
+    {%- if banner.heading != blank or banner.text != blank -%}
+      <div class="pdp-banner__content">
+        {%- if banner.heading != blank -%}
+          <h2 class="pdp-banner__heading">{{ banner.heading }}</h2>
+        {%- endif -%}
+        {%- if banner.text != blank -%}
+          <p class="pdp-banner__text">{{ banner.text }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+{%- endif -%}
+
+{% style %}
+  .pdp-banner {
+    position: relative;
+    overflow: hidden;
+    min-height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pdp-banner__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .pdp-banner__image,
+  .pdp-banner__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .pdp-banner__content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 48px 24px;
+    max-width: 720px;
+    margin-inline: auto;
+  }
+
+  .pdp-banner__heading {
+    font-size: clamp(28px, 4vw, 56px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--brand-white);
+    text-shadow: 0 2px 16px rgba(0,0,0,0.35);
+    margin: 0 0 16px;
+  }
+
+  .pdp-banner__text {
+    font-size: clamp(14px, 1.5vw, 18px);
+    color: rgba(255,255,255,0.9);
+    line-height: 1.6;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+    margin: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .pdp-banner { min-height: 240px; }
+    .pdp-banner__content { padding: 36px 20px; }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "PDP Banner",
+  "settings": [],
+  "presets": [{ "name": "PDP Banner" }]
+}
+{% endschema %}
