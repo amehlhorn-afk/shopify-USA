@@ -253,13 +253,13 @@
   {%- if hero_video != blank or hero_video_url != blank or hero_image != blank -%}
     <div class="banner__media block__desktop-image media{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       {%- if hero_video != blank -%}
-        <video class="banner__video" autoplay loop muted playsinline aria-label="{{ hero_alt | escape }}">
+        <video class="banner__video" autoplay loop muted playsinline preload="auto" aria-label="{{ hero_alt | escape }}">
           {%- for source in hero_video.sources -%}
             <source src="{{ source.url }}" type="{{ source.mime_type }}">
           {%- endfor -%}
         </video>
       {%- elsif hero_video_url != blank -%}
-        <video class="banner__video" autoplay loop muted playsinline aria-label="{{ hero_alt | escape }}">
+        <video class="banner__video" autoplay loop muted playsinline preload="auto" aria-label="{{ hero_alt | escape }}">
           <source src="{{ hero_video_url }}" type="video/mp4">
         </video>
       {%- else -%}
@@ -282,13 +282,13 @@
   {%- if hero_mobile_video != blank or hero_mobile_video_url != blank or hero_mobile_image != blank -%}
     <div class="banner__media block__mobile-image media{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       {%- if hero_mobile_video != blank -%}
-        <video class="banner__video" autoplay loop muted playsinline aria-label="{{ hero_alt | escape }}">
+        <video class="banner__video" autoplay loop muted playsinline preload="auto" aria-label="{{ hero_alt | escape }}">
           {%- for source in hero_mobile_video.sources -%}
             <source src="{{ source.url }}" type="{{ source.mime_type }}">
           {%- endfor -%}
         </video>
       {%- elsif hero_mobile_video_url != blank -%}
-        <video class="banner__video" autoplay loop muted playsinline aria-label="{{ hero_alt | escape }}">
+        <video class="banner__video" autoplay loop muted playsinline preload="auto" aria-label="{{ hero_alt | escape }}">
           <source src="{{ hero_mobile_video_url }}" type="video/mp4">
         </video>
       {%- else -%}
