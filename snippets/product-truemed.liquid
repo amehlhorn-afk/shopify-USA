@@ -56,38 +56,42 @@
 {%- endif -%}
 
 {% style %}
-  /* ── Truemed callout row ─────────────────────────────────────────────── */
+  /* ── Truemed / HSA-FSA callout ──────────────────────────────────────── */
   .product-truemed {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 14px;
-    padding: 13px 16px;
-    border: 1.5px solid var(--brand-gray-200);
-    border-radius: var(--brand-radius-lg);
-    background: var(--brand-white);
+    gap: 8px;
+    padding: 7px 12px;
+    border: 1px solid #c5d9ff;
+    border-radius: 6px;
+    background: #f0f5ff;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 2px;
   }
 
   .product-truemed__badge {
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
-    padding: 5px 10px;
-    background: var(--brand-navy);
+    padding: 4px 7px;
+    background: #1a3fa0;
     color: #fff;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
     white-space: nowrap;
-    line-height: 1;
+    line-height: 1.3;
   }
 
   .product-truemed__text {
     flex: 1;
-    font-size: 13px;
+    font-size: 12.5px;
     color: var(--brand-gray-700);
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.45;
   }
 
   .product-truemed__text strong {
@@ -97,9 +101,9 @@
 
   .product-truemed__link {
     flex-shrink: 0;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    color: var(--brand-gray-500);
+    color: #1a3fa0;
     text-decoration: underline;
     text-underline-offset: 2px;
     white-space: nowrap;
@@ -108,12 +112,5 @@
 
   .product-truemed__link:hover {
     color: var(--brand-cyan);
-  }
-
-  @media screen and (max-width: 749px) {
-    .product-truemed {
-      flex-wrap: wrap;
-      gap: 10px;
-    }
   }
 {% endstyle %}
