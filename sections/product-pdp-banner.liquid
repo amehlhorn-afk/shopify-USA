@@ -11,8 +11,9 @@
 {%- endcomment -%}
 
 {%- assign banner = product.metafields.custom.pdp_banner_items.value -%}
+{%- assign banner_media_type = banner.image.media_type -%}
 
-{%- if banner != blank and banner.image != blank -%}
+{%- if banner != blank and banner_media_type != blank -%}
   <div class="pdp-banner">
 
     {%- comment -%} Background media {%- endcomment -%}
