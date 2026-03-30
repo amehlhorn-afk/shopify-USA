@@ -7,26 +7,83 @@
 <div id="pr-reviewsnippet" class="pr-rating-snippet"></div>
 
 {% style %}
-  /* Inline star snippet — sits between title and short description */
+  /* ── PowerReviews inline snippet ──────────────────────────────────── */
   .pr-rating-snippet {
-    min-height: 28px;
-    margin-bottom: 8px;
+    min-height: 24px;
+    margin-bottom: 10px;
   }
 
-  /* PowerReviews overrides — keep brand fonts & colors */
   #pr-reviewsnippet .p-w-r,
   #pr-reviewsnippet .p-w-r * {
     font-family: var(--font-body-family) !important;
   }
 
-  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-snippet-read-and-write a,
-  #pr-reviewsnippet .pr-snippet-review-count {
+  /* Stars — amber */
+  #pr-reviewsnippet .pr-star-v4 {
+    color: #f59e0b !important;
+  }
+
+  /* Score + review count — inline, muted */
+  #pr-reviewsnippet .pr-snippet-review-count,
+  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-snippet-read-and-write a {
     color: var(--brand-cyan) !important;
-    font-size: 13px !important;
+    font-size: 12px !important;
     font-weight: 600 !important;
   }
 
-  #pr-reviewsnippet .pr-star-v4 {
-    color: #f59e0b !important; /* amber stars */
+  /* ── "X% recommend" — strip the box, render as inline plain text ── */
+  /* Remove bordered container */
+  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-reco-to-friend,
+  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-reco {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 0 0 4px !important;
+    border-radius: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+  }
+
+  /* Percentage number — match score weight */
+  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-reco-value,
+  #pr-reviewsnippet .pr-reco-value {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #111 !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  /* "of respondents would recommend this to a friend" label — subtle */
+  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-reco-to-friend span:not(.pr-reco-value),
+  #pr-reviewsnippet .pr-reco-to-friend span:not(.pr-reco-value) {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: #6b7280 !important;
+  }
+
+  /* Separator dot before the reco block */
+  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-reco-to-friend::before {
+    content: "·";
+    color: #9ca3af;
+    font-size: 12px;
+    margin-right: 4px;
+  }
+
+  /* Remove any PR icon/checkmark inside reco */
+  #pr-reviewsnippet .pr-reco-to-friend .pr-thumbs-icon,
+  #pr-reviewsnippet .pr-reco-to-friend svg {
+    display: none !important;
+  }
+
+  /* Keep the whole snippet row flex */
+  #pr-reviewsnippet .pr-snippet-stars-reco-inline {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
   }
 {% endstyle %}
