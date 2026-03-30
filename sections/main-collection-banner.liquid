@@ -9,37 +9,47 @@
   }
 {%- endstyle -%}
 
-<div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
+{%- liquid
+  comment
+    Metafield overrides: custom.collection_title, custom.collection_description,
+    custom.collection_image [13 collections]. Take priority over built-in fields.
+  endcomment
+  assign banner_title       = collection.metafields.custom.collection_title | default: collection.title
+  assign banner_description = collection.metafields.custom.collection_description | default: collection.description
+  assign banner_image       = collection.metafields.custom.collection_image
+  if banner_image == blank
+    assign banner_image = collection.image
+  endif
+  assign has_image = false
+  if section.settings.show_collection_image and banner_image != blank
+    assign has_image = true
+  endif
+-%}
+
+<div class="collection-hero{% if has_image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
   <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
     <div class="collection-hero__text-wrapper">
       <h1 class="collection-hero__title">
         <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
-        {{- collection.title | escape -}}
+        {{- banner_title | escape -}}
       </h1>
 
-      {%- if section.settings.show_collection_description -%}
-        <div class="collection-hero__description rte">{{ collection.description }}</div>
+      {%- if section.settings.show_collection_description and banner_description != blank -%}
+        <div class="collection-hero__description rte">{{ banner_description }}</div>
       {%- endif -%}
     </div>
 
-    {%- if section.settings.show_collection_image and collection.image -%}
+    {%- if has_image -%}
       <div class="collection-hero__image-container media gradient">
-        <img
-          srcset="
-            {%- if collection.image.width >= 165 -%}{{ collection.image | image_url: width: 165 }} 165w,{%- endif -%}
-            {%- if collection.image.width >= 360 -%}{{ collection.image | image_url: width: 360 }} 360w,{%- endif -%}
-            {%- if collection.image.width >= 535 -%}{{ collection.image | image_url: width: 535 }} 535w,{%- endif -%}
-            {%- if collection.image.width >= 750 -%}{{ collection.image | image_url: width: 750 }} 750w,{%- endif -%}
-            {%- if collection.image.width >= 1070 -%}{{ collection.image | image_url: width: 1070 }} 1070w,{%- endif -%}
-            {%- if collection.image.width >= 1500 -%}{{ collection.image | image_url: width: 1500 }} 1500w,{%- endif -%}
-            {{ collection.image | image_url }} {{ collection.image.width }}w
-          "
-          src="{{ collection.image | image_url: width: 750 }}"
-          sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)"
-          alt="{{ collection.image.alt | escape }}"
-          width="{{ collection.image.width }}"
-          height="{{ collection.image.height }}"
-        >
+        {{-
+          banner_image
+          | image_url: width: 750
+          | image_tag:
+            loading: 'lazy',
+            widths: '165, 360, 535, 750, 1070, 1500',
+            sizes: '(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)',
+            alt: banner_title
+        -}}
       </div>
     {%- endif -%}
   </div>
