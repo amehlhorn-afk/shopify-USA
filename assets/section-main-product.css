@@ -1492,3 +1492,60 @@ a.product__text {
     border: none;
   }
 }
+
+/* ── Lovable PDP carousel overrides ────────────────────────────────────── */
+
+/* Main product media area — square, light grey bg, rounded */
+@media screen and (min-width: 750px) {
+  .product__media-wrapper .product__media-item .media,
+  .product__media-wrapper .product__media-item img {
+    border-radius: 12px;
+    background: #f5f7f9;
+    border: 1px solid #dde1e6;
+  }
+}
+
+/* Thumbnail strip — 5-col grid, 8px gap */
+@media screen and (min-width: 750px) {
+  .thumbnail-list {
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 8px;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .thumbnail-list,
+  .product--medium .thumbnail-list,
+  .product--large .thumbnail-list {
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 8px;
+  }
+}
+
+/* Thumbnail item — square aspect, rounded, light border */
+.thumbnail-list__item {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.thumbnail-list__item .media,
+.thumbnail-list__item img {
+  border: 2px solid #dde1e6;
+  border-radius: 8px;
+  transition: border-color 0.15s ease;
+  cursor: pointer;
+}
+
+/* Active thumbnail — cyan border */
+.thumbnail-list__item.is-active .media,
+.thumbnail-list__item.is-active img,
+.thumbnail-list__item:has(input:checked) .media,
+.thumbnail-list__item:has(input:checked) img {
+  border-color: #00b5e3;
+}
+
+/* Thumbnail hover */
+.thumbnail-list__item:not(.is-active) .media:hover,
+.thumbnail-list__item:not(.is-active) img:hover {
+  border-color: #9ca3af;
+}

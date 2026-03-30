@@ -202,10 +202,11 @@
     }
   }
 
-  /* Content max-width */
+  /* Content max-width — margin: auto centers it within the full-width banner__box */
   #CollHero-{{ section.id }} .coll-hero__content-inner {
     max-width: {{ section.settings.content_max_width }}px;
     width: 100%;
+    margin: 0 auto;
   }
   @media (max-width: 749px) {
     #CollHero-{{ section.id }} .coll-hero__content-inner {
@@ -282,13 +283,13 @@
   {%- if hero_mobile_video != blank or hero_mobile_video_url != blank or hero_mobile_image != blank -%}
     <div class="banner__media block__mobile-image media{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       {%- if hero_mobile_video != blank -%}
-        <video class="banner__video" autoplay loop muted playsinline preload="auto" aria-label="{{ hero_alt | escape }}">
+        <video class="banner__video" autoplay loop muted playsinline preload="none" aria-label="{{ hero_alt | escape }}">
           {%- for source in hero_mobile_video.sources -%}
             <source src="{{ source.url }}" type="{{ source.mime_type }}">
           {%- endfor -%}
         </video>
       {%- elsif hero_mobile_video_url != blank -%}
-        <video class="banner__video" autoplay loop muted playsinline preload="auto" aria-label="{{ hero_alt | escape }}">
+        <video class="banner__video" autoplay loop muted playsinline preload="none" aria-label="{{ hero_alt | escape }}">
           <source src="{{ hero_mobile_video_url }}" type="video/mp4">
         </video>
       {%- else -%}
