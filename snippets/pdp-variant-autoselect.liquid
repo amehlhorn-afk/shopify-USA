@@ -44,82 +44,64 @@
     endif
   -%}
 
-  {%- if target_variant != nil and target_variant.id != product.selected_or_first_available_variant.id -%}
-    <script>
-    (function () {
-      var targetVariantId = {{ target_variant.id }};
-      var targetOptions  = {{ target_variant.options | json }};
+  {%- comment -%} Always emit sort script so numeric pills are reordered regardless of auto-select {%- endcomment -%}
+  <script>
+  (function () {
+    // Sort numeric variant option pills ascending (e.g. 0.0 leftmost before 1.0, 2.0, 3.0)
+    function sortNumericPills() {
+      document.querySelectorAll('.product-form__input--pill').forEach(function(group) {
+        var pairs = [];
+        var inputs = group.querySelectorAll('input[type="radio"]');
+        inputs.forEach(function(input) {
+          var label = group.querySelector('label[for="' + input.id + '"]');
+          if (label) pairs.push({ input: input, label: label });
+        });
+        if (pairs.length < 2) return;
+        var allNumeric = pairs.every(function(p) {
+          return !isNaN(parseFloat(p.input.value)) && p.input.value.trim() !== '';
+        });
+        if (!allNumeric) return;
+        pairs.sort(function(a, b) { return parseFloat(a.input.value) - parseFloat(b.input.value); });
+        pairs.forEach(function(p) { group.appendChild(p.input); group.appendChild(p.label); });
+      });
+    }
 
-      function selectVariant() {
-        // Dawn renders one radio group per option. Click the matching value in each group.
-        var optionGroups = document.querySelectorAll('.product-form__input--pill, .product-form__input--dropdown, .product-form__input--swatch');
-
-        optionGroups.forEach(function (group, idx) {
-          var optionValue = targetOptions[idx];
-          if (!optionValue) return;
-
-          // Radio (pill / swatch)
-          var radio = group.querySelector('input[type="radio"][value=' + JSON.stringify(optionValue) + ']');
-          if (radio && !radio.checked && !radio.disabled) {
-            radio.click();
-            return;
-          }
-
-          // Select dropdown
-          var sel = group.querySelector('select');
-          if (sel) {
-            for (var i = 0; i < sel.options.length; i++) {
-              if (sel.options[i].value === optionValue) {
-                sel.selectedIndex = i;
-                sel.dispatchEvent(new Event('change', { bubbles: true }));
-                break;
-              }
+    {%- if target_variant != nil and target_variant.id != product.selected_or_first_available_variant.id -%}
+    var targetOptions = {{ target_variant.options | json }};
+    function selectVariant() {
+      var optionGroups = document.querySelectorAll('.product-form__input--pill, .product-form__input--dropdown, .product-form__input--swatch');
+      optionGroups.forEach(function (group, idx) {
+        var optionValue = targetOptions[idx];
+        if (!optionValue) return;
+        var radio = group.querySelector('input[type="radio"][value=' + JSON.stringify(optionValue) + ']');
+        if (radio && !radio.checked && !radio.disabled) { radio.click(); return; }
+        var sel = group.querySelector('select');
+        if (sel) {
+          for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value === optionValue) {
+              sel.selectedIndex = i;
+              sel.dispatchEvent(new Event('change', { bubbles: true }));
+              break;
             }
           }
-        });
-      }
+        }
+      });
+    }
+    {%- endif -%}
 
-      // Sort numeric variant option pills ascending (e.g. 0.0 leftmost before 1.0, 2.0, 3.0)
-      function sortNumericPills() {
-        document.querySelectorAll('.product-form__input--pill').forEach(function(group) {
-          // Collect input+label node pairs
-          var pairs = [];
-          var inputs = group.querySelectorAll('input[type="radio"]');
-          inputs.forEach(function(input) {
-            var label = group.querySelector('label[for="' + input.id + '"]');
-            if (label) pairs.push({ input: input, label: label });
-          });
-          if (pairs.length < 2) return;
-
-          // Only sort if all values are numeric
-          var allNumeric = pairs.every(function(p) {
-            return !isNaN(parseFloat(p.input.value)) && p.input.value.trim() !== '';
-          });
-          if (!allNumeric) return;
-
-          pairs.sort(function(a, b) {
-            return parseFloat(a.input.value) - parseFloat(b.input.value);
-          });
-
-          // Re-append pairs in sorted order (input before its label)
-          pairs.forEach(function(p) {
-            group.appendChild(p.input);
-            group.appendChild(p.label);
-          });
-        });
-      }
-
-      // Run after Dawn's variant picker custom elements have initialised
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function () {
-          setTimeout(sortNumericPills, 50);
-          setTimeout(selectVariant, 150);
-        });
-      } else {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
         setTimeout(sortNumericPills, 50);
+        {%- if target_variant != nil and target_variant.id != product.selected_or_first_available_variant.id -%}
         setTimeout(selectVariant, 150);
-      }
-    })();
-    </script>
-  {%- endif -%}
+        {%- endif -%}
+      });
+    } else {
+      setTimeout(sortNumericPills, 50);
+      {%- if target_variant != nil and target_variant.id != product.selected_or_first_available_variant.id -%}
+      setTimeout(selectVariant, 150);
+      {%- endif -%}
+    }
+  })();
+  </script>
 {%- endif -%}

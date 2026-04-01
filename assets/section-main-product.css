@@ -1569,6 +1569,11 @@ a.product__text {
   border-color: #9ca3af;
 }
 
+/* ── Show gallery nav arrows on desktop (overrides Dawn's thumbnail-layout hide) ── */
+.product__media-wrapper .slider-mobile-gutter .slider-button {
+  display: flex !important;
+}
+
 /* ── TrueMed HSA/FSA widget — styled to match BEDGEAR blue-pill design ── */
 [id^="truemed-instructions"] {
   display: flex;
