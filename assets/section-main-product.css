@@ -1505,35 +1505,55 @@ a.product__text {
   }
 }
 
-/* Thumbnail strip — 5-col grid, 8px gap */
-@media screen and (min-width: 750px) {
-  .thumbnail-list {
-    grid-template-columns: repeat(5, 1fr);
-    grid-gap: 8px;
-  }
+/* ── Thumbnail strip: single horizontal scrollable row ── */
+.thumbnail-list {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  grid-template-columns: unset !important;
+  align-items: flex-start;
+  gap: 8px !important;
+  grid-gap: 8px !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+  /* hide scrollbar but keep scrollability */
+  scrollbar-width: none;
 }
 
-@media screen and (min-width: 990px) {
-  .thumbnail-list,
-  .product--medium .thumbnail-list,
-  .product--large .thumbnail-list {
-    grid-template-columns: repeat(5, 1fr);
-    grid-gap: 8px;
-  }
+.thumbnail-list::-webkit-scrollbar {
+  display: none;
 }
 
-/* Thumbnail item — square aspect, rounded, light border */
+/* Each thumbnail: fixed 80×80px square, never shrinks */
 .thumbnail-list__item {
+  flex: 0 0 80px !important;
+  width: 80px !important;
+  height: 80px !important;
   border-radius: 8px;
   overflow: hidden;
+  scroll-snap-align: start;
+  /* remove the padding-bottom aspect-ratio hack */
+  position: static;
 }
 
+.thumbnail-list__item::before {
+  display: none !important;
+}
+
+/* Thumbnail image fills the fixed box */
 .thumbnail-list__item .media,
 .thumbnail-list__item img {
+  width: 80px !important;
+  height: 80px !important;
+  object-fit: cover;
   border: 2px solid #dde1e6;
   border-radius: 8px;
   transition: border-color 0.15s ease;
   cursor: pointer;
+  position: static !important;
 }
 
 /* Active thumbnail — cyan border */
