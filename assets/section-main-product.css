@@ -1634,6 +1634,11 @@ a.product__text {
   text-decoration: none !important;
 }
 
+/* Force white on pill — overrides .truemed-entry-text color since span carries both classes */
+[id^="truemed-instructions"] span.truemed-instructions-link-text {
+  color: #fff !important;
+}
+
 /* Truemed logo SVG — hide it */
 [id^="truemed-instructions"] .truemed-entry-text-container svg {
   display: none !important;
