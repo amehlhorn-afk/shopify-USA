@@ -12,17 +12,82 @@
   if section.blocks.size > 0
     assign announcement_bar = true
   endif
+
+  assign show_store_locator = section.settings.show_store_locator
+  assign show_phone = section.settings.show_phone
+
+  assign has_left = false
+  if section.settings.show_social and social_icons
+    assign has_left = true
+  endif
+  if show_store_locator
+    assign has_left = true
+  endif
+
+  assign has_right = false
+  if language_country_selector
+    assign has_right = true
+  endif
+  if show_phone
+    assign has_right = true
+  endif
 -%}
 
 {% if social_icons %}
   {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
 {% endif %}
 
+{%- if show_store_locator or show_phone -%}
+<style>
+  .utility-bar__store-locator {
+    grid-area: social-icons;
+    display: flex;
+    align-items: center;
+  }
+  .utility-bar__store-locator-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: currentColor;
+    text-decoration: none;
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
+  .utility-bar__store-locator-link:hover { text-decoration: underline; }
+  .utility-bar__store-locator-link svg { flex-shrink: 0; }
+  .utility-bar__phone-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: currentColor;
+    text-decoration: none;
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
+  .utility-bar__phone-link:hover { text-decoration: underline; }
+  .utility-bar__phone-link svg { flex-shrink: 0; }
+</style>
+{%- endif -%}
+
 <div
   class="utility-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only{% endif %}{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}"
+  {{ block.shopify_attributes }}
 >
-  <div class="utility-bar__grid{% if announcement_bar and language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--3-col{% elsif language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--2-col{% endif %}">
-    {%- if section.settings.show_social and social_icons -%}
+  <div class="page-width utility-bar__grid{% if announcement_bar and (has_left or has_right) or has_left and has_right %} utility-bar__grid--3-col{% elsif has_left or has_right %} utility-bar__grid--2-col{% endif %}">
+    {%- if show_store_locator -%}
+      <div class="utility-bar__store-locator">
+        <a
+          href="{{ section.settings.store_location_url }}"
+          class="utility-bar__store-locator-link"
+          aria-label="{{ section.settings.store_locator }}"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+          <span id="util-bar-store-text">{{ section.settings.store_locator | default: 'Store Locator' }}</span>
+        </a>
+      </div>
+    {%- elsif section.settings.show_social and social_icons -%}
       {%- render 'social-icons' -%}
     {%- endif -%}
     {%- if section.blocks.size == 1 -%}
@@ -30,7 +95,7 @@
         class="announcement-bar{% if section.settings.show_social %} announcement-bar--one-announcement{% endif %}"
         role="region"
         aria-label="{{ 'sections.header.announcement' | t }}"
-        {{ section.blocks.first.shopify_attributes }}
+        {{ block.shopify_attributes }}
       >
         {%- if section.blocks.first.settings.text != blank -%}
           {%- if section.blocks.first.settings.link != blank -%}
@@ -39,7 +104,7 @@
               class="announcement-bar__link link link--text focus-inset animate-arrow"
             >
           {%- endif -%}
-          <p class="announcement-bar__message h5">
+          <p class="announcement-bar__message extreme_small_body">
             <span>{{ section.blocks.first.settings.text | escape }}</span>
             {%- if section.blocks.first.settings.link != blank -%}
               {{- 'icon-arrow.svg' | inline_asset_content -}}
@@ -91,6 +156,7 @@
                   class="announcement-bar__announcement"
                   role="region"
                   aria-label="{{ 'sections.header.announcement' | t }}"
+                  {{ block.shopify_attributes }}
                 >
                   {%- if block.settings.text != blank -%}
                     {%- if block.settings.link != blank -%}
@@ -137,11 +203,23 @@
       {%- endif -%}
     {%- endif -%}
     <div class="localization-wrapper">
+      {%- if show_phone -%}
+        <a
+          href="{{ section.settings.phone_url }}"
+          class="utility-bar__phone-link small-hide medium-hide"
+          aria-label="{{ section.settings.phone_number }}"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+          </svg>
+          <span>{{ section.settings.phone_number }}</span>
+        </a>
+      {%- endif -%}
       {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
         <localization-form class="small-hide medium-hide">
           {%- form 'localization', id: 'AnnouncementCountryForm', class: 'localization-form' -%}
             <div>
-              <h2 class="visually-hidden" id="AnnouncementCountryLabel">{{ 'localization.country_label' | t }}</h2>
+              <span class="visually-hidden h2" id="AnnouncementCountryLabel">{{ 'localization.country_label' | t }}</span>
               {%- render 'country-localization', localPosition: 'AnnouncementCountry' -%}
             </div>
           {%- endform -%}
@@ -152,7 +230,7 @@
         <localization-form class="small-hide medium-hide">
           {%- form 'localization', id: 'AnnouncementLanguageForm', class: 'localization-form' -%}
             <div>
-              <h2 class="visually-hidden" id="AnnouncementLanguageLabel">{{ 'localization.language_label' | t }}</h2>
+              <span class="visually-hidden h2" id="AnnouncementLanguageLabel">{{ 'localization.language_label' | t }}</span>
               {%- render 'language-localization', localPosition: 'AnnouncementLanguage' -%}
             </div>
           {%- endform -%}
@@ -161,6 +239,84 @@
     </div>
   </div>
 </div>
+
+{%- if show_store_locator and section.settings.enable_store_distance -%}
+<script>
+(function () {
+  'use strict';
+  var STOREROCKET_ACCOUNT = 'aKpDxjopdR';
+  var storeEl = document.getElementById('util-bar-store-text');
+
+  if (!storeEl || !navigator.geolocation) return;
+
+  function haversine(lat1, lng1, lat2, lng2) {
+    var R = 3958.8; // Earth radius in miles
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLng = (lng2 - lng1) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  function findNearest(stores, lat, lng) {
+    var nearest = null;
+    var minDist = Infinity;
+    for (var i = 0; i < stores.length; i++) {
+      var s = stores[i];
+      var sLat = parseFloat(s.lat);
+      var sLng = parseFloat(s.lng);
+      if (isNaN(sLat) || isNaN(sLng)) continue;
+      var d = haversine(lat, lng, sLat, sLng);
+      if (d < minDist) { minDist = d; nearest = s; }
+    }
+    return nearest ? { store: nearest, distance: minDist } : null;
+  }
+
+  function updateUI(store, distance) {
+    var miles = distance < 10 ? distance.toFixed(1) : Math.round(distance);
+    var city = (store.city || '').trim();
+    var state = (store.state || store.province || '').trim();
+    var location = city && state ? city + ', ' + state : city || state;
+    storeEl.textContent = location
+      ? location + ' \u2014 ' + miles + ' mi'
+      : miles + ' mi away';
+  }
+
+  function fetchAndUpdate(lat, lng) {
+    fetch('https://api.storerocket.io/api/user/' + STOREROCKET_ACCOUNT + '/locations')
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (data) {
+        var locs = (data.result && data.result.locations) || data.locations || [];
+        // Prefer retail locations (filter id 141893) over hospitality
+        var retail = locs.filter(function (s) {
+          if (!s.filters) return true;
+          return s.filters.indexOf(141893) !== -1 || s.filters.indexOf('141893') !== -1;
+        });
+        var pool = retail.length > 0 ? retail : locs;
+        var result = findNearest(pool, lat, lng);
+        if (result) updateUI(result.store, result.distance);
+      })
+      .catch(function () { /* silent fail — default label stays */ });
+  }
+
+  function requestGeo() {
+    navigator.geolocation.getCurrentPosition(
+      function (pos) { fetchAndUpdate(pos.coords.latitude, pos.coords.longitude); },
+      function () { /* denied — keep default label */ },
+      { timeout: 10000, maximumAge: 600000 }
+    );
+  }
+
+  // Lazy: wait for browser idle before requesting location permission
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(requestGeo, { timeout: 3000 });
+  } else {
+    setTimeout(requestGeo, 1500);
+  }
+}());
+</script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -171,6 +327,82 @@
     "groups": ["header"]
   },
   "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_line_separator",
+      "default": true,
+      "label": "t:sections.header.settings.show_line_separator.label"
+    },
+    {
+      "type": "header",
+      "content": "Store Locator"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_store_locator",
+      "label": "Show store locator link",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "store_locator",
+      "label": "Store Location Text",
+      "default": "Store Locator"
+    },
+    {
+      "type": "url",
+      "id": "store_location_url",
+      "label": "Store Location URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_store_distance",
+      "label": "Show distance to nearest retail store",
+      "info": "After page load, requests the visitor's location and updates the label with the nearest store's city and distance.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Phone Number"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show phone number",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone number (display)",
+      "default": "631-414-7763"
+    },
+    {
+      "type": "url",
+      "id": "phone_url",
+      "label": "Phone URL (e.g. tel:6314147763)"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.header__1.content",
+      "info": "t:sections.announcement-bar.settings.header__1.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "default": false,
+      "label": "t:sections.announcement-bar.settings.show_social.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.header__2.content"
+    },
     {
       "type": "checkbox",
       "id": "auto_rotate",
@@ -186,47 +418,28 @@
       "unit": "s",
       "label": "t:sections.announcement-bar.settings.change_slides_speed.label",
       "default": 5
-    },    
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "default": "scheme-4"
-    },  
-    {
-      "type": "checkbox",
-      "id": "show_line_separator",
-      "default": true,
-      "label": "t:sections.header.settings.show_line_separator.label"
     },
     {
       "type": "header",
-      "content": "t:sections.announcement-bar.settings.heading_utilities.content"
-    },
-    {
-      "type": "paragraph",
-         "content": "t:sections.announcement-bar.settings.paragraph.content"
-    },             
-    {
-      "type": "checkbox",
-      "id": "show_social",
-      "default": false,
-      "label": "t:sections.announcement-bar.settings.show_social.label",
-      "info": "t:sections.announcement-bar.settings.show_social.info"
+      "content": "t:sections.announcement-bar.settings.header__3.content",
+      "info": "t:sections.announcement-bar.settings.header__3.info"
     },
     {
       "type": "checkbox",
       "id": "enable_country_selector",
       "default": false,
-      "label": "t:sections.announcement-bar.settings.enable_country_selector.label",
-      "info": "t:sections.announcement-bar.settings.enable_country_selector.info"
+      "label": "t:sections.announcement-bar.settings.enable_country_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.header__4.content",
+      "info": "t:sections.announcement-bar.settings.header__4.info"
     },
     {
       "type": "checkbox",
       "id": "enable_language_selector",
       "default": false,
-      "label": "t:sections.announcement-bar.settings.enable_language_selector.label",
-      "info": "t:sections.announcement-bar.settings.enable_language_selector.info"
+      "label": "t:sections.announcement-bar.settings.enable_language_selector.label"
     }
   ],
   "blocks": [
