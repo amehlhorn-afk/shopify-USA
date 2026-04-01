@@ -1570,66 +1570,106 @@ a.product__text {
 }
 
 /* ── Show gallery nav arrows on desktop (overrides Dawn's thumbnail-layout hide) ── */
-.product__media-wrapper .slider-mobile-gutter .slider-button {
+.product__media-wrapper .slider-mobile-gutter .slider-button,
+.product__media-wrapper .slider-mobile-gutter .slider-button--prev,
+.product__media-wrapper .slider-mobile-gutter .slider-button--next {
   display: flex !important;
 }
 
+/* Show the wrapper div that contains prev/next buttons */
+.product__media-wrapper .slider-buttons.quick-add-hidden {
+  display: flex !important;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
 /* ── TrueMed HSA/FSA widget — styled to match BEDGEAR blue-pill design ── */
+
+/* Outer wrapper — light blue background + border */
 [id^="truemed-instructions"] {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border: 1px solid #c5d9ff;
-  border-radius: 8px;
-  background: #f0f7ff;
+  margin-top: 8px;
   width: 100%;
   box-sizing: border-box;
-  margin-top: 8px;
-  font-size: 12.5px;
-  color: #374151;
-  line-height: 1.45;
 }
 
-/* Navy "HSA / FSA" pill badge */
-[id^="truemed-instructions"] .truemed-hsa-badge,
-[id^="truemed-instructions"] [class*="hsa"],
-[id^="truemed-instructions"] [class*="badge"],
-[id^="truemed-instructions"] > *:first-child {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 9px;
-  background: #0a1628;
+/* Inner entry box — the actual flex row */
+[id^="truemed-instructions"] .truemed-entry-box {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 10px 14px !important;
+  border: 1px solid #c5d9ff !important;
+  border-radius: 8px !important;
+  background: #eef4ff !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  font-size: 13px !important;
+  color: #374151 !important;
+  line-height: 1.4 !important;
+}
+
+/* Text container — takes remaining space */
+[id^="truemed-instructions"] .truemed-entry-text-container {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex: 1 !important;
+  flex-wrap: wrap !important;
+}
+
+/* "HSA/FSA eligible" span → navy pill */
+[id^="truemed-instructions"] .truemed-instructions-link-text {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 5px 10px !important;
+  background: #1a2c52 !important;
   color: #fff !important;
-  font-size: 9.5px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-radius: 5px;
-  white-space: nowrap;
-  line-height: 1.4;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  border-radius: 5px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  text-decoration: none !important;
 }
 
-/* Middle text area */
-[id^="truemed-instructions"] p,
-[id^="truemed-instructions"] span:not(:first-child):not([class*="learn"]):not(a) {
-  flex: 1;
-  margin: 0;
-  color: #374151;
-  font-size: 12.5px;
+/* Truemed logo SVG — hide it */
+[id^="truemed-instructions"] .truemed-entry-text-container svg {
+  display: none !important;
 }
 
-/* "Learn more" link */
-[id^="truemed-instructions"] a,
-[id^="truemed-instructions"] [class*="learn"] {
-  flex-shrink: 0;
-  font-size: 12px;
-  font-weight: 600;
-  color: #0a1628;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  white-space: nowrap;
+/* "Save an average of 30%" text */
+[id^="truemed-instructions"] .truemed-entry-text {
+  font-size: 13px !important;
+  color: #374151 !important;
+  font-weight: 400 !important;
+}
+
+/* Bold "30%" */
+[id^="truemed-instructions"] .truemed-entry-text strong,
+[id^="truemed-instructions"] .truemed-entry-text b {
+  font-weight: 700 !important;
+  color: #0a1628 !important;
+}
+
+/* "Learn more" button */
+[id^="truemed-instructions"] .truemed-entry-link {
+  flex-shrink: 0 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #0a1628 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+  white-space: nowrap !important;
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+}
+
+[id^="truemed-instructions"] .truemed-entry-link:hover {
+  color: #00b5e3 !important;
 }
 
 [id^="truemed-instructions"] a:hover {
