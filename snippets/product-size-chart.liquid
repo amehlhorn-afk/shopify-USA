@@ -110,6 +110,7 @@
       var numberEl = null;
 
       content.querySelectorAll('*').forEach(function(el) {
+        if (el.classList && el.classList.contains('sc-result-badge')) return; // skip our own badge
         if (el.children.length > 0) return; // leaf nodes only
         var txt = el.textContent.trim();
         if (profilePattern.test(txt)) nameEl = el;
@@ -117,20 +118,24 @@
       });
 
       if (!nameEl || !numberEl) return;
-      if (nameEl.dataset.scPatched) return; // already done
 
       var profileName = nameEl.textContent.trim();
       var profileNum  = numberEl.textContent.trim();
+      var badgeText   = profileNum + ' \u2013 ' + profileName; // "1.0 – Medium Low"
 
-      // Build the combined badge
+      // Re-use existing badge if already inserted, just update the text
+      var existing = content.querySelector('.sc-result-badge');
+      if (existing) {
+        existing.textContent = badgeText;
+        return;
+      }
+
+      // First time: build and insert the badge
       var badge = document.createElement('div');
       badge.className = 'sc-result-badge';
-      badge.textContent = profileNum + ' \u2013 ' + profileName; // "1.0 – Medium Low"
-      badge.dataset.scPatched = '1';
+      badge.textContent = badgeText;
 
-      // Insert badge before the name element and hide originals
       nameEl.parentNode.insertBefore(badge, nameEl);
-      nameEl.dataset.scPatched = '1';
       nameEl.style.display = 'none';
       numberEl.style.display = 'none';
       // hide the parent box of numberEl if it's just a wrapper
@@ -340,7 +345,6 @@
     opacity: 0;
     width: 0;
     height: 0;
-    pointer-events: none;
   }
 
   /* ── Combined result badge "1.0 – Medium Low" ── */

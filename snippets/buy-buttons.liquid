@@ -241,7 +241,10 @@
   }
 
   /* ── Hide Shop Pay / dynamic checkout button, show only "more options" link ── */
-  .shopify-payment-button__button--branded {
+  .shopify-payment-button__button--branded,
+  .shopify-payment-button__button--unbranded,
+  .shopify-payment-button [data-testid="Branded-button-container"],
+  .shopify-payment-button > div:first-child {
     display: none !important;
     height: 0 !important;
     min-height: 0 !important;
@@ -251,6 +254,8 @@
     border: 0 !important;
     opacity: 0 !important;
     pointer-events: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
   }
 
   .pdp-more-payment-options .shopify-payment-button__more-options {
@@ -284,3 +289,21 @@
     .pdp-trust-bar { padding: 10px; }
   }
 {% endstyle %}
+
+<script>
+(function () {
+  // Repeatedly hide any Shop Pay branded buttons that render dynamically
+  var attempts = 0;
+  var interval = setInterval(function () {
+    var branded = document.querySelectorAll(
+      '.shopify-payment-button__button--branded, ' +
+      '.shopify-payment-button__button--unbranded, ' +
+      '[data-testid="Branded-button-container"]'
+    );
+    branded.forEach(function (el) {
+      el.style.cssText = 'display:none!important;height:0!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;opacity:0!important;pointer-events:none!important;visibility:hidden!important;position:absolute!important;';
+    });
+    if (++attempts >= 10) clearInterval(interval);
+  }, 300);
+})();
+</script>

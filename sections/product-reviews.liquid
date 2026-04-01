@@ -210,8 +210,8 @@ window.pwr = window.pwr || function () {
   var STAR_PATH = 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z';
 
   function starSVG(filled) {
-    var fill = filled ? '#f59e0b' : '#e2e8f0';
-    return '<svg width="14" height="14" viewBox="0 0 24 24" fill="' + fill + '" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="' + STAR_PATH + '"/></svg>';
+    var cls = filled ? 'pr-star-on' : 'pr-star-off';
+    return '<svg width="14" height="14" viewBox="0 0 24 24" class="' + cls + '" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="' + STAR_PATH + '"/></svg>';
   }
 
   function starsHTML(rating) {
@@ -265,7 +265,8 @@ window.pwr = window.pwr || function () {
                  '?apikey=' + API_KEY +
                  '&paging.size=' + CARDS_PER_PAGE +
                  '&paging.from=0' +
-                 '&filters.only_with_content=true';
+                 '&filters.only_with_content=true' +
+                 '&sort=rating&sort_order=DESC';
 
   fetch(API_BASE)
     .then(function (r) { return r.json(); })
@@ -468,6 +469,11 @@ window.pwr = window.pwr || function () {
     align-items: center;
     gap: 2px;
   }
+
+  .pr-card__stars .pr-star-on,
+  .pr-card__stars .pr-star-on path { fill: #f59e0b !important; }
+  .pr-card__stars .pr-star-off,
+  .pr-card__stars .pr-star-off path { fill: #e2e8f0 !important; }
 
   .pr-card__verified {
     font-size: 11px;
