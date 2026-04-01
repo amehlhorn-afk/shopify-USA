@@ -1,37 +1,43 @@
 {%- comment -%}
-  Metafield: custom.pdp_trust_icon_with_text [metaobject_reference]
-  Metaobject fields (flat numbered pattern, 4 items):
-    - pdp_trust_text_1..4   [single_line_text_field]   benefit statement
-    - pdp_trust_image_1..4  [file_reference]            icon
+  Metafield: custom.product_features [metaobject_reference]
+  Metaobject fields (flat numbered pattern, up to 5 items):
+    - pdp_features_title_1..5   [single_line_text_field]   row label
+    - pdp_features_image_1..5   [file_reference]            icon
 
   Rendered as: vertical stack of bordered rows — icon in a circle on the left,
-  benefit text on the right. Positioned below the ATC button.
+  label on the right. Positioned between rating and price.
+
+  Limit: controlled by trust_strip_limit variable (default 3).
 {%- endcomment -%}
 
-{%- assign trust = product.metafields.custom.pdp_trust_icon_with_text.value -%}
+{%- assign feat = product.metafields.custom.product_features.value -%}
+{%- assign trust_strip_limit = trust_strip_limit | default: 3 -%}
 
-{%- if trust != blank -%}
+{%- if feat != blank -%}
   <ul class="product-trust-rows" role="list" aria-label="Why buy">
-    {%- for i in (1..4) -%}
+    {%- assign trust_count = 0 -%}
+    {%- for i in (1..5) -%}
+      {%- if trust_count >= trust_strip_limit -%}{%- break -%}{%- endif -%}
       {%- liquid
-        assign text_key  = 'pdp_trust_text_'  | append: i
-        assign image_key = 'pdp_trust_image_' | append: i
-        assign trust_text  = trust[text_key]
-        assign trust_image = trust[image_key]
+        assign title_key = 'pdp_features_title_' | append: i
+        assign image_key = 'pdp_features_image_' | append: i
+        assign row_title = feat[title_key]
+        assign row_image = feat[image_key]
       -%}
-      {%- if trust_text != blank -%}
+      {%- if row_title != blank -%}
         <li class="product-trust-rows__item">
-          {%- if trust_image != blank -%}
+          {%- if row_image != blank -%}
             <span class="product-trust-rows__icon" aria-hidden="true">
-              {{- trust_image | image_url: width: 40 | image_tag: loading: 'lazy', alt: '' -}}
+              {{- row_image | image_url: width: 40 | image_tag: loading: 'lazy', alt: '' -}}
             </span>
           {%- else -%}
             <span class="product-trust-rows__icon product-trust-rows__icon--placeholder" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </span>
           {%- endif -%}
-          <span class="product-trust-rows__text">{{ trust_text }}</span>
+          <span class="product-trust-rows__text">{{ row_title }}</span>
         </li>
+        {%- assign trust_count = trust_count | plus: 1 -%}
       {%- endif -%}
     {%- endfor -%}
   </ul>
@@ -44,7 +50,7 @@
     margin: 16px 0 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
   }
 
   .product-trust-rows__item {
@@ -53,8 +59,22 @@
     gap: 14px;
     padding: 14px 16px;
     border: 1.5px solid var(--brand-gray-200);
-    border-radius: var(--brand-radius);
+    border-bottom: none;
     background: var(--brand-white);
+  }
+
+  .product-trust-rows__item:first-child {
+    border-radius: var(--brand-radius) var(--brand-radius) 0 0;
+  }
+
+  .product-trust-rows__item:last-child {
+    border-bottom: 1.5px solid var(--brand-gray-200);
+    border-radius: 0 0 var(--brand-radius) var(--brand-radius);
+  }
+
+  .product-trust-rows__item:only-child {
+    border-radius: var(--brand-radius);
+    border-bottom: 1.5px solid var(--brand-gray-200);
   }
 
   .product-trust-rows__icon {
