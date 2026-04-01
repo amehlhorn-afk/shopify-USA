@@ -89,20 +89,33 @@
     }
     {%- endif -%}
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function () {
-        setTimeout(sortNumericPills, 50);
-        setTimeout(sortNumericPills, 300);
-        {%- if target_variant != nil and target_variant.id != product.selected_or_first_available_variant.id -%}
-        setTimeout(selectVariant, 400);
-        {%- endif -%}
-      });
-    } else {
-      setTimeout(sortNumericPills, 50);
-      setTimeout(sortNumericPills, 300);
+    function initSort() {
+      sortNumericPills();
+      // Re-sort whenever Dawn re-renders the pill groups (e.g. after JS hydration)
+      var form = document.querySelector('.product-form, [id*="product-form"]');
+      if (form && window.MutationObserver) {
+        var observer = new MutationObserver(function(mutations) {
+          var relevant = mutations.some(function(m) {
+            return m.type === 'childList' && (
+              m.target.classList.contains('product-form__input--pill') ||
+              m.target.closest('.product-form__input--pill')
+            );
+          });
+          if (relevant) sortNumericPills();
+        });
+        observer.observe(form, { childList: true, subtree: true });
+        // Disconnect after 5 s to avoid overhead
+        setTimeout(function() { observer.disconnect(); }, 5000);
+      }
       {%- if target_variant != nil and target_variant.id != product.selected_or_first_available_variant.id -%}
-      setTimeout(selectVariant, 400);
+      setTimeout(selectVariant, 150);
       {%- endif -%}
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () { setTimeout(initSort, 50); });
+    } else {
+      setTimeout(initSort, 50);
     }
   })();
   </script>
