@@ -1675,3 +1675,9 @@ a.product__text {
 [id^="truemed-instructions"] a:hover {
   color: #00b5e3;
 }
+
+/* ── Hide Rebuy-injected "Complete Your Sleep System" heading ── */
+.rebuy-widget-content h4.primary-title,
+.rebuy-widget .primary-title {
+  display: none !important;
+}
