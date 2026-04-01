@@ -263,10 +263,9 @@ window.pwr = window.pwr || function () {
   var API_BASE = 'https://readservices-b2c.powerreviews.com/m/' + MERCHANT_ID +
                  '/l/' + LOCALE + '/product/' + PAGE_ID + '/reviews' +
                  '?apikey=' + API_KEY +
-                 '&paging.size=' + CARDS_PER_PAGE +
+                 '&paging.size=30' +
                  '&paging.from=0' +
-                 '&filters.only_with_content=true' +
-                 '&sort=rating&sort_order=DESC';
+                 '&filters.only_with_content=true';
 
   fetch(API_BASE)
     .then(function (r) { return r.json(); })
@@ -299,10 +298,13 @@ window.pwr = window.pwr || function () {
         snapEl.hidden = false;
       }
 
-      /* card grid */
+      /* card grid — sort by rating DESC, take top 9 */
       var cardsEl = document.getElementById('pr-custom-cards');
       if (cardsEl && reviews.length > 0) {
-        cardsEl.innerHTML = reviews.map(buildCard).join('');
+        var sorted = reviews.slice().sort(function(a, b) {
+          return (b.details.rating || 0) - (a.details.rating || 0);
+        });
+        cardsEl.innerHTML = sorted.slice(0, CARDS_PER_PAGE).map(buildCard).join('');
         cardsEl.hidden = false;
       }
 
