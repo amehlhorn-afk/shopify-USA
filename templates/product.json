@@ -30,6 +30,8 @@
         },
         "firmness_level": {
           "type": "custom_liquid",
+          "name": "Custom Liquid - Pillow Firmness",
+          "disabled": true,
           "settings": {
             "custom_liquid": "{% render 'product-firmness-level' %}"
           }
