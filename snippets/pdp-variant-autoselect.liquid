@@ -92,14 +92,16 @@
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function () {
         setTimeout(sortNumericPills, 50);
+        setTimeout(sortNumericPills, 300);
         {%- if target_variant != nil and target_variant.id != product.selected_or_first_available_variant.id -%}
-        setTimeout(selectVariant, 150);
+        setTimeout(selectVariant, 400);
         {%- endif -%}
       });
     } else {
       setTimeout(sortNumericPills, 50);
+      setTimeout(sortNumericPills, 300);
       {%- if target_variant != nil and target_variant.id != product.selected_or_first_available_variant.id -%}
-      setTimeout(selectVariant, 150);
+      setTimeout(selectVariant, 400);
       {%- endif -%}
     }
   })();
