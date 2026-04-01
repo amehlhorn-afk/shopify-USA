@@ -78,10 +78,6 @@
             "custom_liquid": "{% render 'product-size-chart' %}"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
         "build_system": {
           "type": "custom_liquid",
           "settings": {
@@ -130,7 +126,6 @@
         "custom_liquid_QJRMHC",
         "variant_picker",
         "size_chart",
-        "quantity_selector",
         "build_system",
         "buy_buttons",
         "short_description",
