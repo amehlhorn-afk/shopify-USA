@@ -717,6 +717,8 @@
       <script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
+    {%- render 'pdp-variant-autoselect' -%}
+
     {%- if first_3d_model -%}
       <script type="application/json" id="ProductJSON-{{ product.id }}">
         {{ product.media | where: 'media_type', 'model' | json }}

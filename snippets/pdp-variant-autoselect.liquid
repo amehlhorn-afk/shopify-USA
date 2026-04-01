@@ -1,0 +1,91 @@
+{%- comment -%}
+  PDP Variant Auto-Select
+  Determines the best default variant to show on page load based on product type:
+  - Pillows:                  first available variant containing "2.0"
+  - Mattress/Sheet/Bedding:   first available variant with option value "Queen"
+  - All others:               first available variant (Shopify default)
+  Fallback for any type: first available variant if target keyword not found.
+{%- endcomment -%}
+
+{%- liquid
+  assign pt = product.type | downcase
+  assign auto_keyword = ''
+  if pt contains 'pillow'
+    assign auto_keyword = '2.0'
+  elsif pt contains 'mattress' or pt contains 'sheet' or pt contains 'bedding' or pt contains 'comforter' or pt contains 'duvet' or pt contains 'blanket' or pt contains 'protector' or pt contains 'cover'
+    assign auto_keyword = 'queen'
+  endif
+-%}
+
+{%- if auto_keyword != blank -%}
+  {%- comment -%} Find target variant server-side so we can set the pre-selected URL {%- endcomment -%}
+  {%- liquid
+    assign target_variant = nil
+    for v in product.variants
+      if v.available
+        assign v_title = v.title | downcase
+        assign v_options = v.options | join: '|' | downcase
+        if v_title contains auto_keyword or v_options contains auto_keyword
+          assign target_variant = v
+          break
+        endif
+      endif
+    endfor
+    comment
+      Fallback: smallest (first) available variant
+    endcomment
+    if target_variant == nil
+      for v in product.variants
+        if v.available
+          assign target_variant = v
+          break
+        endif
+      endfor
+    endif
+  -%}
+
+  {%- if target_variant != nil and target_variant.id != product.selected_or_first_available_variant.id -%}
+    <script>
+    (function () {
+      var targetVariantId = {{ target_variant.id }};
+      var targetOptions  = {{ target_variant.options | json }};
+
+      function selectVariant() {
+        // Dawn renders one radio group per option. Click the matching value in each group.
+        var optionGroups = document.querySelectorAll('.product-form__input--pill, .product-form__input--dropdown, .product-form__input--swatch');
+
+        optionGroups.forEach(function (group, idx) {
+          var optionValue = targetOptions[idx];
+          if (!optionValue) return;
+
+          // Radio (pill / swatch)
+          var radio = group.querySelector('input[type="radio"][value=' + JSON.stringify(optionValue) + ']');
+          if (radio && !radio.checked && !radio.disabled) {
+            radio.click();
+            return;
+          }
+
+          // Select dropdown
+          var sel = group.querySelector('select');
+          if (sel) {
+            for (var i = 0; i < sel.options.length; i++) {
+              if (sel.options[i].value === optionValue) {
+                sel.selectedIndex = i;
+                sel.dispatchEvent(new Event('change', { bubbles: true }));
+                break;
+              }
+            }
+          }
+        });
+      }
+
+      // Run after Dawn's variant picker custom elements have initialised
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(selectVariant, 150); });
+      } else {
+        setTimeout(selectVariant, 150);
+      }
+    })();
+    </script>
+  {%- endif -%}
+{%- endif -%}

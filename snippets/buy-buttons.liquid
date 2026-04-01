@@ -71,6 +71,30 @@
             endif
           -%}
 
+          <button
+            id="ProductSubmitButton-{{ section_id }}"
+            type="submit"
+            name="add"
+            class="product-form__submit button button--full-width button--primary"
+            {% if product.selected_or_first_available_variant.available == false
+              or quantity_rule_soldout
+              or product.selected_or_first_available_variant == null
+            %}
+              disabled
+            {% endif %}
+          >
+            <span>
+              {%- if product.selected_or_first_available_variant == null -%}
+                {{ 'products.product.unavailable' | t }}
+              {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- else -%}
+                {{ 'products.product.add_to_cart' | t }}
+              {%- endif -%}
+            </span>
+            {%- render 'loading-spinner' -%}
+          </button>
+
           {%- comment -%} ── Trust bar ── 365-night trial | 1-yr warranty | free shipping {%- endcomment -%}
           <div class="pdp-trust-bar" aria-label="Purchase guarantees">
             <div class="pdp-trust-bar__item">
@@ -103,30 +127,6 @@
               </div>
             </div>
           </div>
-
-          <button
-            id="ProductSubmitButton-{{ section_id }}"
-            type="submit"
-            name="add"
-            class="product-form__submit button button--full-width button--primary"
-            {% if product.selected_or_first_available_variant.available == false
-              or quantity_rule_soldout
-              or product.selected_or_first_available_variant == null
-            %}
-              disabled
-            {% endif %}
-          >
-            <span>
-              {%- if product.selected_or_first_available_variant == null -%}
-                {{ 'products.product.unavailable' | t }}
-              {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
-                {{ 'products.product.sold_out' | t }}
-              {%- else -%}
-                {{ 'products.product.add_to_cart' | t }}
-              {%- endif -%}
-            </span>
-            {%- render 'loading-spinner' -%}
-          </button>
 
           {%- comment -%} More payment options link (no Shop Pay button) {%- endcomment -%}
           {%- if show_dynamic_checkout -%}
@@ -241,8 +241,16 @@
   }
 
   /* ── Hide Shop Pay / dynamic checkout button, show only "more options" link ── */
-  .pdp-more-payment-options .shopify-payment-button__button--branded {
+  .shopify-payment-button__button--branded {
     display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   .pdp-more-payment-options .shopify-payment-button__more-options {
