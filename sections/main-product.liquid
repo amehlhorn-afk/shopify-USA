@@ -37,6 +37,28 @@
         padding-bottom: {{ section.settings.padding_bottom }}px;
       }
     }
+
+    /* ── PDP gallery: image bleeds to left edge, wider media column ── */
+    @media screen and (min-width: 990px) {
+      /* Reduce left padding so image sits close to the viewport left edge */
+      #MainProduct-{{ section.id }} .page-width {
+        padding-left: 1.5rem;
+      }
+
+      /* Wider image column — 58% of available width */
+      #MainProduct-{{ section.id }} .product__media-wrapper {
+        max-width: none !important;
+        width: calc(58% - var(--grid-desktop-horizontal-spacing) / 2) !important;
+      }
+
+      /* Info column — remaining 42% with comfortable left padding and kept right spacing */
+      #MainProduct-{{ section.id }} .product__info-wrapper {
+        max-width: none !important;
+        width: calc(42% - var(--grid-desktop-horizontal-spacing) / 2) !important;
+        padding-left: 3.5rem !important;
+        padding-right: 2rem !important;
+      }
+    }
   {%- endstyle -%}
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
