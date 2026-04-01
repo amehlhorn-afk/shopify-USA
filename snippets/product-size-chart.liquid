@@ -15,6 +15,14 @@
 {%- if sc != blank and sc.size_chart_list_item != blank -%}
   {%- assign sc_label = sc.size_chart | default: 'Size Guide' -%}
   {%- assign sc_id = 'size-chart-modal-' | append: section.id -%}
+  {%- liquid
+    assign pt_lower = product.type | downcase
+    if pt_lower contains 'pillow'
+      assign modal_title = 'Your Pillow Should Fit You as Perfectly as Your Favorite Running Shoe'
+    else
+      assign modal_title = sc_label
+    endif
+  -%}
 
   {%- comment -%} Trigger button {%- endcomment -%}
   <button
@@ -48,7 +56,7 @@
   >
     <div class="product-size-chart__modal-inner">
       <div class="product-size-chart__modal-header">
-        <h2 class="product-size-chart__modal-title">{{ sc_label }}</h2>
+        <h2 class="product-size-chart__modal-title">{{ modal_title }}</h2>
         <button
           type="button"
           class="product-size-chart__modal-close"
@@ -60,13 +68,93 @@
       </div>
 
       <div class="product-size-chart__modal-body">
-        {%- if sc.product_type != blank -%}
-          <p class="product-size-chart__product-type">{{ sc.product_type }}</p>
-        {%- endif -%}
-        <div class="product-size-chart__content">{{ sc.size_chart_list_item }}</div>
+        <div class="product-size-chart__content" id="{{ sc_id }}-content">{{ sc.size_chart_list_item }}</div>
       </div>
     </div>
   </dialog>
+
+  {%- if pt_lower contains 'pillow' -%}
+  <script>
+  (function() {
+    var modalId = {{ sc_id | json }};
+    var contentId = modalId + '-content';
+
+    function patchQuiz() {
+      var content = document.getElementById(contentId);
+      if (!content) return;
+
+      // ── 1. Remove "Let's Fit You For Your Pillow Height." heading ──
+      content.querySelectorAll('h1,h2,h3,h4,strong,b,p').forEach(function(el) {
+        if (/let.?s fit you for your pillow height/i.test(el.textContent)) {
+          el.style.display = 'none';
+        }
+      });
+
+      // ── 2. Style quiz labels to match variant picker pills ──
+      //    The quiz injects labels; add a class so CSS can target reliably.
+      content.querySelectorAll('label').forEach(function(lbl) {
+        lbl.classList.add('sc-quiz-pill');
+      });
+
+      // ── 3. Reformat result: combine number + name into "1.0 - Medium Low" ──
+      //    Watch for the result heading (e.g. "Medium Low") and the number box.
+      var observer = new MutationObserver(function() { reformatResult(content); });
+      observer.observe(content, { childList: true, subtree: true, characterData: true });
+      reformatResult(content); // also run immediately
+    }
+
+    function reformatResult(content) {
+      // Find the result name element (bold text matching pillow profile names)
+      var profilePattern = /^(Low|Medium[\s\-]?Low|Medium|Medium[\s\-]?High|High)$/i;
+      var nameEl = null;
+      var numberEl = null;
+
+      content.querySelectorAll('*').forEach(function(el) {
+        if (el.children.length > 0) return; // leaf nodes only
+        var txt = el.textContent.trim();
+        if (profilePattern.test(txt)) nameEl = el;
+        if (/^\d+\.\d+$/.test(txt) && el !== nameEl) numberEl = el;
+      });
+
+      if (!nameEl || !numberEl) return;
+      if (nameEl.dataset.scPatched) return; // already done
+
+      var profileName = nameEl.textContent.trim();
+      var profileNum  = numberEl.textContent.trim();
+
+      // Build the combined badge
+      var badge = document.createElement('div');
+      badge.className = 'sc-result-badge';
+      badge.textContent = profileNum + ' \u2013 ' + profileName; // "1.0 – Medium Low"
+      badge.dataset.scPatched = '1';
+
+      // Insert badge before the name element and hide originals
+      nameEl.parentNode.insertBefore(badge, nameEl);
+      nameEl.dataset.scPatched = '1';
+      nameEl.style.display = 'none';
+      numberEl.style.display = 'none';
+      // hide the parent box of numberEl if it's just a wrapper
+      if (numberEl.parentElement && numberEl.parentElement !== content &&
+          numberEl.parentElement.children.length === 1) {
+        numberEl.parentElement.style.display = 'none';
+      }
+    }
+
+    // Run after the modal opens (dialog open event)
+    var dialog = document.getElementById(modalId);
+    if (dialog) {
+      dialog.addEventListener('click', function(e) {
+        // modal opens on button click; give widget JS time to render
+        setTimeout(patchQuiz, 80);
+      });
+      // Also patch on toggle (for browser-native open)
+      dialog.addEventListener('toggle', function() {
+        if (dialog.open) setTimeout(patchQuiz, 80);
+      });
+    }
+  })();
+  </script>
+  {%- endif -%}
 {%- endif -%}
 
 {% style %}
@@ -159,9 +247,11 @@
 
   .product-size-chart__modal-title {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
+    line-height: 1.35;
     color: var(--brand-gray-900, #111827);
+    max-width: calc(100% - 48px);
   }
 
   .product-size-chart__modal-close {
@@ -190,15 +280,6 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  .product-size-chart__product-type {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--brand-gray-500, #6b7280);
-    margin: 0 0 12px;
-  }
-
   .product-size-chart__content {
     font-size: 13px;
     color: var(--brand-gray-700, #374151);
@@ -222,6 +303,58 @@
     background: var(--brand-gray-50, #f9fafb);
     font-weight: 700;
     color: var(--brand-gray-700, #374151);
+  }
+
+  /* ── Quiz option pills — match variant picker style ── */
+  .product-size-chart__content .sc-quiz-pill,
+  .product-size-chart__content label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1.5px solid #dde1e6;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #111;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    user-select: none;
+    margin: 3px 4px 3px 0;
+  }
+
+  .product-size-chart__content input[type='radio']:checked + label,
+  .product-size-chart__content input[type='radio']:checked + .sc-quiz-pill,
+  .product-size-chart__content label.active,
+  .product-size-chart__content label.selected,
+  .product-size-chart__content label.is-active {
+    border-color: #0a1628 !important;
+    background: #e8f2ff !important;
+    color: #0a1628 !important;
+    font-weight: 600 !important;
+  }
+
+  .product-size-chart__content input[type='radio'] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  /* ── Combined result badge "1.0 – Medium Low" ── */
+  .sc-result-badge {
+    display: inline-block;
+    border: 2.5px solid #00b5e3;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #00b5e3;
+    letter-spacing: 0.01em;
+    margin: 16px auto;
+    text-align: center;
   }
 
   @media screen and (max-width: 749px) {
