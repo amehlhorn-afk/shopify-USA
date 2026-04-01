@@ -1549,3 +1549,64 @@ a.product__text {
 .thumbnail-list__item:not(.is-active) img:hover {
   border-color: #9ca3af;
 }
+
+/* ── TrueMed HSA/FSA widget — styled to match BEDGEAR blue-pill design ── */
+#truemed-instructions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid #c5d9ff;
+  border-radius: 6px;
+  background: #f0f5ff;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: #374151;
+  line-height: 1.45;
+}
+
+/* Badge — "HSA/FSA eligible" label the widget renders */
+#truemed-instructions .truemed-hsa-badge,
+#truemed-instructions [class*="hsa"],
+#truemed-instructions [class*="badge"],
+#truemed-instructions > *:first-child {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  background: #1a3fa0;
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+/* Middle text area */
+#truemed-instructions p,
+#truemed-instructions span:not(:first-child):not([class*="learn"]):not(a) {
+  flex: 1;
+  margin: 0;
+  color: #374151;
+}
+
+/* "Learn more" link */
+#truemed-instructions a,
+#truemed-instructions [class*="learn"] {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1a3fa0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+#truemed-instructions a:hover {
+  color: #00b5e3;
+}
