@@ -79,10 +79,44 @@
         });
       }
 
+      // Sort numeric variant option pills ascending (e.g. 0.0 leftmost before 1.0, 2.0, 3.0)
+      function sortNumericPills() {
+        document.querySelectorAll('.product-form__input--pill').forEach(function(group) {
+          // Collect input+label node pairs
+          var pairs = [];
+          var inputs = group.querySelectorAll('input[type="radio"]');
+          inputs.forEach(function(input) {
+            var label = group.querySelector('label[for="' + input.id + '"]');
+            if (label) pairs.push({ input: input, label: label });
+          });
+          if (pairs.length < 2) return;
+
+          // Only sort if all values are numeric
+          var allNumeric = pairs.every(function(p) {
+            return !isNaN(parseFloat(p.input.value)) && p.input.value.trim() !== '';
+          });
+          if (!allNumeric) return;
+
+          pairs.sort(function(a, b) {
+            return parseFloat(a.input.value) - parseFloat(b.input.value);
+          });
+
+          // Re-append pairs in sorted order (input before its label)
+          pairs.forEach(function(p) {
+            group.appendChild(p.input);
+            group.appendChild(p.label);
+          });
+        });
+      }
+
       // Run after Dawn's variant picker custom elements have initialised
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function () { setTimeout(selectVariant, 150); });
+        document.addEventListener('DOMContentLoaded', function () {
+          setTimeout(sortNumericPills, 50);
+          setTimeout(selectVariant, 150);
+        });
       } else {
+        setTimeout(sortNumericPills, 50);
         setTimeout(selectVariant, 150);
       }
     })();

@@ -51,9 +51,8 @@ product-info {
     margin-bottom: 2rem;
   }
 
-  .product__media-container .slider-buttons {
-    display: none;
-  }
+  /* Keep slider arrows visible so users can navigate the gallery */
+  /* .product__media-container .slider-buttons { display: none; } */
 
   .product--right .product__media-wrapper {
     order: 2;
@@ -1571,62 +1570,63 @@ a.product__text {
 }
 
 /* ── TrueMed HSA/FSA widget — styled to match BEDGEAR blue-pill design ── */
-#truemed-instructions {
+[id^="truemed-instructions"] {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border: 1px solid #c5d9ff;
-  border-radius: 6px;
-  background: #f0f5ff;
+  border-radius: 8px;
+  background: #f0f7ff;
   width: 100%;
   box-sizing: border-box;
-  margin-top: 4px;
+  margin-top: 8px;
   font-size: 12.5px;
   color: #374151;
   line-height: 1.45;
 }
 
-/* Badge — "HSA/FSA eligible" label the widget renders */
-#truemed-instructions .truemed-hsa-badge,
-#truemed-instructions [class*="hsa"],
-#truemed-instructions [class*="badge"],
-#truemed-instructions > *:first-child {
+/* Navy "HSA / FSA" pill badge */
+[id^="truemed-instructions"] .truemed-hsa-badge,
+[id^="truemed-instructions"] [class*="hsa"],
+[id^="truemed-instructions"] [class*="badge"],
+[id^="truemed-instructions"] > *:first-child {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  padding: 4px 8px;
-  background: #1a3fa0;
+  padding: 4px 9px;
+  background: #0a1628;
   color: #fff !important;
-  font-size: 9px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.1em;
+  font-size: 9.5px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  border-radius: 4px;
+  border-radius: 5px;
   white-space: nowrap;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 /* Middle text area */
-#truemed-instructions p,
-#truemed-instructions span:not(:first-child):not([class*="learn"]):not(a) {
+[id^="truemed-instructions"] p,
+[id^="truemed-instructions"] span:not(:first-child):not([class*="learn"]):not(a) {
   flex: 1;
   margin: 0;
   color: #374151;
+  font-size: 12.5px;
 }
 
 /* "Learn more" link */
-#truemed-instructions a,
-#truemed-instructions [class*="learn"] {
+[id^="truemed-instructions"] a,
+[id^="truemed-instructions"] [class*="learn"] {
   flex-shrink: 0;
   font-size: 12px;
   font-weight: 600;
-  color: #1a3fa0;
+  color: #0a1628;
   text-decoration: underline;
   text-underline-offset: 2px;
   white-space: nowrap;
 }
 
-#truemed-instructions a:hover {
+[id^="truemed-instructions"] a:hover {
   color: #00b5e3;
 }
