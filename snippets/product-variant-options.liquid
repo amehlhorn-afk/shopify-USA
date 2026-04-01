@@ -18,9 +18,15 @@
 {% endcomment %}
 {%- liquid
   assign product_form_id = 'product-form-' | append: section.id
+  assign option_name_lower = option.name | downcase
+  if option_name_lower contains 'height'
+    assign display_values = option.values | sort
+  else
+    assign display_values = option.values
+  endif
 -%}
 
-{%- for value in option.values -%}
+{%- for value in display_values -%}
   {%- liquid
     assign swatch_focal_point = null
     if value.swatch.image
