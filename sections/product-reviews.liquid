@@ -234,7 +234,7 @@ window.pwr = window.pwr || function () {
   function buildCard(review) {
     var d        = review.details || {};
     var badges   = review.badges  || {};
-    var rating   = d.rating   || 0;
+    var rating   = (review.metrics && review.metrics.rating) || 0;
     var headline = escHtml(d.headline || '');
     var text     = escHtml(d.comments || '');
     var author   = escHtml(d.nickname || 'Verified Buyer');
@@ -302,7 +302,7 @@ window.pwr = window.pwr || function () {
       var cardsEl = document.getElementById('pr-custom-cards');
       if (cardsEl && reviews.length > 0) {
         var sorted = reviews.slice().sort(function(a, b) {
-          return (b.details.rating || 0) - (a.details.rating || 0);
+          return ((b.metrics && b.metrics.rating) || 0) - ((a.metrics && a.metrics.rating) || 0);
         });
         cardsEl.innerHTML = sorted.slice(0, CARDS_PER_PAGE).map(buildCard).join('');
         cardsEl.hidden = false;
