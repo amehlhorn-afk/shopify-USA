@@ -10,7 +10,7 @@
 {
   "sections": {
     "image_banner": {
-      "type": "hero-banner",
+      "type": "image-banner",
       "blocks": {
         "heading": {
           "type": "heading",
@@ -38,7 +38,7 @@
       "settings": {
         "banner_video": "shopify://files/videos/spring allergies home page banner cut_1920x768_updated-compress.mp4",
         "image_overlay_opacity": 40,
-        "image_height": "large",
+        "image_height": "adapt",
         "image_behavior": "none",
         "desktop_content_position": "bottom-center",
         "desktop_content_alignment": "center",
