@@ -1716,6 +1716,18 @@ variant-radios .product-form__input:nth-of-type(2) {
   max-width: 100% !important;
 }
 
+/* Horizontal dividers */
+.product__info-container .truemed-instructions {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 16px;
+}
+
+.product__info-container variant-selects,
+.product__info-container variant-radios {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
 /* Pill variant buttons — fill full row width evenly, wrap for many options */
 .product-form__input--pill {
   width: 100% !important;
