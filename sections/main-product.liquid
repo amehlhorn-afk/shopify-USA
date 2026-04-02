@@ -88,6 +88,15 @@
         textNode.replaceWith(valSpan, descSpan);
       });
     });
+
+    // Move product-offer-label badge to top-right of lead image
+    var offerBadge = document.querySelector('.product-offer-label');
+    var mediaWrapper = document.querySelector('.product__media-wrapper');
+    if (offerBadge && mediaWrapper) {
+      offerBadge.classList.add('product-offer-label--overlay');
+      mediaWrapper.style.position = 'relative';
+      mediaWrapper.appendChild(offerBadge);
+    }
   });
   </script>
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
