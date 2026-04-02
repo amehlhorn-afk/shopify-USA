@@ -1806,3 +1806,15 @@ variant-radios .product-form__input:nth-of-type(2) {
   text-align: center !important;
   justify-content: center !important;
 }
+
+/* 70/30 image/info column split (overrides Dawn's 65/35 large preset) */
+@media screen and (min-width: 990px) {
+  .product--large:not(.product--no-media) .product__media-wrapper {
+    max-width: 70% !important;
+    width: calc(70% - var(--grid-desktop-horizontal-spacing) / 2) !important;
+  }
+  .product--large:not(.product--no-media) .product__info-wrapper {
+    max-width: 30% !important;
+    width: calc(30% - var(--grid-desktop-horizontal-spacing) / 2) !important;
+  }
+}
