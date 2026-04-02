@@ -18,40 +18,23 @@
     font-family: var(--font-body-family) !important;
   }
 
-  /* Stars — amber yellow, no box background */
-  #pr-reviewsnippet .pr-star-v4-full,
-  #pr-reviewsnippet .pr-star-v4-half,
-  #pr-reviewsnippet .pr-star-v4-empty {
-    background: transparent !important;
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  #pr-reviewsnippet .pr-star-v4-full svg,
-  #pr-reviewsnippet .pr-star-v4-half svg {
-    fill: #f59e0b !important;
-    color: #f59e0b !important;
-  }
-
-  #pr-reviewsnippet .pr-star-v4-empty svg {
-    fill: #d1d5db !important;
-    color: #d1d5db !important;
-  }
-
-  /* Scale down the star row */
-  #pr-reviewsnippet .pr-snippet-stars {
-    font-size: 0 !important;
-  }
-
+  /* Stars — replace PR's baked-in SVG background-images (orange box + white star)
+     with clean amber/gray star shapes. Order: base first, filled classes after. */
   #pr-reviewsnippet .pr-star-v4 {
     width: 18px !important;
     height: 18px !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-color: transparent !important;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbD0iI0QxRDVEQiIgZD0ibTEwIDEzLjUtNC4xMTQgMi4xNjMuNzg1LTQuNTgxLTMuMzI4LTMuMjQ1IDQuNi0uNjY5TDEwIDNsMi4wNTcgNC4xNjggNC42LjY2OS0zLjMyOCAzLjI0NS43ODUgNC41ODF6Ii8+PC9zdmc+") !important;
   }
 
-  #pr-reviewsnippet .pr-star-v4 svg {
-    width: 18px !important;
-    height: 18px !important;
+  #pr-reviewsnippet .pr-star-v4-100-filled {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbD0iI0Y1OUUwQiIgZD0ibTEwIDEzLjUtNC4xMTQgMi4xNjMuNzg1LTQuNTgxLTMuMzI4LTMuMjQ1IDQuNi0uNjY5TDEwIDNsMi4wNTcgNC4xNjggNC42LjY2OS0zLjMyOCAzLjI0NS43ODUgNC41ODF6Ii8+PC9zdmc+") !important;
+  }
+
+  #pr-reviewsnippet .pr-star-v4-50-filled {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGNsaXBQYXRoIGlkPSJoIj48cmVjdCB3aWR0aD0iMTAiIGhlaWdodD0iMjAiLz48L2NsaXBQYXRoPjwvZGVmcz48cGF0aCBmaWxsPSIjRDFENURCIiBkPSJtMTAgMTMuNS00LjExNCAyLjE2My43ODUtNC41ODEtMy4zMjgtMy4yNDUgNC42LS42NjlMMTAgM2wyLjA1NyA0LjE2OCA0LjYuNjY5LTMuMzI4IDMuMjQ1Ljc4NSA0LjU4MXoiLz48cGF0aCBmaWxsPSIjRjU5RTBCIiBjbGlwLXBhdGg9InVybCgjaCkiIGQ9Im0xMCAxMy41LTQuMTE0IDIuMTYzLjc4NS00LjU4MS0zLjMyOC0zLjI0NSA0LjYtLjY2OUwxMCAzbDIuMDU3IDQuMTY4IDQuNi42NjktMy4zMjggMy4yNDUuNzg1IDQuNTgxeiIvPjwvc3ZnPg==") !important;
   }
 
   /* Score + review count — inline, muted */
