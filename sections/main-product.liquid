@@ -101,8 +101,34 @@
       }
     }
 
+    // Wrap ® in superscript tags across the product info area
+    function wrapRegisteredMark() {
+      var container = document.querySelector('.product__info-container');
+      if (!container) return;
+      var walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+      var nodes = [];
+      var node;
+      while ((node = walker.nextNode())) nodes.push(node);
+      nodes.forEach(function(textNode) {
+        if (textNode.textContent.indexOf('\u00ae') === -1) return;
+        var parts = textNode.textContent.split('\u00ae');
+        var frag = document.createDocumentFragment();
+        parts.forEach(function(part, i) {
+          frag.appendChild(document.createTextNode(part));
+          if (i < parts.length - 1) {
+            var sup = document.createElement('sup');
+            sup.className = 'registered-mark';
+            sup.textContent = '\u00ae';
+            frag.appendChild(sup);
+          }
+        });
+        textNode.parentNode.replaceChild(frag, textNode);
+      });
+    }
+
     // Run at DOMContentLoaded, then again after variant-selects custom element settles
     document.addEventListener('DOMContentLoaded', function() {
+      wrapRegisteredMark();
       initVariantUI();
       // variant-selects re-initialises its DOM after DOMContentLoaded — re-run after it settles
       setTimeout(initVariantUI, 100);

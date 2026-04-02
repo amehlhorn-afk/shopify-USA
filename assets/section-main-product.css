@@ -1687,6 +1687,14 @@ a.product__text {
   display: none !important;
 }
 
+/* ── Registered trademark ® — superscript, reduced size ── */
+sup.registered-mark {
+  font-size: 0.45em !important;
+  vertical-align: super !important;
+  line-height: 0 !important;
+  font-weight: inherit !important;
+}
+
 /* ── Price: match product title size (28px) and remove bold ── */
 .product__info-container .price .price-item {
   font-size: 28px !important;
