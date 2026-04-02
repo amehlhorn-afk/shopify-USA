@@ -1834,6 +1834,12 @@ variant-radios .product-form__input:nth-of-type(2) {
 .product-form__input--swatch .swatch-input__input + .swatch-input__label {
   border-radius: 8px !important;
 }
+/* OOS strikethrough: recalculate for 2:1 rectangle
+   diagonal = side × √5 ≈ 2.236; angle = arctan(1/2) ≈ 26.57° */
+.product-form__input--swatch .swatch::after {
+  width: calc(var(--swatch--size) * 2.24) !important;
+  transform: rotate(-26.57deg) !important;
+}
 
 /* ── Variant pills: 4-per-row grid applies globally to all pill fieldsets >4 options ── */
 /* (JS adds variant-pills-grid-4 class to any .product-form__input--pill with >4 labels) */
