@@ -1702,5 +1702,11 @@ variant-radios .product-form__input:first-of-type .form__label {
 /* "Pillow Height" label: 3× (14px → 42px) */
 variant-selects .product-form__input:nth-of-type(2) .form__label,
 variant-radios .product-form__input:nth-of-type(2) .form__label {
-  margin-top: 59px !important;
+  margin-top: 42px !important;
+}
+
+/* Gap above Pillow Height fieldset — match HSA→SelectSize gap (15px) */
+variant-selects .product-form__input:nth-of-type(2),
+variant-radios .product-form__input:nth-of-type(2) {
+  margin-top: 15px !important;
 }
