@@ -1818,6 +1818,7 @@ variant-radios .product-form__input:nth-of-type(2) {
 }
 .product-form__input--swatch .swatch {
   width: calc(var(--swatch--size) * 2) !important;
+  height: var(--swatch--size) !important;
   aspect-ratio: unset !important;
   border-radius: 8px !important;
 }
