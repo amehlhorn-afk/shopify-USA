@@ -19,7 +19,7 @@
     {%- for i in (1..5) -%}
       {%- if trust_count >= trust_strip_limit -%}{%- break -%}{%- endif -%}
       {%- liquid
-        assign text_key  = 'pdp_features_highlight_text_' | append: i
+        assign text_key  = 'pdp_features_pop_up_text_' | append: i
         assign image_key = 'pdp_features_image_' | append: i
         assign row_title = feat[text_key]
         assign row_image = feat[image_key]
