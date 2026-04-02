@@ -188,9 +188,16 @@
         }
       });
       if (trigger && pillowLabel && pillowFieldset) {
-        trigger.style.margin = '0 0 0 auto';
-        pillowLabel.style.width = pillowFieldset.offsetWidth + 'px';
-        pillowLabel.appendChild(trigger);
+        var legendTop = pillowLabel.getBoundingClientRect().top;
+        pillowFieldset.style.position = 'relative';
+        trigger.style.position = 'absolute';
+        trigger.style.top = '0';
+        trigger.style.right = '0';
+        trigger.style.margin = '0';
+        pillowFieldset.appendChild(trigger);
+        // Correct vertical offset so trigger aligns with legend
+        var correction = legendTop - trigger.getBoundingClientRect().top;
+        trigger.style.top = correction + 'px';
       }
     }
     moveTriggerInline();
