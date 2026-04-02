@@ -40,11 +40,21 @@
 
     /* ── PDP gallery: full-width container, image and rail reach viewport edges ── */
     @media screen and (min-width: 990px) {
+      /* Remove section top padding so image + info both start at the very top */
+      .section-{{ section.id }}-padding {
+        padding-top: 0 !important;
+      }
+
       /* Remove max-width cap so content fills the viewport with small gutters */
       #MainProduct-{{ section.id }} .page-width {
         max-width: 100%;
         padding-left: 1.5rem;
         padding-right: 1.5rem;
+      }
+
+      /* Top-align both columns so info starts at same Y as the image */
+      #MainProduct-{{ section.id }} .product.grid {
+        align-items: flex-start;
       }
 
       /* Wider image column — 58% of available width */
@@ -59,6 +69,8 @@
         width: calc(42% - var(--grid-desktop-horizontal-spacing) / 2) !important;
         padding-left: 3.5rem !important;
         padding-right: 1.5rem !important;
+        padding-top: 0 !important;
+        margin-top: 0 !important;
       }
     }
   {%- endstyle -%}

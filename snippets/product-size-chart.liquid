@@ -249,7 +249,20 @@
       });
       var container = trigger ? trigger.parentElement : null;
       if (!trigger || !targetLabel || !container) return;
-      var top = Math.round(targetLabel.getBoundingClientRect().top - container.getBoundingClientRect().top);
+
+      // Walk offsetTop chain — document-position based, not affected by scroll or sticky
+      var top = 0;
+      var el = targetLabel;
+      while (el && el !== container) {
+        top += el.offsetTop;
+        var op = el.offsetParent;
+        if (!op || !container.contains(op)) break;
+        el = op;
+      }
+
+      // Sanity check: must be a positive, plausible value
+      if (top <= 0) return;
+
       container.style.position = 'relative';
       trigger.style.position = 'absolute';
       trigger.style.top = top + 'px';
