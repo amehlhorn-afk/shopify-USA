@@ -126,13 +126,22 @@
       });
     }
 
-    // Run at DOMContentLoaded, then again after variant-selects custom element settles
+    // Run at DOMContentLoaded + watch variant-selects via MutationObserver
     document.addEventListener('DOMContentLoaded', function() {
       wrapRegisteredMark();
       initVariantUI();
-      // variant-selects re-initialises its DOM after DOMContentLoaded — re-run after it settles
-      setTimeout(initVariantUI, 100);
-      setTimeout(initVariantUI, 500);
+
+      // MutationObserver: re-run initVariantUI whenever variant-selects modifies its DOM
+      var variantEl = document.querySelector('variant-selects, variant-radios');
+      if (variantEl) {
+        var obs = new MutationObserver(function() { initVariantUI(); });
+        obs.observe(variantEl, { childList: true, subtree: true });
+        // Stop observing after 5 seconds (well past any init cycle)
+        setTimeout(function() { obs.disconnect(); }, 5000);
+      }
+      // Fallback timeouts for safety
+      setTimeout(initVariantUI, 300);
+      setTimeout(initVariantUI, 1000);
     });
   })();
   </script>
