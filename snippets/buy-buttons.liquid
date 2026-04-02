@@ -314,6 +314,12 @@
   .installment shopify-payment-terms button,
   shopify-payment-terms a[href*="purchasing"],
   shopify-payment-terms a[href*="shop-pay"] { display: none !important; }
+
+  /* Reduce gap between price and Shop Pay installments line by 60% */
+  .product__info-container > div:has(.installment) {
+    margin-top: 0.6rem !important;
+    margin-bottom: 0 !important;
+  }
 {% endstyle %}
 
 <script>
