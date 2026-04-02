@@ -56,17 +56,15 @@
   >
     <div class="product-size-chart__modal-inner">
       <div class="product-size-chart__modal-header">
-        <div class="product-size-chart__modal-header-top">
-          <h2 class="product-size-chart__modal-title">{{ modal_title }}</h2>
-          <button
-            type="button"
-            class="product-size-chart__modal-close"
-            aria-label="Close size guide"
-            onclick="this.closest('dialog').close()"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-        </div>
+        <h2 class="product-size-chart__modal-title">{{ modal_title }}</h2>
+        <button
+          type="button"
+          class="product-size-chart__modal-close"
+          aria-label="Close size guide"
+          onclick="this.closest('dialog').close()"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </div>
 
       <div class="product-size-chart__modal-body">
@@ -272,18 +270,12 @@
 
   .product-size-chart__modal-header {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     padding: 20px 24px;
     border-bottom: 1px solid var(--brand-gray-200, #e5e7eb);
     background: var(--brand-white, #fff);
     flex-shrink: 0;
-  }
-
-  .product-size-chart__modal-header-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    width: 100%;
   }
 
   .product-size-chart__modal-title {
@@ -301,7 +293,7 @@
     font-size: 13px;
     font-weight: 400;
     color: var(--brand-gray-600, #4b5563);
-    line-height: 1.05;
+    line-height: 1.5;
     width: 100%;
   }
 
