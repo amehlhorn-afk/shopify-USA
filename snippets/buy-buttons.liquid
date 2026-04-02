@@ -318,34 +318,49 @@
 
 <script>
 (function () {
-  // Repeatedly hide any Shop Pay branded buttons that render dynamically
-  var attempts = 0;
-  var interval = setInterval(function () {
-    var branded = document.querySelectorAll(
-      '.shopify-payment-button__button--branded, ' +
-      '.shopify-payment-button__button--unbranded, ' +
-      '[data-testid="Branded-button-container"], ' +
-      'shopify-accelerated-checkout, ' +
-      'shop-pay-wallet-button'
-    );
-    branded.forEach(function (el) {
-      el.style.cssText = 'display:none!important;height:0!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;opacity:0!important;pointer-events:none!important;visibility:hidden!important;position:absolute!important;';
-    });
-    // Hide "Check your purchasing power" — inject stylesheet into shadow root
+  var HIDE = 'display:none!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;opacity:0!important;pointer-events:none!important;visibility:hidden!important;position:absolute!important;';
+
+  function hidePurchasingPower() {
     document.querySelectorAll('shopify-payment-terms').forEach(function (widget) {
-      // Light DOM fallback
+      // Light DOM
       widget.querySelectorAll('a, button').forEach(function (el) {
-        if (/purchasing power/i.test(el.textContent)) el.style.setProperty('display', 'none', 'important');
+        if (/purchasing power/i.test(el.textContent)) el.style.cssText = HIDE;
       });
-      // Shadow DOM: inject a <style> tag so it persists inside the encapsulated root
+      // Open shadow DOM — inject a persistent <style> tag
       var shadow = widget.shadowRoot;
       if (shadow && !shadow.querySelector('#bedgear-hide-purchasing')) {
         var s = document.createElement('style');
         s.id = 'bedgear-hide-purchasing';
-        s.textContent = 'a { display: none !important; }';
+        s.textContent = 'a, button { display: none !important; }';
         shadow.appendChild(s);
       }
     });
-    if (++attempts >= 10) clearInterval(interval);
+  }
+
+  function hideShopPayButtons() {
+    document.querySelectorAll(
+      '.shopify-payment-button__button--branded,' +
+      '.shopify-payment-button__button--unbranded,' +
+      '[data-testid="Branded-button-container"],' +
+      'shopify-accelerated-checkout,' +
+      'shop-pay-wallet-button'
+    ).forEach(function (el) { el.style.cssText = HIDE; });
+  }
+
+  // Interval for first 6 seconds (covers async widget render)
+  var attempts = 0;
+  var interval = setInterval(function () {
+    hideShopPayButtons();
+    hidePurchasingPower();
+    if (++attempts >= 20) clearInterval(interval);
+  }, 300);
+
+  // MutationObserver catches late-rendering shadow DOM content
+  var observer = new MutationObserver(function () {
+    hidePurchasingPower();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+  // Stop observing after 10 seconds
+  setTimeout(function () { observer.disconnect(); }, 10000);
 })();
 </script>
