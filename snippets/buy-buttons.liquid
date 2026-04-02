@@ -331,17 +331,19 @@
     branded.forEach(function (el) {
       el.style.cssText = 'display:none!important;height:0!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;opacity:0!important;pointer-events:none!important;visibility:hidden!important;position:absolute!important;';
     });
-    // Hide "Check your purchasing power" — try light DOM and shadow DOM
+    // Hide "Check your purchasing power" — inject stylesheet into shadow root
     document.querySelectorAll('shopify-payment-terms').forEach(function (widget) {
-      // Light DOM
+      // Light DOM fallback
       widget.querySelectorAll('a, button').forEach(function (el) {
         if (/purchasing power/i.test(el.textContent)) el.style.setProperty('display', 'none', 'important');
       });
-      // Shadow DOM
-      if (widget.shadowRoot) {
-        widget.shadowRoot.querySelectorAll('a, button').forEach(function (el) {
-          if (/purchasing power/i.test(el.textContent)) el.style.setProperty('display', 'none', 'important');
-        });
+      // Shadow DOM: inject a <style> tag so it persists inside the encapsulated root
+      var shadow = widget.shadowRoot;
+      if (shadow && !shadow.querySelector('#bedgear-hide-purchasing')) {
+        var s = document.createElement('style');
+        s.id = 'bedgear-hide-purchasing';
+        s.textContent = 'a { display: none !important; }';
+        shadow.appendChild(s);
       }
     });
     if (++attempts >= 10) clearInterval(interval);
