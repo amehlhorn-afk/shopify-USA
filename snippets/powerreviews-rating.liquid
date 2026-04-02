@@ -5,6 +5,20 @@
   The actual PowerReviews render() call lives in sections/product-reviews.liquid.
 {%- endcomment -%}
 <div id="pr-reviewsnippet" class="pr-rating-snippet"></div>
+<script>
+(function () {
+  function showRatingCount() {
+    var rw = document.querySelector('#pr-reviewsnippet .pr-snippet-read-and-write');
+    if (rw) {
+      rw.style.setProperty('display', 'inline-flex', 'important');
+      rw.style.setProperty('align-items', 'center', 'important');
+    }
+  }
+  // Try on a short delay after PR renders, then again slightly later
+  setTimeout(showRatingCount, 800);
+  setTimeout(showRatingCount, 2000);
+})();
+</script>
 
 {% style %}
   /* ── PowerReviews inline snippet ──────────────────────────────────── */
