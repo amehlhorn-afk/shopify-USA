@@ -175,39 +175,50 @@
       }
     }
 
-    // ── Move trigger inline with the last pill variant label, right-justified ──
-    // Works across product types: "Pillow Height" on pillows, "Bedding Size" on sheets, etc.
+    // ── Position trigger inline with the last pill variant label, right-justified ──
+    // Strategy: keep trigger in its original parent (product__info-container);
+    // position it absolutely there so variant-selects re-renders can't eject it.
     function moveTriggerInline() {
       var trigger = document.querySelector('.product-size-chart__trigger');
-      // Find the last pill fieldset's legend (main size selector is typically last)
+      // Find the last pill fieldset's legend
       var targetLabel = null;
       document.querySelectorAll('.product-form__input--pill').forEach(function(fs) {
         var legend = fs.querySelector('.form__label');
-        if (legend) targetLabel = legend; // keep overwriting → ends up as the last one
+        if (legend) targetLabel = legend;
       });
-      // Use variant-selects as positioning parent — it spans full content width
-      var variantParent = document.querySelector('variant-selects') || document.querySelector('variant-radios');
-      if (trigger && targetLabel && variantParent) {
-        var legendTop = targetLabel.getBoundingClientRect().top;
-        var parentTop = variantParent.getBoundingClientRect().top;
-        variantParent.style.position = 'relative';
-        trigger.style.position = 'absolute';
-        trigger.style.top = Math.round(legendTop - parentTop) + 'px';
-        trigger.style.right = '0';
-        trigger.style.margin = '0';
-        variantParent.appendChild(trigger);
+      var container = trigger ? trigger.parentElement : null;
+      if (!trigger || !targetLabel || !container) return;
+
+      // Walk offsetTop chain from targetLabel up to container
+      var top = 0;
+      var el = targetLabel;
+      while (el && el !== container) {
+        top += el.offsetTop;
+        el = el.offsetParent;
+        if (!el || !container.contains(el)) { top = 0; break; }
       }
+      // Fallback: use getBoundingClientRect difference
+      if (top === 0) {
+        top = Math.round(targetLabel.getBoundingClientRect().top - container.getBoundingClientRect().top);
+      }
+
+      container.style.position = 'relative';
+      trigger.style.position = 'absolute';
+      trigger.style.top = top + 'px';
+      trigger.style.right = '0';
+      trigger.style.margin = '0';
     }
+
     // Wait for full DOM + variant-selects to settle before positioning
+    function scheduleTrigger() {
+      setTimeout(moveTriggerInline, 200);
+      setTimeout(moveTriggerInline, 800);
+      setTimeout(moveTriggerInline, 1500);
+    }
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(moveTriggerInline, 100);
-        setTimeout(moveTriggerInline, 500);
-      });
+      document.addEventListener('DOMContentLoaded', scheduleTrigger);
     } else {
-      // DOMContentLoaded already fired (script is deferred or late)
-      setTimeout(moveTriggerInline, 100);
-      setTimeout(moveTriggerInline, 500);
+      scheduleTrigger();
     }
 
     // Run after the modal opens (dialog open event)
