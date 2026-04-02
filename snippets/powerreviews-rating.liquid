@@ -65,22 +65,25 @@
     font-weight: 600 !important;
     color: #111 !important;
     margin-left: 4px !important;
-  }
-
-  /* Show the read-and-write container (PR hides it by default) */
-  #pr-reviewsnippet .pr-snippet-read-and-write {
-    display: inline-flex !important;
-    align-items: center !important;
     line-height: 1 !important;
     vertical-align: middle !important;
   }
 
+  /* Show the read-and-write container (PR hides it by default) */
+  #pr-reviewsnippet .pr-snippet-read-and-write {
+    display: flex !important;
+    align-items: center !important;
+    line-height: 1 !important;
+  }
+
   /* Review count — show as "· N Reviews" */
   #pr-reviewsnippet .pr-snippet-rating-count {
-    display: inline !important;
+    display: inline-flex !important;
+    align-items: center !important;
     font-size: 13px !important;
     font-weight: 400 !important;
     color: #6b7280 !important;
+    line-height: 1 !important;
   }
 
   #pr-reviewsnippet .pr-snippet-rating-count::before {
