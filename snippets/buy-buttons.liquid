@@ -308,6 +308,12 @@
     .pdp-trust-bar__label { font-size: 8.5px; }
     .pdp-trust-bar { padding: 10px; }
   }
+
+  /* Hide "Check your purchasing power" link in Shop Pay installments widget */
+  .installment shopify-payment-terms a,
+  .installment shopify-payment-terms button,
+  shopify-payment-terms a[href*="purchasing"],
+  shopify-payment-terms a[href*="shop-pay"] { display: none !important; }
 {% endstyle %}
 
 <script>
@@ -325,7 +331,19 @@
     branded.forEach(function (el) {
       el.style.cssText = 'display:none!important;height:0!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;opacity:0!important;pointer-events:none!important;visibility:hidden!important;position:absolute!important;';
     });
+    // Hide "Check your purchasing power" — try light DOM and shadow DOM
+    document.querySelectorAll('shopify-payment-terms').forEach(function (widget) {
+      // Light DOM
+      widget.querySelectorAll('a, button').forEach(function (el) {
+        if (/purchasing power/i.test(el.textContent)) el.style.setProperty('display', 'none', 'important');
+      });
+      // Shadow DOM
+      if (widget.shadowRoot) {
+        widget.shadowRoot.querySelectorAll('a, button').forEach(function (el) {
+          if (/purchasing power/i.test(el.textContent)) el.style.setProperty('display', 'none', 'important');
+        });
+      }
+    });
     if (++attempts >= 10) clearInterval(interval);
-  }, 300);
 })();
 </script>
