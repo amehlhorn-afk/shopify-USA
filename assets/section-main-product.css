@@ -1687,9 +1687,10 @@ a.product__text {
   display: none !important;
 }
 
-/* ── Price: reduce 15% (42px → 36px) ── */
+/* ── Price: match product title size (28px) and remove bold ── */
 .product__info-container .price .price-item {
-  font-size: 36px !important;
+  font-size: 28px !important;
+  font-weight: 400 !important;
 }
 
 /* ── Shop Pay installments: reduce gap above by 60% (1.5rem → 0.6rem) ── */
