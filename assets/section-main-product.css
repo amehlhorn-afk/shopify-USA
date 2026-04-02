@@ -1692,6 +1692,11 @@ a.product__text {
   font-size: 36px !important;
 }
 
+/* ── Shop Pay installments: reduce gap above by 60% (1.5rem → 0.6rem) ── */
+.product__info-container > div:has(.installment) {
+  margin-top: 0.6rem !important;
+}
+
 /* ── Variant option label spacing ── */
 /* "Select Size" label: 2× (14px → 28px) */
 variant-selects .product-form__input:first-of-type .form__label,
