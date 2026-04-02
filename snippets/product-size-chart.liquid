@@ -90,28 +90,54 @@
         }
       });
 
-      // ── 2. Style quiz labels to match variant picker pills ──
-      //    The quiz injects labels; add a class so CSS can target reliably.
+      // ── 2. Move description paragraph above the header divider ──
+      var header = document.querySelector('#' + modalId + ' .product-size-chart__modal-header');
+      if (header && !header.querySelector('.product-size-chart__modal-subtitle')) {
+        var descEl = null;
+        content.querySelectorAll('p').forEach(function(p) {
+          if (!descEl && /four profiles/i.test(p.textContent)) descEl = p;
+        });
+        if (descEl) {
+          var sub = document.createElement('p');
+          sub.className = 'product-size-chart__modal-subtitle';
+          sub.textContent = descEl.textContent.trim();
+          header.appendChild(sub);
+          descEl.style.display = 'none';
+        }
+      }
+
+      // ── 3. Style quiz labels ──
       content.querySelectorAll('label').forEach(function(lbl) {
         lbl.classList.add('sc-quiz-pill');
       });
 
-      // ── 3. Reformat result: combine number + name into "1.0 - Medium Low" ──
-      //    Watch for the result heading (e.g. "Medium Low") and the number box.
+      // ── 4. Move "Sleepers" note below the CTA button ──
+      var sleepersEl = null;
+      content.querySelectorAll('*').forEach(function(el) {
+        if (!sleepersEl && el.children.length === 0 && /sleepers with your profile/i.test(el.textContent)) {
+          sleepersEl = el;
+        }
+      });
+      var ctaBtn = content.querySelector('a[href], button:not([aria-label])');
+      if (sleepersEl && ctaBtn) {
+        var moveTarget = sleepersEl.parentElement && sleepersEl.parentElement !== content ? sleepersEl.parentElement : sleepersEl;
+        ctaBtn.parentNode.insertBefore(moveTarget, ctaBtn.nextSibling);
+      }
+
+      // ── 5. Reformat result: Medium Low inline with 1.0 in same box ──
       var observer = new MutationObserver(function() { reformatResult(content); });
       observer.observe(content, { childList: true, subtree: true, characterData: true });
-      reformatResult(content); // also run immediately
+      reformatResult(content);
     }
 
     function reformatResult(content) {
-      // Find the result name element (bold text matching pillow profile names)
       var profilePattern = /^(Low|Medium[\s\-]?Low|Medium|Medium[\s\-]?High|High)$/i;
       var nameEl = null;
       var numberEl = null;
 
       content.querySelectorAll('*').forEach(function(el) {
-        if (el.classList && el.classList.contains('sc-result-badge')) return; // skip our own badge
-        if (el.children.length > 0) return; // leaf nodes only
+        if (el.classList && el.classList.contains('sc-result-badge')) return;
+        if (el.children.length > 0) return;
         var txt = el.textContent.trim();
         if (profilePattern.test(txt)) nameEl = el;
         if (/^\d+\.\d+$/.test(txt) && el !== nameEl) numberEl = el;
@@ -121,24 +147,26 @@
 
       var profileName = nameEl.textContent.trim();
       var profileNum  = numberEl.textContent.trim();
-      var badgeText   = profileNum + ' \u2013 ' + profileName; // "1.0 – Medium Low"
 
-      // Re-use existing badge if already inserted, just update the text
       var existing = content.querySelector('.sc-result-badge');
       if (existing) {
-        existing.textContent = badgeText;
+        var nameSpan = existing.querySelector('.sc-result-name');
+        var numSpan  = existing.querySelector('.sc-result-num');
+        if (nameSpan) nameSpan.textContent = profileName;
+        if (numSpan)  numSpan.textContent  = profileNum;
         return;
       }
 
-      // First time: build and insert the badge
+      // Build badge: "Medium Low  1.0" in one box
       var badge = document.createElement('div');
       badge.className = 'sc-result-badge';
-      badge.textContent = badgeText;
+      badge.innerHTML = '<span class="sc-result-name">' + profileName + '</span>'
+                      + '<span class="sc-result-sep"></span>'
+                      + '<span class="sc-result-num">' + profileNum + '</span>';
 
       nameEl.parentNode.insertBefore(badge, nameEl);
       nameEl.style.display = 'none';
       numberEl.style.display = 'none';
-      // hide the parent box of numberEl if it's just a wrapper
       if (numberEl.parentElement && numberEl.parentElement !== content &&
           numberEl.parentElement.children.length === 1) {
         numberEl.parentElement.style.display = 'none';
@@ -257,6 +285,16 @@
     line-height: 1.35;
     color: var(--brand-gray-900, #111827);
     max-width: calc(100% - 48px);
+    text-transform: uppercase;
+  }
+
+  .product-size-chart__modal-subtitle {
+    margin: 12px 0 0;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--brand-gray-600, #4b5563);
+    line-height: 1.5;
+    width: 100%;
   }
 
   .product-size-chart__modal-close {
@@ -289,6 +327,11 @@
     font-size: 13px;
     color: var(--brand-gray-700, #374151);
     line-height: 1.7;
+    text-align: left !important;
+  }
+
+  .product-size-chart__content * {
+    text-align: left !important;
   }
 
   .product-size-chart__content p { margin: 0 0 8px; }
@@ -347,18 +390,36 @@
     height: 0;
   }
 
-  /* ── Combined result badge "1.0 – Medium Low" ── */
+  /* ── Combined result badge: "Medium Low  1.0" in one box ── */
   .sc-result-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
     border: 2.5px solid #00b5e3;
     border-radius: 8px;
-    padding: 12px 24px;
-    font-size: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
     font-weight: 700;
     color: #00b5e3;
-    letter-spacing: 0.01em;
-    margin: 16px auto;
-    text-align: center;
+    margin: 16px 0;
+    text-align: left !important;
+  }
+
+  .sc-result-name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .sc-result-sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(0, 181, 227, 0.4);
+    flex-shrink: 0;
+  }
+
+  .sc-result-num {
+    font-size: 20px;
+    font-weight: 700;
   }
 
   @media screen and (max-width: 749px) {

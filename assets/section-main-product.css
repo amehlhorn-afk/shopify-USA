@@ -1686,3 +1686,21 @@ a.product__text {
 .rebuy-widget .primary-title {
   display: none !important;
 }
+
+/* ── Price: reduce 15% (42px → 36px) ── */
+.product__info-container .price .price-item {
+  font-size: 36px !important;
+}
+
+/* ── Variant option label spacing ── */
+/* "Select Size" label: 2× (14px → 28px) */
+variant-selects .product-form__input:first-of-type .form__label,
+variant-radios .product-form__input:first-of-type .form__label {
+  margin-top: 28px !important;
+}
+
+/* "Pillow Height" label: 3× (14px → 42px) */
+variant-selects .product-form__input:nth-of-type(2) .form__label,
+variant-radios .product-form__input:nth-of-type(2) .form__label {
+  margin-top: 42px !important;
+}
