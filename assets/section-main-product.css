@@ -1812,6 +1812,22 @@ variant-radios .product-form__input:nth-of-type(2) {
   justify-content: center !important;
 }
 
+/* ── Color swatches: rounded rectangle instead of circle ── */
+/* Override the 50% border-radius at the fieldset level so it cascades */
+.product-form__input--swatch {
+  --swatch-input--border-radius: 8px !important;
+}
+/* Also override directly on the swatch element (aspect-ratio stays 1:1 = rounded square) */
+.product-form__input--swatch .swatch {
+  border-radius: 8px !important;
+}
+.product-form__input--swatch .swatch-input__input + .swatch-input__label {
+  border-radius: 8px !important;
+}
+
+/* ── Variant pills: 4-per-row grid applies globally to all pill fieldsets >4 options ── */
+/* (JS adds variant-pills-grid-4 class to any .product-form__input--pill with >4 labels) */
+
 /* 70/30 image/info column split (overrides Dawn's 65/35 large preset) */
 @media screen and (min-width: 990px) {
   .product--large:not(.product--no-media) .product__media-wrapper {
