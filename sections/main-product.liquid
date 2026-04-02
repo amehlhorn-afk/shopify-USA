@@ -38,11 +38,13 @@
       }
     }
 
-    /* ── PDP gallery: image bleeds to left edge, wider media column ── */
+    /* ── PDP gallery: full-width container, image and rail reach viewport edges ── */
     @media screen and (min-width: 990px) {
-      /* Reduce left padding so image sits close to the viewport left edge */
+      /* Remove max-width cap so content fills the viewport with small gutters */
       #MainProduct-{{ section.id }} .page-width {
+        max-width: 100%;
         padding-left: 1.5rem;
+        padding-right: 1.5rem;
       }
 
       /* Wider image column — 58% of available width */
@@ -51,12 +53,12 @@
         width: calc(58% - var(--grid-desktop-horizontal-spacing) / 2) !important;
       }
 
-      /* Info column — remaining 42% with comfortable left padding and kept right spacing */
+      /* Info column — remaining 42% with comfortable left padding */
       #MainProduct-{{ section.id }} .product__info-wrapper {
         max-width: none !important;
         width: calc(42% - var(--grid-desktop-horizontal-spacing) / 2) !important;
         padding-left: 3.5rem !important;
-        padding-right: 2rem !important;
+        padding-right: 1.5rem !important;
       }
     }
   {%- endstyle -%}

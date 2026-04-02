@@ -37,59 +37,38 @@
     background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGNsaXBQYXRoIGlkPSJoIj48cmVjdCB3aWR0aD0iMTAiIGhlaWdodD0iMjAiLz48L2NsaXBQYXRoPjwvZGVmcz48cGF0aCBmaWxsPSIjRDFENURCIiBkPSJtMTAgMTMuNS00LjExNCAyLjE2My43ODUtNC41ODEtMy4zMjgtMy4yNDUgNC42LS42NjlMMTAgM2wyLjA1NyA0LjE2OCA0LjYuNjY5LTMuMzI4IDMuMjQ1Ljc4NSA0LjU4MXoiLz48cGF0aCBmaWxsPSIjRjU5RTBCIiBjbGlwLXBhdGg9InVybCgjaCkiIGQ9Im0xMCAxMy41LTQuMTE0IDIuMTYzLjc4NS00LjU4MS0zLjMyOC0zLjI0NSA0LjYtLjY2OUwxMCAzbDIuMDU3IDQuMTY4IDQuNi42NjktMy4zMjggMy4yNDUuNzg1IDQuNTgxeiIvPjwvc3ZnPg==") !important;
   }
 
-  /* Score + review count — inline, muted */
-  #pr-reviewsnippet .pr-snippet-review-count,
-  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-snippet-read-and-write a {
-    color: var(--brand-cyan) !important;
-    font-size: 12px !important;
+  /* Tighten star spacing — almost touching */
+  #pr-reviewsnippet .pr-star-v4 {
+    margin-right: 0 !important;
+  }
+
+  /* Rating decimal — remove box, shrink 5% (14px → 13px) */
+  #pr-reviewsnippet .pr-snippet-rating-decimal {
+    border: none !important;
+    padding: 0 !important;
+    font-size: 13px !important;
     font-weight: 600 !important;
-  }
-
-  /* ── "X% recommend" — strip the box, render as inline plain text ── */
-  /* Remove bordered container */
-  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-reco-to-friend,
-  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-reco {
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 0 0 4px !important;
-    border-radius: 0 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 3px !important;
-  }
-
-  /* Percentage number — match score weight */
-  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-reco-value,
-  #pr-reviewsnippet .pr-reco-value {
-    font-size: 12px !important;
-    font-weight: 700 !important;
     color: #111 !important;
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
+    margin-left: 4px !important;
   }
 
-  /* "of respondents would recommend this to a friend" label — subtle */
-  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-reco-to-friend span:not(.pr-reco-value),
-  #pr-reviewsnippet .pr-reco-to-friend span:not(.pr-reco-value) {
-    font-size: 12px !important;
+  /* Review count — show as "· N Reviews" */
+  #pr-reviewsnippet .pr-snippet-rating-count {
+    display: inline !important;
+    font-size: 13px !important;
     font-weight: 400 !important;
     color: #6b7280 !important;
   }
 
-  /* Separator dot before the reco block */
-  #pr-reviewsnippet .pr-snippet-stars-reco-inline .pr-reco-to-friend::before {
-    content: "·";
+  #pr-reviewsnippet .pr-snippet-rating-count::before {
+    content: " · ";
     color: #9ca3af;
-    font-size: 12px;
-    margin-right: 4px;
   }
 
-  /* Remove any PR icon/checkmark inside reco */
-  #pr-reviewsnippet .pr-reco-to-friend .pr-thumbs-icon,
-  #pr-reviewsnippet .pr-reco-to-friend svg {
+  /* Hide write-review link and 68% recommend block */
+  #pr-reviewsnippet .pr-snippet-write-review-link,
+  #pr-reviewsnippet .pr-reco-to-friend,
+  #pr-reviewsnippet .pr-reco {
     display: none !important;
   }
 
@@ -97,7 +76,7 @@
   #pr-reviewsnippet .pr-snippet-stars-reco-inline {
     display: flex !important;
     align-items: center !important;
-    flex-wrap: wrap !important;
-    gap: 6px !important;
+    flex-wrap: nowrap !important;
+    gap: 4px !important;
   }
 {% endstyle %}
