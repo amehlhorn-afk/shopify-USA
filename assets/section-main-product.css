@@ -1702,5 +1702,5 @@ variant-radios .product-form__input:first-of-type .form__label {
 /* "Pillow Height" label: 3× (14px → 42px) */
 variant-selects .product-form__input:nth-of-type(2) .form__label,
 variant-radios .product-form__input:nth-of-type(2) .form__label {
-  margin-top: 48px !important;
+  margin-top: 59px !important;
 }
