@@ -198,10 +198,17 @@
         variantParent.appendChild(trigger);
       }
     }
-    moveTriggerInline();
-    // Re-run after variant-selects custom element settles its DOM
-    setTimeout(moveTriggerInline, 100);
-    setTimeout(moveTriggerInline, 500);
+    // Wait for full DOM + variant-selects to settle before positioning
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(moveTriggerInline, 100);
+        setTimeout(moveTriggerInline, 500);
+      });
+    } else {
+      // DOMContentLoaded already fired (script is deferred or late)
+      setTimeout(moveTriggerInline, 100);
+      setTimeout(moveTriggerInline, 500);
+    }
 
     // Run after the modal opens (dialog open event)
     var dialog = document.getElementById(modalId);
