@@ -194,7 +194,7 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr auto 1fr;
     align-items: center;
-    background: #1a56db;
+    background: #0d3a6e;
     border-radius: 8px;
     padding: 20px 16px;
     margin-bottom: 10px;
@@ -288,6 +288,19 @@
     background-color: var(--brand-navy, #0a1628) !important;
     color: #fff !important;
     border-color: var(--brand-navy, #0a1628) !important;
+  }
+
+  /* ATC button — black background (overrides Dawn theme color) */
+  #ProductSubmitButton-{{ section_id }} {
+    background: #000 !important;
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #fff !important;
+  }
+  #ProductSubmitButton-{{ section_id }}:hover {
+    background: #222 !important;
+    background-color: #222 !important;
+    border-color: #222 !important;
   }
 
   @media screen and (max-width: 749px) {
