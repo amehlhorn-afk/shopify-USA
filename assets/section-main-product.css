@@ -1735,6 +1735,14 @@ variant-radios .product-form__input:nth-of-type(2) {
   background: #e5e7eb;
 }
 
+/* PDP trust bar — equal 3-column layout filling full width */
+.pdp-trust-bar {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+.pdp-trust-bar__divider {
+  display: none !important;
+}
+
 /* Product offer badge (e.g. NEW ARRIVAL) — overlaid top-right of lead image */
 .product-offer-label--overlay {
   position: absolute !important;
