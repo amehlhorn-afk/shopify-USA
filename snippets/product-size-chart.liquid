@@ -179,25 +179,21 @@
     function moveTriggerInline() {
       var trigger = document.querySelector('.product-size-chart__trigger');
       var pillowLabel = null;
-      var pillowFieldset = null;
       document.querySelectorAll('.product-form__input').forEach(function(fs) {
         var legend = fs.querySelector('.form__label');
-        if (legend && /pillow height/i.test(legend.textContent)) {
-          pillowLabel = legend;
-          pillowFieldset = fs;
-        }
+        if (legend && /pillow height/i.test(legend.textContent)) pillowLabel = legend;
       });
-      if (trigger && pillowLabel && pillowFieldset) {
+      // Use variant-selects as positioning parent — it spans full content width
+      var variantParent = document.querySelector('variant-selects') || document.querySelector('variant-radios');
+      if (trigger && pillowLabel && variantParent) {
         var legendTop = pillowLabel.getBoundingClientRect().top;
-        pillowFieldset.style.position = 'relative';
+        var parentTop = variantParent.getBoundingClientRect().top;
+        variantParent.style.position = 'relative';
         trigger.style.position = 'absolute';
-        trigger.style.top = '0';
+        trigger.style.top = Math.round(legendTop - parentTop) + 'px';
         trigger.style.right = '0';
         trigger.style.margin = '0';
-        pillowFieldset.appendChild(trigger);
-        // Correct vertical offset so trigger aligns with legend
-        var correction = legendTop - trigger.getBoundingClientRect().top;
-        trigger.style.top = correction + 'px';
+        variantParent.appendChild(trigger);
       }
     }
     moveTriggerInline();
