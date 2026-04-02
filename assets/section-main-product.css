@@ -1736,6 +1736,10 @@ variant-radios .product-form__input:nth-of-type(2) {
 }
 
 /* Variant pill: descriptor sub-label (e.g. "Firm" below "0.0") */
+.product-form__input--pill input[type='radio'] + label:has(.pill-label-descriptor) {
+  flex-direction: column !important;
+  align-items: center !important;
+}
 .pill-label-value {
   display: block;
 }
@@ -1750,8 +1754,9 @@ variant-radios .product-form__input:nth-of-type(2) {
   margin-top: 2px;
 }
 
-/* Many-option fieldsets (mattress sizes): force 2 rows of 4 */
-.variant-pills-grid-4 input[type='radio'] + label {
+/* Many-option fieldsets (mattress sizes): force 2 rows of 4
+   Higher specificity needed to beat the general flex:1 rule below */
+.product-form__input--pill.variant-pills-grid-4 input[type='radio'] + label {
   flex: 0 0 calc(25% - 6px) !important;
   max-width: calc(25% - 6px) !important;
 }
