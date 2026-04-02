@@ -18,9 +18,40 @@
     font-family: var(--font-body-family) !important;
   }
 
-  /* Stars — amber */
-  #pr-reviewsnippet .pr-star-v4 {
+  /* Stars — amber yellow, no box background */
+  #pr-reviewsnippet .pr-star-v4-full,
+  #pr-reviewsnippet .pr-star-v4-half,
+  #pr-reviewsnippet .pr-star-v4-empty {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  #pr-reviewsnippet .pr-star-v4-full svg,
+  #pr-reviewsnippet .pr-star-v4-half svg {
+    fill: #f59e0b !important;
     color: #f59e0b !important;
+  }
+
+  #pr-reviewsnippet .pr-star-v4-empty svg {
+    fill: #d1d5db !important;
+    color: #d1d5db !important;
+  }
+
+  /* Scale down the star row */
+  #pr-reviewsnippet .pr-snippet-stars {
+    font-size: 0 !important;
+  }
+
+  #pr-reviewsnippet .pr-star-v4 {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  #pr-reviewsnippet .pr-star-v4 svg {
+    width: 18px !important;
+    height: 18px !important;
   }
 
   /* Score + review count — inline, muted */

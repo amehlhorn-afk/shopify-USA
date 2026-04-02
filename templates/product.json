@@ -139,7 +139,7 @@
         "image_zoom": "lightbox",
         "hide_variants": true,
         "enable_video_looping": false,
-        "padding_top": 40,
+        "padding_top": 20,
         "padding_bottom": 20,
         "rebuy_widget_id": "270427",
         "truemed_public_id": "",
