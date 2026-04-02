@@ -1719,6 +1719,7 @@ variant-radios .product-form__input:nth-of-type(2) {
 /* Pill variant buttons — fill full row width evenly, wrap for many options */
 .product-form__input--pill {
   width: 100% !important;
+  max-width: 100% !important;
 }
 .product-form__input--pill input[type='radio'] + label {
   flex: 1 !important;
