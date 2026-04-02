@@ -1735,6 +1735,27 @@ variant-radios .product-form__input:nth-of-type(2) {
   background: #e5e7eb;
 }
 
+/* Variant pill: descriptor sub-label (e.g. "Firm" below "0.0") */
+.pill-label-value {
+  display: block;
+}
+.pill-label-descriptor {
+  display: block;
+  font-size: 9px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* Many-option fieldsets (mattress sizes): force 2 rows of 4 */
+.variant-pills-grid-4 input[type='radio'] + label {
+  flex: 0 0 calc(25% - 6px) !important;
+  max-width: calc(25% - 6px) !important;
+}
+
 /* Pill variant buttons — fill full row width evenly, wrap for many options */
 .product-form__input--pill {
   width: 100% !important;

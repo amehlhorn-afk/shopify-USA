@@ -63,6 +63,33 @@
     }
   {%- endstyle -%}
 
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.product-form__input--pill').forEach(function(fs) {
+      var labels = fs.querySelectorAll('input[type="radio"] + label');
+
+      // 2+ rows for fieldsets with >4 options (e.g. mattress sizes)
+      if (labels.length > 4) fs.classList.add('variant-pills-grid-4');
+
+      // Split "0.0 - Firm" into value + descriptor sub-label
+      labels.forEach(function(label) {
+        var textNode = null;
+        label.childNodes.forEach(function(n) {
+          if (!textNode && n.nodeType === 3 && n.textContent.trim().indexOf(' - ') !== -1) textNode = n;
+        });
+        if (!textNode) return;
+        var parts = textNode.textContent.trim().split(' - ');
+        var valSpan = document.createElement('span');
+        valSpan.className = 'pill-label-value';
+        valSpan.textContent = parts[0].trim();
+        var descSpan = document.createElement('span');
+        descSpan.className = 'pill-label-descriptor';
+        descSpan.textContent = parts.slice(1).join(' - ').trim();
+        textNode.replaceWith(valSpan, descSpan);
+      });
+    });
+  });
+  </script>
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
   {%- if product.quantity_price_breaks_configured? -%}
