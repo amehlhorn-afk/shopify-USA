@@ -175,6 +175,20 @@
       }
     }
 
+    // ── Move trigger inline with "Pillow Height" label, right-justified ──
+    function moveTriggerInline() {
+      var trigger = document.querySelector('.product-size-chart__trigger');
+      var pillowLabel = null;
+      document.querySelectorAll('.product-form__input .form__label').forEach(function(el) {
+        if (/pillow height/i.test(el.textContent)) pillowLabel = el;
+      });
+      if (trigger && pillowLabel) {
+        trigger.style.margin = '0 0 0 auto';
+        pillowLabel.appendChild(trigger);
+      }
+    }
+    moveTriggerInline();
+
     // Run after the modal opens (dialog open event)
     var dialog = document.getElementById(modalId);
     if (dialog) {
