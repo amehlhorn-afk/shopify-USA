@@ -1710,3 +1710,8 @@ variant-selects .product-form__input:nth-of-type(2),
 variant-radios .product-form__input:nth-of-type(2) {
   margin-top: 15px !important;
 }
+
+/* CTA button — expand to full content width (match Rebuy widget) */
+.product__info-container .product-form__buttons {
+  max-width: 100% !important;
+}
