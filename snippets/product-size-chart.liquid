@@ -175,18 +175,20 @@
       }
     }
 
-    // ── Move trigger inline with "Pillow Height" label, right-justified ──
+    // ── Move trigger inline with the last pill variant label, right-justified ──
+    // Works across product types: "Pillow Height" on pillows, "Bedding Size" on sheets, etc.
     function moveTriggerInline() {
       var trigger = document.querySelector('.product-size-chart__trigger');
-      var pillowLabel = null;
-      document.querySelectorAll('.product-form__input').forEach(function(fs) {
+      // Find the last pill fieldset's legend (main size selector is typically last)
+      var targetLabel = null;
+      document.querySelectorAll('.product-form__input--pill').forEach(function(fs) {
         var legend = fs.querySelector('.form__label');
-        if (legend && /pillow height/i.test(legend.textContent)) pillowLabel = legend;
+        if (legend) targetLabel = legend; // keep overwriting → ends up as the last one
       });
       // Use variant-selects as positioning parent — it spans full content width
       var variantParent = document.querySelector('variant-selects') || document.querySelector('variant-radios');
-      if (trigger && pillowLabel && variantParent) {
-        var legendTop = pillowLabel.getBoundingClientRect().top;
+      if (trigger && targetLabel && variantParent) {
+        var legendTop = targetLabel.getBoundingClientRect().top;
         var parentTop = variantParent.getBoundingClientRect().top;
         variantParent.style.position = 'relative';
         trigger.style.position = 'absolute';
