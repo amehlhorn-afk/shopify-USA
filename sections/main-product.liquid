@@ -64,40 +64,51 @@
   {%- endstyle -%}
 
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.product-form__input--pill').forEach(function(fs) {
-      var labels = fs.querySelectorAll('input[type="radio"] + label');
+  (function() {
+    function initVariantUI() {
+      document.querySelectorAll('.product-form__input--pill').forEach(function(fs) {
+        var labels = fs.querySelectorAll('input[type="radio"] + label');
 
-      // 2+ rows for fieldsets with >4 options (e.g. mattress sizes)
-      if (labels.length > 4) fs.classList.add('variant-pills-grid-4');
+        // Max 4 per row for fieldsets with >4 options
+        if (labels.length > 4) fs.classList.add('variant-pills-grid-4');
 
-      // Split "0.0 - Firm" into value + descriptor sub-label
-      labels.forEach(function(label) {
-        var textNode = null;
-        label.childNodes.forEach(function(n) {
-          if (!textNode && n.nodeType === 3 && n.textContent.trim().indexOf(' - ') !== -1) textNode = n;
+        // Split "0.0 - Firm" into value + descriptor sub-label (skip if already split)
+        labels.forEach(function(label) {
+          if (label.querySelector('.pill-label-value')) return;
+          var textNode = null;
+          label.childNodes.forEach(function(n) {
+            if (!textNode && n.nodeType === 3 && n.textContent.trim().indexOf(' - ') !== -1) textNode = n;
+          });
+          if (!textNode) return;
+          var parts = textNode.textContent.trim().split(' - ');
+          var valSpan = document.createElement('span');
+          valSpan.className = 'pill-label-value';
+          valSpan.textContent = parts[0].trim();
+          var descSpan = document.createElement('span');
+          descSpan.className = 'pill-label-descriptor';
+          descSpan.textContent = parts.slice(1).join(' - ').trim();
+          textNode.replaceWith(valSpan, descSpan);
         });
-        if (!textNode) return;
-        var parts = textNode.textContent.trim().split(' - ');
-        var valSpan = document.createElement('span');
-        valSpan.className = 'pill-label-value';
-        valSpan.textContent = parts[0].trim();
-        var descSpan = document.createElement('span');
-        descSpan.className = 'pill-label-descriptor';
-        descSpan.textContent = parts.slice(1).join(' - ').trim();
-        textNode.replaceWith(valSpan, descSpan);
       });
-    });
 
-    // Move product-offer-label badge to top-right of lead image
-    var offerBadge = document.querySelector('.product-offer-label');
-    var mediaWrapper = document.querySelector('.product__media-wrapper');
-    if (offerBadge && mediaWrapper) {
-      offerBadge.classList.add('product-offer-label--overlay');
-      mediaWrapper.style.position = 'relative';
-      mediaWrapper.appendChild(offerBadge);
+      // Move product-offer-label badge to top-right of lead image
+      var offerBadge = document.querySelector('.product-offer-label');
+      var mediaWrapper = document.querySelector('.product__media-wrapper');
+      if (offerBadge && mediaWrapper && !offerBadge.classList.contains('product-offer-label--overlay')) {
+        offerBadge.classList.add('product-offer-label--overlay');
+        mediaWrapper.style.position = 'relative';
+        mediaWrapper.appendChild(offerBadge);
+      }
     }
-  });
+
+    // Run at DOMContentLoaded, then again after variant-selects custom element settles
+    document.addEventListener('DOMContentLoaded', function() {
+      initVariantUI();
+      // variant-selects re-initialises its DOM after DOMContentLoaded — re-run after it settles
+      setTimeout(initVariantUI, 100);
+      setTimeout(initVariantUI, 500);
+    });
+  })();
   </script>
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>

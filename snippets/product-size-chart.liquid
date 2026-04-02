@@ -199,6 +199,9 @@
       }
     }
     moveTriggerInline();
+    // Re-run after variant-selects custom element settles its DOM
+    setTimeout(moveTriggerInline, 100);
+    setTimeout(moveTriggerInline, 500);
 
     // Run after the modal opens (dialog open event)
     var dialog = document.getElementById(modalId);
