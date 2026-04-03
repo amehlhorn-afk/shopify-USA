@@ -88,6 +88,35 @@
     }
   {%- endstyle -%}
 
+  {%- comment -%} Inline (non-deferred) script — kills slide-in animation on info wrapper before first paint {%- endcomment -%}
+  <script>
+  (function() {
+    // Force the info wrapper to start at position 0 — inline styles beat CSS animations.
+    // Runs immediately (no defer) so it applies before the browser paints.
+    function cancelInfoWrapperAnimation() {
+      if (window.innerWidth < 990) return;
+      var wrapper = document.querySelector('#MainProduct-{{ section.id }} .product__info-wrapper');
+      if (!wrapper) return;
+      wrapper.style.transform = 'none';
+      wrapper.style.opacity   = '1';
+      wrapper.style.animation = 'none';
+    }
+    // Run now (script is inline, so DOM up to this point is available),
+    // and again after DOMContentLoaded in case the wrapper isn't rendered yet.
+    cancelInfoWrapperAnimation();
+    document.addEventListener('DOMContentLoaded', cancelInfoWrapperAnimation);
+    // Re-apply after any variant change (pillow auto-select triggers a re-render at ~150ms)
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+        subscribe(PUB_SUB_EVENTS.variantChange, cancelInfoWrapperAnimation);
+      }
+      // Fallback: re-run at 250ms and 500ms to catch pillow auto-select re-renders
+      setTimeout(cancelInfoWrapperAnimation, 250);
+      setTimeout(cancelInfoWrapperAnimation, 600);
+    });
+  })();
+  </script>
+
   <script>
   (function() {
     function initVariantUI() {
