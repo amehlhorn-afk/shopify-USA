@@ -293,33 +293,49 @@
       if (sg) sg.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
     }
 
-    function setup() {
-      var variantEl = document.querySelector('variant-selects, variant-radios');
-      var priceEl   = document.getElementById('price-' + SECTION_ID);
-      if (!variantEl || !priceEl) return;
+    function rescheduleTrigger() {
+      if (typeof window.pdpMoveSizeChartTrigger === 'function') {
+        setTimeout(window.pdpMoveSizeChartTrigger, 50);
+        setTimeout(window.pdpMoveSizeChartTrigger, 300);
+      }
+    }
 
-      // Track the most recently changed option group index
-      variantEl.addEventListener('change', function(e) {
-        if (!e.target) return;
+    function setup() {
+      var sectionEl = document.getElementById('MainProduct-' + SECTION_ID);
+      var priceEl   = document.getElementById('price-' + SECTION_ID);
+      if (!sectionEl || !priceEl) return;
+
+      // Use event delegation on document so it survives variant-selects DOM replacement.
+      // Dawn's viewTransition replaces the variant-selects element on each variant change;
+      // a listener on that element would be silently dropped after the first re-render.
+      document.addEventListener('change', function(e) {
+        if (!e.target || !sectionEl.contains(e.target)) return;
         var groups = getGroups();
         var grp = e.target.closest(
           '.product-form__input--pill, .product-form__input--swatch, .product-form__input--dropdown'
         );
-        lastChangedOptIdx = groups.indexOf(grp);
+        if (grp) lastChangedOptIdx = groups.indexOf(grp);
       }, true /* capture — run before Dawn's handler */);
 
-      // Watch for Dawn's setUnavailable() adding 'hidden' to the price element
+      // Watch for Dawn's setUnavailable() adding 'hidden' to the price element.
+      // Also watch for price becoming visible again so we can reposition the size guide.
       var priceObserver = new MutationObserver(function(mutations) {
         for (var i = 0; i < mutations.length; i++) {
           var m = mutations[i];
           if (m.type !== 'attributes' || m.attributeName !== 'class') continue;
-          if (!priceEl.classList.contains('hidden')) continue; // price became visible — ignore
-          if (lastChangedOptIdx < 0 || lastChangedOptIdx === sizeOptIdx) continue; // size change — let Dawn handle
-          // Non-size option change caused price to disappear → intervene
-          deselectSizeGroup();
-          var dv = findDefaultVariant();
-          if (dv) injectDefaultPrice(priceEl, dv);
-          break;
+
+          if (priceEl.classList.contains('hidden')) {
+            // Price just became hidden
+            if (lastChangedOptIdx < 0 || lastChangedOptIdx === sizeOptIdx) continue; // size change — let Dawn handle
+            // Non-size option change caused price to disappear → intervene
+            deselectSizeGroup();
+            var dv = findDefaultVariant();
+            if (dv) injectDefaultPrice(priceEl, dv);
+            rescheduleTrigger();
+          } else {
+            // Price just became visible — reposition size guide trigger
+            rescheduleTrigger();
+          }
         }
       });
       priceObserver.observe(priceEl, { attributes: true, attributeFilter: ['class'] });
@@ -372,7 +388,7 @@
       <div class="grid__item product__media-wrapper">
         {% render 'product-media-gallery', variant_images: variant_images %}
       </div>
-      <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}">
         <section
           id="ProductInfo-{{ section.id }}"
           class="product__info-container{% if section.settings.enable_sticky_info %} product__column-sticky{% endif %}"
