@@ -1749,10 +1749,18 @@ variant-radios .product-form__input:nth-of-type(2) {
   background: #e5e7eb;
 }
 
-/* CTA button — black background */
+/* CTA button — black background, subtle rounding, no box-shadow outline */
+.product__info-container .product-form__submit.button--primary,
+.product__info-container .product-form__submit.button--primary::before,
+.product__info-container .product-form__submit.button--primary::after {
+  border-radius: 6px !important;
+}
 .product__info-container .product-form__submit.button--primary {
   background: #000 !important;
   border-color: #000 !important;
+}
+.product__info-container .product-form__submit.button--primary::after {
+  box-shadow: none !important;
 }
 .product__info-container .product-form__submit.button--primary:hover {
   background: #222 !important;
