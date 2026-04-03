@@ -157,6 +157,140 @@
     });
   })();
   </script>
+  {%- if product.options.size > 1 -%}
+  <script>
+  /* ── Non-size option change: deselect size + show default (Queen/2.0) price ── */
+  (function() {
+    var ALL_VARIANTS  = {{ product.variants | json }};
+    var PROD_OPTIONS  = {{ product.options   | json }};
+    var PROD_TYPE     = {{ product.type | downcase | json }};
+    var SECTION_ID    = {{ section.id | json }};
+
+    if (PROD_OPTIONS.length < 2) return;
+
+    // Default "size" keyword by product type
+    var defSizeKw = PROD_TYPE.indexOf('pillow') !== -1 ? '2.0' : 'queen';
+
+    // Which option index is the Size option?
+    var sizeOptIdx = -1;
+    PROD_OPTIONS.forEach(function(opt, i) {
+      var lo = opt.toLowerCase();
+      if (lo === 'size' || lo === 'bedding size') sizeOptIdx = i;
+    });
+    if (sizeOptIdx === -1) return;
+
+    var lastChangedOptIdx = -1;
+
+    function fmtPrice(cents) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
+    }
+
+    function getGroups() {
+      return Array.from(document.querySelectorAll(
+        '.product-form__input--pill, .product-form__input--swatch, .product-form__input--dropdown'
+      ));
+    }
+
+    // Find Queen/2.0 variant that best matches the currently selected non-size options
+    function findDefaultVariant() {
+      var groups = getGroups();
+      var currentOpts = groups.map(function(g, i) {
+        if (i === sizeOptIdx) return null;
+        var r = g.querySelector('input[type="radio"]:checked');
+        if (r) return r.value;
+        var sel = g.querySelector('select');
+        return (sel && sel.selectedIndex >= 0) ? sel.options[sel.selectedIndex].value : null;
+      });
+
+      var best = null;
+      ALL_VARIANTS.forEach(function(v) {
+        if (best && best.available) return;
+        if (!v.options[sizeOptIdx]) return;
+        if (v.options[sizeOptIdx].toLowerCase().indexOf(defSizeKw) === -1) return;
+        var match = v.options.every(function(val, i) {
+          if (i === sizeOptIdx) return true;
+          return !currentOpts[i] || val === currentOpts[i];
+        });
+        if (match && (!best || (v.available && !best.available))) best = v;
+      });
+
+      // Fallback: any available Queen/2.0 variant
+      if (!best) {
+        ALL_VARIANTS.forEach(function(v) {
+          if (!best && v.available && v.options[sizeOptIdx] &&
+              v.options[sizeOptIdx].toLowerCase().indexOf(defSizeKw) !== -1) {
+            best = v;
+          }
+        });
+      }
+      return best;
+    }
+
+    function injectDefaultPrice(priceEl, variant) {
+      priceEl.classList.remove('hidden');
+      priceEl.removeAttribute('hidden');
+
+      var isOnSale = variant.compare_at_price && variant.compare_at_price > variant.price;
+      var priceDiv = priceEl.querySelector('.price');
+      if (priceDiv) priceDiv.classList.toggle('price--on-sale', !!isOnSale);
+
+      priceEl.querySelectorAll('.price__regular .price-item--regular').forEach(function(el) {
+        el.textContent = isOnSale ? fmtPrice(variant.compare_at_price) : fmtPrice(variant.price);
+      });
+      priceEl.querySelectorAll('.price__sale .price-item--sale').forEach(function(el) {
+        el.textContent = fmtPrice(variant.price);
+      });
+      priceEl.querySelectorAll('.price__sale .price-item--regular').forEach(function(el) {
+        el.textContent = isOnSale ? fmtPrice(variant.compare_at_price) : '';
+      });
+    }
+
+    function deselectSizeGroup() {
+      var groups = getGroups();
+      var sg = groups[sizeOptIdx];
+      if (sg) sg.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
+    }
+
+    function setup() {
+      var variantEl = document.querySelector('variant-selects, variant-radios');
+      var priceEl   = document.getElementById('price-' + SECTION_ID);
+      if (!variantEl || !priceEl) return;
+
+      // Track the most recently changed option group index
+      variantEl.addEventListener('change', function(e) {
+        if (!e.target) return;
+        var groups = getGroups();
+        var grp = e.target.closest(
+          '.product-form__input--pill, .product-form__input--swatch, .product-form__input--dropdown'
+        );
+        lastChangedOptIdx = groups.indexOf(grp);
+      }, true /* capture — run before Dawn's handler */);
+
+      // Watch for Dawn's setUnavailable() adding 'hidden' to the price element
+      var priceObserver = new MutationObserver(function(mutations) {
+        for (var i = 0; i < mutations.length; i++) {
+          var m = mutations[i];
+          if (m.type !== 'attributes' || m.attributeName !== 'class') continue;
+          if (!priceEl.classList.contains('hidden')) continue; // price became visible — ignore
+          if (lastChangedOptIdx < 0 || lastChangedOptIdx === sizeOptIdx) continue; // size change — let Dawn handle
+          // Non-size option change caused price to disappear → intervene
+          deselectSizeGroup();
+          var dv = findDefaultVariant();
+          if (dv) injectDefaultPrice(priceEl, dv);
+          break;
+        }
+      });
+      priceObserver.observe(priceEl, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setup);
+    } else {
+      setup();
+    }
+  })();
+  </script>
+  {%- endif -%}
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
   {%- if product.quantity_price_breaks_configured? -%}
