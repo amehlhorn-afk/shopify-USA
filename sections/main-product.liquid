@@ -72,6 +72,19 @@
         padding-top: 0 !important;
         margin-top: 0 !important;
       }
+
+      /* Cancel Dawn's slide-in animation on the info wrapper so it never
+         starts with translateY(2rem) — eliminates the transient top gap */
+      #MainProduct-{{ section.id }} .product__info-wrapper.scroll-trigger {
+        transform: none !important;
+        opacity: 1 !important;
+        animation: none !important;
+      }
+
+      /* Sticky container: start flush at top (account for header via var if needed) */
+      #MainProduct-{{ section.id }} .product__column-sticky {
+        top: 0;
+      }
     }
   {%- endstyle -%}
 
