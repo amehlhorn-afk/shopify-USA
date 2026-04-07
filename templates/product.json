@@ -1,1 +1,285 @@
-{"sections":{"main":{"type":"main-product","blocks":{"rebuy_personalization_engine_rebuy_widget_K6yytK":{"type":"shopify:\/\/apps\/rebuy-personalization-engine\/blocks\/rebuy-widget\/a26ae9b9-933b-40bf-bbc6-bf1220bbc4dc","settings":{"enabled":true,"id":"270427","product_id_enabled":true,"collection_id_enabled":false}},"title":{"type":"title","settings":{}},"price":{"type":"price","settings":{"offer_label":"{{ product.metafields.custom.offer_label.value }}"}},"donation_banner_aHkWMK":{"type":"donation_banner","disabled":true,"settings":{"enabled":true,"icon":"shopify:\/\/shop_images\/Group_4599.svg","headline":"<p>5% of all pillow sales donated to the American Cancer Society<\/p>","link":"","open_new_tab":true,"disclaimer":"*During October 2025. The American Cancer Society does not endorse any service or product.","bg_color":"#ec4692","text_color":"#ffffff","subtext_color":"#ffffffb3","radius":13,"v_margin":16}},"firmness_level_iwfwhP":{"type":"firmness_level","disabled":true,"settings":{"Heading":"Firmness Level","text_icon":"shopify:\/\/shop_images\/Frame_1000006345.svg","tool_tip_text":"At BEDGEAR, the traditional soft-to-firm scale is not what you may expect. Our blends of engineered fibers are designed for lasting support. The feel is determined by the level of support the product provides, meaning soft will conform to your shape and firm will elevate."}},"model_buttons_THAGcD":{"type":"model_buttons","disabled":true,"settings":{"heading":"Select Your Model","count":4,"btn_text_1":"M3","btn_url_1":"","btn_text_2":"M3 Night Ice","btn_url_2":"","btn_text_3":"M5","btn_url_3":"","btn_text_4":"M5 Night Ice","btn_url_4":"","btn_text_5":"","btn_url_5":"","btn_text_6":"","btn_url_6":"","btn_text_7":"","btn_url_7":"","btn_text_8":"","btn_url_8":""}},"offer_label_BYtqAg":{"type":"offer_label","disabled":true,"settings":{"block_color":"#000000","text_color":"#ffffff","text":"Buy One, Get One 50% Off Performance® Pillows","button_text":"See Details","button_url":"shopify:\/\/collections\/pillows","box_outside_space":"15px 20px 15px 20px","box_outside_space_mobile":"6px 18px 6px 18px"}},"backorder_message_CXVHzV":{"type":"backorder-message","settings":{"satic_text":"This item is on backorder and is expected to ship:","backorder_bg_color":"#d9534f","backorder_text_color":"#ffffff","border_color":"#ff0000","backorder_border_radius":4}},"variant_picker":{"type":"variant_picker","settings":{"block_color":"#f5f5f5","show_variant_price":true,"color_swatch":true,"size_chart":true,"picker_type":"button","swatch_shape":"circle","enable_addtocart_quantity_button":true,"box_outside_space":"20px 20px 20px 20px","box_outside_space_mobile":"20px 20px 20px 20px","variant_first_row":3,"variant_first_row_Mobile":3,"variant_all_row":4,"vvariant_all_row_Mobile":2,"first_rowsmall_variant_all_row_Mobile":3,"small_variant_all_row_Mobile":2}},"features_6PLB3K":{"type":"features","settings":{"Heading":"","block_color":"#f5f5f5","text_color":"#676c73","box_outside_space":"5px 0 20px 20px","box_outside_space_mobile":"7px 0 14px 18px"}},"description":{"type":"description","settings":{"short_description":false}},"icon_and_text_MVaxVL":{"type":"icon_and_text","settings":{}},"you_may_also_like_Y6hUaV":{"type":"you-may-also-like","disabled":true,"settings":{"Heading":"Finish Making Your Bed","image_ratio":"adapt","show_secondary_image":true,"complementary_products":false,"related_product":true,"quick_add":"standard","products_to_show":10,"columns_desktop":3,"columns_mobile":"2"}},"product_accordions_Um47KB":{"type":"product_accordions","settings":{}},"sticky_button_WpyNXA":{"type":"sticky-button","settings":{"enable_addtocart_quantity_button":true}}},"block_order":["rebuy_personalization_engine_rebuy_widget_K6yytK","title","price","donation_banner_aHkWMK","firmness_level_iwfwhP","model_buttons_THAGcD","offer_label_BYtqAg","backorder_message_CXVHzV","variant_picker","features_6PLB3K","description","icon_and_text_MVaxVL","you_may_also_like_Y6hUaV","product_accordions_Um47KB","sticky_button_WpyNXA"],"custom_css":["\/*.block__free-product-offer label {background-color: #ffd1d3; border: 1px solid #f53e45;}"],"settings":{"enable_sticky_info":true,"color_scheme":"scheme-1","media_size":"large","padding_for_image":"100%","padding_for_image_mobile":"92.11%","constrain_to_viewport":true,"media_fit":"contain","gallery_layout":"stacked","media_position":"left","image_zoom":"lightbox","mobile_thumbnails":"hide","hide_variants":false,"enable_video_looping":false,"desktop_padding_top":40,"desktop_padding_bottom":40,"mobile_padding_top":0,"mobile_padding_bottom":20}},"take_inside_item_HBUNYM":{"type":"take-inside-item","settings":{"bg_color":"#f5f5f5","title":"Take a Look Inside","desktop_padding_top":40,"desktop_padding_bottom":40,"mobile_padding_top":0,"mobile_padding_bottom":0}},"pdp_banner_conetnt_XNLnFa":{"type":"pdp-banner-conetnt","settings":{"title":"","text":"","desktop_padding_top":40,"desktop_padding_bottom":80,"mobile_padding_top":20,"mobile_padding_bottom":20}},"image_with_text_sec_3Q97CP":{"type":"image-with-text-sec","settings":{"bg_color":"#f5f5f5","title":"","text":"","desktop_padding_top":80,"desktop_padding_bottom":80,"mobile_padding_top":40,"mobile_padding_bottom":40}},"powerreviews-pdp-review-display":{"type":"powerreviews-pdp-review-display","settings":{"desktop_padding_top":80,"desktop_padding_bottom":16,"mobile_padding_top":0,"mobile_padding_bottom":16}},"powerreviews-pdp-question-display":{"type":"powerreviews-pdp-question-display","settings":{"desktop_padding_top":20,"desktop_padding_bottom":60,"mobile_padding_top":40,"mobile_padding_bottom":40}},"pdp_faq_sec_4pkezG":{"type":"pdp-faq-sec","settings":{"bg_color":"#f5f5f5","title":"Frequently Asked Questions","text":"Quick Answers to questions you may have.","content_text":"Can't Find what you're looking for?","btn_text":"Contact Us","btn_url":"shopify:\/\/pages\/contact","btn_two_text":"","btn_two_url":"","desktop_padding_top":80,"desktop_padding_bottom":80,"mobile_padding_top":40,"mobile_padding_bottom":40}},"related-products":{"type":"related-products","settings":{"heading":"You may also like","products_to_show":10,"columns_desktop":4,"color_scheme":"scheme-1","image_ratio":"square","image_shape":"default","show_secondary_image":true,"show_vendor":false,"show_rating":false,"columns_mobile":"2","quick_add":"standard","desktop_padding_top":80,"desktop_padding_bottom":80,"mobile_padding_top":40,"mobile_padding_bottom":40}}},"order":["main","take_inside_item_HBUNYM","pdp_banner_conetnt_XNLnFa","image_with_text_sec_3Q97CP","powerreviews-pdp-review-display","powerreviews-pdp-question-display","pdp_faq_sec_4pkezG","related-products"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "features": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-features' %}"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "rating": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'powerreviews-rating' %}"
+          }
+        },
+        "firmness_level": {
+          "type": "custom_liquid",
+          "name": "Custom Liquid - Pillow Firmness",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "{% render 'product-firmness-level' %}"
+          }
+        },
+        "trust_strip": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-trust-strip' %}"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "offer_label": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-offer-label' %}"
+          }
+        },
+        "custom_liquid_QJRMHC": {
+          "type": "custom_liquid",
+          "name": "Custom Liquid - Trumed",
+          "settings": {
+            "custom_liquid": "<div id=\"truemed-instructions\" style=\"font-size: 14px;\" icon-height=\"12\" data-public-id=\"{{ tm_qual_nark67ggmi }}\"></div>\n<script src=\"https://static.truemed.com/widgets/merchant-pdp-widget.min.js\" defer></script>"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "size_chart": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-size-chart' %}"
+          }
+        },
+        "build_system": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-build-system', section: section %}"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": false
+          }
+        },
+        "short_description": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-short-description' %}"
+          }
+        },
+        "description": {
+          "type": "description",
+          "disabled": true,
+          "settings": {}
+        },
+        "accordions": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "{% render 'product-accordions' %}"
+          }
+        }
+      },
+      "block_order": [
+        "features",
+        "title",
+        "rating",
+        "firmness_level",
+        "trust_strip",
+        "price",
+        "offer_label",
+        "custom_liquid_QJRMHC",
+        "variant_picker",
+        "size_chart",
+        "build_system",
+        "buy_buttons",
+        "short_description",
+        "description",
+        "accordions"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "mobile_thumbnails": "show",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "rebuy_widget_id": "270427",
+        "truemed_public_id": "",
+        "truemed_link": ""
+      }
+    },
+    "partner_banner": {
+      "type": "product-partner-banner",
+      "blocks": {
+        "athlete_hDK64Y": {
+          "type": "athlete",
+          "settings": {
+            "image": "shopify://shop_images/JP_article1_bannerv24_4c79283c-3ff4-46fa-9f57-d3fd2545517f.jpg",
+            "quote": "Recovery starts before tip-off. The Night Ice keeps me cool all night — I wake up ready.",
+            "name": "PJ Washington",
+            "position": "Power Forward · Dallas Mavericks",
+            "product_name": "Night Ice Performance® Pillow"
+          }
+        }
+      },
+      "block_order": [
+        "athlete_hDK64Y"
+      ],
+      "settings": {
+        "eyebrow": "Official Sleep Partner",
+        "heading": "Trusted at the Highest Level",
+        "subheading": "The Dallas Mavericks sleep on BEDGEAR.",
+        "group_image": "shopify://shop_images/dallasMavs-RichtextImage.jpg",
+        "logo_lockup": "shopify://shop_images/BEDGEAR-MAVS-Partner-Logo-Lock-Up-SleepPartners-Wht.svg",
+        "stat_1_value": "8+",
+        "stat_1_label": "Seasons as official sleep partner",
+        "stat_1_icon": "none",
+        "stat_2_value": "365-Night Trial",
+        "stat_2_label": "To love your pillow",
+        "stat_2_icon": "shield",
+        "stat_3_value": "1-Year Warranty",
+        "stat_3_label": "So you can rest easy",
+        "stat_3_icon": "shield"
+      }
+    },
+    "pdp_banner": {
+      "type": "product-pdp-banner",
+      "settings": {}
+    },
+    "whats_inside": {
+      "type": "product-whats-inside",
+      "settings": {
+        "eyebrow": "What's Inside"
+      }
+    },
+    "image_with_text": {
+      "type": "product-image-with-text",
+      "settings": {}
+    },
+    "faq": {
+      "type": "product-faq",
+      "settings": {
+        "eyebrow": "FAQ",
+        "heading": "Frequently Asked Questions"
+      }
+    },
+    "customer_service_bar": {
+      "type": "customer-service-bar",
+      "settings": {
+        "heading": "Need Help?",
+        "body_text": "Our sleep specialists are here 7 days a week — Mon–Fri 9am–6pm ET, weekends 10am–4pm ET.",
+        "availability_label": "Available 7 days a week",
+        "chat_label": "Live Chat",
+        "chat_url": "",
+        "phone_label": "1-866-BED-GEAR",
+        "phone_number": "18662334327",
+        "email_label": "Email Us",
+        "email_address": "support@bedgear.com",
+        "margin_bottom": 64
+      }
+    },
+    "reviews": {
+      "type": "product-reviews",
+      "settings": {
+        "eyebrow": "Verified Buyers",
+        "headline_count": "6,406 reviews.",
+        "headline_cyan": "One pattern.",
+        "pr_api_key": "47fff520-f385-4739-afdf-0e90788492b6",
+        "pr_merchant_id": "1806575603",
+        "pr_merchant_group_id": "2014345704"
+      }
+    },
+    "closing_cta": {
+      "type": "product-cta-closing",
+      "settings": {
+        "eyebrow": "Tired is a waste of time",
+        "heading_line_1": "Sleep fuels everything.",
+        "heading_line_2": "Start tonight.",
+        "body_text": "365-Night Guarantee. If it’s not right, we make it right. One size does not fit all — find your fit."
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You May Also Like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "padding_top": 48,
+        "padding_bottom": 60
+      }
+    },
+    "1774722121de97adfe": {
+      "type": "apps",
+      "blocks": {
+        "rebuy_personalization_engine_rebuy_widget_HVampJ": {
+          "type": "shopify://apps/rebuy-personalization-engine/blocks/rebuy-widget/a26ae9b9-933b-40bf-bbc6-bf1220bbc4dc",
+          "settings": {
+            "enabled": true,
+            "id": "270427",
+            "product_id_enabled": true,
+            "collection_id_enabled": true
+          }
+        }
+      },
+      "block_order": [
+        "rebuy_personalization_engine_rebuy_widget_HVampJ"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "partner_banner",
+    "pdp_banner",
+    "whats_inside",
+    "image_with_text",
+    "faq",
+    "customer_service_bar",
+    "reviews",
+    "closing_cta",
+    "related-products",
+    "1774722121de97adfe"
+  ]
+}

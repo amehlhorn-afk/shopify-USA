@@ -1,0 +1,386 @@
+{%- comment -%}
+  Metafields: custom.pdp_detail_accordions_one / _two / _three / _four
+  Each is a metaobject_reference. Field names vary per accordion:
+
+  Accordion 1 (pdp_detail_accordions_one):
+    - pdp_detail_accordions_heading         [single_line_text_field]
+    - accordions_one_sub_heading_1..3       [single_line_text_field]
+    - accordions_one_detail_content_1..3    [multi_line_text_field or rich_text_field]
+
+  Accordion 2 (pdp_detail_accordions_two):
+    - pdp_detail_accordions_heading         [single_line_text_field]  (same key as acc 1)
+    - accordions_two_sub_heading_1..3       [single_line_text_field]
+    - accordions_two_detail_content_1..3    [multi_line_text_field or rich_text_field]
+
+  Accordion 3 (pdp_detail_accordions_three) — tabbed comparison table:
+    - pdp_detail_accordions_heading_3       [single_line_text_field]  (unique key)
+    - accordions_three_sub_heading_1        [single_line_text_field]
+    - accordions_three_detail_content_1..8  [single_line_text_field]  (tab row labels)
+    - detail_content_inner_heading_1..3     [single_line_text_field]  (column headers)
+    - detail_content_{row}_inner_description_{col} where row=1..8, col=1..3
+
+  Accordion 4 (pdp_detail_accordions_four):
+    - accordions_heading                    [single_line_text_field]  (unique key)
+    - text                                  [single_line_text_field]
+    - pdf_file                              [file_reference]
+{%- endcomment -%}
+
+{%- liquid
+  assign acc_1 = product.metafields.custom.pdp_detail_accordions_one.value
+  assign acc_2 = product.metafields.custom.pdp_detail_accordions_two.value
+  assign acc_3 = product.metafields.custom.pdp_detail_accordions_three.value
+  assign acc_4 = product.metafields.custom.pdp_detail_accordions_four.value
+  assign has_accordions = false
+  if acc_1 != blank or acc_2 != blank or acc_3 != blank or acc_4 != blank
+    assign has_accordions = true
+  endif
+-%}
+
+{%- if has_accordions -%}
+  <div class="product-accordions">
+
+    {%- comment -%} ── Accordion 1 ── {%- endcomment -%}
+    {%- if acc_1 != blank and acc_1.pdp_detail_accordions_heading != blank -%}
+      <details class="product-accordion">
+        <summary class="product-accordion__trigger">
+          <span class="product-accordion__heading">{{ acc_1.pdp_detail_accordions_heading }}</span>
+          <span class="product-accordion__caret" aria-hidden="true">{%- render 'icon-caret' -%}</span>
+        </summary>
+        <div class="product-accordion__body">
+          {%- for i in (1..3) -%}
+            {%- liquid
+              assign sub_key     = 'accordions_one_sub_heading_'    | append: i
+              assign content_key = 'accordions_one_detail_content_' | append: i
+              assign sub_val     = acc_1[sub_key]
+              assign content_val = acc_1[content_key]
+            -%}
+            {%- if sub_val != blank or content_val != blank -%}
+              <div class="product-accordion__row">
+                {%- if sub_val != blank -%}
+                  <strong class="product-accordion__sub-heading">{{ sub_val }}</strong>
+                {%- endif -%}
+                {%- if content_val != blank -%}
+                  <div class="product-accordion__content">{{ content_val }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </details>
+    {%- endif -%}
+
+    {%- comment -%} ── Accordion 2 ── {%- endcomment -%}
+    {%- if acc_2 != blank and acc_2.pdp_detail_accordions_heading != blank -%}
+      <details class="product-accordion">
+        <summary class="product-accordion__trigger">
+          <span class="product-accordion__heading">{{ acc_2.pdp_detail_accordions_heading }}</span>
+          <span class="product-accordion__caret" aria-hidden="true">{%- render 'icon-caret' -%}</span>
+        </summary>
+        <div class="product-accordion__body">
+          {%- for i in (1..3) -%}
+            {%- liquid
+              assign sub_key     = 'accordions_two_sub_heading_'    | append: i
+              assign content_key = 'accordions_two_detail_content_' | append: i
+              assign sub_val     = acc_2[sub_key]
+              assign content_val = acc_2[content_key]
+            -%}
+            {%- if sub_val != blank or content_val != blank -%}
+              <div class="product-accordion__row">
+                {%- if sub_val != blank -%}
+                  <strong class="product-accordion__sub-heading">{{ sub_val }}</strong>
+                {%- endif -%}
+                {%- if content_val != blank -%}
+                  <div class="product-accordion__content">{{ content_val }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </details>
+    {%- endif -%}
+
+    {%- comment -%} ── Accordion 3 (comparison table) ── {%- endcomment -%}
+    {%- if acc_3 != blank and acc_3.pdp_detail_accordions_heading_3 != blank -%}
+      <details class="product-accordion">
+        <summary class="product-accordion__trigger">
+          <span class="product-accordion__heading">{{ acc_3.pdp_detail_accordions_heading_3 }}</span>
+          <span class="product-accordion__caret" aria-hidden="true">{%- render 'icon-caret' -%}</span>
+        </summary>
+        <div class="product-accordion__body">
+          {%- if acc_3.accordions_three_sub_heading_1 != blank -%}
+            <p class="product-accordion__sub-heading">{{ acc_3.accordions_three_sub_heading_1 }}</p>
+          {%- endif -%}
+
+          {%- comment -%} Build column headers {%- endcomment -%}
+          {%- liquid
+            assign col1 = acc_3.detail_content_inner_heading_1
+            assign col2 = acc_3.detail_content_inner_heading_2
+            assign col3 = acc_3.detail_content_inner_heading_3
+            assign has_cols = false
+            if col1 != blank or col2 != blank or col3 != blank
+              assign has_cols = true
+            endif
+          -%}
+
+          <div class="product-accordion__table" role="table">
+            {%- if has_cols -%}
+              <div class="product-accordion__table-head" role="row">
+                <div role="columnheader"></div>
+                {%- if col1 != blank -%}<div role="columnheader">{{ col1 }}</div>{%- endif -%}
+                {%- if col2 != blank -%}<div role="columnheader">{{ col2 }}</div>{%- endif -%}
+                {%- if col3 != blank -%}<div role="columnheader">{{ col3 }}</div>{%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- for i in (1..8) -%}
+              {%- liquid
+                assign row_key = 'accordions_three_detail_content_' | append: i
+                assign row_label = acc_3[row_key]
+              -%}
+              {%- if row_label != blank -%}
+                <div class="product-accordion__table-row" role="row">
+                  <div class="product-accordion__table-label" role="rowheader">{{ row_label }}</div>
+                  {%- for j in (1..3) -%}
+                    {%- liquid
+                      assign cell_key = 'detail_content_' | append: i | append: '_inner_description_' | append: j
+                      assign cell_val = acc_3[cell_key]
+                    -%}
+                    {%- if has_cols -%}
+                      <div class="product-accordion__table-cell" role="cell">{{ cell_val }}</div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </details>
+    {%- endif -%}
+
+    {%- comment -%} ── Accordion 4 (PDF download) ── {%- endcomment -%}
+    {%- if acc_4 != blank and acc_4.accordions_heading != blank -%}
+      <details class="product-accordion">
+        <summary class="product-accordion__trigger">
+          <span class="product-accordion__heading">{{ acc_4.accordions_heading }}</span>
+          <span class="product-accordion__caret" aria-hidden="true">{%- render 'icon-caret' -%}</span>
+        </summary>
+        <div class="product-accordion__body">
+          {%- if acc_4.text != blank -%}
+            <p>{{ acc_4.text }}</p>
+          {%- endif -%}
+          {%- if acc_4.pdf_file != blank -%}
+            <a
+              href="{{ acc_4.pdf_file | file_url }}"
+              class="product-accordion__pdf-link"
+              target="_blank"
+              rel="noopener"
+              aria-label="View PDF — opens in a new tab"
+            >View PDF</a>
+          {%- endif -%}
+        </div>
+      </details>
+    {%- endif -%}
+
+  </div>
+{%- endif -%}
+
+{% style %}
+  /* Accordions live in the media column below the sticky gallery */
+  .product__media-wrapper .product-accordions {
+    width: 100%;
+    position: relative;
+    z-index: 3;
+    background: #fff;
+    margin-top: 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .product-accordion,
+  details.product-accordion,
+  details.product-accordion:focus,
+  details.product-accordion[open] {
+    border: none !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .product-accordion:last-child,
+  details.product-accordion:last-child {
+    border-bottom: none !important;
+  }
+
+  .product-accordion:last-child {
+    border-bottom: none;
+  }
+
+  .product-accordion__trigger:focus {
+    outline: none;
+  }
+
+  .product-accordion__trigger::marker,
+  .product-accordion__trigger::-webkit-details-marker {
+    display: none;
+  }
+
+  .product-accordion__trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    cursor: pointer;
+    list-style: none;
+    gap: 16px;
+    background: transparent;
+    transition: background 0.2s ease;
+  }
+
+  details[open] > .product-accordion__trigger {
+    background: #e8f7fb;
+  }
+
+  .product-accordion__trigger::-webkit-details-marker { display: none; }
+
+  .product-accordion__heading {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brand-cyan);
+  }
+
+  details:not([open]) .product-accordion__heading {
+    color: var(--brand-gray-900);
+  }
+
+  .product-accordion__caret {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--brand-cyan);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+  }
+
+  .product-accordion__caret .icon-caret {
+    position: static !important;
+    width: 12px !important;
+    height: 12px !important;
+    right: auto !important;
+    top: auto !important;
+  }
+
+  details:not([open]) .product-accordion__caret {
+    background: transparent;
+    border: 1.5px solid var(--brand-gray-300);
+    color: var(--brand-gray-500);
+  }
+
+  details[open] .product-accordion__caret { transform: rotate(180deg); }
+
+  .product-accordion__body {
+    font-size: 13px;
+    color: var(--brand-gray-600);
+    line-height: 1.5;
+    padding: 0 18px 18px;
+  }
+
+  .product-accordion__row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+
+  .product-accordion__row:last-child { margin-bottom: 0; }
+
+  .product-accordion__sub-heading {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--brand-gray-500);
+    margin-bottom: 4px;
+  }
+
+  .product-accordion__content p { margin: 0; }
+  .product-accordion__content br { line-height: 1; }
+  .product-accordion__content ul,
+  .product-accordion__content ol { margin: 4px 0 0; padding-left: 18px; }
+  .product-accordion__content li { margin: 0; }
+
+  /* Comparison table (accordion 3) */
+  .product-accordion__table {
+    width: 100%;
+    font-size: 13px;
+    border: 1px solid var(--brand-gray-200);
+    border-radius: var(--brand-radius);
+    overflow: hidden;
+  }
+
+  .product-accordion__table-head,
+  .product-accordion__table-row {
+    display: grid;
+    grid-template-columns: 1fr repeat(3, 1fr);
+    border-bottom: 1px solid var(--brand-gray-200);
+  }
+
+  .product-accordion__table-row:last-child { border-bottom: none; }
+
+  .product-accordion__table-head { background: var(--brand-gray-50); }
+
+  .product-accordion__table-head [role="columnheader"],
+  .product-accordion__table-label,
+  .product-accordion__table-cell {
+    padding: 10px 12px;
+    border-right: 1px solid var(--brand-gray-200);
+  }
+
+  .product-accordion__table-head [role="columnheader"]:last-child,
+  .product-accordion__table-cell:last-child { border-right: none; }
+
+  .product-accordion__table-head [role="columnheader"] {
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--brand-gray-500);
+  }
+
+  .product-accordion__table-label {
+    font-weight: 600;
+    color: var(--brand-gray-900);
+    border-right: 1px solid var(--brand-gray-200);
+  }
+
+  .product-accordion__pdf-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--brand-cyan);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .product-accordion__pdf-link:hover { color: var(--brand-cyan-dark); }
+
+  @media screen and (max-width: 749px) {
+    .product-accordion__table-head,
+    .product-accordion__table-row {
+      grid-template-columns: 1fr repeat(3, 1fr);
+    }
+    .product-accordion__table-head [role="columnheader"],
+    .product-accordion__table-label,
+    .product-accordion__table-cell {
+      padding: 8px;
+      font-size: 12px;
+    }
+  }
+{% endstyle %}
